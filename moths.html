@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>PNW Moths</title>
+    <link rel="stylesheet" href="moths.css" type="text/css" />
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="jquery.csv.js" type="text/javascript"></script>
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BTEt7yEbW0t6wBwzgPUvU4EFci-WRRknm1HoToMnoOol-K1r4PFdPBLfg"
+      type="text/javascript"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+    var map;
+    var markers;
+    var unique_species;
+    var genus = 2;
+    var species = 3;
+    var lat = 5;
+    var lng = 4;
+    var state = 6;
+    var county = 7;
+    var city = 8;
+    var elevation = 9;
+    var elevation_units = 10;
+    var year = 11;
+    
+    function createMarker(point, number, html) {
+      var marker = new GMarker(point);
+      marker.value = number;
+      GEvent.addListener(marker, "click", function() {
+        map.openInfoWindowHtml(point, html);
+      });
+      return marker;
+    }
+
+    function createSpeciesName(marker) {
+      if (!marker[genus] || !marker[species]) {
+        return "";
+      }
+      
+      return jQuery.trim(marker[genus]) + " " + jQuery.trim(marker[species]);
+    }
+
+    function addTerritoryBoundaries() {
+      // Place a polygon around the area we're most interested in.
+      var polygon = new GPolygon([
+            new GLatLng(40, -109.5),
+            new GLatLng(53, -109.5),
+            new GLatLng(53, -126),
+            new GLatLng(40, -126),
+            new GLatLng(40, -109.5)
+		  ], "#0099ff", 2, 1, "#ccffff", 0.2);
+		  map.addOverlay(polygon);
+		}
+
+    function populateMapBySpecies(species) {
+      map.clearOverlays();
+      addTerritoryBoundaries();
+      
+      for (var i = 0; i < markers.length; i++) {
+        var species_name = createSpeciesName(markers[i]);
+
+        // If a species filter is set, don't display any species other than 
+        // the requested.
+        if (species != species_name) {
+          continue;
+        }
+          
+        // Create a new point for the marker and use any existing information
+        // to build a description for the information window.
+        var point = new GLatLng(parseFloat(markers[i][lat]),
+                                parseFloat(markers[i][lng]));
+        var description = "<table><tr><th colspan='2'>" + species_name + "</th></tr>";
+        description += "<tr><td>City:</td><td>" + markers[i][city] + "</td></tr>";
+        description += "<tr><td>County:</td><td>" + markers[i][county] + "</td></tr>";
+        description += "<tr><td>State:</td><td>" + markers[i][state] + "</td></tr>";
+        description += "<tr><td>Year:</td><td>" + markers[i][year] + "</td></tr>";
+        description += "</table>";
+        map.addOverlay(createMarker(point, i, description));
+      }
+      
+      return false;
+    }
+
+    function load() {
+      if (!GBrowserIsCompatible()) {
+        return;
+      }
+
+      map = new GMap2(document.getElementById("map")); 
+      // Center on Washington State.
+      map.setCenter(new GLatLng(46.60, -118.00), 5);
+      map.addControl(new GLargeMapControl());
+      map.
+      addTerritoryBoundaries();
+
+      GDownloadUrl("moths.csv", function(data, responseCode) {
+        markers = jQuery.csv(",", "\"", "\n")(data);
+        unique_species = new Array();
+
+        for (var i = 0; i < markers.length; i++) {
+          var species_name = createSpeciesName(markers[i]);
+
+          // Add this species to the list of unique species if it hasn't been 
+          // counted already.  This is done before filtering to get a complete
+          // list even when a filter is applied.
+          if (species_name != "" && 
+              jQuery.inArray(species_name, unique_species) == -1) {
+            unique_species.push(species_name);
+          }
+        }
+
+        // Create a filter list for each unique species.
+        var filter_list = "<ul>";
+        for (i in unique_species) {
+          filter_list += "<li><a href='#' onclick=\"populateMapBySpecies('"
+          filter_list += unique_species[i] + "');\">"
+          filter_list += unique_species[i] + "</a></li>";
+        }
+        filter_list += "</ul>";
+        $("#filter").html(filter_list);
+      });
+    }
+    //]]>
+    </script>
+  </head>
+  <body onload="load()" onunload="GUnload()">
+    <div id="map"></div>
+    <div id="filter"></div>
+  </body>
+</html>
