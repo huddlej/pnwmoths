@@ -24,10 +24,20 @@
     var elevation = 9;
     var elevation_units = 10;
     var year = 11;
+
+    var simpleIcon = new GIcon(G_DEFAULT_ICON);
+    simpleIcon.image = "icon.png";
+    simpleIcon.shadow = "icon.png";
+    simpleIcon.iconSize = new GSize(16, 16);
+    simpleIcon.shadowSize = new GSize(16, 16);
+    simpleIcon.iconAnchor = new GPoint(8, 8);
+    simpleIcon.infoWindowAnchor = new GPoint(8, 8);
+    markerOptions = { icon:simpleIcon }
     
     function createMarker(point, number, html) {
-      var marker = new GMarker(point);
+      var marker = new GMarker(point, markerOptions);
       marker.value = number;
+      
       GEvent.addListener(marker, "click", function() {
         map.openInfoWindowHtml(point, html);
       });
@@ -92,7 +102,9 @@
       // Center on Washington State.
       map.setCenter(new GLatLng(46.60, -118.00), 5);
       map.addControl(new GLargeMapControl());
-      map.
+      map.addControl(new GMapTypeControl());
+      map.addMapType(G_PHYSICAL_MAP);
+      map.setMapType(G_PHYSICAL_MAP);
       addTerritoryBoundaries();
 
       GDownloadUrl("moths.csv", function(data, responseCode) {
