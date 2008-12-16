@@ -28,8 +28,8 @@
     var simpleIcon = new GIcon(G_DEFAULT_ICON);
     simpleIcon.image = "icon.png";
     simpleIcon.shadow = "icon.png";
-    simpleIcon.iconSize = new GSize(16, 16);
-    simpleIcon.shadowSize = new GSize(16, 16);
+    simpleIcon.iconSize = new GSize(10, 10);
+    simpleIcon.shadowSize = new GSize(10, 10);
     simpleIcon.iconAnchor = new GPoint(8, 8);
     simpleIcon.infoWindowAnchor = new GPoint(8, 8);
     markerOptions = { icon:simpleIcon }
@@ -82,10 +82,11 @@
         var point = new GLatLng(parseFloat(markers[i][lat]),
                                 parseFloat(markers[i][lng]));
         var description = "<table><tr><th colspan='2'>" + species_name + "</th></tr>";
-        description += "<tr><td>City:</td><td>" + markers[i][city] + "</td></tr>";
+        description += "<tr><td>City/Site:</td><td>" + markers[i][city] + "</td></tr>";
         description += "<tr><td>County:</td><td>" + markers[i][county] + "</td></tr>";
         description += "<tr><td>State:</td><td>" + markers[i][state] + "</td></tr>";
         description += "<tr><td>Year:</td><td>" + markers[i][year] + "</td></tr>";
+        description += "<tr><td>Elevation:</td><td>" + markers[i][elevation] + " " + markers[i][elevation_units] + "</td></tr>";
         description += "</table>";
         map.addOverlay(createMarker(point, i, description));
       }
