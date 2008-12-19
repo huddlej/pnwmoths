@@ -15,17 +15,26 @@
     var map;
     var mgr;
     var markers;
+    
+    // List of available species based on data in CSV.
     var unique_species;
-    var genus = 2;
-    var species = 3;
-    var lat = 5;
-    var lng = 4;
-    var state = 6;
-    var county = 7;
-    var city = 8;
-    var elevation = 9;
-    var elevation_units = 10;
-    var year = 11;
+    
+    // Column names and index values for data loaded from CSV.
+    var c = {"genus": 2,
+             "species": 3,
+             "lat": 5,
+             "lng": 4,
+             "state": 6,
+             "county": 7,
+             "city": 8,
+             "elevation": 9,
+             "elevation_units": 10,
+             "year": 11};
+
+    // TODO: Define all filters that can be applied.
+
+    // Dynamic list of filters to be applied to the data set at any given time.
+    var filters = [["year", 1900, 1960]];
 
     var simpleIcon = new GIcon(G_DEFAULT_ICON);
     simpleIcon.image = "icon.png";
@@ -47,11 +56,11 @@
     }
 
     function createSpeciesName(marker) {
-      if (!marker[genus] || !marker[species]) {
+      if (!marker[c.genus] || !marker[c.species]) {
         return "";
       }
       
-      return jQuery.trim(marker[genus]) + " " + jQuery.trim(marker[species]);
+      return jQuery.trim(marker[c.genus]) + " " + jQuery.trim(marker[c.species]);
     }
 
     function addTerritoryBoundaries() {
@@ -78,17 +87,35 @@
         if (species != species_name) {
           continue;
         }
+        
+        // Apply filters.
+        var filters_match = true;
+        for (filter_index in filters) {
+          var filter = filters[filter_index];
+          var attribute = filter[0];
+          var startkey = filter[1];
+          var endkey = filter[2];
+          var value = markers[i][c[attribute]];
+          if (value < startkey || value >= endkey) {
+            filters_match = false;
+            break;
+          }
+        }
+        
+        if (!filters_match) {
+          continue;
+        }
           
         // Create a new point for the marker and use any existing information
         // to build a description for the information window.
-        var point = new GLatLng(parseFloat(markers[i][lat]),
-                                parseFloat(markers[i][lng]));
+        var point = new GLatLng(parseFloat(markers[i][c.lat]),
+                                parseFloat(markers[i][c.lng]));
         var description = "<table><tr><th colspan='2'>" + species_name + "</th></tr>";
-        description += "<tr><td>City/Site:</td><td>" + markers[i][city] + "</td></tr>";
-        description += "<tr><td>County:</td><td>" + markers[i][county] + "</td></tr>";
-        description += "<tr><td>State:</td><td>" + markers[i][state] + "</td></tr>";
-        description += "<tr><td>Year:</td><td>" + markers[i][year] + "</td></tr>";
-        description += "<tr><td>Elevation:</td><td>" + markers[i][elevation] + " " + markers[i][elevation_units] + "</td></tr>";
+        description += "<tr><td>City/Site:</td><td>" + markers[i][c.city] + "</td></tr>";
+        description += "<tr><td>County:</td><td>" + markers[i][c.county] + "</td></tr>";
+        description += "<tr><td>State:</td><td>" + markers[i][c.state] + "</td></tr>";
+        description += "<tr><td>Year:</td><td>" + markers[i][c.year] + "</td></tr>";
+        description += "<tr><td>Elevation:</td><td>" + markers[i][c.elevation] + " " + markers[i][c.elevation_units] + "</td></tr>";
         description += "</table>";
         species_markers.push(createMarker(point, i, description));
       }
