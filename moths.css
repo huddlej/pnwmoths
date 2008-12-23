@@ -1,10 +1,14 @@
+#status {
+  clear: right;
+}
+
 #map {
   float: left;
   height: 500px;
   width: 500px;
 }
 
-#filter {
+#species, #filters {
   float: left;
   height: 500px;
   max-height: 500px;

@@ -15,10 +15,19 @@
     var map;
     var mgr;
     var markers;
-    
+
+    var simple_icon = new GIcon(G_DEFAULT_ICON);
+    simple_icon.image = "icon.png";
+    simple_icon.shadow = "icon.png";
+    simple_icon.iconSize = new GSize(10, 10);
+    simple_icon.shadowSize = new GSize(10, 10);
+    simple_icon.iconAnchor = new GPoint(8, 8);
+    simple_icon.infoWindowAnchor = new GPoint(8, 8);
+    marker_options = { icon:simple_icon }
+
     // List of available species based on data in CSV.
     var unique_species;
-    
+
     // Column names and index values for data loaded from CSV.
     var c = {"genus": 2,
              "species": 3,
@@ -31,24 +40,47 @@
              "elevation_units": 10,
              "year": 11};
 
-    // TODO: Define all filters that can be applied.
+    // All filters that can be applied to data set.
+    var all_filters = {"year": [[1900, 1950],
+                               [1950, 1960],
+                               [1960, 1970],
+                               [1970, 1980],
+                               [1980, 1990],
+                               [1990, 2000],
+                               [2000, 2010]],
+                       "elevation": [[0, 1000],
+                                     [1000, 2000],
+                                     [2000, 3000],
+                                     [3000, 4000],
+                                     [4000, 10000]]};
 
-    // Dynamic list of filters to be applied to the data set at any given time.
-    var filters = [["year", 1900, 1960]];
+    // Dynamic set of filters to be applied to the data set at any given time.
+    var filters = {};
 
-    var simpleIcon = new GIcon(G_DEFAULT_ICON);
-    simpleIcon.image = "icon.png";
-    simpleIcon.shadow = "icon.png";
-    simpleIcon.iconSize = new GSize(10, 10);
-    simpleIcon.shadowSize = new GSize(10, 10);
-    simpleIcon.iconAnchor = new GPoint(8, 8);
-    simpleIcon.infoWindowAnchor = new GPoint(8, 8);
-    markerOptions = { icon:simpleIcon }
-    
+    function setFilter(key, startkey, endkey) {
+      filters[key] = [startkey, endkey];
+      alert(filters[key]);
+      return false;
+    }
+
+    function removeFilter(key) {
+      if (filters[key]) {
+        delete filters[key];
+      }
+      alert(filters[key]);
+      return false;
+    }
+
+    function clearFilters() {
+      filters = {};
+      alert(filters);
+      return false;
+    }
+
     function createMarker(point, number, html) {
-      var marker = new GMarker(point, markerOptions);
+      var marker = new GMarker(point, marker_options);
       marker.value = number;
-      
+
       GEvent.addListener(marker, "click", function() {
         map.openInfoWindowHtml(point, html);
       });
@@ -59,7 +91,7 @@
       if (!marker[c.genus] || !marker[c.species]) {
         return "";
       }
-      
+
       return jQuery.trim(marker[c.genus]) + " " + jQuery.trim(marker[c.species]);
     }
 
@@ -76,9 +108,10 @@
 		}
 
     function populateMapBySpecies(species) {
+      $("#status").text("Loading " + species + "...");
       mgr.clearMarkers();
       var species_markers = [];
-      
+
       for (var i = 0; i < markers.length; i++) {
         var species_name = createSpeciesName(markers[i]);
 
@@ -87,25 +120,23 @@
         if (species != species_name) {
           continue;
         }
-        
+
         // Apply filters.
         var filters_match = true;
-        for (filter_index in filters) {
-          var filter = filters[filter_index];
-          var attribute = filter[0];
-          var startkey = filter[1];
-          var endkey = filter[2];
-          var value = markers[i][c[attribute]];
+        for (key in filters) {
+          var startkey = filters[key][0];
+          var endkey = filters[key][1];
+          var value = markers[i][c[key]];
           if (value < startkey || value >= endkey) {
             filters_match = false;
             break;
           }
         }
-        
+
         if (!filters_match) {
           continue;
         }
-          
+
         // Create a new point for the marker and use any existing information
         // to build a description for the information window.
         var point = new GLatLng(parseFloat(markers[i][c.lat]),
@@ -119,11 +150,20 @@
         description += "</table>";
         species_markers.push(createMarker(point, i, description));
       }
-      
+
       mgr.addMarkers(species_markers, 3, 10);
       mgr.refresh();
-      
+
+      $("#status").text("");
       return false;
+    }
+
+    function castStringToInt(value) {
+      if (value && value.length > 0) {
+        return parseInt(value);
+      }
+      
+      return "";
     }
 
     function load() {
@@ -132,14 +172,16 @@
       }
 
       map = new GMap2(document.getElementById("map"));
+
       // Center on Washington State.
-      map.setCenter(new GLatLng(46.60, -118.00), 5);
+      map.setCenter(new GLatLng(46.90, -118.00), 5);
       map.addControl(new GLargeMapControl());
       map.addControl(new GMapTypeControl());
       map.addMapType(G_PHYSICAL_MAP);
       map.setMapType(G_PHYSICAL_MAP);
       addTerritoryBoundaries();
-      
+
+      // Setup manager to control the zoom levels at which markers are displayed.
       mgr = new MarkerManager(map);
 
       GDownloadUrl("moths.csv", function(data, responseCode) {
@@ -156,24 +198,52 @@
               jQuery.inArray(species_name, unique_species) == -1) {
             unique_species.push(species_name);
           }
+
+          // Cast integer and float fields.
+          markers[i][c.elevation] = castStringToInt(markers[i][c.elevation]);
+          markers[i][c.year] = castStringToInt(markers[i][c.year]);
         }
 
-        // Create a filter list for each unique species.
-        var filter_list = "<ul>";
+        // Display a list of the unique species.
+        var species_html = "<ul>";
         for (i in unique_species) {
-          filter_list += "<li><a href='#' onclick=\"populateMapBySpecies('"
-          filter_list += unique_species[i] + "');\">"
-          filter_list += unique_species[i] + "</a></li>";
+          species_html += "<li><a href='#' onclick=\"populateMapBySpecies('"
+          species_html += unique_species[i] + "');\">"
+          species_html += unique_species[i] + "</a></li>";
         }
-        filter_list += "</ul>";
-        $("#filter").html(filter_list);
+        species_html += "</ul>";
+        $("#species").html(species_html);
+
+        // Display filters to be applied to the current data set.
+        var filters_html = "<ul><li><a href='#' onclick=\"clearFilters();\">Clear filters</a></li>";
+        for (filter_index in all_filters) {
+          var filter_set = all_filters[filter_index];
+          filters_html += "<li>";
+          filters_html += filter_index;
+          filters_html += "<ul>";
+          filters_html += "<li><a href='#' onclick=\"removeFilter('" + filter_index + "');\">All " + filter_index + "s</a></li>";
+          for (filter in filter_set) {
+            var startkey = filter_set[filter][0];
+            var endkey = filter_set[filter][1];
+            filters_html += "<li>";
+            filters_html += "<a href='#' onclick=\"setFilter('" + filter_index + "', '" + startkey + "', '" + endkey + "');\">";
+            filters_html += startkey + " to " + endkey;
+            filters_html += "</a></li>";
+          }
+          filters_html += "</ul>";
+          filters_html += "</li>";
+        }
+        filters_html += "</ul>";
+        $("#filters").html(filters_html);
       });
     }
     //]]>
     </script>
   </head>
   <body onload="load()" onunload="GUnload()">
+    <div id="status"></div>
     <div id="map"></div>
-    <div id="filter"></div>
+    <div id="species"></div>
+    <div id="filters"></div>
   </body>
 </html>
