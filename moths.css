@@ -14,3 +14,8 @@
   max-height: 500px;
   overflow: auto;
 }
+
+.selected {
+  background-color: #cccccc;
+  font-weight: bold;
+}
