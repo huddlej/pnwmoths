@@ -215,26 +215,46 @@
         $("#species").html(species_html);
 
         // Display filters to be applied to the current data set.
-        var filters_html = "<ul><li><a href='#' onclick=\"clearFilters();\">Clear filters</a></li>";
+        var filters_ul = $("<ul></ul>");
+        
+        // Add link to clear all filters.
+        var filters_ul_a = $("<a href='#'>Clear filters</a>");
+        filters_ul_a.click(function () {
+                             clearFilters();
+                           });
+        filters_ul.append($("<li></li>").append(filters_ul_a));
+
         for (filter_index in all_filters) {
           var filter_set = all_filters[filter_index];
-          filters_html += "<li>";
-          filters_html += filter_index;
-          filters_html += "<ul>";
-          filters_html += "<li><a href='#' onclick=\"removeFilter('" + filter_index + "');\">All " + filter_index + "s</a></li>";
+          // Store each filter in a nested list.
+          var filters_ul_ul = $("<ul></ul>");
+          
+          // Add link to remove this specific filter.
+          filters_ul_a = $("<a href='#'>All " + filter_index + "s</a>");
+          filters_ul_a.click(function () {
+                               removeFilter(filter_index);
+                             });
+          filters_ul_ul.append($("<li></li>").append(filters_ul_a));
+
+          // Add links to set each possible value for this filter.
           for (filter in filter_set) {
             var startkey = filter_set[filter][0];
             var endkey = filter_set[filter][1];
-            filters_html += "<li>";
-            filters_html += "<a href='#' onclick=\"setFilter('" + filter_index + "', '" + startkey + "', '" + endkey + "');\">";
-            filters_html += startkey + " to " + endkey;
-            filters_html += "</a></li>";
+            filters_ul_a = $("<a href='#'>" + startkey + " - " + endkey + " </a>");
+            filters_ul_a.attr("key", filter_index);
+            filters_ul_a.attr("startkey", startkey);
+            filters_ul_a.attr("endkey", endkey);
+            filters_ul_a.click(function () {
+                                 setFilter($(this).attr("key"),
+                                           $(this).attr("startkey"),
+                                           $(this).attr("endkey"));
+                               });
+            filters_ul_ul.append($("<li></li>").append(filters_ul_a));
           }
-          filters_html += "</ul>";
-          filters_html += "</li>";
+
+          filters_ul.append($("<li>" + filter_index + "</li>").append(filters_ul_ul));
         }
-        filters_html += "</ul>";
-        $("#filters").html(filters_html);
+        $("#filters").append(filters_ul);
       });
     }
     //]]>
