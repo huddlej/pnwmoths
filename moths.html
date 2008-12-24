@@ -15,6 +15,7 @@
     var map;
     var mgr;
     var markers;
+    var selected_species;
 
     var simple_icon = new GIcon(G_DEFAULT_ICON);
     simple_icon.image = "icon.png";
@@ -59,7 +60,10 @@
 
     function setFilter(key, startkey, endkey) {
       filters[key] = [startkey, endkey];
-      //alert(filters[key]);
+
+      if (selected_species) {
+        populateMapBySpecies(selected_species);
+      }
       return false;
     }
 
@@ -67,13 +71,19 @@
       if (filters[key]) {
         delete filters[key];
       }
-      //alert(filters[key]);
+
+      if (selected_species) {
+        populateMapBySpecies(selected_species);
+      }
       return false;
     }
 
     function clearFilters() {
       filters = {};
-      //alert(filters);
+
+      if (selected_species) {
+        populateMapBySpecies(selected_species);
+      }
       return false;
     }
 
@@ -108,6 +118,7 @@
 		}
 
     function populateMapBySpecies(species) {
+      selected_species = species;
       mgr.clearMarkers();
       var species_markers = [];
 
@@ -207,6 +218,8 @@
         for (i in unique_species) {
           species_a = $("<a href='#'>" + unique_species[i] + "</a>");
           species_a.click(function () {
+                            $(this).parent().parent().find(".selected").removeClass("selected");
+                            $(this).addClass("selected");
                             populateMapBySpecies($(this).text());
                           });
           species_ul.append($("<li></li>").append(species_a));
@@ -217,9 +230,9 @@
         var filters_ul = $("<ul></ul>");
         
         // Add link to clear all filters.
-        var filters_ul_a = $("<a href='#'>All values</a>");
+        var filters_ul_a = $("<a href='#'>Clear filters</a>");
         filters_ul_a.click(function () {
-                             $("#filters a").removeClass("selected");
+                             $("#filters .selected").removeClass("selected");
                              clearFilters();
                            });
         filters_ul.append($("<li></li>").append(filters_ul_a));
@@ -230,10 +243,10 @@
           var filters_ul_ul = $("<ul></ul>");
           
           // Add link to remove this specific filter.
-          filters_ul_a = $("<a href='#'>All " + filter_index + "s</a>");
+          filters_ul_a = $("<a href='#' class='selected'>All " + filter_index + "s</a>");
           filters_ul_a.attr("key", filter_index);
           filters_ul_a.click(function () {
-                               $(this).parent().parent().children("a").removeClass("selected");
+                               $(this).parent().parent().find(".selected").removeClass("selected");
                                $(this).addClass("selected");
                                removeFilter($(this).attr("key"));
                              });
@@ -248,7 +261,7 @@
             filters_ul_a.attr("startkey", startkey);
             filters_ul_a.attr("endkey", endkey);
             filters_ul_a.click(function () {
-                                 $(this).parent().parent().children(".selected").removeClass("selected");
+                                 $(this).parent().parent().find(".selected").removeClass("selected");
                                  $(this).addClass("selected");
                                  setFilter($(this).attr("key"),
                                            $(this).attr("startkey"),
@@ -266,7 +279,7 @@
     </script>
   </head>
   <body onload="load()" onunload="GUnload()">
-    <div id="status"><p></p></div>
+    <div id="status"></div>
     <div id="map"></div>
     <div id="species"></div>
     <div id="filters"></div>
