@@ -121,6 +121,7 @@
       selected_species = species;
       mgr.clearMarkers();
       var species_markers = [];
+      var sites = {};
 
       for (var i = 0; i < markers.length; i++) {
         var species_name = createSpeciesName(markers[i]);
@@ -145,6 +146,18 @@
 
         if (!filters_match) {
           continue;
+        }
+
+        // Don't create markers for the same site more than once.  This is the
+        // easy way to do this, but ideally we would build a set of descriptions
+        // for each marker based on all records matching this site.
+        // dupes - 8463.31ms for californicus
+        // no dupes - 3332.68ms
+        if (sites[[markers[i][c.lat], markers[i][c.lng]]] == 1) {
+          continue;
+        }
+        else {
+          sites[[markers[i][c.lat], markers[i][c.lng]]] = 1;
         }
 
         // Create a new point for the marker and use any existing information
@@ -173,6 +186,10 @@
       }
       
       return "";
+    }
+
+    function convertMetersToFeet(meters) {
+      return parseInt(meters * 3.2808399);
     }
 
     function load() {
@@ -211,6 +228,12 @@
           // Cast integer and float fields.
           markers[i][c.elevation] = castStringToInt(markers[i][c.elevation]);
           markers[i][c.year] = castStringToInt(markers[i][c.year]);
+          
+          // Convert fields with meter measurements to feet measurements.
+          if (/^m/.exec(markers[i][c.elevation_units])) {
+            markers[i][c.elevation] = convertMetersToFeet(markers[i][c.elevation]);
+            markers[i][c.elevation_units] = "ft.";
+          }
         }
 
         // Display a list of the unique species.
