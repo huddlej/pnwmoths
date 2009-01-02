@@ -19,3 +19,7 @@
   background-color: #cccccc;
   font-weight: bold;
 }
+
+#filters li {
+  padding: 0.1em 0.3em;
+}

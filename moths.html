@@ -42,18 +42,16 @@
              "year": 11};
 
     // All filters that can be applied to data set.
-    var all_filters = {"year": [[1900, 1950],
-                               [1950, 1960],
-                               [1960, 1970],
-                               [1970, 1980],
-                               [1980, 1990],
-                               [1990, 2000],
-                               [2000, 2010]],
+    var all_filters = {"year": [[0, 1900],
+                                [1900, 1950],
+                                [1950, 1980],
+                                [1980, new Date().getFullYear()]],
                        "elevation": [[0, 1000],
                                      [1000, 2000],
                                      [2000, 3000],
-                                     [3000, 4000],
-                                     [4000, 10000]]};
+                                     [3000, 4500],
+                                     [4500, 6000],
+                                     [6000, 90000]]};
 
     // Dynamic set of filters to be applied to the data set at any given time.
     var filters = {};
@@ -264,6 +262,42 @@
           var filter_set = all_filters[filter_index];
           // Store each filter in a nested list.
           var filters_ul_ul = $("<ul></ul>");
+
+          // Add form for custom filter range.
+          form = $("<form></form>");
+          form.attr("name", filter_index);
+          startkey_field = $("<input type='text' size='5' />");
+          startkey_field.attr("name", "startkey");
+          form.append(startkey_field);
+          form.append(" - ");
+          endkey_field = $("<input type='text' size='5' />");
+          endkey_field.attr("name", "endkey");
+          form.append(endkey_field);
+          form.append($("<input type='submit' value='Filter' />"));
+
+          // Set function for applying the filter defined by this form.          
+          form.submit(function() {
+                        var inputs = $(this).children("input")
+                        var key = this.name;
+                        var startkey = inputs.val()
+                        var endkey = inputs.next().val();
+                        
+                        // If the keys can be converted to integers they should
+                        // be so filtering works as expected.
+                        try {
+                          startkey = parseInt(startkey);
+                          endkey = parseInt(endkey);
+                        }
+                        catch (error) {
+                        }
+                        
+                        $(this).parent().parent().find(".selected").removeClass("selected");
+                        $(this).parent().addClass("selected");
+                        setFilter(key, startkey, endkey);
+                        return false;
+                      });
+          
+          filters_ul_ul.append($("<li></li>").append(form));
           
           // Add link to remove this specific filter.
           filters_ul_a = $("<a href='#' class='selected'>All " + filter_index + "s</a>");
