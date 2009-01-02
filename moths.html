@@ -39,7 +39,8 @@
              "city": 8,
              "elevation": 9,
              "elevation_units": 10,
-             "year": 11};
+             "year": 11,
+             "month": 12};
 
     // All filters that can be applied to data set.
     var all_filters = {"year": [[0, 1900],
@@ -51,7 +52,13 @@
                                      [2000, 3000],
                                      [3000, 4500],
                                      [4500, 6000],
-                                     [6000, 90000]]};
+                                     [6000, 90000]],
+                       "month": [[1, 2],
+                                 [3, 4],
+                                 [5, 6],
+                                 [7, 8],
+                                 [9, 10],
+                                 [11, 12]]};
 
     // Dynamic set of filters to be applied to the data set at any given time.
     var filters = {};
@@ -136,7 +143,7 @@
           var startkey = filters[key][0];
           var endkey = filters[key][1];
           var value = markers[i][c[key]];
-          if (value < startkey || value >= endkey) {
+          if (value < startkey || value > endkey) {
             filters_match = false;
             break;
           }
@@ -166,8 +173,9 @@
         description += "<tr><td>City/Site:</td><td>" + markers[i][c.city] + "</td></tr>";
         description += "<tr><td>County:</td><td>" + markers[i][c.county] + "</td></tr>";
         description += "<tr><td>State:</td><td>" + markers[i][c.state] + "</td></tr>";
+        description += "<tr><td>Elevation:</td><td>" + markers[i][c.elevation] + " " + markers[i][c.elevation_units] + "</td></tr>";        
         description += "<tr><td>Year:</td><td>" + markers[i][c.year] + "</td></tr>";
-        description += "<tr><td>Elevation:</td><td>" + markers[i][c.elevation] + " " + markers[i][c.elevation_units] + "</td></tr>";
+        description += "<tr><td>Month:</td><td>" + markers[i][c.month] + "</td></tr>";
         description += "</table>";
         species_markers.push(createMarker(point, i, description));
       }
@@ -226,6 +234,7 @@
           // Cast integer and float fields.
           markers[i][c.elevation] = castStringToInt(markers[i][c.elevation]);
           markers[i][c.year] = castStringToInt(markers[i][c.year]);
+          markers[i][c.month] = castStringToInt(markers[i][c.month]);
           
           // Convert fields with meter measurements to feet measurements.
           if (/^m/.exec(markers[i][c.elevation_units])) {
