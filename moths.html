@@ -118,6 +118,8 @@
       var species_markers = [];
       var sites = {};
 
+      // Build a set of unique latitude/longitude sites with a marker and a 
+      // digest of each site's description.
       for (var i = 0; i < markers.length; i++) {
         var species_name = createSpeciesName(markers[i]);
 
@@ -143,22 +145,16 @@
           continue;
         }
 
-        // Don't create markers for the same site more than once.  This is the
-        // easy way to do this, but ideally we would build a set of descriptions
-        // for each marker based on all records matching this site.
-        // dupes - 8463.31ms for californicus
-        // no dupes - 3332.68ms
-        if (sites[[markers[i][c.lat], markers[i][c.lng]]] == 1) {
-          continue;
-        }
-        else {
-          sites[[markers[i][c.lat], markers[i][c.lng]]] = 1;
+        // If this is the first unfiltered instance of this site, create the 
+        // site marker and start the description string.
+        var site = [markers[i][c.lat], markers[i][c.lng]];
+        if (!sites[site]) {
+          var point = new GLatLng(parseFloat(markers[i][c.lat]),
+                                  parseFloat(markers[i][c.lng]));
+          sites[site] = {"marker": point,
+                         "description": ""};
         }
 
-        // Create a new point for the marker and use any existing information
-        // to build a description for the information window.
-        var point = new GLatLng(parseFloat(markers[i][c.lat]),
-                                parseFloat(markers[i][c.lng]));
         var description = "<table><tr><th colspan='2'>" + species_name + "</th></tr>";
         description += "<tr><td>City/Site:</td><td>" + markers[i][c.city] + "</td></tr>";
         description += "<tr><td>County:</td><td>" + markers[i][c.county] + "</td></tr>";
@@ -167,7 +163,16 @@
         description += "<tr><td>Year:</td><td>" + markers[i][c.year] + "</td></tr>";
         description += "<tr><td>Month:</td><td>" + markers[i][c.month] + "</td></tr>";
         description += "</table>";
+        sites[site].description += description;
+      }
+
+      // Add markers for each unique site.
+      var i = 0;
+      for (site in sites) {
+        var point = sites[site].point;
+        var description = sites[site].description;
         species_markers.push(createMarker(point, i, description));
+        i++;
       }
 
       mgr.addMarkers(species_markers, 3, 10);
