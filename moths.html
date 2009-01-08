@@ -41,13 +41,22 @@
              "elevation_units": 10,
              "year": 11,
              "month": 12};
+             
+    // Map column indices back to names.
+    var n = {};
+    for (key in c) {
+      n[c[key]] = key;
+    }
 
     // All filters that can be applied to data set.
-    var all_filters = {"elevation": {"title": "Elevation (ft.)",
+    var all_filters = {"elevation": {"field": "elevation",
+                                     "title": "Elevation (ft.)",
                                      "help_text": "(e.g., 2000-4000)"},
-                       "month": {"title": "Month",
+                       "month": {"field": "month",
+                                 "title": "Month",
                                  "help_text": "(e.g., 1 for January, 8 for August)"},
-                       "year": {"title": "Year",
+                       "year": {"field": "year",
+                                "title": "Year",
                                 "help_text": "(e.g., 1945-1965)"}};
 
     // Dynamic set of filters to be applied to the data set at any given time.
@@ -117,6 +126,7 @@
       mgr.clearMarkers();
       var species_markers = [];
       var sites = {};
+      var info_fields = [c.city, c.county, c.state, c.elevation];
 
       // Build a set of unique latitude/longitude sites with a marker and a 
       // digest of each site's description.
@@ -144,33 +154,90 @@
         if (!filters_match) {
           continue;
         }
-
+          
         // If this is the first unfiltered instance of this site, create the 
         // site marker and start the description string.
         var site = [markers[i][c.lat], markers[i][c.lng]];
         if (!sites[site]) {
-          var point = new GLatLng(parseFloat(markers[i][c.lat]),
-                                  parseFloat(markers[i][c.lng]));
-          sites[site] = {"marker": point,
-                         "description": ""};
+          sites[site] = {"latitude": markers[i][c.lat],
+                         "longitude": markers[i][c.lng],
+                         "dates": [],
+                         "description": $("<table class='info'></table>")};
+          sites[site].description.append($("<tr><th colspan='2'>" + 
+                                           species_name + 
+                                           "</th></tr>"));
         }
 
-        var description = "<table><tr><th colspan='2'>" + species_name + "</th></tr>";
-        description += "<tr><td>City/Site:</td><td>" + markers[i][c.city] + "</td></tr>";
-        description += "<tr><td>County:</td><td>" + markers[i][c.county] + "</td></tr>";
-        description += "<tr><td>State:</td><td>" + markers[i][c.state] + "</td></tr>";
-        description += "<tr><td>Elevation:</td><td>" + markers[i][c.elevation] + " " + markers[i][c.elevation_units] + "</td></tr>";        
-        description += "<tr><td>Year:</td><td>" + markers[i][c.year] + "</td></tr>";
-        description += "<tr><td>Month:</td><td>" + markers[i][c.month] + "</td></tr>";
-        description += "</table>";
-        sites[site].description += description;
+        // Prepare the contents of the info window for this marker.  Each window
+        // only needs one value for each field except for date fields which are
+        // collected for the entire data set.
+        for (index in info_fields) {
+          if (!markers[i][info_fields[index]] || sites[site][info_fields[index]]) {
+            continue;
+          }
+          
+          if (all_filters[n[info_fields[index]]]) {
+            var title = all_filters[n[info_fields[index]]].title;
+          }
+          else {
+            // If no title is defined, capitalize the first letter of the 
+            // index.
+            var title = n[info_fields[index]];
+            title = title.substr(0, 1).toUpperCase() + 
+                    title.substr(1, title.length - 1);
+          }
+          sites[site][info_fields[index]] = $("<tr><td>" + 
+                                              title +
+                                              "</td><td>" + 
+                                              markers[i][info_fields[index]] + 
+                                              "</td></tr>");
+        }
+        
+        // Build the date for this marker.
+        var marker_date = "";
+        if (typeof(markers[i][c.month]) == "number") {
+          marker_date = String(markers[i][c.month]).valueOf();
+        }
+        
+        if (typeof(markers[i][c.year]) == "number") {
+          if(marker_date.length > 0) {
+            marker_date += "/" + String(markers[i][c.year]).valueOf();
+          }
+          else {
+            marker_date = String(markers[i][c.year]).valueOf();
+          }
+        }
+        
+        if (marker_date.length > 0) {
+          sites[site]["dates"].push(marker_date);
+        }
       }
 
       // Add markers for each unique site.
       var i = 0;
       for (site in sites) {
-        var point = sites[site].point;
+        var point = new GLatLng(parseFloat(sites[site].latitude),
+                                parseFloat(sites[site].longitude));
         var description = sites[site].description;
+        for (index in info_fields) {
+            if (sites[site][info_fields[index]]) {
+              description.append(sites[site][info_fields[index]]);
+            }
+        }
+
+        if (sites[site]["dates"].length > 0) {
+          var date_row = $("<tr></tr>");
+          date_row.append($("<td>Collection Dates</td>"));
+          var date_field = $("<ul></ul>");
+          for (date in sites[site]["dates"]) {
+            var d = sites[site]["dates"][date];
+            date_field.append($("<li>" + d + "</li>"));
+          }
+          date_row.append($("<td></td>").append(date_field));
+          description.append(date_row);
+        }
+
+        description = description.parent().html();
         species_markers.push(createMarker(point, i, description));
         i++;
       }
@@ -263,14 +330,14 @@
                            });
         filters_ul.append($("<li></li>").append(filters_ul_a));
 
-        for (filter_index in all_filters) {
-          var filter_set = all_filters[filter_index];
+        for (field in all_filters) {
+          var filter_set = all_filters[field];
           // Store each filter in a nested list.
           var filters_ul_ul = $("<ul></ul>");
 
           // Add link to remove this specific filter.
-          filters_ul_a = $("<a href='#' class='selected all'>All " + filter_index + "s</a>");
-          filters_ul_a.attr("key", filter_index);
+          filters_ul_a = $("<a href='#' class='selected all'>All " + field + "s</a>");
+          filters_ul_a.attr("key", field);
           filters_ul_a.click(function () {
                                $(this).parent().parent().find(".selected").removeClass("selected");
                                $(this).addClass("selected");
@@ -280,7 +347,7 @@
 
           // Add form for custom filter range.
           form = $("<form></form>");
-          form.attr("name", filter_index);
+          form.attr("name", field);
           startkey_field = $("<input type='text' size='5' />");
           startkey_field.attr("name", "startkey");
           form.append(startkey_field);

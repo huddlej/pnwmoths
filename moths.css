@@ -27,3 +27,28 @@
 .help {
   font-size: 80%;
 }
+
+.info {
+  width: 300px;
+}
+
+.info tr td {
+  padding-left: 0.5em;
+}
+
+.info tr td:first-child {
+  background: #ffffcc;
+  font-weight: bold;
+  max-width: 100px;
+}
+
+.info ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.info ul li {
+  margin: 0;
+  padding: 0;
+}
