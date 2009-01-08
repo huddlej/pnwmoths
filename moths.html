@@ -20,11 +20,20 @@
     var simple_icon = new GIcon(G_DEFAULT_ICON);
     simple_icon.image = "icon.png";
     simple_icon.shadow = "icon.png";
-    simple_icon.iconSize = new GSize(10, 10);
-    simple_icon.shadowSize = new GSize(10, 10);
     simple_icon.iconAnchor = new GPoint(8, 8);
     simple_icon.infoWindowAnchor = new GPoint(8, 8);
-    marker_options = { icon:simple_icon }
+
+    // Create varably sized icons scaled by a certain amount.
+    var icon_sizes = [10, 12, 16, 24];
+    var icon_count = 4;
+    var icons = [];
+    for (var i = 0; i < icon_count; i++) {
+      var icon = new GIcon(simple_icon);
+      var size = icon_sizes[i];
+      icon.iconSize = new GSize(size, size);
+      icon.shadowSize = new GSize(size, size);
+      icons.push(icon);
+    }
 
     // List of available species based on data in CSV.
     var unique_species;
@@ -91,7 +100,7 @@
       return false;
     }
 
-    function createMarker(point, number, html) {
+    function createMarker(point, number, html, marker_options) {
       var marker = new GMarker(point, marker_options);
       marker.value = number;
 
@@ -126,7 +135,7 @@
       mgr.clearMarkers();
       var species_markers = [];
       var sites = {};
-      var info_fields = [c.city, c.county, c.state, c.elevation];
+      var info_fields = [c.lat, c.lng, c.city, c.county, c.state, c.elevation];
 
       // Build a set of unique latitude/longitude sites with a marker and a 
       // digest of each site's description.
@@ -238,7 +247,11 @@
         }
 
         description = description.parent().html();
-        species_markers.push(createMarker(point, i, description));
+        var icon_index = getAccuracyIcon(sites[site].latitude, 
+                                         sites[site].longitude);
+        marker_options = { icon: icons[icon_index] };
+        species_markers.push(createMarker(point, i, description, 
+                                          marker_options));
         i++;
       }
 
@@ -246,6 +259,37 @@
       mgr.refresh();
 
       return false;
+    }
+
+    function getAccuracyIcon(latitude, longitude) {
+      // Use different marker icon sizes that reflect accuracy to: 0.1 degrees,
+      // 0.01, 0.001, and  0.0001 or better.
+      var icon_index = 3;
+      var lat_index = latitude.indexOf(".");
+      var lng_index = longitude.indexOf(".");
+
+      var lat_array = latitude.split(".");
+      var lng_array = longitude.split(".");
+      
+      if (lat_array.length > 1 && lng_array.length > 1) {
+        var lat_length = lat_array[1].length;
+        var lng_length = lng_array[1].length;
+
+        if (lat_length == 1 || lng_length == 1) {
+          icon_index = 3;
+        }
+        else if(lat_length == 2 || lng_length == 2) {
+          icon_index = 2;
+        }
+        else if(lat_length == 3 || lng_length == 3) {
+          icon_index = 1;
+        }
+        else {
+          icon_index = 0;
+        }
+      }
+      
+      return icon_index;
     }
 
     function castStringToInt(value) {
