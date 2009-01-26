@@ -15,6 +15,7 @@
     var map;
     var mgr;
     var markers;
+    var gsites = [];
     var selected_species;
 
     var simple_icon = new GIcon(G_DEFAULT_ICON);
@@ -37,6 +38,42 @@
 
     // List of available species based on data in CSV.
     var unique_species;
+
+    function Site(genus, species, lat, lng, state, county, city, elevation,
+                  year, month, day) {
+      this.genus = genus || "";
+      this.species = species || "";
+      this.lat = lat !== undefined ? lat : 0;
+      this.lng = lng !== undefined ? lng : 0;
+      this.state = state || "";
+      this.county = county || "";
+      this.city = city || "";
+      this.elevation = elevation || "";
+      this.year = year;
+      this.month = month;
+      this.day = day;
+      
+      if (this.year !== undefined) {
+        this.date = new Date;
+        this.date.setFullYear(this.year);
+
+        if (this.month !== undefined) {
+          this.date.setMonth(this.month);
+          
+          if (this.day !== undefined) {
+            this.date.setDate(this.day);
+          }
+        }
+      }
+      
+      this.species_name = function() {
+                            if (this.genus == "" || this.species == "") {
+                              return "";
+                            }
+
+                            return this.genus + " " + this.species;
+                          };
+    }
 
     // Column names and index values for data loaded from CSV.
     var c = {"genus": 2,
@@ -327,14 +364,9 @@
         unique_species = new Array();
 
         for (var i = 0; i < markers.length; i++) {
-          var species_name = createSpeciesName(markers[i]);
-
-          // Add this species to the list of unique species if it hasn't been 
-          // counted already.  This is done before filtering to get a complete
-          // list even when a filter is applied.
-          if (species_name != "" && 
-              jQuery.inArray(species_name, unique_species) == -1) {
-            unique_species.push(species_name);
+          // Ignore records that do no have a complete species name.
+          if (!markers[i][c.genus] || !markers[i][c.species]) {
+            continue;
           }
 
           // Cast integer and float fields.
@@ -345,7 +377,27 @@
           // Convert fields with meter measurements to feet measurements.
           if (/^m/.exec(markers[i][c.elevation_units])) {
             markers[i][c.elevation] = convertMetersToFeet(markers[i][c.elevation]);
-            markers[i][c.elevation_units] = "ft.";
+          }
+
+          // Create a Site for this row of data.
+          site = new Site(jQuery.trim(markers[i][c.genus]),
+                          jQuery.trim(markers[i][c.species]),
+                          markers[i][c.lat],
+                          markers[i][c.lng],
+                          markers[i][c.state],
+                          markers[i][c.elevation],
+                          markers[i][c.year],
+                          markers[i][c.month],
+                          markers[i][c.day]);
+          gsites.push(site);
+          
+          // Add this species to the list of unique species if it hasn't been 
+          // counted already.  This is done before filtering to get a complete
+          // list even when a filter is applied.
+          if (species_name != "" && 
+              jQuery.inArray(species_name, unique_species) == -1) {
+            //console.log(site.species_name());
+            unique_species.push(species_name);
           }
         }
 
