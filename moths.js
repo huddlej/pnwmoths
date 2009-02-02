@@ -59,12 +59,12 @@ function Site(genus, species, lat, lng, state, county, city, elevation,
   }
 
   this.species_name = function() {
-                        if (this.genus == "" || this.species == "") {
-                          return "";
-                        }
+    if (this.genus == "" || this.species == "") {
+      return "";
+    }
 
-                        return this.genus + " " + this.species;
-                      };
+    return this.genus + " " + this.species;
+  };
 }
 
 /*
