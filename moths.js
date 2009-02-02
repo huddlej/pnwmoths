@@ -23,6 +23,11 @@ for (var i = 0; i < icon_count; i++) {
   icons.push(icon);
 }
 
+/*
+ * Represents the date and location one or more individuals of a species were
+ * observed.  Optionally includes elevation, collector, and species protection
+ * level.
+ */
 function Site(genus, species, lat, lng, state, county, city, elevation,
               year, month, day) {
   this.genus = genus || "";
@@ -36,7 +41,7 @@ function Site(genus, species, lat, lng, state, county, city, elevation,
   this.year = year;
   this.month = month;
   this.day = day;
-  
+
   // Create a Date object for the site using all available information.
   // This will simplify filtering by date by allowing the use of standard
   // comparators between two objects.
@@ -46,13 +51,13 @@ function Site(genus, species, lat, lng, state, county, city, elevation,
 
     if (this.month !== undefined) {
       this.date.setMonth(this.month);
-      
+
       if (this.day !== undefined) {
         this.date.setDate(this.day);
       }
     }
   }
-  
+
   this.species_name = function() {
                         if (this.genus == "" || this.species == "") {
                           return "";
@@ -60,6 +65,117 @@ function Site(genus, species, lat, lng, state, county, city, elevation,
 
                         return this.genus + " " + this.species;
                       };
+}
+
+/*
+ *
+ */
+function Filter(field, title, help_text) {
+  this.field = field;
+  this.title = title;
+  this.help_text = help_text;
+  this.form = new Form(field, title, help_text);
+  this.filter = function() {
+    console.log("Filter: " + this.field);
+  };
+}
+
+/*
+ *
+ */
+function Form(field, title, help_text) {
+  this.field = field;
+  this.title = title;
+  this.help_text = help_text;
+
+  this.validate = function() {
+    console.log("Validate Form");
+    var valid = true;
+    for (field in fields) {
+      if (fields[field].validate()) {
+        valid = false;
+        break;
+      }
+    }
+
+    return valid;
+  };
+
+  this.clean = function() {
+    console.log("Clean Form");
+    this.cleaned_data = {};
+    for (field in fields) {
+      this.cleaned_data[fields[field].name] = fields[field].clean();
+    }
+  };
+
+  this.build = function() {
+    console.log("Display Form");
+
+    // Add form for custom filter range.
+    form = $("<form></form>");
+    form.attr("name", this.field);
+    startkey_field = $("<input type='text' size='5' />");
+    startkey_field.attr("name", "startkey");
+    form.append(startkey_field);
+    form.append(" - ");
+    endkey_field = $("<input type='text' size='5' />");
+    endkey_field.attr("name", "endkey");
+    form.append(endkey_field);
+    form.append($("<input type='submit' value='Filter' />"));
+    if (this.help_text) {
+      form.append($("<br /><span class='help'>" + this.help_text + "</span>"));
+    }
+
+    /*
+     * Set function for applying the filter defined by this form.
+     */
+    form.submit(function() {
+      var inputs = $(this).children("input");
+      var key = this.name;
+      var startkey = inputs.val();
+      var endkey = inputs.next().val();
+
+      /*
+       * If the keys can be converted to integers they should be so filtering
+       * works as expected.
+       */
+      try {
+        startkey = parseInt(startkey);
+        endkey = parseInt(endkey);
+      }
+      catch (error) {
+      }
+
+      $(this).parent().parent().find(".selected").removeClass("selected");
+      $(this).parent().addClass("selected");
+      setFilter(key, startkey, endkey);
+      return false;
+    });
+
+    return form;
+  };
+}
+
+/*
+ *
+ */
+function Field(name, label, help_text) {
+  this.name = name;
+  this.label = label || "";
+  this.help_text = help_text || "";
+
+  this.validate = function() {
+    console.log("Validate Field: " + this.name);
+  };
+
+  this.clean = function() {
+    console.log("Clean Field: " + this.name);
+  };
+
+  this.display = function() {
+    console.log("Display Field: " + this.name);
+  };
 }
 
 // Column names and index values for data loaded from CSV.
@@ -74,7 +190,7 @@ var c = {"genus": 2,
           "elevation_units": 10,
           "year": 11,
           "month": 12};
-          
+
 // Map column indices back to names.
 var n = {};
 for (key in c) {
@@ -82,15 +198,9 @@ for (key in c) {
 }
 
 // All filters that can be applied to data set.
-var all_filters = {"elevation": {"field": "elevation",
-                                  "title": "Elevation (ft.)",
-                                  "help_text": "(e.g., 2000-4000)"},
-                    "month": {"field": "month",
-                              "title": "Month",
-                              "help_text": "(e.g., 1 for January, 8 for August)"},
-                    "year": {"field": "year",
-                            "title": "Year",
-                            "help_text": "(e.g., 1945-1965)"}};
+var all_filters = {"elevation": new Filter("elevation", "Elevation (ft.)", "(e.g., 2000-4000)"),
+                   "month": new Filter("month", "Month", "(e.g., 1 for January, 8 for August)"),
+                   "year": new Filter("year", "Year", "(e.g., 1945-1965)")};
 
 // Dynamic set of filters to be applied to the data set at any given time.
 var filters = {};
@@ -161,12 +271,12 @@ function populateMapBySpecies(species) {
   var gps_pairs = {};
   var info_fields = ["city", "county", "state", "elevation"];
 
-  // Build a set of unique latitude/longitude sites with a marker and a 
+  // Build a set of unique latitude/longitude sites with a marker and a
   // digest of each site's description.
   for (var i = 0; i < sites.length; i++) {
     var site = sites[i];
 
-    // If a species filter is set, don't display any species other than 
+    // If a species filter is set, don't display any species other than
     // the requested.
     if (species != site.species_name()) {
       continue;
@@ -187,8 +297,8 @@ function populateMapBySpecies(species) {
     if (!filters_match) {
       continue;
     }
-      
-    // If this is the first unfiltered instance of this site, create the 
+
+    // If this is the first unfiltered instance of this site, create the
     // site marker and start the description string.
     var gps_pair = [site.lat, site.lng];
     if (!gps_pairs[gps_pair]) {
@@ -196,8 +306,8 @@ function populateMapBySpecies(species) {
                               "longitude": site.lng,
                               "dates": [],
                               "description": $("<table class='info'></table>")};
-      gps_pairs[gps_pair].description.append($("<tr><th colspan='2'>" + 
-                                              site.species_name() + 
+      gps_pairs[gps_pair].description.append($("<tr><th colspan='2'>" +
+                                              site.species_name() +
                                               "</th></tr>"));
     }
 
@@ -205,34 +315,35 @@ function populateMapBySpecies(species) {
     // only needs one value for each field except for date fields which are
     // collected for the entire data set.
     for (index in info_fields) {
-      console.log(index + ": " + info_fields[index]);
       if (!site[info_fields[index]] || gps_pairs[gps_pair][info_fields[index]]) {
         continue;
       }
-      
+
       if (all_filters[info_fields[index]]) {
         var title = all_filters[info_fields[index]].title;
       }
       else {
-        // If no title is defined, capitalize the first letter of the 
+        // If no title is defined, capitalize the first letter of the
         // index.
         var title = info_fields[index];
-        title = title.substr(0, 1).toUpperCase() + 
+        title = title.substr(0, 1).toUpperCase() +
                 title.substr(1, title.length - 1);
       }
-      gps_pairs[gps_pair][info_fields[index]] = $("<tr><td>" + 
+
+      //console.log(info_fields[index] + ": " + site[info_fields[index]] + ", year: " + site['year']);
+      gps_pairs[gps_pair][info_fields[index]] = $("<tr><td>" +
                                                   title +
-                                                  "</td><td>" + 
-                                                  site[info_fields[index]] + 
+                                                  "</td><td>" +
+                                                  site[info_fields[index]] +
                                                   "</td></tr>");
     }
-    
+
     // Build the date for this marker.
     var marker_date = "";
     if (typeof(site.month) == "number") {
       marker_date = String(site.month).valueOf();
     }
-    
+
     if (typeof(site.year) == "number") {
       if(marker_date.length > 0) {
         marker_date += "/" + String(site.year).valueOf();
@@ -241,14 +352,14 @@ function populateMapBySpecies(species) {
         marker_date = String(site.year).valueOf();
       }
     }
-    
+
     if (marker_date.length > 0) {
       gps_pairs[gps_pair]["dates"].push(marker_date);
     }
   }
 
   // Add markers for each unique site.
-  var i = 0;
+  var j = 0;
   for (gps_pair in gps_pairs) {
     var point = new GLatLng(parseFloat(gps_pairs[gps_pair].latitude),
                             parseFloat(gps_pairs[gps_pair].longitude));
@@ -272,12 +383,12 @@ function populateMapBySpecies(species) {
     }
 
     description = description.parent().html();
-    var icon_index = getAccuracyIcon(gps_pairs[gps_pair].latitude, 
+    var icon_index = getAccuracyIcon(gps_pairs[gps_pair].latitude,
                                       gps_pairs[gps_pair].longitude);
     marker_options = { icon: icons[icon_index] };
-    species_markers.push(createMarker(point, i, description, 
+    species_markers.push(createMarker(point, j, description,
                                       marker_options));
-    i++;
+    j++;
   }
 
   mgr.addMarkers(species_markers, 3, 10);
@@ -295,7 +406,7 @@ function getAccuracyIcon(latitude, longitude) {
 
   var lat_array = latitude.split(".");
   var lng_array = longitude.split(".");
-  
+
   if (lat_array.length > 1 && lng_array.length > 1) {
     var lat_length = lat_array[1].length;
     var lng_length = lng_array[1].length;
@@ -313,7 +424,7 @@ function getAccuracyIcon(latitude, longitude) {
       icon_index = 0;
     }
   }
-  
+
   return icon_index;
 }
 
@@ -321,7 +432,7 @@ function castStringToInt(value) {
   if (value && value.length > 0) {
     return parseInt(value);
   }
-  
+
   return "";
 }
 
@@ -363,7 +474,7 @@ function load() {
       markers[i][c.elevation] = castStringToInt(markers[i][c.elevation]);
       markers[i][c.year] = castStringToInt(markers[i][c.year]);
       markers[i][c.month] = castStringToInt(markers[i][c.month]);
-      
+
       // Convert fields with meter measurements to feet measurements.
       if (/^m/.exec(markers[i][c.elevation_units])) {
         markers[i][c.elevation] = convertMetersToFeet(markers[i][c.elevation]);
@@ -375,17 +486,19 @@ function load() {
                       markers[i][c.lat],
                       markers[i][c.lng],
                       markers[i][c.state],
+                      markers[i][c.county],
+                      markers[i][c.city],
                       markers[i][c.elevation],
                       markers[i][c.year],
                       markers[i][c.month],
                       markers[i][c.day]);
       sites.push(site);
-      
-      // Add this species to the list of unique species if it hasn't been 
+
+      // Add this species to the list of unique species if it hasn't been
       // counted already.  This is done before filtering to get a complete
       // list even when a filter is applied.
       species_name = site.species_name();
-      if (species_name != "" && 
+      if (species_name != "" &&
           jQuery.inArray(species_name, unique_species) == -1) {
         //console.log(species_name);
         unique_species.push(species_name);
@@ -407,7 +520,7 @@ function load() {
 
     // Display filters to be applied to the current data set.
     var filters_ul = $("<ul></ul>");
-    
+
     // Add link to clear all filters.
     var filters_ul_a = $("<a href='#'>Clear filters</a>");
     filters_ul_a.click(function () {
@@ -418,6 +531,7 @@ function load() {
     filters_ul.append($("<li></li>").append(filters_ul_a));
 
     for (field in all_filters) {
+      // TODO: rename filter_set to filter
       var filter_set = all_filters[field];
       // Store each filter in a nested list.
       var filters_ul_ul = $("<ul></ul>");
@@ -432,43 +546,7 @@ function load() {
                           });
       filters_ul_ul.append($("<li></li>").append(filters_ul_a));
 
-      // Add form for custom filter range.
-      form = $("<form></form>");
-      form.attr("name", field);
-      startkey_field = $("<input type='text' size='5' />");
-      startkey_field.attr("name", "startkey");
-      form.append(startkey_field);
-      form.append(" - ");
-      endkey_field = $("<input type='text' size='5' />");
-      endkey_field.attr("name", "endkey");
-      form.append(endkey_field);
-      form.append($("<input type='submit' value='Filter' />"));
-      if (filter_set.help_text) {
-        form.append($("<br /><span class='help'>" + filter_set.help_text + "</span>"));
-      }
-
-      // Set function for applying the filter defined by this form.          
-      form.submit(function() {
-                    var inputs = $(this).children("input")
-                    var key = this.name;
-                    var startkey = inputs.val()
-                    var endkey = inputs.next().val();
-                    
-                    // If the keys can be converted to integers they should
-                    // be so filtering works as expected.
-                    try {
-                      startkey = parseInt(startkey);
-                      endkey = parseInt(endkey);
-                    }
-                    catch (error) {
-                    }
-                    
-                    $(this).parent().parent().find(".selected").removeClass("selected");
-                    $(this).parent().addClass("selected");
-                    setFilter(key, startkey, endkey);
-                    return false;
-                  });
-      
+      var form = filter_set.form.build();
       filters_ul_ul.append($("<li></li>").append(form));
       filters_ul.append($("<li>" + filter_set.title + "</li>").append(filters_ul_ul));
     }
