@@ -75,8 +75,32 @@ function Filter(field, title, help_text) {
   this.title = title;
   this.help_text = help_text;
   this.form = new Form(field, title, help_text);
-  this.filter = function() {
-    console.log("Filter: " + this.field);
+
+  this.set = function(arguments) {
+    console.log("Set " + this.field + " arguments: " + arguments);
+    this.arguments = arguments;
+  };
+
+  this.unset = function() {
+    if (this.arguments) {
+      console.log("Unset " + this.field + " arguments");
+      delete this.arguments;
+    }
+  };
+
+  this.filter = function(record) {
+    if (this.arguments === undefined) {
+      return true;
+    }
+
+    //console.log("Filter: " + this.field);
+    var startkey = this.arguments[0];
+    var endkey = this.arguments[1];
+    var value = record[this.field];
+    if (value < startkey || value > endkey) {
+      return false;
+    }
+    return true;
   };
 }
 
@@ -149,7 +173,12 @@ function Form(field, title, help_text) {
 
       $(this).parent().parent().find(".selected").removeClass("selected");
       $(this).parent().addClass("selected");
-      setFilter(key, startkey, endkey);
+
+      all_filters[key].set([startkey, endkey]);
+      if (selected_species) {
+        populateMapBySpecies(selected_species);
+      }
+
       return false;
     });
 
@@ -191,47 +220,16 @@ var c = {"genus": 2,
           "year": 11,
           "month": 12};
 
-// Map column indices back to names.
-var n = {};
-for (key in c) {
-  n[c[key]] = key;
-}
-
 // All filters that can be applied to data set.
 var all_filters = {"elevation": new Filter("elevation", "Elevation (ft.)", "(e.g., 2000-4000)"),
                    "month": new Filter("month", "Month", "(e.g., 1 for January, 8 for August)"),
                    "year": new Filter("year", "Year", "(e.g., 1945-1965)")};
 
-// Dynamic set of filters to be applied to the data set at any given time.
-var filters = {};
-
-function setFilter(key, startkey, endkey) {
-  filters[key] = [startkey, endkey];
-
-  if (selected_species) {
-    populateMapBySpecies(selected_species);
-  }
-  return false;
-}
-
-function removeFilter(key) {
-  if (filters[key]) {
-    delete filters[key];
-  }
-
-  if (selected_species) {
-    populateMapBySpecies(selected_species);
-  }
-  return false;
-}
-
 function clearFilters() {
-  filters = {};
-
-  if (selected_species) {
-    populateMapBySpecies(selected_species);
+  console.log("Clearing filters.");
+  for (var key in all_filters) {
+    all_filters[key].unset();
   }
-  return false;
 }
 
 function createMarker(point, number, html, marker_options) {
@@ -284,11 +282,8 @@ function populateMapBySpecies(species) {
 
     // Apply filters.
     var filters_match = true;
-    for (key in filters) {
-      var startkey = filters[key][0];
-      var endkey = filters[key][1];
-      var value = site[key];
-      if (value < startkey || value > endkey) {
+    for (key in all_filters) {
+      if (all_filters[key].filter(site) === false) {
         filters_match = false;
         break;
       }
@@ -314,27 +309,27 @@ function populateMapBySpecies(species) {
     // Prepare the contents of the info window for this marker.  Each window
     // only needs one value for each field except for date fields which are
     // collected for the entire data set.
-    for (index in info_fields) {
-      if (!site[info_fields[index]] || gps_pairs[gps_pair][info_fields[index]]) {
+    for (key in info_fields) {
+      if (!site[info_fields[key]] || gps_pairs[gps_pair][info_fields[key]]) {
         continue;
       }
 
-      if (all_filters[info_fields[index]]) {
-        var title = all_filters[info_fields[index]].title;
+      if (all_filters[info_fields[key]]) {
+        var title = all_filters[info_fields[key]].title;
       }
       else {
         // If no title is defined, capitalize the first letter of the
-        // index.
-        var title = info_fields[index];
+        // key.
+        var title = info_fields[key];
         title = title.substr(0, 1).toUpperCase() +
                 title.substr(1, title.length - 1);
       }
 
-      //console.log(info_fields[index] + ": " + site[info_fields[index]] + ", year: " + site['year']);
-      gps_pairs[gps_pair][info_fields[index]] = $("<tr><td>" +
+      //console.log(info_fields[key] + ": " + site[info_fields[key]] + ", year: " + site['year']);
+      gps_pairs[gps_pair][info_fields[key]] = $("<tr><td>" +
                                                   title +
                                                   "</td><td>" +
-                                                  site[info_fields[index]] +
+                                                  site[info_fields[key]] +
                                                   "</td></tr>");
     }
 
@@ -364,9 +359,9 @@ function populateMapBySpecies(species) {
     var point = new GLatLng(parseFloat(gps_pairs[gps_pair].latitude),
                             parseFloat(gps_pairs[gps_pair].longitude));
     var description = gps_pairs[gps_pair].description;
-    for (index in info_fields) {
-      if (gps_pairs[gps_pair][info_fields[index]]) {
-        description.append(gps_pairs[gps_pair][info_fields[index]]);
+    for (key in info_fields) {
+      if (gps_pairs[gps_pair][info_fields[key]]) {
+        description.append(gps_pairs[gps_pair][info_fields[key]]);
       }
     }
 
@@ -527,6 +522,10 @@ function load() {
                           $("#filters .selected").removeClass("selected");
                           $("#filters .all").addClass("selected");
                           clearFilters();
+                          if (selected_species) {
+                            populateMapBySpecies(selected_species);
+                          }
+                          return false;
                         });
     filters_ul.append($("<li></li>").append(filters_ul_a));
 
@@ -540,10 +539,15 @@ function load() {
       filters_ul_a = $("<a href='#' class='selected all'>All " + field + "s</a>");
       filters_ul_a.attr("key", field);
       filters_ul_a.click(function () {
-                            $(this).parent().parent().find(".selected").removeClass("selected");
-                            $(this).addClass("selected");
-                            removeFilter($(this).attr("key"));
-                          });
+        $(this).parent().parent().find(".selected").removeClass("selected");
+        $(this).addClass("selected");
+        var key = $(this).attr("key");
+        all_filters[key].unset();
+        if (selected_species) {
+          populateMapBySpecies(selected_species);
+        }
+        return false;
+      });
       filters_ul_ul.append($("<li></li>").append(filters_ul_a));
 
       var form = filter_set.form.build();
