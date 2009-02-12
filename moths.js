@@ -46,14 +46,16 @@ function Site(genus, species, lat, lng, state, county, city, elevation,
   // This will simplify filtering by date by allowing the use of standard
   // comparators between two objects.
   if (this.year !== undefined) {
-    this.date = new Date;
-    this.date.setFullYear(this.year);
+    var date = new Date;
+    date.setFullYear(this.year);
 
     if (this.month !== undefined) {
-      this.date.setMonth(this.month);
+      date.setMonth(this.month);
 
       if (this.day !== undefined) {
-        this.date.setDate(this.day);
+        date.setDate(this.day);
+        // TODO: experiment with using date only when all values are defined.
+        this.date = date;
       }
     }
   }
@@ -64,146 +66,6 @@ function Site(genus, species, lat, lng, state, county, city, elevation,
     }
 
     return this.genus + " " + this.species;
-  };
-}
-
-/*
- *
- */
-function Filter(field, title, help_text) {
-  this.field = field;
-  this.title = title;
-  this.help_text = help_text;
-  this.form = new Form(field, title, help_text);
-
-  this.set = function(arguments) {
-    console.log("Set " + this.field + " arguments: " + arguments);
-    this.arguments = arguments;
-  };
-
-  this.unset = function() {
-    if (this.arguments) {
-      console.log("Unset " + this.field + " arguments");
-      delete this.arguments;
-    }
-  };
-
-  this.filter = function(record) {
-    if (this.arguments === undefined) {
-      return true;
-    }
-
-    //console.log("Filter: " + this.field);
-    var startkey = this.arguments[0];
-    var endkey = this.arguments[1];
-    var value = record[this.field];
-    if (value < startkey || value > endkey) {
-      return false;
-    }
-    return true;
-  };
-}
-
-/*
- *
- */
-function Form(field, title, help_text) {
-  this.field = field;
-  this.title = title;
-  this.help_text = help_text;
-
-  this.validate = function() {
-    console.log("Validate Form");
-    var valid = true;
-    for (field in fields) {
-      if (fields[field].validate()) {
-        valid = false;
-        break;
-      }
-    }
-
-    return valid;
-  };
-
-  this.clean = function() {
-    console.log("Clean Form");
-    this.cleaned_data = {};
-    for (field in fields) {
-      this.cleaned_data[fields[field].name] = fields[field].clean();
-    }
-  };
-
-  this.build = function() {
-    console.log("Display Form");
-
-    // Add form for custom filter range.
-    form = $("<form></form>");
-    form.attr("name", this.field);
-    startkey_field = $("<input type='text' size='5' />");
-    startkey_field.attr("name", "startkey");
-    form.append(startkey_field);
-    form.append(" - ");
-    endkey_field = $("<input type='text' size='5' />");
-    endkey_field.attr("name", "endkey");
-    form.append(endkey_field);
-    form.append($("<input type='submit' value='Filter' />"));
-    if (this.help_text) {
-      form.append($("<br /><span class='help'>" + this.help_text + "</span>"));
-    }
-
-    /*
-     * Set function for applying the filter defined by this form.
-     */
-    form.submit(function() {
-      var inputs = $(this).children("input");
-      var key = this.name;
-      var startkey = inputs.val();
-      var endkey = inputs.next().val();
-
-      /*
-       * If the keys can be converted to integers they should be so filtering
-       * works as expected.
-       */
-      try {
-        startkey = parseInt(startkey);
-        endkey = parseInt(endkey);
-      }
-      catch (error) {
-      }
-
-      $(this).parent().parent().find(".selected").removeClass("selected");
-      $(this).parent().addClass("selected");
-
-      all_filters[key].set([startkey, endkey]);
-      if (selected_species) {
-        populateMapBySpecies(selected_species);
-      }
-
-      return false;
-    });
-
-    return form;
-  };
-}
-
-/*
- *
- */
-function Field(name, label, help_text) {
-  this.name = name;
-  this.label = label || "";
-  this.help_text = help_text || "";
-
-  this.validate = function() {
-    console.log("Validate Field: " + this.name);
-  };
-
-  this.clean = function() {
-    console.log("Clean Field: " + this.name);
-  };
-
-  this.display = function() {
-    console.log("Display Field: " + this.name);
   };
 }
 
@@ -221,9 +83,19 @@ var c = {"genus": 2,
           "month": 12};
 
 // All filters that can be applied to data set.
-var all_filters = {"elevation": new Filter("elevation", "Elevation (ft.)", "(e.g., 2000-4000)"),
-                   "month": new Filter("month", "Month", "(e.g., 1 for January, 8 for August)"),
-                   "year": new Filter("year", "Year", "(e.g., 1945-1965)")};
+var all_filters = {"elevation": new Filter("elevation", "Elevation (ft.)", "(e.g., 2000-4000)",
+                                           [new Field("startkey"),
+                                            new Field("endkey")]),
+                   "month": new Filter("month", "Month", "(e.g., 1 for January, 8 for August)",
+                                       [new Field("startkey"),
+                                        new Field("endkey")]),
+                   "year": new DateFilter("year", "Year", "(e.g., 1945-1965)",
+                                      [new ChoiceField("startkey",
+                                                       {"choices": [["1990", "1990"],
+                                                                    ["2000", "2000"]]}),
+                                       new ChoiceField("endkey",
+                                                       {"choices": [["1990", "1990"],
+                                                                    ["2000", "2000"]]})])};
 
 function clearFilters() {
   console.log("Clearing filters.");
@@ -334,17 +206,22 @@ function populateMapBySpecies(species) {
     }
 
     // Build the date for this marker.
-    var marker_date = "";
-    if (typeof(site.month) == "number") {
-      marker_date = String(site.month).valueOf();
+    if (site.date) {
+      var marker_date = site.date.toDateString();
     }
-
-    if (typeof(site.year) == "number") {
-      if(marker_date.length > 0) {
-        marker_date += "/" + String(site.year).valueOf();
+    else {
+      var marker_date = "";
+      if (typeof(site.month) == "number") {
+        marker_date = String(site.month).valueOf();
       }
-      else {
-        marker_date = String(site.year).valueOf();
+
+      if (typeof(site.year) == "number") {
+        if(marker_date.length > 0) {
+          marker_date += "/" + String(site.year).valueOf();
+        }
+        else {
+          marker_date = String(site.year).valueOf();
+        }
       }
     }
 
@@ -550,7 +427,7 @@ function load() {
       });
       filters_ul_ul.append($("<li></li>").append(filters_ul_a));
 
-      var form = filter_set.form.build();
+      var form = filter_set.build();
       filters_ul_ul.append($("<li></li>").append(form));
       filters_ul.append($("<li>" + filter_set.title + "</li>").append(filters_ul_ul));
     }
