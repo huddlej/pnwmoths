@@ -15,6 +15,10 @@
   overflow: auto;
 }
 
+#filters {
+  display: none;
+}
+
 .selected {
   background-color: #cccccc;
   font-weight: bold;

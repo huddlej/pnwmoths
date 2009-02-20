@@ -2,16 +2,18 @@
 /*
  *
  */
-function Filter(name, title, help_text, fields) {
+function Filter(name, title, fields) {
   this.name = name;
   this.title = title;
-  this.help_text = help_text;
   this.fields = fields || [];
   this.errors = [];
 
   this.set = function(arguments) {
     console.log("Set " + this.name + " arguments: " + arguments);
-    this.arguments = arguments;
+    this.arguments = [];
+    for (index in this.fields) {
+      this.arguments.push(arguments[this.fields[index].name]);
+    }
   };
 
   this.unset = function() {
@@ -36,125 +38,128 @@ function Filter(name, title, help_text, fields) {
     return true;
   };
 
-  this.validate = function() {
-    console.log("Validate Form");
-    var valid = true;
-    for (field in this.fields) {
-      if (fields[field].validate()) {
-        valid = false;
-        break;
-      }
-    }
-
-    return valid;
-  };
-
-  this.clean = function(data) {
+  this.clean = function() {
     console.log("Clean Filter: " + this.name);
-
-//     this.cleaned_data = {};
-//     for (field in fields) {
-//       this.cleaned_data[fields[field].name] = fields[field].clean();
-//     }
-    var inputs = data.children("input");
-    var startkey = inputs.val();
-    var endkey = inputs.next().val();
-    console.log("Found start key: " + startkey);
-    console.log("Found end key: " + endkey);
-
-    /*
-     * If the keys can be converted to integers they should be so filtering
-     * works as expected.
-     */
-    var cleaned_data = [];
-    try {
-      startkey = parseInt(startkey);
-      endkey = parseInt(endkey);
-      cleaned_data = [startkey, endkey];
-    }
-    catch (error) {
+    this.cleaned_data = {};
+    for (field in this.fields) {
+      this.cleaned_data[this.fields[field].name] = this.fields[field].clean();
     }
 
-    return cleaned_data;
+    return this.cleaned_data;
   };
 
-  this.build = function() {
-    console.log("Build Form: " + this.name);
+  this.handle_submit = function() {
+    var filter_name = this.name.split("-")[1];
+    console.log("Handle submit: " + filter_name);
+    var filter = all_filters[filter_name];
+    try {
+      var cleaned_data = filter.clean();
+    }
+    catch (e) {
+      console.log("Error: " + e);
+    }
+    console.log(cleaned_data);
 
-    // Add form for custom filter range.
-    var form = $("<form id='form-" + this.name + "'></form>");
-    form.attr("name", this.name);
+    // If there is no cleaned data, there was an error processing the form.
+    // Display the error message and return.  Otherwise, set the cleaned
+    // data array.
+    if (cleaned_data.length == 0) {
+      $("#status").text("There was an error processing your form.");
+    }
+    else {
+      filter.set(cleaned_data);
 
-    startkey_field = this.fields[0].build();
-    form.append(startkey_field);
-    form.append(" - ");
+      if (selected_species) {
+        console.log("populate map for species: " + selected_species);
+        populateMapBySpecies(selected_species);
+      }
 
-    endkey_field = this.fields[1].build();
-    form.append(endkey_field);
-    form.append($("<input type='submit' value='Filter' />"));
+      $(this).parent().parent().find(".selected").removeClass("selected");
+      $(this).parent().addClass("selected");
+    }
 
-    if (this.help_text) {
-      form.append($("<br /><span class='help'>" + this.help_text + "</span>"));
+    return false;
+  };
+
+  this.prepare = function() {
+    console.log("Prepare Form: " + this.name);
+
+    for (index in this.fields) {
+      this.fields[index].prepare();
     }
 
     /*
      * Set function for applying the filter defined by this form.
      */
-    form.submit(function() {
-      var filter = all_filters[this.name];
-      var inputs = $(this);
-      var cleaned_data = filter.clean(inputs);
-
-      // If there is no cleaned data, there was an error processing the form.
-      // Display the error message and return.  Otherwise, set the cleaned
-      // data array.
-      if (cleaned_data.length == 0) {
-        $("#status").text("There was an error processing your form.");
-      }
-      else {
-        filter.set(cleaned_data);
-
-        if (selected_species) {
-          populateMapBySpecies(selected_species);
-        }
-
-        $(this).parent().parent().find(".selected").removeClass("selected");
-        $(this).parent().addClass("selected");
-      }
-
-      return false;
-    });
-
-    return form;
+    var form_name = "form-" + this.name;
+    var form = $("form[name='" + form_name + "']:first");
+    if (form.length == 0) {
+      console.log("Error: couldn't find a form called " + form_name + ".  Check your HTML for typos.");
+    }
+    form.submit(this.handle_submit);
   };
 }
 
-function DateFilter(name, title, help_text, fields) {
-  Filter.call(this, name, title, help_text, fields);
+function DateFilter(name, title, fields) {
+  Filter.call(this, name, title, fields);
 
-  this.clean = function(data) {
-    console.log("Clean DateFilter: " + this.name);
+  this.set = function(arguments) {
+    var start_key;
+    var end_key;
+    var start_year;
+    var end_year;
+    var start_month;
+    var end_month;
+    var start_day;
+    var end_day = null;
 
-    var inputs = data.children("select");
-    var startkey = inputs.val();
-    var endkey = inputs.next().val();
-    console.log("Found start key: " + startkey);
-    console.log("Found end key: " + endkey);
+    if (arguments["startyear"] && arguments["endyear"]) {
+      start_year = parseInt(arguments["startyear"]);
+      end_year = parseInt(arguments["endyear"]);
 
-    /*
-     * If the keys can be converted to integers they should be so filtering
-     * works as expected.
-     */
-    var cleaned_data = [];
-    try {
-      startkey = parseInt(startkey);
-      endkey = parseInt(endkey);
-      cleaned_data = [startkey, endkey];
+      if (arguments["startmonth"] && arguments["endmonth"]) {
+        start_month = parseInt(arguments["startmonth"]);
+        end_month = parseInt(arguments["endmonth"]);
+
+        if (arguments["startday"] && arguments["endday"]) {
+          start_day = parseInt(arguments["startday"]);
+          end_day = parseInt(arguments["endday"]);
+        }
+        else {
+          start_day = 1;
+        }
+      }
+      else {
+        start_month = 1;
+        start_day = 1;
+        end_month = 12;
+      }
+
+      console.log(start_year + " " + start_month + " " + start_day);
+      start_key = new Date(start_year, start_month - 1, start_day);
+
+      if (end_day !== null) {
+        console.log(end_year + " " + end_month + " " + end_day);
+        end_key = new Date(end_year, end_month - 1, end_day);
+      }
+      else {
+        /*
+         * Not all months have the same end day and one month doesn't have the
+         * same number of days every year.  To address this, start at the
+         * minimum end day possible and add days to date until the date roles
+         * into the next month.  Then roll back one day.
+         */
+        end_day = 28;
+        end_key = new Date(end_year, end_month - 1, end_day);
+        while(end_key.getMonth() == end_month - 1) {
+          end_key.setDate(end_key.getDate() + 1);
+        }
+        end_key.setDate(end_key.getDate() - 1);
+      }
+
+      console.log("Set " + this.name + " arguments: " + start_key + ", " + end_key);
+      this.arguments = [start_key, end_key];
     }
-    catch (error) {
-    }
-
-    return cleaned_data;
   };
 }
 DateFilter.prototype = new Filter;
@@ -175,29 +180,30 @@ function Field(name, options) {
 
   this.clean = function() {
     console.log("Clean Field: " + this.name);
+    return $("input[name='" + this.name + "']:first").val();
   };
 
-  this.build = function() {
-    console.log("Build Field: " + this.name);
-    var field = $("<input type='text' size='5' />");
-    field.attr("name", this.name);
-    return field;
+  this.prepare = function() {
+    console.log("Prepare Field: " + this.name);
   };
 }
 
 function ChoiceField(name, options) {
   Field.call(this, name, options);
 
-  this.build = function() {
-    console.log("Build ChoiceField: " + this.name);
-    var field = $("<select type='text' size='1'></select>");
-    field.attr("name", this.name);
+  this.clean = function() {
+    console.log("Clean ChoiceField: " + this.name);
+    return $("select[name='" + this.name + "']:first").val();
+  };
+
+  this.prepare = function() {
+    console.log("Prepare ChoiceField: " + this.name);
+    var field = $("select[name='" + this.name + "']:first");
     for (var i = 0; i < this.options.choices.length; i++) {
       var choice = this.options.choices[i];
       console.log("Added choice: " + choice[0] + ", " + choice[1]);
       field.append($("<option value='" + choice[0] + "'>" + choice[1] + "</option>"));
     }
-    return field;
   };
 }
 ChoiceField.prototype = new Field;

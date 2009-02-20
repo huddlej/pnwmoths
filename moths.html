@@ -17,6 +17,45 @@
     <div id="status"></div>
     <div id="map"></div>
     <div id="species"></div>
-    <div id="filters"></div>
+    <div id="filters">
+      <ul>
+        <li><a href="#" id="clear-filters">Clear filters</a></li>
+        <li id="filter-elevation">Elevation (ft.)
+          <ul>
+            <li><a class="selected all" href="" id="clear-filter-elevation">All elevations</a></li>
+            <li>
+              <form name="form-elevation">
+                <input type="text" name="startelevation" size="5" /> -
+                <input type="text" name="endelevation" size="5" />
+                <input type="submit" value="Filter" />
+                <br />
+                <span class="help">(e.g., 2000 - 10000)</span>
+              </form>
+            </li>
+          </ul>
+        </li>
+        <li id="filter-date">Date
+          <ul>
+            <li><a class="selected all" href="" id="clear-filter-date">All dates</a></li>
+            <li>
+              <form name="form-date">
+                <label for="startyear">Start:</label>
+                <input type="text" name="startyear" size="4" />
+                <select name="startmonth" size=1></select>
+                <input type="text" name="startday" size="4" />
+                <br />
+                <label for="endyear">End:</label>
+                <input type="text" name="endyear" size="4" />
+                <select name="endmonth" size=1></select>
+                <input type="text" name="endday" size="4" />
+                <br />
+                <input type="submit" value="Filter" />
+                <span class="help">(e.g., 1999 January 1 - 2000 December 1)</span>
+              </form>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </body>
 </html>

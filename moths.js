@@ -29,7 +29,7 @@ for (var i = 0; i < icon_count; i++) {
  * level.
  */
 function Site(genus, species, lat, lng, state, county, city, elevation,
-              year, month, day) {
+              year, month, day, collector) {
   this.genus = genus || "";
   this.species = species || "";
   this.lat = lat !== undefined ? lat : 0;
@@ -37,28 +37,50 @@ function Site(genus, species, lat, lng, state, county, city, elevation,
   this.state = state || "";
   this.county = county || "";
   this.city = city || "";
-  this.elevation = elevation || "";
+  this.elevation = parseInt(elevation) || "";
   this.year = year;
   this.month = month;
   this.day = day;
+  this.collector = collector;
 
   // Create a Date object for the site using all available information.
   // This will simplify filtering by date by allowing the use of standard
   // comparators between two objects.
-  if (this.year !== undefined) {
-    var date = new Date;
-    date.setFullYear(this.year);
+  if (this.year !== undefined && this.year.length > 0) {
+    var year = parseInt(this.year);
 
-    if (this.month !== undefined) {
-      date.setMonth(this.month);
+    if (this.month !== undefined && this.month.length > 0) {
+      var month = parseInt(this.month);
 
-      if (this.day !== undefined) {
-        date.setDate(this.day);
-        // TODO: experiment with using date only when all values are defined.
-        this.date = date;
+      if (this.day !== undefined && this.day.length > 0) {
+        var day = parseInt(this.day);
+      }
+      else {
+        var day = 1;
       }
     }
+    else {
+      var month = 1;
+      var day = 1;
+    }
+
+    this.date = new Date(year, month - 1, day);
   }
+  else {
+    this.date = null;
+  }
+
+  this.display_date = function() {
+    if (this.year && this.month && this.day) {
+      return this.month + "/" + this.day + "/" + this.year;
+    }
+    else if(this.year && this.month)  {
+      return this.month + "/" + this.year;
+    }
+    else {
+      return this.year;
+    }
+  };
 
   this.species_name = function() {
     if (this.genus == "" || this.species == "") {
@@ -71,31 +93,46 @@ function Site(genus, species, lat, lng, state, county, city, elevation,
 
 // Column names and index values for data loaded from CSV.
 var c = {"genus": 2,
-          "species": 3,
-          "lat": 5,
-          "lng": 4,
-          "state": 6,
-          "county": 7,
-          "city": 8,
-          "elevation": 9,
-          "elevation_units": 10,
-          "year": 11,
-          "month": 12};
+         "species": 3,
+         "lat": 5,
+         "lng": 4,
+         "state": 6,
+         "county": 7,
+         "city": 8,
+         "elevation": 9,
+         "elevation_units": 10,
+         "year": 11,
+         "month": 12,
+         "day": 13,
+         "collector": 14};
 
 // All filters that can be applied to data set.
-var all_filters = {"elevation": new Filter("elevation", "Elevation (ft.)", "(e.g., 2000-4000)",
-                                           [new Field("startkey"),
-                                            new Field("endkey")]),
-                   "month": new Filter("month", "Month", "(e.g., 1 for January, 8 for August)",
-                                       [new Field("startkey"),
-                                        new Field("endkey")]),
-                   "year": new DateFilter("year", "Year", "(e.g., 1945-1965)",
-                                      [new ChoiceField("startkey",
-                                                       {"choices": [["1990", "1990"],
-                                                                    ["2000", "2000"]]}),
-                                       new ChoiceField("endkey",
-                                                       {"choices": [["1990", "1990"],
-                                                                    ["2000", "2000"]]})])};
+var month_choices = [["", ""],
+                     [1, "January"],
+                     [2, "February"],
+                     [3, "March"],
+                     [4, "April"],
+                     [5, "May"],
+                     [6, "June"],
+                     [7, "July"],
+                     [8, "August"],
+                     [9, "September"],
+                     [10, "October"],
+                     [11, "November"],
+                     [12, "December"]];
+var all_filters = {"elevation": new Filter("elevation", "Elevation (ft.)",
+                                           [new Field("startelevation"),
+                                            new Field("endelevation")]),
+                   "date": new DateFilter("date", "Date",
+                                      [new Field("startyear"),
+                                       new ChoiceField("startmonth",
+                                                       {"choices": month_choices}),
+                                       new Field("startday"),
+                                       new Field("endyear"),
+                                       new ChoiceField("endmonth",
+                                                       {"choices": month_choices}),
+                                       new Field("endday")
+                                      ])};
 
 function clearFilters() {
   console.log("Clearing filters.");
@@ -139,7 +176,7 @@ function populateMapBySpecies(species) {
   mgr.clearMarkers();
   var species_markers = [];
   var gps_pairs = {};
-  var info_fields = ["city", "county", "state", "elevation"];
+  var info_fields = ["city", "county", "state", "elevation", "collector"];
 
   // Build a set of unique latitude/longitude sites with a marker and a
   // digest of each site's description.
@@ -170,12 +207,12 @@ function populateMapBySpecies(species) {
     var gps_pair = [site.lat, site.lng];
     if (!gps_pairs[gps_pair]) {
       gps_pairs[gps_pair] = {"latitude": site.lat,
-                              "longitude": site.lng,
-                              "dates": [],
-                              "description": $("<table class='info'></table>")};
+                             "longitude": site.lng,
+                             "dates": [],
+                             "description": $("<table class='info'></table>")};
       gps_pairs[gps_pair].description.append($("<tr><th colspan='2'>" +
-                                              site.species_name() +
-                                              "</th></tr>"));
+                                               site.species_name() +
+                                               "</th></tr>"));
     }
 
     // Prepare the contents of the info window for this marker.  Each window
@@ -199,34 +236,15 @@ function populateMapBySpecies(species) {
 
       //console.log(info_fields[key] + ": " + site[info_fields[key]] + ", year: " + site['year']);
       gps_pairs[gps_pair][info_fields[key]] = $("<tr><td>" +
-                                                  title +
-                                                  "</td><td>" +
-                                                  site[info_fields[key]] +
-                                                  "</td></tr>");
+                                                title +
+                                                "</td><td>" +
+                                                site[info_fields[key]] +
+                                                "</td></tr>");
     }
 
-    // Build the date for this marker.
+    // Set the date for this marker.
     if (site.date) {
-      var marker_date = site.date.toDateString();
-    }
-    else {
-      var marker_date = "";
-      if (typeof(site.month) == "number") {
-        marker_date = String(site.month).valueOf();
-      }
-
-      if (typeof(site.year) == "number") {
-        if(marker_date.length > 0) {
-          marker_date += "/" + String(site.year).valueOf();
-        }
-        else {
-          marker_date = String(site.year).valueOf();
-        }
-      }
-    }
-
-    if (marker_date.length > 0) {
-      gps_pairs[gps_pair]["dates"].push(marker_date);
+      gps_pairs[gps_pair]["dates"].push(site.display_date());
     }
   }
 
@@ -300,20 +318,13 @@ function getAccuracyIcon(latitude, longitude) {
   return icon_index;
 }
 
-function castStringToInt(value) {
-  if (value && value.length > 0) {
-    return parseInt(value);
-  }
-
-  return "";
-}
-
 function convertMetersToFeet(meters) {
   return parseInt(meters * feet_per_meter);
 }
 
 function load() {
   if (!GBrowserIsCompatible()) {
+    $("#status").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
     return;
   }
 
@@ -342,11 +353,6 @@ function load() {
         continue;
       }
 
-      // Cast integer and float fields.
-      markers[i][c.elevation] = castStringToInt(markers[i][c.elevation]);
-      markers[i][c.year] = castStringToInt(markers[i][c.year]);
-      markers[i][c.month] = castStringToInt(markers[i][c.month]);
-
       // Convert fields with meter measurements to feet measurements.
       if (/^m/.exec(markers[i][c.elevation_units])) {
         markers[i][c.elevation] = convertMetersToFeet(markers[i][c.elevation]);
@@ -363,7 +369,8 @@ function load() {
                       markers[i][c.elevation],
                       markers[i][c.year],
                       markers[i][c.month],
-                      markers[i][c.day]);
+                      markers[i][c.day],
+                      markers[i][c.collector]);
       sites.push(site);
 
       // Add this species to the list of unique species if it hasn't been
@@ -390,48 +397,41 @@ function load() {
     }
     $("#species").append(species_ul);
 
-    // Display filters to be applied to the current data set.
-    var filters_ul = $("<ul></ul>");
-
     // Add link to clear all filters.
-    var filters_ul_a = $("<a href='#'>Clear filters</a>");
-    filters_ul_a.click(function () {
-                          $("#filters .selected").removeClass("selected");
-                          $("#filters .all").addClass("selected");
-                          clearFilters();
-                          if (selected_species) {
-                            populateMapBySpecies(selected_species);
-                          }
-                          return false;
-                        });
-    filters_ul.append($("<li></li>").append(filters_ul_a));
-
-    for (field in all_filters) {
-      // TODO: rename filter_set to filter
-      var filter_set = all_filters[field];
-      // Store each filter in a nested list.
-      var filters_ul_ul = $("<ul></ul>");
-
-      // Add link to remove this specific filter.
-      filters_ul_a = $("<a href='#' class='selected all'>All " + field + "s</a>");
-      filters_ul_a.attr("key", field);
-      filters_ul_a.click(function () {
-        $(this).parent().parent().find(".selected").removeClass("selected");
-        $(this).addClass("selected");
-        var key = $(this).attr("key");
-        all_filters[key].unset();
+    var clear_filters_link = $("#clear-filters");
+    clear_filters_link.click(
+      function () {
+        $("#filters .selected").removeClass("selected");
+        $("#filters .all").addClass("selected");
+        clearFilters();
         if (selected_species) {
           populateMapBySpecies(selected_species);
         }
         return false;
       });
-      filters_ul_ul.append($("<li></li>").append(filters_ul_a));
 
-      var form = filter_set.build();
-      filters_ul_ul.append($("<li></li>").append(form));
-      filters_ul.append($("<li>" + filter_set.title + "</li>").append(filters_ul_ul));
+    // Add links to remove specific filters.
+    for (field in all_filters) {
+      var filter = all_filters[field];
+      clear_filter_link = $("#clear-filter-" + field);
+      clear_filter_link.attr("name", field);
+
+      clear_filter_link.click(function () {
+        $(this).parent().parent().find(".selected").removeClass("selected");
+        $(this).addClass("selected");
+        var name = $(this).attr("name");
+        console.log("Clear filter: " + name);
+        all_filters[name].unset();
+        if (selected_species) {
+          populateMapBySpecies(selected_species);
+        }
+        return false;
+      });
+
+      var form = filter.prepare();
     }
-    $("#filters").append(filters_ul);
+
+    $("#filters").toggle();
   });
 }
 //]]>
