@@ -135,7 +135,7 @@ var all_filters = {"elevation": new Filter("elevation", "Elevation (ft.)",
                                       ])};
 
 function clearFilters() {
-  console.log("Clearing filters.");
+  //console.log("Clearing filters.");
   for (var key in all_filters) {
     all_filters[key].unset();
   }
@@ -420,7 +420,7 @@ function load() {
         $(this).parent().parent().find(".selected").removeClass("selected");
         $(this).addClass("selected");
         var name = $(this).attr("name");
-        console.log("Clear filter: " + name);
+        //console.log("Clear filter: " + name);
         all_filters[name].unset();
         if (selected_species) {
           populateMapBySpecies(selected_species);
