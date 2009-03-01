@@ -433,8 +433,17 @@ $(document).ready(function() {
 
     $("#filters").toggle();
     $(":text").labelify({labelledClass: "label-highlight"});
-    selected_species = "Autographa californica";
-    //populateMapBySpecies(selected_species);
+
+    try {
+      var title = $("#title").text();
+      title = title.split(" - ");
+      selected_species = title[0];
+      console.log(selected_species);
+      populateMapBySpecies(selected_species);
+    }
+    catch(e) {
+      console.log(e);
+    }
   });
 });
 //]]>
