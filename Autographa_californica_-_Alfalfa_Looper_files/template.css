@@ -49,13 +49,17 @@ body {
 	border-bottom: 1px solid #7CA600;
 }
 
-#maps {
+#map, #species, #filters {
     clear:left;
 	float:left;
 	margin-right:10px;
-	width: 410px;
+	width: 412px;
 	border-right: 1px solid #7CA600;
 	border-bottom: 1px solid #7CA600;
+}
+
+#species, #filters {
+    height: 250px;
 }
 
 /* sets thumbnail and caption styles */
