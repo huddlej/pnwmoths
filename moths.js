@@ -432,6 +432,7 @@ function load() {
     }
 
     $("#filters").toggle();
+    $(":text").labelify({labelledClass: "label-highlight"});
   });
 }
 //]]>

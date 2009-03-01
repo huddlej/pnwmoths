@@ -49,14 +49,15 @@ function Filter(name, title, fields) {
   };
 
   this.handle_submit = function() {
-    var filter_name = this.name.split("-")[1];
+    var filter_name = this.id.split("-")[1];
     //console.log("Handle submit: " + filter_name);
     var filter = all_filters[filter_name];
     try {
       var cleaned_data = filter.clean();
     }
     catch (e) {
-      //console.log("Error: " + e);
+      alert("Error: " + e);
+      return false;
     }
     //console.log(cleaned_data);
 
@@ -78,6 +79,7 @@ function Filter(name, title, fields) {
       $(this).parent().addClass("selected");
     }
 
+    $(":text").labelify({labelledClass: "label-highlight"});
     return false;
   };
 
@@ -92,7 +94,7 @@ function Filter(name, title, fields) {
      * Set function for applying the filter defined by this form.
      */
     var form_name = "form-" + this.name;
-    var form = $("form[name='" + form_name + "']:first");
+    var form = $("#" + form_name);
     if (form.length == 0) {
       //console.log("Error: couldn't find a form called " + form_name + ".  Check your HTML for typos.");
     }
@@ -180,11 +182,12 @@ function Field(name, options) {
 
   this.clean = function() {
     //console.log("Clean Field: " + this.name);
-    return $("input[name='" + this.name + "']:first").val();
+    return $("#" + this.name).val();
   };
 
   this.prepare = function() {
     //console.log("Prepare Field: " + this.name);
+    return $("#" + this.name).val();
   };
 }
 
@@ -193,12 +196,12 @@ function ChoiceField(name, options) {
 
   this.clean = function() {
     //console.log("Clean ChoiceField: " + this.name);
-    return $("select[name='" + this.name + "']:first").val();
+    return $("#" + this.name).val();
   };
 
   this.prepare = function() {
     //console.log("Prepare ChoiceField: " + this.name);
-    var field = $("select[name='" + this.name + "']:first");
+    var field = $("#" + this.name);
     for (var i = 0; i < this.options.choices.length; i++) {
       var choice = this.options.choices[i];
       //console.log("Added choice: " + choice[0] + ", " + choice[1]);

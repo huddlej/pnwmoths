@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="moths.css" type="text/css" />
     <script src="jquery.js" type="text/javascript"></script>
     <script src="jquery.csv.js" type="text/javascript"></script>
+    <script src="jquery.labelify.js" type="text/javascript"></script>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BTEt7yEbW0t6wBwzgPUvU4EFci-WRRknm1HoToMnoOol-K1r4PFdPBLfg"
       type="text/javascript"></script>
     <script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js" type="text/javascript"></script>
@@ -24,9 +25,9 @@
           <ul>
             <li><a class="selected all" href="" id="clear-filter-elevation">All elevations</a></li>
             <li>
-              <form name="form-elevation">
-                <input type="text" name="startelevation" size="5" /> -
-                <input type="text" name="endelevation" size="5" />
+              <form id="form-elevation">
+                <input type="text" id="startelevation" size="5" /> -
+                <input type="text" id="endelevation" size="5" />
                 <input type="submit" value="Filter" />
                 <br />
                 <span class="help">(e.g., 2000 - 10000)</span>
@@ -38,19 +39,19 @@
           <ul>
             <li><a class="selected all" href="" id="clear-filter-date">All dates</a></li>
             <li>
-              <form name="form-date">
+              <form id="form-date">
                 <label for="startyear">Start:</label>
-                <input type="text" name="startyear" size="4" />
-                <select name="startmonth" size=1></select>
-                <input type="text" name="startday" size="4" />
+                <input type="text" id="startday" size="4" title="day" />
+                <select id="startmonth" size=1></select>
+                <input type="text" id="startyear" size="4" title="year" />
                 <br />
                 <label for="endyear">End:</label>
-                <input type="text" name="endyear" size="4" />
-                <select name="endmonth" size=1></select>
-                <input type="text" name="endday" size="4" />
+                <input type="text" id="endday" size="4" title="day" />
+                <select id="endmonth" size=1></select>
+                <input type="text" id="endyear" size="4" title="year" />
                 <br />
                 <input type="submit" value="Filter" />
-                <span class="help">(e.g., 1999 January 1 - 2000 December 1)</span>
+                <span class="help">(e.g., 1 January 1999 - 1 December 2000)</span>
               </form>
             </li>
           </ul>
