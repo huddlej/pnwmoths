@@ -322,7 +322,7 @@ function convertMetersToFeet(meters) {
   return parseInt(meters * feet_per_meter);
 }
 
-function load() {
+$(document).ready(function() {
   if (!GBrowserIsCompatible()) {
     $("#status").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
     return;
@@ -433,6 +433,8 @@ function load() {
 
     $("#filters").toggle();
     $(":text").labelify({labelledClass: "label-highlight"});
+    selected_species = "Autographa californica";
+    //populateMapBySpecies(selected_species);
   });
-}
+});
 //]]>
