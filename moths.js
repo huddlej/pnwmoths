@@ -438,11 +438,11 @@ $(document).ready(function() {
       var title = $("#title").text();
       title = title.split(" - ");
       selected_species = title[0];
-      console.log(selected_species);
+      //console.log(selected_species);
       populateMapBySpecies(selected_species);
     }
     catch(e) {
-      console.log(e);
+      //console.log(e);
     }
   });
 });

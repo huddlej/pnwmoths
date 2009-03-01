@@ -24,12 +24,15 @@
   font-weight: bold;
 }
 
-#filters ul:first-child {
-  padding-left: 1em;
+form {
+  margin-bottom: 0px;
+}
+
+#filters ul {
+  padding-left: 2em;
 }
 
 #filters li {
-  list-style-type: none;
   padding: 0.1em 0.3em;
 }
 
