@@ -439,7 +439,7 @@ $(document).ready(function() {
       title = title.split(" - ");
       selected_species = title[0];
       //console.log(selected_species);
-      populateMapBySpecies(selected_species);
+      //populateMapBySpecies(selected_species);
     }
     catch(e) {
       //console.log(e);

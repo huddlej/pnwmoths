@@ -49,7 +49,7 @@ body {
 	border-bottom: 1px solid #7CA600;
 }
 
-#map, #species, #filters {
+#map-container {
     clear:left;
 	float:left;
 	margin-right:10px;
@@ -58,8 +58,28 @@ body {
 	border-bottom: 1px solid #7CA600;
 }
 
+#map {
+	width: 412px;
+}
+
 #species, #filters {
+    float: none;
     height: 250px;
+    overflow: visible;
+}
+
+#notes {
+    clear: both;
+    margin-left: 0.5em;
+    padding-top: 0.2em;
+}
+
+#notes p, #notes li {
+    font-size: 80%;
+}
+
+#notes p {
+    font-weight: bold;
 }
 
 /* sets thumbnail and caption styles */
