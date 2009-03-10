@@ -5,6 +5,21 @@ var sites = [];
 var selected_species;
 const feet_per_meter = 3.2808399;
 
+// Column names and index values for data loaded from CSV.
+var c = {"genus": 2,
+         "species": 3,
+         "lat": 5,
+         "lng": 4,
+         "state": 6,
+         "county": 7,
+         "city": 8,
+         "elevation": 9,
+         "elevation_units": 10,
+         "year": 11,
+         "month": 12,
+         "day": 13,
+         "collector": 14};
+
 var simple_icon = new GIcon(G_DEFAULT_ICON);
 simple_icon.image = "icon.png";
 simple_icon.shadow = "icon.png";
@@ -25,23 +40,21 @@ for (var i = 0; i < icon_count; i++) {
 
 /*
  * Represents the date and location one or more individuals of a species were
- * observed.  Optionally includes elevation, collector, and species protection
- * level.
+ * observed.
  */
-function Site(genus, species, lat, lng, state, county, city, elevation,
-              year, month, day, collector) {
-  this.genus = genus || "";
-  this.species = species || "";
-  this.lat = lat !== undefined ? lat : 0;
-  this.lng = lng !== undefined ? lng : 0;
-  this.state = state || "";
-  this.county = county || "";
-  this.city = city || "";
-  this.elevation = parseInt(elevation) || "";
-  this.year = year;
-  this.month = month;
-  this.day = day;
-  this.collector = collector;
+function Site(marker) {
+  this.genus = jQuery.trim(marker[c.genus]) || "";
+  this.species = jQuery.trim(marker[c.species]) || "";
+  this.lat = marker[c.lat] !== undefined ? marker[c.lat] : 0;
+  this.lng = marker[c.lng] !== undefined ? marker[c.lng] : 0;
+  this.state = marker[c.state] || "";
+  this.county = marker[c.county] || "";
+  this.city = marker[c.city] || "";
+  this.elevation = parseInt(marker[c.elevation]) || "";
+  this.year = marker[c.year];
+  this.month = marker[c.month];
+  this.day = marker[c.day];
+  this.collector = marker[c.collector];
 
   // Create a Date object for the site using all available information.
   // This will simplify filtering by date by allowing the use of standard
@@ -89,22 +102,20 @@ function Site(genus, species, lat, lng, state, county, city, elevation,
 
     return this.genus + " " + this.species;
   };
-}
 
-// Column names and index values for data loaded from CSV.
-var c = {"genus": 2,
-         "species": 3,
-         "lat": 5,
-         "lng": 4,
-         "state": 6,
-         "county": 7,
-         "city": 8,
-         "elevation": 9,
-         "elevation_units": 10,
-         "year": 11,
-         "month": 12,
-         "day": 13,
-         "collector": 14};
+  this.collection_summary = function() {
+    // Set the date for this marker.
+    if (this.date) {
+      var summary = this.display_date();
+      if (this.collector) {
+        summary += " by " + this.collector;
+      }
+      return summary;
+    }
+
+    return null;
+  };
+}
 
 // All filters that can be applied to data set.
 var month_choices = [["", ""],
@@ -176,7 +187,7 @@ function populateMapBySpecies(species) {
   mgr.clearMarkers();
   var species_markers = [];
   var gps_pairs = {};
-  var info_fields = ["city", "county", "state", "elevation", "collector"];
+  var info_fields = ["city", "county", "state", "elevation"];
 
   // Build a set of unique latitude/longitude sites with a marker and a
   // digest of each site's description.
@@ -208,11 +219,17 @@ function populateMapBySpecies(species) {
     if (!gps_pairs[gps_pair]) {
       gps_pairs[gps_pair] = {"latitude": site.lat,
                              "longitude": site.lng,
-                             "dates": [],
-                             "description": $("<table class='info'></table>")};
+                             "description": $("<table class='info'></table>"),
+                             "collectors": []};
       gps_pairs[gps_pair].description.append($("<tr><th colspan='2'>" +
                                                site.species_name() +
                                                "</th></tr>"));
+    }
+
+    // Add a collection summary for this site if one exists.
+    var collection_summary = site.collection_summary();
+    if (collection_summary) {
+      gps_pairs[gps_pair].collectors.push(collection_summary);
     }
 
     // Prepare the contents of the info window for this marker.  Each window
@@ -241,11 +258,6 @@ function populateMapBySpecies(species) {
                                                 site[info_fields[key]] +
                                                 "</td></tr>");
     }
-
-    // Set the date for this marker.
-    if (site.date) {
-      gps_pairs[gps_pair]["dates"].push(site.display_date());
-    }
   }
 
   // Add markers for each unique site.
@@ -260,16 +272,17 @@ function populateMapBySpecies(species) {
       }
     }
 
-    if (gps_pairs[gps_pair]["dates"].length > 0) {
-      var date_row = $("<tr></tr>");
-      date_row.append($("<td>Collection Dates</td>"));
-      var date_field = $("<ul></ul>");
-      for (date in gps_pairs[gps_pair]["dates"]) {
-        var d = gps_pairs[gps_pair]["dates"][date];
-        date_field.append($("<li>" + d + "</li>"));
+    if (gps_pairs[gps_pair].collectors.length > 0) {
+      //gps_pairs[gps_pair].collectors.sort();
+      var collectors_row = $("<tr></tr>");
+      collectors_row.append($("<td>Collections</td>"));
+      var collectors_field = $("<ul></ul>");
+      for (collector in gps_pairs[gps_pair].collectors) {
+        var c = gps_pairs[gps_pair].collectors[collector];
+        collectors_field.append($("<li>" + c + "</li>"));
       }
-      date_row.append($("<td></td>").append(date_field));
-      description.append(date_row);
+      collectors_row.append($("<td></td>").append(collectors_field));
+      description.append(collectors_row);
     }
 
     description = description.parent().html();
@@ -359,18 +372,7 @@ $(document).ready(function() {
       }
 
       // Create a Site for this row of data.
-      site = new Site(jQuery.trim(markers[i][c.genus]),
-                      jQuery.trim(markers[i][c.species]),
-                      markers[i][c.lat],
-                      markers[i][c.lng],
-                      markers[i][c.state],
-                      markers[i][c.county],
-                      markers[i][c.city],
-                      markers[i][c.elevation],
-                      markers[i][c.year],
-                      markers[i][c.month],
-                      markers[i][c.day],
-                      markers[i][c.collector]);
+      site = new Site(markers[i]);
       sites.push(site);
 
       // Add this species to the list of unique species if it hasn't been
