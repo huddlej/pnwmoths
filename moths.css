@@ -45,6 +45,14 @@ form {
   width: 300px;
 }
 
+.info h2 {
+  background-color: #ffffff;
+  border-bottom: 1px solid #cccccc;
+  font-size: 90%;
+  font-weight: bold;
+  padding-bottom: 0.2em;
+}
+
 .info tr td {
   padding-left: 0.5em;
 }
@@ -56,6 +64,8 @@ form {
 }
 
 .info ul {
+  background-color: #ffffff;
+  font-weight: normal;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -64,6 +74,10 @@ form {
 .info ul li {
   margin: 0;
   padding: 0;
+}
+
+.collections tr td {
+  background-color: #ffffff;
 }
 
 input.label-highlight {

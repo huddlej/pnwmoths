@@ -18,7 +18,8 @@ var c = {"genus": 2,
          "year": 11,
          "month": 12,
          "day": 13,
-         "collector": 14};
+         "collector": 14,
+         "collection": 15};
 
 var simple_icon = new GIcon(G_DEFAULT_ICON);
 simple_icon.image = "icon.png";
@@ -55,6 +56,7 @@ function Site(marker) {
   this.month = marker[c.month];
   this.day = marker[c.day];
   this.collector = marker[c.collector];
+  this.collection = marker[c.collection];
 
   // Create a Date object for the site using all available information.
   // This will simplify filtering by date by allowing the use of standard
@@ -109,6 +111,10 @@ function Site(marker) {
       var summary = this.display_date();
       if (this.collector) {
         summary += " by " + this.collector;
+
+        if (this.collection) {
+          summary += " (" + this.collection + ")";
+        }
       }
       return summary;
     }
@@ -274,15 +280,20 @@ function populateMapBySpecies(species) {
 
     if (gps_pairs[gps_pair].collectors.length > 0) {
       //gps_pairs[gps_pair].collectors.sort();
-      var collectors_row = $("<tr></tr>");
-      collectors_row.append($("<td>Collections</td>"));
-      var collectors_field = $("<ul></ul>");
+      var collectors_row = $("<tr id=\"collections\">"
+                             + "<td colspan=\"2\">"
+                             + "<h2>Collections</h2>"
+                             + "<ul></ul>"
+                             + "</td>"
+                             + "</tr>");
+      description.append(collectors_row);
+
+      var collectors_field = $("#collections td ul:first");
       for (collector in gps_pairs[gps_pair].collectors) {
         var c = gps_pairs[gps_pair].collectors[collector];
+        console.log(c);
         collectors_field.append($("<li>" + c + "</li>"));
       }
-      collectors_row.append($("<td></td>").append(collectors_field));
-      description.append(collectors_row);
     }
 
     description = description.parent().html();
