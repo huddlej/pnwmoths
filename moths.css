@@ -42,7 +42,7 @@ form {
 
 .info {
   font-size: 80%;
-  width: 300px;
+  width: 350px;
 }
 
 .info h2 {
@@ -58,9 +58,8 @@ form {
 }
 
 .info tr td:first-child {
-  background: #ffffcc;
   font-weight: bold;
-  max-width: 100px;
+  width: 110px;
 }
 
 .info ul {

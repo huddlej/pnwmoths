@@ -12,14 +12,16 @@ var c = {"genus": 2,
          "lng": 4,
          "state": 6,
          "county": 7,
-         "city": 8,
+         "site_name": 8,
          "elevation": 9,
          "elevation_units": 10,
          "year": 11,
          "month": 12,
          "day": 13,
          "collector": 14,
-         "collection": 15};
+         "collection": 15,
+         "number_of_males": 16,
+         "number_of_females": 17};
 
 var simple_icon = new GIcon(G_DEFAULT_ICON);
 simple_icon.image = "icon.png";
@@ -50,13 +52,15 @@ function Site(marker) {
   this.lng = marker[c.lng] !== undefined ? marker[c.lng] : 0;
   this.state = marker[c.state] || "";
   this.county = marker[c.county] || "";
-  this.city = marker[c.city] || "";
+  this.site_name = marker[c.site_name] || "";
   this.elevation = parseInt(marker[c.elevation]) || "";
   this.year = marker[c.year];
   this.month = marker[c.month];
   this.day = marker[c.day];
   this.collector = marker[c.collector];
   this.collection = marker[c.collection];
+  this.number_of_males = marker[c.number_of_males];
+  this.number_of_females = marker[c.number_of_females];
 
   // Create a Date object for the site using all available information.
   // This will simplify filtering by date by allowing the use of standard
@@ -111,6 +115,14 @@ function Site(marker) {
       var summary = this.display_date();
       if (this.collector) {
         summary += " by " + this.collector;
+
+        if (this.number_of_males) {
+          summary += ", " + this.number_of_males + " males";
+        }
+
+        if (this.number_of_females) {
+          summary += ", " + this.number_of_females + " females";
+        }
 
         if (this.collection) {
           summary += " (" + this.collection + ")";
@@ -193,7 +205,7 @@ function populateMapBySpecies(species) {
   mgr.clearMarkers();
   var species_markers = [];
   var gps_pairs = {};
-  var info_fields = ["city", "county", "state", "elevation"];
+  var info_fields = ["site_name", "county", "state", "elevation"];
 
   // Build a set of unique latitude/longitude sites with a marker and a
   // digest of each site's description.
@@ -242,7 +254,7 @@ function populateMapBySpecies(species) {
     // only needs one value for each field except for date fields which are
     // collected for the entire data set.
     for (key in info_fields) {
-      if (!site[info_fields[key]] || gps_pairs[gps_pair][info_fields[key]]) {
+      if (gps_pairs[gps_pair][info_fields[key]]) {
         continue;
       }
 
@@ -253,6 +265,7 @@ function populateMapBySpecies(species) {
         // If no title is defined, capitalize the first letter of the
         // key.
         var title = info_fields[key];
+        title = title.replace(/_/, " ");
         title = title.substr(0, 1).toUpperCase() +
                 title.substr(1, title.length - 1);
       }
@@ -280,20 +293,15 @@ function populateMapBySpecies(species) {
 
     if (gps_pairs[gps_pair].collectors.length > 0) {
       //gps_pairs[gps_pair].collectors.sort();
-      var collectors_row = $("<tr id=\"collections\">"
-                             + "<td colspan=\"2\">"
-                             + "<h2>Collections</h2>"
-                             + "<ul></ul>"
-                             + "</td>"
-                             + "</tr>");
-      description.append(collectors_row);
-
-      var collectors_field = $("#collections td ul:first");
+      var collectors_list = $("<ul></ul>");
       for (collector in gps_pairs[gps_pair].collectors) {
         var c = gps_pairs[gps_pair].collectors[collector];
         console.log(c);
-        collectors_field.append($("<li>" + c + "</li>"));
+        collectors_list.append($("<li>" + c + "</li>"));
       }
+      var collectors_cell = $("<td colspan=\"2\"><h2>Collections</h2></td>");
+      collectors_cell.append(collectors_list);
+      description.append($("<tr id=\"collections\"></tr>").append(collectors_cell));
     }
 
     description = description.parent().html();
