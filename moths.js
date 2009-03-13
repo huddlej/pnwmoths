@@ -291,6 +291,12 @@ function populateMapBySpecies(species) {
       }
     }
 
+    description.append($("<tr><td>GPS coordinates</td><td>" +
+                         gps_pairs[gps_pair].latitude +
+                         ", " +
+                         gps_pairs[gps_pair].longitude +
+                         "</td></tr>"));
+
     if (gps_pairs[gps_pair].collectors.length > 0) {
       //gps_pairs[gps_pair].collectors.sort();
       var collectors_list = $("<ul></ul>");
