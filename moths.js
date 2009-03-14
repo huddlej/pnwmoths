@@ -302,7 +302,7 @@ function populateMapBySpecies(species) {
       var collectors_list = $("<ul></ul>");
       for (collector in gps_pairs[gps_pair].collectors) {
         var c = gps_pairs[gps_pair].collectors[collector];
-        console.log(c);
+        //console.log(c);
         collectors_list.append($("<li>" + c + "</li>"));
       }
       var collectors_cell = $("<td colspan=\"2\"><h2>Collections</h2></td>");
@@ -466,7 +466,7 @@ $(document).ready(function() {
       title = title.split(" - ");
       selected_species = title[0];
       //console.log(selected_species);
-      //populateMapBySpecies(selected_species);
+      populateMapBySpecies(selected_species);
     }
     catch(e) {
       //console.log(e);
