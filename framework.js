@@ -7,6 +7,7 @@ function Filter(name, title, fields) {
   this.title = title;
   this.fields = fields || [];
   this.errors = [];
+  this.ids = [];
 
   this.set = function(arguments) {
     //console.log("Set " + this.name + " arguments: " + arguments);
@@ -161,6 +162,10 @@ function DateFilter(name, title, fields) {
 
       //console.log("Set " + this.name + " arguments: " + start_key + ", " + end_key);
       this.arguments = [start_key, end_key];
+
+      // Fetch ids for records matching the range from start_key to end_key.
+      //var ids = $.getJSON("http://localhost:5984/pnwmoths/_view/by_" + this.name + "?startkey=" + start_key + "&endkey=" + end_key);
+      //console.log(ids);
     }
   };
 }

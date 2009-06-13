@@ -9,9 +9,10 @@
 <script src="jquery.js" type="text/javascript"></script>
 <script src="jquery.csv.js" type="text/javascript"></script>
 <script src="jquery.labelify.js" type="text/javascript"></script>
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BTEt7yEbW0t6wBwzgPUvU4EFci-WRRknm1HoToMnoOol-K1r4PFdPBLfg"
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BRBVpSfLWxlPQoCmwY1fCdcuyF71BQJy8IHFHHJzbfht-rzClPWQbecag"
         type="text/javascript"></script>
 <script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js" type="text/javascript"></script>
+<script src="data.js" type="text/javascript"></script>
 <script src="framework.js" type="text/javascript"></script>
 <script src="moths.js" type="text/javascript"></script>
 <link rel="stylesheet" href="template.css" type="text/css"/>
@@ -172,12 +173,8 @@
             </p>
           </xsl:if>
         </xsl:for-each>
-        <div id="map">
-          <p>Map goes here for <xsl:value-of select="Entity/Name"/></p>
-        </div>
       </div>
 </body>
 </html>
 </xsl:template>
 </xsl:stylesheet>
-  

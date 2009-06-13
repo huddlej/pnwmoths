@@ -3,6 +3,7 @@ var map;
 var mgr;
 var sites = [];
 var selected_species;
+var unique_species;
 const feet_per_meter = 3.2808399;
 
 // Column names and index values for data loaded from CSV.
@@ -45,22 +46,22 @@ for (var i = 0; i < icon_count; i++) {
  * Represents the date and location one or more individuals of a species were
  * observed.
  */
-function Site(marker) {
-  this.genus = jQuery.trim(marker[c.genus]) || "";
-  this.species = jQuery.trim(marker[c.species]) || "";
-  this.lat = marker[c.lat] !== undefined ? marker[c.lat] : 0;
-  this.lng = marker[c.lng] !== undefined ? marker[c.lng] : 0;
-  this.state = marker[c.state] || "";
-  this.county = marker[c.county] || "";
-  this.site_name = marker[c.site_name] || "";
-  this.elevation = parseInt(marker[c.elevation]) || "";
-  this.year = marker[c.year];
-  this.month = marker[c.month];
-  this.day = marker[c.day];
-  this.collector = marker[c.collector];
-  this.collection = marker[c.collection];
-  this.number_of_males = marker[c.number_of_males];
-  this.number_of_females = marker[c.number_of_females];
+function Site() {
+//   this.genus = jQuery.trim(marker[c.genus]) || "";
+//   this.species = jQuery.trim(marker[c.species]) || "";
+//   this.lat = marker[c.lat] !== undefined ? marker[c.lat] : 0;
+//   this.lng = marker[c.lng] !== undefined ? marker[c.lng] : 0;
+//   this.state = marker[c.state] || "";
+//   this.county = marker[c.county] || "";
+//   this.site_name = marker[c.site_name] || "";
+//   this.elevation = parseInt(marker[c.elevation]) || "";
+//   this.year = marker[c.year];
+//   this.month = marker[c.month];
+//   this.day = marker[c.day];
+//   this.collector = marker[c.collector];
+//   this.collection = marker[c.collection];
+//   this.number_of_males = marker[c.number_of_males];
+//   this.number_of_females = marker[c.number_of_females];
 
   // Create a Date object for the site using all available information.
   // This will simplify filtering by date by allowing the use of standard
@@ -212,12 +213,6 @@ function populateMapBySpecies(species) {
   for (var i = 0; i < sites.length; i++) {
     var site = sites[i];
 
-    // If a species filter is set, don't display any species other than
-    // the requested.
-    if (species != site.species_name()) {
-      continue;
-    }
-
     // Apply filters.
     var filters_match = true;
     for (key in all_filters) {
@@ -227,16 +222,16 @@ function populateMapBySpecies(species) {
       }
     }
 
-    if (!filters_match) {
+    if (!filters_match || !site.latitude || !site.longitude) {
       continue;
     }
 
     // If this is the first unfiltered instance of this site, create the
     // site marker and start the description string.
-    var gps_pair = [site.lat, site.lng];
+    var gps_pair = [site.latitude, site.longitude];
     if (!gps_pairs[gps_pair]) {
-      gps_pairs[gps_pair] = {"latitude": site.lat,
-                             "longitude": site.lng,
+      gps_pairs[gps_pair] = {"latitude": site.latitude,
+                             "longitude": site.longitude,
                              "description": $("<table class='info'></table>"),
                              "collectors": []};
       gps_pairs[gps_pair].description.append($("<tr><th colspan='2'>" +
@@ -271,10 +266,16 @@ function populateMapBySpecies(species) {
       }
 
       //console.log(info_fields[key] + ": " + site[info_fields[key]] + ", year: " + site['year']);
+
+      // Display an empty string when a field is undefined.
+      var value = "";
+      if (site[info_fields[key]] !== undefined) {
+        value = site[info_fields[key]];
+      }
       gps_pairs[gps_pair][info_fields[key]] = $("<tr><td>" +
                                                 title +
                                                 "</td><td>" +
-                                                site[info_fields[key]] +
+                                                value +
                                                 "</td></tr>");
     }
   }
@@ -360,6 +361,59 @@ function convertMetersToFeet(meters) {
   return parseInt(meters * feet_per_meter);
 }
 
+function prepareLinks() {
+  // Display a list of the unique species.
+  var species_ul = $("<ul></ul>");
+  for (i in unique_species) {
+    species_a = $("<a href='#'>" + unique_species[i] + "</a>");
+    species_a.click(function () {
+                      $(this).parent().parent().find(".selected").removeClass("selected");
+                      $(this).addClass("selected");
+                      $("#status").text("Loading...");
+                      getSites($(this).text());
+                    });
+    species_ul.append($("<li></li>").append(species_a));
+  }
+  $("#species").append(species_ul);
+
+  // Add link to clear all filters.
+  var clear_filters_link = $("#clear-filters");
+  clear_filters_link.click(
+    function () {
+      $("#filters .selected").removeClass("selected");
+      $("#filters .all").addClass("selected");
+      clearFilters();
+      if (selected_species) {
+        populateMapBySpecies(selected_species);
+      }
+      return false;
+    });
+
+  // Add links to remove specific filters.
+  for (field in all_filters) {
+    var filter = all_filters[field];
+    clear_filter_link = $("#clear-filter-" + field);
+    clear_filter_link.attr("name", field);
+
+    clear_filter_link.click(function () {
+      $(this).parent().parent().find(".selected").removeClass("selected");
+      $(this).addClass("selected");
+      var name = $(this).attr("name");
+      //console.log("Clear filter: " + name);
+      all_filters[name].unset();
+      if (selected_species) {
+        populateMapBySpecies(selected_species);
+      }
+      return false;
+    });
+
+    var form = filter.prepare();
+  }
+
+  $("#filters").toggle();
+  $(":text").labelify({labelledClass: "label-highlight"});
+}
+
 $(document).ready(function() {
   if (!GBrowserIsCompatible()) {
     $("#status").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
@@ -378,99 +432,27 @@ $(document).ready(function() {
 
   // Setup manager to control the zoom levels at which markers are displayed.
   mgr = new MarkerManager(map);
+  //getUniqueSpecies();
 
-  GDownloadUrl("moths.csv", function(data, responseCode) {
-    var markers = jQuery.csv(",", "\"", "\n")(data);
+  try {
+    var title = $("#title").text();
+    title = title.split(" - ");
+    selected_species = title[0];
+    //console.log(selected_species);
+    getSites(selected_species);
+  }
+  catch(e) {
+    //console.log(e);
+  }
 
-    // List of available species based on data in CSV.
-    var unique_species = [];
-
-    for (var i = 0; i < markers.length; i++) {
-      // Ignore records that do no have a complete species name.
-      if (!markers[i][c.genus] || !markers[i][c.species]) {
-        continue;
-      }
-
-      // Convert fields with meter measurements to feet measurements.
-      if (/^m/.exec(markers[i][c.elevation_units])) {
-        markers[i][c.elevation] = convertMetersToFeet(markers[i][c.elevation]);
-      }
-
-      // Create a Site for this row of data.
-      site = new Site(markers[i]);
-      sites.push(site);
-
-      // Add this species to the list of unique species if it hasn't been
-      // counted already.  This is done before filtering to get a complete
-      // list even when a filter is applied.
-      species_name = site.species_name();
-      if (species_name != "" &&
-          jQuery.inArray(species_name, unique_species) == -1) {
-        //console.log(species_name);
-        unique_species.push(species_name);
-      }
-    }
-
-    // Display a list of the unique species.
-    var species_ul = $("<ul></ul>");
-    for (i in unique_species) {
-      species_a = $("<a href='#'>" + unique_species[i] + "</a>");
-      species_a.click(function () {
-                        $(this).parent().parent().find(".selected").removeClass("selected");
-                        $(this).addClass("selected");
-                        populateMapBySpecies($(this).text());
-                      });
-      species_ul.append($("<li></li>").append(species_a));
-    }
-    $("#species").append(species_ul);
-
-    // Add link to clear all filters.
-    var clear_filters_link = $("#clear-filters");
-    clear_filters_link.click(
-      function () {
-        $("#filters .selected").removeClass("selected");
-        $("#filters .all").addClass("selected");
-        clearFilters();
-        if (selected_species) {
-          populateMapBySpecies(selected_species);
-        }
-        return false;
-      });
-
-    // Add links to remove specific filters.
-    for (field in all_filters) {
-      var filter = all_filters[field];
-      clear_filter_link = $("#clear-filter-" + field);
-      clear_filter_link.attr("name", field);
-
-      clear_filter_link.click(function () {
-        $(this).parent().parent().find(".selected").removeClass("selected");
-        $(this).addClass("selected");
-        var name = $(this).attr("name");
-        //console.log("Clear filter: " + name);
-        all_filters[name].unset();
-        if (selected_species) {
-          populateMapBySpecies(selected_species);
-        }
-        return false;
-      });
-
-      var form = filter.prepare();
-    }
-
-    $("#filters").toggle();
-    $(":text").labelify({labelledClass: "label-highlight"});
-
-    try {
-      var title = $("#title").text();
-      title = title.split(" - ");
-      selected_species = title[0];
-      //console.log(selected_species);
-      populateMapBySpecies(selected_species);
-    }
-    catch(e) {
-      //console.log(e);
-    }
-  });
+  // TODO: Convert fields with meter measurements to feet measurements during the import process.
+  // if (/^m/.exec(markers[i][c.elevation_units])) {
+  //   markers[i][c.elevation] = convertMetersToFeet(markers[i][c.elevation]);
+  // }
 });
+
+// Google Maps tries to call load() onload no matter what so this needs to be
+// defined to prevent a runtime error.
+function load() {
+}
 //]]>

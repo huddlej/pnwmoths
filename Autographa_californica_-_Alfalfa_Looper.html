@@ -1,0 +1,120 @@
+<html><head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Factsheet - Autographa californica - Alfalfa Looper</title>
+<link rel="stylesheet" href="moths.css" type="text/css" />
+<script src="jquery.js" type="text/javascript"></script>
+<script src="jquery.csv.js" type="text/javascript"></script>
+<script src="jquery.labelify.js" type="text/javascript"></script>
+
+<!-- www.biol.wwu.edu key
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BRBVpSfLWxlPQoCmwY1fCdcuyF71BQJy8IHFHHJzbfht-rzClPWQbecag"
+        type="text/javascript"></script>
+-->
+
+<!-- localhost key -->
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BTEt7yEbW0t6wBwzgPUvU4EFci-WRRknm1HoToMnoOol-K1r4PFdPBLfg"
+        type="text/javascript"></script>
+
+<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js" type="text/javascript"></script>
+<script src="framework.js" type="text/javascript"></script>
+<script src="data.js" type="text/javascript"></script>
+<script src="moths.js" type="text/javascript"></script>
+<link rel="stylesheet" href="Autographa_californica_-_Alfalfa_Looper_files/template.css" type="text/css">
+</head><body><a name="top"></a><div id="banner">
+<div class="bannertitle" id="title">Autographa californica - Alfalfa Looper</div>
+</div>
+<div id="menu"><a href="http://www.biol.wwu.edu/fisherm4/Factsheets/index.htm" class="menu">
+          List of Fact Sheets
+        </a><a href="http://www.biol.wwu.edu/fisherm4/Factsheets/glossary.htm" target="_blank" class="menu">
+          Glossary
+        </a></div>
+<div id="alphabet"><a class="alphabet" href="http://www.biol.wwu.edu/fisherm4/Factsheets/index.htm#A">A</a><span class="menudisabled">B</span><span class="menudisabled">C</span><a class="alphabet" href="http://www.biol.wwu.edu/fisherm4/Factsheets/index.htm#D">D</a><a class="alphabet" href="http://www.biol.wwu.edu/fisherm4/Factsheets/index.htm#E">E</a><span class="menudisabled">F</span><span class="menudisabled">G</span><span class="menudisabled">H</span><span class="menudisabled">I</span><span class="menudisabled">J</span><span class="menudisabled">K</span><span class="menudisabled">L</span><a class="alphabet" href="http://www.biol.wwu.edu/fisherm4/Factsheets/index.htm#M">M</a><span class="menudisabled">N</span><span class="menudisabled">O</span><a class="alphabet" href="http://www.biol.wwu.edu/fisherm4/Factsheets/index.htm#P">P</a><span class="menudisabled">Q</span><a class="alphabet" href="http://www.biol.wwu.edu/fisherm4/Factsheets/index.htm#R">R</a><a class="alphabet" href="http://www.biol.wwu.edu/fisherm4/Factsheets/index.htm#S">S</a><a class="alphabet" href="http://www.biol.wwu.edu/fisherm4/Factsheets/index.htm#T">T</a><span class="menudisabled">U</span><span class="menudisabled">V</span><span class="menudisabled">W</span><span class="menudisabled">X</span><span class="menudisabled">Y</span><span class="menudisabled">Z</span></div>
+<div id="thumbnails">
+<table>
+<tbody><tr>
+<td class="thumbnail"><a href="http://www.biol.wwu.edu/fisherm4/Factsheets/images/Autographa_californica_-_Alfalfa_Looper/Autographa%20californica-D.jpg"><img class="thumbnail" name="" src="Autographa_californica_-_Alfalfa_Looper_files/Autographa%2520californica-D_sml.jpg"></a><div class="caption"></div></td>
+</tr>
+<tr>
+<td class="thumbnail"><a href="http://www.biol.wwu.edu/fisherm4/Factsheets/images/Autographa_californica_-_Alfalfa_Looper/Autographa%20californica-V.jpg"><img class="thumbnail" name="" src="Autographa_californica_-_Alfalfa_Looper_files/Autographa%2520californica-V_sml.jpg"></a><div class="caption"></div></td>
+</tr>
+</tbody></table>
+</div>
+
+<div id="map-container">
+    <div id="map"></div>
+    <div id="notes">
+        <p>Note:</p>
+        <ul>
+            <li>Dot size indicates GPS coordinate precision: smaller dots = greater precision.</li>
+            <li>Protected species are not visible at high zoom levels.</li>
+        </ul>
+    </div>
+    <div id="filters">
+      <ul>
+        <li><a href="#" id="clear-filters">Clear filters</a></li>
+        <li id="filter-elevation">Elevation (ft.)
+          <ul>
+            <li><a class="selected all" href="" id="clear-filter-elevation">All elevations</a></li>
+            <li>
+              <form id="form-elevation">
+                <input type="text" id="startelevation" size="5" /> -
+                <input type="text" id="endelevation" size="5" />
+                <input type="submit" value="Filter" />
+                <br />
+                <span class="help">(e.g., 2000 - 10000)</span>
+              </form>
+            </li>
+          </ul>
+        </li>
+        <li id="filter-date">Date
+          <ul>
+            <li><a class="selected all" href="" id="clear-filter-date">All dates</a></li>
+            <li>
+              <form id="form-date">
+                <label for="startyear">Start:</label>
+                <input type="text" id="startday" size="4" title="day" />
+                <select id="startmonth" size=1></select>
+                <input type="text" id="startyear" size="4" title="year" />
+                <br />
+                <label for="endyear">End:</label>
+                <input type="text" id="endday" size="4" title="day" />
+                <select id="endmonth" size=1></select>
+                <input type="text" id="endyear" size="4" title="year" />
+                <br />
+                <input type="submit" value="Filter" />
+                <span class="help">(e.g., 1 January 1999 - 1 December 2000)</span>
+              </form>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+</div>
+
+<div id="content">
+<h1>Identification</h1><p class="MsoNormal" style="margin: 0in 0in 10pt;"><span style="font-size: 12pt; font-family: Arial;"><em>Autographa californica</em> - (Speyer, 1875); Alfalfa Looper [Common Silver Y].</span> </p><p class="MsoNormal" style="margin: 0in 0in 10pt;"><span style="font-size: 12pt; font-family: Arial;">Forewings
+are&nbsp;mottled with black, brown, and gray.&nbsp;&nbsp;Specimens have
+a slight purple tint and may have&nbsp;a silvery sheen.&nbsp;&nbsp;The
+silvery-white stigma is forked on top&nbsp;and terminates
+in&nbsp;a&nbsp;rounded tip as it&nbsp;extends away from the body.&nbsp;
+It can be separated from the nearly identical <em>A. pseudogamma</em> by a horizontal black dash that occurs near the upper, outermost corner of the forewing.<span style="">&nbsp; </span>This black dash connects the subterminal and postmedian lines. Wingspan is 4.0 - 4.2 cm.<span style="">&nbsp; </span> </span> </p><p class="MsoNormal" style="margin: 0in 0in 10pt;"><span style="font-size: 12pt; font-family: Arial;"><span style=""></span>Larvae
+are green and have three pairs of white lines on the back and
+a&nbsp;fairly wide white lateral line.&nbsp;&nbsp;The head is
+brownish-green and typically has black lines on the side.</span> </p><p class="MsoNormal" style="margin: 0in 0in 10pt;"> &nbsp;</p><p>&nbsp;</p><h1>Habitat</h1><span style="font-size: 12pt; font-family: Arial;"><p class="MsoPlainText" style="margin: 0in 0in 0pt;"><span style="font-size: 12pt; font-family: Arial;">Found in all habitats from steppe and cropland to above timberline.<span style="">&nbsp; </span>One of the most widespread and abundant moths in western&nbsp;<st1:place w:st="on">North America</st1:place>.<o:p></o:p></span></p> </span><h1>Similar Species</h1><p><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 12pt; font-family: Arial;"><em><a href="http://www.biol.wwu.edu/fisherm4/Factsheets/Autographa_pseudogamma_-_Delicate_Silver_Y.htm">Autographa pseudogamma</a>, <a href="http://www.biol.wwu.edu/fisherm4/Factsheets/Rachiplusia_ou_-_Gray_Looper.htm">Rachiplusia ou</a>.</em></span> </span></p><h1>Distribution</h1><p><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 12pt; font-family: Arial;">This species migrates annually to the&nbsp;<st1:place w:st="on">Pacific Northwest</st1:place>.<span style="">&nbsp; </span>Worn specimens are found in late March and early April in both <st1:state w:st="on">Washington</st1:state> and <st1:state w:st="on"><st1:place w:st="on">British Columbia (see map below)</st1:place></st1:state>.<span style="">&nbsp; </span>Rarely,
+a freshly emerged specimen is seen in early spring, indicating that
+pupa can over winter in mild winters. The species is found from <st1:state w:st="on"> Alaska</st1:state> east to <st1:state w:st="on"> Manitoba</st1:state> and south to southern <st1:state w:st="on"> California</st1:state>, <st1:state w:st="on"> Arizona</st1:state>, and <st1:state w:st="on"><st1:place w:st="on"> New Mexico</st1:place> </st1:state>. There is a single record from southern <st1:state w:st="on"><st1:place w:st="on"> Michigan</st1:place> </st1:state>, undoubtedly a stray migrant.</span> </span></p><h1>Life History</h1><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 12pt; font-family: Arial;">Crumb (1956) found the Alfalfa Looper multi-brooded in western<st1:state w:st="on"><st1:place w:st="on"> Washington</st1:place> </st1:state>. Larvae newly hatched in mid April emerged as adults by late May. Thus the species can produce three generation a year in the <st1:place w:st="on"> Pacific Northwest</st1:place>. The larvae feed from mid April through October in the <st1:place w:st="on"> Pacific Northwest</st1:place>
+(Crumb, 1956) and are considered a pest of many forage and vegetable
+crops including alfalfa, cabbage, and peppermint. Eichlin &amp;
+Cunningham (1978) give a comprehensive list of host plants from more
+than 10 genera of woody shrubs and 40 genera of herbaceous plants.</span> </span><p class="top" align="right"><a href="#top">
+                Top
+              </a></p>
+<h1>Literature</h1><font face="Arial"></font><p class="MsoPlainText" style="margin: 0in 0in 0pt;"><span style="font-size: 12pt; font-family: Arial;"><font face="Arial">Crumb, S. E. 1956. The larvae of the Phalaenidae. U.S.D.A. Tech. Bull. 1135:[i]-ii, 1-356.</font></span></p><p class="MsoPlainText" style="margin: 0in 0in 0pt;"><span style="font-size: 12pt; font-family: Arial;"></span><font face="Arial"></font>&nbsp;</p><p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Arial">Eichlin,
+T. D. &amp; H. B. Cunningham. 1978. The Plusiinae (Lepidoptera:
+Noctuidae) of America north of Mexico, emphasizing genitalic and larval
+morphology. U.S.D.A. Tech. Bull. 1567:[i]-vi, 1-122.<span style=""> </span></font></p><p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Arial">Haggard, P. and J. Haggard.<span style="">&nbsp; </span>2006.<span style="">&nbsp; </span><i style="">Insects of the <st1:place w:st="on">Pacific Northwest</st1:place></i>.<span style="">&nbsp; </span>Timber Press Inc., <st1:place w:st="on"><st1:city w:st="on">Portland </st1:city>, <st1:state w:st="on">OR </st1:state> </st1:place>. </font> </p><p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Arial">Lafontaine,
+J. D. &amp; R. W. Poole. 1991. Noctuoidea Noctuidae (part) Plusiinae.
+The moths of America north of Mexico including Greenland. Fascicle 25.1
+The Wedge Entomological Research Foundation, Washington, D. C. [1]-182.</font><font face="Times New Roman"> </font> </p><p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Arial">Miller, J.C., and P.C. Hammond.<span style="">&nbsp; </span>2000.<span style="">&nbsp; </span><i style="">Macromoths of <st1:place w:st="on"><st1:placename w:st="on"> Northwest</st1:placename> <st1:placetype w:st="on"> Forests</st1:placetype> </st1:place> and Woodlands</i>.<span style="">&nbsp; </span>US Department of Agriculture, Forest Health Technology <st1:city w:st="on"><st1:place w:st="on">Enterprise</st1:place></st1:city> Team, FHTET-98-18.<span style="">&nbsp; </span></font></p><p class="MsoNormal" style="margin: 0in 0in 10pt;"><font face="Arial">Miller, J.C., and P.C. Hammond.<span style="">&nbsp; </span>2003.<span style="">&nbsp;&nbsp; </span>Lepidoptera of the <st1:place w:st="on">Pacific Northwest</st1:place>: Caterpillars and Adults.<span style="">&nbsp; </span>US Department of Agriculture, Forest Health Technology <st1:place w:st="on"><st1:city w:st="on"> Enterprise</st1:city> </st1:place>Team, FHTET-2003-03.</font> </p><p><font face="Arial"><font size="3"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style=""><span style=""><span style=""><span style=""><span style=""><span style=""><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style=""><span style="font-size: 10pt; line-height: 115%;"><font size="3">University of&nbsp;<st1:placename w:st="on">Alberta</st1:placename> E.H. Strickland Entomological Museum.<span style="">&nbsp; </span>&#8220;<span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><em><span style="font-size: 11pt; line-height: 115%; font-family: Calibri;"><a href="http://www.entomology.ualberta.ca/searching_species_details.php?s=1124">Autographa californica</a> </span></em></span></span></span></span></span></span></span></span></span></span></span></span></span><em>.</em></span>&#8221;<span style="">&nbsp; </span>June 5 2008.</font></span></span></span></span></span></span></span></span></span></span></font></font></p></div>
+</body></html>
