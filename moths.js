@@ -6,24 +6,6 @@ var selected_species;
 var unique_species;
 const feet_per_meter = 3.2808399;
 
-// Column names and index values for data loaded from CSV.
-var c = {"genus": 2,
-         "species": 3,
-         "lat": 5,
-         "lng": 4,
-         "state": 6,
-         "county": 7,
-         "site_name": 8,
-         "elevation": 9,
-         "elevation_units": 10,
-         "year": 11,
-         "month": 12,
-         "day": 13,
-         "collector": 14,
-         "collection": 15,
-         "number_of_males": 16,
-         "number_of_females": 17};
-
 var simple_icon = new GIcon(G_DEFAULT_ICON);
 simple_icon.image = "icon.png";
 simple_icon.shadow = "icon.png";
@@ -232,6 +214,7 @@ function populateMapBySpecies(species) {
     if (!gps_pairs[gps_pair]) {
       gps_pairs[gps_pair] = {"latitude": site.latitude,
                              "longitude": site.longitude,
+                             "precision": site.precision,
                              "description": $("<table class='info'></table>"),
                              "collectors": []};
       gps_pairs[gps_pair].description.append($("<tr><th colspan='2'>" +
@@ -312,8 +295,7 @@ function populateMapBySpecies(species) {
     }
 
     description = description.parent().html();
-    var icon_index = getAccuracyIcon(gps_pairs[gps_pair].latitude,
-                                      gps_pairs[gps_pair].longitude);
+    var icon_index = getAccuracyIcon(gps_pairs[gps_pair].precision);
     marker_options = { icon: icons[icon_index] };
     species_markers.push(createMarker(point, j, description,
                                       marker_options));
@@ -326,32 +308,21 @@ function populateMapBySpecies(species) {
   return false;
 }
 
-function getAccuracyIcon(latitude, longitude) {
+function getAccuracyIcon(precision) {
   // Use different marker icon sizes that reflect accuracy to: 0.1 degrees,
   // 0.01, 0.001, and  0.0001 or better.
-  var icon_index = 3;
-  var lat_index = latitude.indexOf(".");
-  var lng_index = longitude.indexOf(".");
-
-  var lat_array = latitude.split(".");
-  var lng_array = longitude.split(".");
-
-  if (lat_array.length > 1 && lng_array.length > 1) {
-    var lat_length = lat_array[1].length;
-    var lng_length = lng_array[1].length;
-
-    if (lat_length == 1 || lng_length == 1) {
-      icon_index = 3;
-    }
-    else if(lat_length == 2 || lng_length == 2) {
-      icon_index = 2;
-    }
-    else if(lat_length == 3 || lng_length == 3) {
-      icon_index = 1;
-    }
-    else {
-      icon_index = 0;
-    }
+  var icon_index;
+  if (precision == 1) {
+    icon_index = 3;
+  }
+  else if(precision == 2) {
+    icon_index = 2;
+  }
+  else if(precision == 3) {
+    icon_index = 1;
+  }
+  else {
+    icon_index = 0;
   }
 
   return icon_index;
