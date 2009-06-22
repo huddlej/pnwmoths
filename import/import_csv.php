@@ -109,7 +109,7 @@ function add_views()
 function load_data($file_name)
 {
     global $couch;
-    $meters_per_foot = 0.305;
+    $feet_per_meter = 3.2808399;
     print "Loading data\n";
     $handle = fopen($file_name, "r");
 
@@ -172,12 +172,12 @@ function load_data($file_name)
             }
         }
 
-        // Convert feet to meters.
+        // Convert meters to feet.
         if (array_key_exists("elevation_units", $document) && 
-            $document["elevation_units"] == "ft.")
+            $document["elevation_units"] == "m.")
         {
-            $document["elevation"] = $document["elevation"] * $meters_per_foot;
-            $document["elevation_units"] = "m.";
+            $document["elevation"] = $document["elevation"] * $feet_per_meter;
+            $document["elevation_units"] = "ft.";
         }
 
         if (count($document) > 0)
@@ -192,7 +192,7 @@ function load_data($file_name)
         print "Sending bulk docs to database\n";
         $documents = array("docs" => $documents);
         $resp = $couch->send("POST", "/pnwmoths/_bulk_docs", json_encode($documents));
-        print substr($resp, 0, 2000);
+        print substr($resp, 0, 2000) . "\n";
     }
 }
 
@@ -210,8 +210,8 @@ load_data("moths.csv");
 //show_all_docs();
 
 // // Run the by_species view to build the index.
-// $key = urlencode("Autographa californica");
-// $query = "/pnwmoths/_design/moths/_view/by_species/?key=\"$key\"";
-// $resp = $couch->send("GET", $query);
-// print "Response was " . strlen($resp) . " characters long.";
+$key = urlencode("Autographa californica");
+$query = "/pnwmoths/_design/moths/_view/by_species/?key=\"$key\"";
+$resp = $couch->send("GET", $query);
+print "Response was " . strlen($resp) . " characters long.";
 ?>
