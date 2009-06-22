@@ -109,6 +109,7 @@ function add_views()
 function load_data($file_name)
 {
     global $couch;
+    $meters_per_foot = 0.305;
     print "Loading data\n";
     $handle = fopen($file_name, "r");
 
@@ -171,6 +172,14 @@ function load_data($file_name)
             }
         }
 
+        // Convert feet to meters.
+        if (array_key_exists("elevation_units", $document) && 
+            $document["elevation_units"] == "ft.")
+        {
+            $document["elevation"] = $document["elevation"] * $meters_per_foot;
+            $document["elevation_units"] = "m.";
+        }
+
         if (count($document) > 0)
         {
             $documents[] = $document;
@@ -194,10 +203,10 @@ function show_all_docs()
     print_r($resp);
 }
 
-//delete_db();
-//create_db();
+delete_db();
+create_db();
 add_views();
-//load_data("moths.csv");
+load_data("moths.csv");
 //show_all_docs();
 
 // // Run the by_species view to build the index.
