@@ -4,7 +4,6 @@ var mgr;
 var sites = [];
 var selected_species;
 var unique_species;
-const feet_per_meter = 3.2808399;
 
 var simple_icon = new GIcon(G_DEFAULT_ICON);
 simple_icon.image = "icon.png";
@@ -29,22 +28,6 @@ for (var i = 0; i < icon_count; i++) {
  * observed.
  */
 function Site() {
-//   this.genus = jQuery.trim(marker[c.genus]) || "";
-//   this.species = jQuery.trim(marker[c.species]) || "";
-//   this.lat = marker[c.lat] !== undefined ? marker[c.lat] : 0;
-//   this.lng = marker[c.lng] !== undefined ? marker[c.lng] : 0;
-//   this.state = marker[c.state] || "";
-//   this.county = marker[c.county] || "";
-//   this.site_name = marker[c.site_name] || "";
-//   this.elevation = parseInt(marker[c.elevation]) || "";
-//   this.year = marker[c.year];
-//   this.month = marker[c.month];
-//   this.day = marker[c.day];
-//   this.collector = marker[c.collector];
-//   this.collection = marker[c.collection];
-//   this.number_of_males = marker[c.number_of_males];
-//   this.number_of_females = marker[c.number_of_females];
-
   // Create a Date object for the site using all available information.
   // This will simplify filtering by date by allowing the use of standard
   // comparators between two objects.
@@ -132,7 +115,7 @@ var month_choices = [["", ""],
                      [10, "October"],
                      [11, "November"],
                      [12, "December"]];
-var all_filters = {"elevation": new Filter("elevation", "Elevation (ft.)",
+var all_filters = {"elevation": new Filter("elevation", "Elevation (m.)",
                                            [new Field("startelevation"),
                                             new Field("endelevation")]),
                    "date": new DateFilter("date", "Date",
@@ -328,10 +311,6 @@ function getAccuracyIcon(precision) {
   return icon_index;
 }
 
-function convertMetersToFeet(meters) {
-  return parseInt(meters * feet_per_meter);
-}
-
 function prepareLinks() {
   // Display a list of the unique species.
   var species_ul = $("<ul></ul>");
@@ -370,7 +349,6 @@ function prepareLinks() {
       $(this).parent().parent().find(".selected").removeClass("selected");
       $(this).addClass("selected");
       var name = $(this).attr("name");
-      //console.log("Clear filter: " + name);
       all_filters[name].unset();
       if (selected_species) {
         populateMapBySpecies(selected_species);
@@ -403,23 +381,15 @@ $(document).ready(function() {
 
   // Setup manager to control the zoom levels at which markers are displayed.
   mgr = new MarkerManager(map);
-  //getUniqueSpecies();
 
   try {
     var title = $("#title").text();
     title = title.split(" - ");
     selected_species = title[0];
-    //console.log(selected_species);
     getSites(selected_species);
   }
   catch(e) {
-    //console.log(e);
   }
-
-  // TODO: Convert fields with meter measurements to feet measurements during the import process.
-  // if (/^m/.exec(markers[i][c.elevation_units])) {
-  //   markers[i][c.elevation] = convertMetersToFeet(markers[i][c.elevation]);
-  // }
 });
 
 // Google Maps tries to call load() onload no matter what so this needs to be
