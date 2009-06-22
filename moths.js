@@ -115,7 +115,7 @@ var month_choices = [["", ""],
                      [10, "October"],
                      [11, "November"],
                      [12, "December"]];
-var all_filters = {"elevation": new Filter("elevation", "Elevation (m.)",
+var all_filters = {"elevation": new Filter("elevation", "Elevation (ft.)",
                                            [new Field("startelevation"),
                                             new Field("endelevation")]),
                    "date": new DateFilter("date", "Date",
