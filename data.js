@@ -3,14 +3,15 @@ var server_address = "http://localhost:5984/pnwmoths/";
 var view_address = server_address + "_design/moths/_view/";
 
 function getSites(species_name) {
-  var url = view_address + "by_species/";
+  //var url = view_address + "by_species/";
+  var url = "http://www.biol.wwu.edu/~huddlej/index.php";
+
   if(species_name !== undefined) {
     data = {key: "\"" + species_name + "\""};
   }
   else {
     data = {};
   }
-
   $.getJSON(url, data,
             function(data) {
               sites = [];
