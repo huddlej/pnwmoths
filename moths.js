@@ -1,6 +1,7 @@
 //<![CDATA[
 var map;
 var mgr;
+var geo_xml;
 var sites = [];
 var selected_species;
 var unique_species;
@@ -378,6 +379,9 @@ $(document).ready(function() {
   map.addMapType(G_PHYSICAL_MAP);
   map.setMapType(G_PHYSICAL_MAP);
   addTerritoryBoundaries();
+
+  geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
+  map.addOverlay(geo_xml);
 
   // Setup manager to control the zoom levels at which markers are displayed.
   mgr = new MarkerManager(map);
