@@ -10,7 +10,6 @@ function Filter(name, title, fields) {
   this.ids = [];
 
   this.set = function(arguments) {
-    //console.log("Set " + this.name + " arguments: " + arguments);
     this.arguments = [];
     for (index in this.fields) {
       this.arguments.push(arguments[this.fields[index].name]);
@@ -19,7 +18,6 @@ function Filter(name, title, fields) {
 
   this.unset = function() {
     if (this.arguments) {
-      //console.log("Unset " + this.name + " arguments");
       delete this.arguments;
     }
   };
@@ -29,7 +27,6 @@ function Filter(name, title, fields) {
       return true;
     }
 
-    //console.log("Filter: " + this.name);
     var startkey = this.arguments[0];
     var endkey = this.arguments[1];
     var value = record[this.name];
@@ -40,7 +37,6 @@ function Filter(name, title, fields) {
   };
 
   this.clean = function() {
-    //console.log("Clean Filter: " + this.name);
     this.cleaned_data = {};
     for (field in this.fields) {
       this.cleaned_data[this.fields[field].name] = this.fields[field].clean();
@@ -51,7 +47,6 @@ function Filter(name, title, fields) {
 
   this.handle_submit = function() {
     var filter_name = this.id.split("-")[1];
-    //console.log("Handle submit: " + filter_name);
     var filter = all_filters[filter_name];
     try {
       var cleaned_data = filter.clean();
@@ -60,7 +55,6 @@ function Filter(name, title, fields) {
       alert("Error: " + e);
       return false;
     }
-    //console.log(cleaned_data);
 
     // If there is no cleaned data, there was an error processing the form.
     // Display the error message and return.  Otherwise, set the cleaned
@@ -72,7 +66,6 @@ function Filter(name, title, fields) {
       filter.set(cleaned_data);
 
       if (selected_species) {
-        //console.log("populate map for species: " + selected_species);
         populateMapBySpecies(selected_species);
       }
 
@@ -80,12 +73,11 @@ function Filter(name, title, fields) {
       $(this).parent().addClass("selected");
     }
 
-    $(":text").labelify({labelledClass: "label-highlight"});
+    $("input:text").labelify({ labelledClass: "label-highlight" });
     return false;
   };
 
   this.prepare = function() {
-    //console.log("Prepare Form: " + this.name);
 
     for (index in this.fields) {
       this.fields[index].prepare();
@@ -97,7 +89,6 @@ function Filter(name, title, fields) {
     var form_name = "form-" + this.name;
     var form = $("#" + form_name);
     if (form.length == 0) {
-      //console.log("Error: couldn't find a form called " + form_name + ".  Check your HTML for typos.");
     }
     form.submit(this.handle_submit);
   };
@@ -138,11 +129,9 @@ function DateFilter(name, title, fields) {
         end_month = 12;
       }
 
-      //console.log(start_year + " " + start_month + " " + start_day);
       start_key = new Date(start_year, start_month - 1, start_day);
 
       if (end_day !== null) {
-        //console.log(end_year + " " + end_month + " " + end_day);
         end_key = new Date(end_year, end_month - 1, end_day);
       }
       else {
@@ -160,12 +149,7 @@ function DateFilter(name, title, fields) {
         end_key.setDate(end_key.getDate() - 1);
       }
 
-      //console.log("Set " + this.name + " arguments: " + start_key + ", " + end_key);
       this.arguments = [start_key, end_key];
-
-      // Fetch ids for records matching the range from start_key to end_key.
-      //var ids = $.getJSON("http://localhost:5984/pnwmoths/_view/by_" + this.name + "?startkey=" + start_key + "&endkey=" + end_key);
-      //console.log(ids);
     }
   };
 }
@@ -182,16 +166,13 @@ function Field(name, options) {
   this.options.help_text = this.options.help_text || "";
 
   this.validate = function() {
-    //console.log("Validate Field: " + this.name);
   };
 
   this.clean = function() {
-    //console.log("Clean Field: " + this.name);
     return $("#" + this.name).val();
   };
 
   this.prepare = function() {
-    //console.log("Prepare Field: " + this.name);
     return $("#" + this.name).val();
   };
 }
@@ -200,16 +181,13 @@ function ChoiceField(name, options) {
   Field.call(this, name, options);
 
   this.clean = function() {
-    //console.log("Clean ChoiceField: " + this.name);
     return $("#" + this.name).val();
   };
 
   this.prepare = function() {
-    //console.log("Prepare ChoiceField: " + this.name);
     var field = $("#" + this.name);
     for (var i = 0; i < this.options.choices.length; i++) {
       var choice = this.options.choices[i];
-      //console.log("Added choice: " + choice[0] + ", " + choice[1]);
       field.append($("<option value='" + choice[0] + "'>" + choice[1] + "</option>"));
     }
   };
