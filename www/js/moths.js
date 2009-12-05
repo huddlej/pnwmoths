@@ -296,6 +296,8 @@ function getAccuracyIcon(precision) {
   // Use different marker icon sizes that reflect accuracy to: 0.1 degrees,
   // 0.01, 0.001, and  0.0001 or better.
   var icon_index;
+  console.log("getAccuracyIcon: " + precision);
+
   if (precision == 1) {
     icon_index = 3;
   }
