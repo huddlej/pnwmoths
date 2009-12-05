@@ -7,7 +7,7 @@ function getSites(species_name) {
   var url = view_address + "by_species/";
   //var url = "http://www.biol.wwu.edu/~huddlej/index.php";
 
-  data = {include_docs: true};
+  data = {};
   if(species_name !== undefined) {
     data["key"] = "\"" + species_name + "\"";
   }
@@ -18,7 +18,7 @@ function getSites(species_name) {
       function(results) {
           sites = [];
           for(index in results["rows"]) {
-              var row = results["rows"][index].doc;
+              var row = results["rows"][index].value;
               row.prototype = new Site;
               Site.call(row);
               sites.push(row);
