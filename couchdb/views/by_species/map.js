@@ -29,5 +29,5 @@ function(doc) {
 
     doc.precision = Math.min(longitude_precision, latitude_precision);
     doc.site_name = doc.city;
-    emit(doc.genus + " " + doc.species, null);
+    emit(doc.genus + " " + doc.species, doc);
 }
