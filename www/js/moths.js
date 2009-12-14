@@ -1,7 +1,7 @@
 //<![CDATA[
 var map;
 var mgr;
-var geo_xml;
+var county_boundaries_xml;
 var sites = [];
 var selected_species;
 var unique_species;
@@ -333,11 +333,11 @@ function prepareLinks() {
   var toggle_counties = $("<input type='checkbox' name='toggle_counties' id='toggle_counties' checked='checked' />");
   toggle_counties.change(
     function () {
-      if ($(this).attr("checked") === true && geo_xml.isHidden()) {
-        geo_xml.show();
+      if ($(this).attr("checked") === true && county_boundaries_xml.isHidden()) {
+        county_boundaries_xml.show();
       }
       else {
-        geo_xml.hide();
+        county_boundaries_xml.hide();
       }
     }
   );
@@ -396,8 +396,8 @@ $(document).ready(function() {
   map.setMapType(G_PHYSICAL_MAP);
   addTerritoryBoundaries();
 
-  geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
-  map.addOverlay(geo_xml);
+  county_boundaries_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
+  map.addOverlay(county_boundaries_xml);
 
   // Setup manager to control the zoom levels at which markers are displayed.
   mgr = new MarkerManager(map);
