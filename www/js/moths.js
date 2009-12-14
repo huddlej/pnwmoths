@@ -296,7 +296,6 @@ function getAccuracyIcon(precision) {
   // Use different marker icon sizes that reflect accuracy to: 0.1 degrees,
   // 0.01, 0.001, and  0.0001 or better.
   var icon_index;
-  console.log("getAccuracyIcon: " + precision);
 
   if (precision == 1) {
     icon_index = 3;
@@ -328,6 +327,19 @@ function prepareLinks() {
     species_ul.append($("<li></li>").append(species_a));
   }
   $("#species").append(species_ul);
+
+  var toggle_counties = $("<input type='checkbox' name='toggle_counties' id='toggle_counties' checked='checked' />");
+  toggle_counties.change(
+    function () {
+      if ($(this).attr("checked") === true) {
+        geo_xml.show();
+      }
+      else {
+        geo_xml.hide();
+      }
+    }
+  );
+  $("#filters").before($("<form></form>").append($("<p><label for='toggle_counties'>Toggle county borders</label></p>").prepend(toggle_counties)));
 
   // Add link to clear all filters.
   var clear_filters_link = $("#clear-filters");
