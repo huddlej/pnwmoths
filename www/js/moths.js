@@ -328,10 +328,12 @@ function prepareLinks() {
   }
   $("#species").append(species_ul);
 
+  // Display a checkbox to toggle whether county boundaries should be displayed
+  // or not.
   var toggle_counties = $("<input type='checkbox' name='toggle_counties' id='toggle_counties' checked='checked' />");
   toggle_counties.change(
     function () {
-      if ($(this).attr("checked") === true) {
+      if ($(this).attr("checked") === true && geo_xml.isHidden()) {
         geo_xml.show();
       }
       else {
