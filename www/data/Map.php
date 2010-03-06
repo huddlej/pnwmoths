@@ -1,4 +1,6 @@
 <?php
+require_once 'Data.php';
+
 class PNWMoths_Data_Map extends PNWMoths_Data {
     public function getData(array $params = array()) {
         $db = $this->getDatabase();
