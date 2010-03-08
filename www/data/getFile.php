@@ -1,11 +1,8 @@
 <?php
-set_include_path("/usr/share/php/libzend-framework-php" . PATH_SEPARATOR . "/home/huddlej/src/svn.tillikum.org/trunk/www/library" . PATH_SEPARATOR . get_include_path());
-require_once 'Zend/Loader/Autoloader.php';
-$loader = Zend_Loader_Autoloader::getInstance();
-$loader->registerNamespace('Tillikum_');
+require_once 'Data.php';
 
-$couchdb = new Tillikum_CouchDb("http://localhost:5984");
-$db = new Tillikum_CouchDb_Database($couchdb, "pnwmoths");
+$data = new PNWMoths_Data();
+$db = $data->getDatabase();
 
 if (array_key_exists("doc_id", $_GET)) {
     $doc_id = $_GET["doc_id"];
