@@ -9,7 +9,7 @@ $loader = Zend_Loader_Autoloader::getInstance();
 $loader->registerNamespace('Tillikum_');
 
 class PNWMoths_Data {
-    protected function getDatabase() {
+    public function getDatabase() {
         $couchdb = new Tillikum_CouchDb("http://localhost:5984");
         $db = new Tillikum_CouchDb_Database($couchdb, "pnwmoths");
         return $db;
