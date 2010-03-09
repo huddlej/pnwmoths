@@ -6,6 +6,7 @@ Dependencies
 
  * [Zend Framework](http://framework.zend.com/)
  * [Tillikum CouchDB](http://github.com/strattg/tillikum-couchdb)
+ * [jCarousel](http://sorgalla.com/jcarousel/)
 
 CouchDB
 -------
