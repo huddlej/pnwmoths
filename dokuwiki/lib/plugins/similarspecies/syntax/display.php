@@ -35,12 +35,12 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
     }
 
     function connectTo($mode) {
-        $this->Lexer->addSpecialPattern('\{\{similarspecies>[^}]*\}\}',$mode,'plugin_similarspecies_display');
+        $this->Lexer->addSpecialPattern("{{similarspecies>[^}]+?}}",$mode,'plugin_similarspecies_display');
     }
 
     function handle($match, $state, $pos, &$handler){
         $data = array();
-        preg_match('/\{\{similarspecies>([^}]*)\}\}/', $match, $matches);
+        preg_match('/\{\{similarspecies>([^}]+)\}\}/', $match, $matches);
 
         if (count($matches) > 0) {
             $data["species"] = $matches[1];
