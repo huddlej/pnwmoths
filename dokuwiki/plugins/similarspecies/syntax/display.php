@@ -31,7 +31,7 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
     }
 
     function getSort() {
-        return 0;
+        return 5;
     }
 
     function connectTo($mode) {
@@ -55,16 +55,21 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
     function render($mode, &$renderer, $data) {
         if($mode != 'xhtml') return false;
 
-        foreach($data["data"] as $row) {
-            $renderer->doc .= "<p>";
-            $renderer->internalLink($row["species"], $row["species"]);
-            $renderer->doc .= "</p>";
+        if (count($data["data"]) > 0) {
+            foreach($data["data"] as $row) {
+                $renderer->doc .= "<p>";
+                $renderer->internalLink($row["species"], $row["species"]);
+                $renderer->doc .= "</p>";
 
-            $renderer->doc .= "<ul>";
-            foreach($row["images"] as $image_url) {
-                $renderer->doc .= "<li><img src='$image_url' /></li>";
+                $renderer->doc .= "<ul class='similar-species'>";
+                foreach($row["images"] as $image_url) {
+                    $renderer->doc .= "<li><img src='$image_url' /></li>";
+                }
+                $renderer->doc .= "</ul>";
             }
-            $renderer->doc .= "</ul>";
+        }
+        else {
+            $renderer->doc .= "None.";
         }
 
         return true;
