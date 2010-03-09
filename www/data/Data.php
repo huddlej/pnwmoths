@@ -3,7 +3,7 @@
  * Setup include paths and Zend autoloader so all required modules will be
  * loaded automatically.
  */
-set_include_path("/usr/share/php/libzend-framework-php" . PATH_SEPARATOR . "/home/huddlej/src/svn.tillikum.org/trunk/www/library" . PATH_SEPARATOR . get_include_path());
+set_include_path("/usr/share/php/libzend-framework-php" . PATH_SEPARATOR . "/home/huddlej/src/tillikum-couchdb/library" . PATH_SEPARATOR . get_include_path());
 require_once 'Zend/Loader/Autoloader.php';
 $loader = Zend_Loader_Autoloader::getInstance();
 $loader->registerNamespace('Tillikum_');

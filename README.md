@@ -1,6 +1,12 @@
 PNW Moths
 =========
 
+Dependencies
+------------
+
+ * [Zend Framework](http://framework.zend.com/)
+ * [Tillikum CouchDB](http://github.com/strattg/tillikum-couchdb)
+
 CouchDB
 -------
 
