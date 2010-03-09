@@ -1,3 +1,3 @@
-// jQuery(document).ready(function() {
-//     jQuery('.similar-species').jcarousel();
-// });
+jQuery(document).ready(function() {
+    jQuery('.similar-species').jcarousel();
+});
