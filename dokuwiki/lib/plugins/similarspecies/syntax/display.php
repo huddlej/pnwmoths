@@ -31,7 +31,7 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
     }
 
     function getSort() {
-        return 5;
+        return 305;
     }
 
     function connectTo($mode) {
