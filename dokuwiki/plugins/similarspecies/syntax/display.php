@@ -55,9 +55,11 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
     function render($mode, &$renderer, $data) {
         if($mode != 'xhtml') return false;
 
-        $renderer->doc .= "<h2>Species similar to {$data["species"]}</h2>";
         foreach($data["data"] as $row) {
-            $renderer->doc .= "<p>{$row["species"]}</p>";
+            $renderer->doc .= "<p>";
+            $renderer->internalLink($row["species"], $row["species"]);
+            $renderer->doc .= "</p>";
+
             $renderer->doc .= "<ul>";
             foreach($row["images"] as $image_url) {
                 $renderer->doc .= "<li><img src='$image_url' /></li>";
