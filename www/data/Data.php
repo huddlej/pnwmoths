@@ -10,9 +10,14 @@ $loader->registerNamespace('Tillikum_');
 
 class PNWMoths_Data {
     public function getDatabase() {
-        $couchdb = new Tillikum_CouchDb("http://localhost:5984");
-        $db = new Tillikum_CouchDb_Database($couchdb, "pnwmoths");
-        return $db;
+        try {
+            $couchdb = new Tillikum_CouchDb("http://localhost:5984");
+            $db = new Tillikum_CouchDb_Database($couchdb, "pnwmoths");
+            return $db;
+        }
+        catch (Exception $e) {
+            return false;
+        }
     }
 
     public function getData(array $params = array()) {

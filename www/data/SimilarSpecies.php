@@ -10,7 +10,8 @@ class PNWMoths_Data_SimilarSpecies extends PNWMoths_Data {
 
     public function getData(array $params = array()) {
         $db = $this->getDatabase();
-        if (array_key_exists("species", $params) === false) {
+
+        if ($db === false || array_key_exists("species", $params) === false) {
             return array();
         }
 
