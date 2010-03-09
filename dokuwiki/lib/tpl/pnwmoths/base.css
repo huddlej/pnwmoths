@@ -1,0 +1,188 @@
+p, h1, h2, h3, h4, h5, li {
+    font-family: Georgia, Verdana;
+}
+
+p {
+    font-size: 1.25em;
+    line-height: 1.5em;
+    margin: 0.5em 0;
+}
+
+ol li {
+    font-size: 1.25em;
+    line-height: 1.5em;
+    list-style-type: decimal;
+    margin-bottom: 0.5em;
+}
+ul li {
+    list-style-type: disc;
+}
+
+h1 {
+    font-size: 220%;
+    margin-bottom: 0.1em;
+}
+h2 {
+    font-size: 180%;
+    margin-bottom: 0.2em;
+    margin-top: 0.5em;
+}
+h3 {
+    font-size: 150%;
+    margin-top: 0.5em;
+}
+h4 {
+    font-size: 120%;
+    font-weight: bold;
+    margin-top: 0.75em;
+}
+
+#hd {
+    background-color: #7CA600;
+    height: 3em;
+    margin-bottom: 0.5em;
+}
+#site-id {
+    color: #FFFFFF;
+    float: left;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-variant: small-caps;
+    margin-left: 1em;
+    margin-top: 0.4em;
+}
+ol#navigation {
+    float: right;
+    margin-top: 1em;
+}
+ol#navigation li {
+    float: left;
+    font-size: 1em;
+    line-height: 1em;
+    list-style-type: none;
+    margin-right: 1em;
+}
+ol#navigation li, ol#navigation a, ol#ft-navigation li, ol#ft-navigation a {
+    color: #FFFFFF;
+}
+ol#navigation li#search {
+    margin-top: -0.3em;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.left {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+ol#other-images img {
+    width: 140px;
+}
+.jcarousel-skin-tango .jcarousel-container-horizontal {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 290px;
+}
+.jcarousel-skin-tango .jcarousel-clip-horizontal {
+    height: 93px;
+    width: 290px;
+}
+.jcarousel-skin-tango .jcarousel-item {
+    height: 93px;
+    width: 140px;
+}
+.jcarousel-skin-tango .jcarousel-item-horizontal {
+    margin-right: 5px;
+}
+
+ol.image-list li {
+    float: left;
+    font-size: 1em;
+    line-height: 1em;
+    list-style-type: none;
+    margin-bottom: 0.5em;
+    margin-right: 0.5em;
+    text-align: center;
+}
+
+#map {
+    height: 367px;
+    width: 100%;
+}
+
+#similar-species ol.image-list img {
+    width: 230px;
+}
+
+#ft {
+    background-color: #7CA600;
+    color: #FFFFFF;
+    height: 30px;
+    margin-top: 0.5em;
+}
+ol#ft-navigation li {
+    float: left;
+    font-size: 1em;
+    line-height: 1em;
+    list-style-type: none;
+    margin-left: 1em;
+    margin-top: 0.5em;
+}
+#copyright {
+    float: right;
+    font-size: 1em;
+    line-height: 1em;
+    margin-right: 1em;
+    margin-top: 0.5em;
+}
+
+/*Dokuwiki styles.*/
+
+.bar-left {
+    float: left;
+}
+.bar-left *, .bar-right * {
+    display: inline;
+}
+.bar-right {
+    float: right;
+}
+.clearer {
+    clear: both;
+}
+
+/* existing wikipage */
+div.dokuwiki a.wikilink1 {
+  color: __existing__ !important;
+}
+
+/* not existing wikipage */
+div.dokuwiki a.wikilink2 {
+  color: __missing__ !important;
+  text-decoration: none !important;
+  border-bottom: dashed 1px __missing__ !important;
+}
+
+/* inline tables */
+div.dokuwiki table.inline {
+  background-color: __background__;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+
+div.dokuwiki table.inline th {
+  padding: 3px;
+  border: 1px solid __border__;
+  background-color: __background_alt__;
+}
+
+div.dokuwiki table.inline td {
+  padding: 3px;
+  border: 1px solid __border__;
+}
