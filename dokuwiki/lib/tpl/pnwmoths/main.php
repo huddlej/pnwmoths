@@ -28,14 +28,18 @@ if (!defined('DOKU_INC')) die();
 
   <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
 
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+          type="text/javascript"></script>
   <?php
   if (strpos($ID, "factsheets:") !== false) {
     ?>
+    <script src="http://sorgalla.com/projects/jcarousel/lib/jquery.jcarousel.pack.js"
+            type="text/javascript"></script>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=abcdefg&sensor=true_or_false"
             type="text/javascript"></script>
     <script type="text/javascript">
     function initialize() {
-      if (GBrowserIsCompatible()) {
+      if (GBrowserIsCompatible() && jQuery("#map") != null) {
         var map = new GMap2(document.getElementById("map"));
         map.setCenter(new GLatLng(37.4419, -122.1419), 13);
         map.setUIToDefault();
