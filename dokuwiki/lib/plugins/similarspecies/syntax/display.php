@@ -61,11 +61,13 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
                 $renderer->internalLink($row["species"], $row["species"]);
                 $renderer->doc .= "</p>";
 
-                $renderer->doc .= "<ul class='similar-species jcarousel-skin-tango'>";
-                foreach($row["images"] as $image_url) {
-                    $renderer->doc .= "<li><img src='$image_url' /></li>";
+                if (count($row["images"]) > 0) {
+                    $renderer->doc .= "<ul class='similar-species jcarousel-skin-tango'>";
+                    foreach($row["images"] as $image_url) {
+                        $renderer->doc .= "<li><img src='$image_url' /></li>";
+                    }
+                    $renderer->doc .= "</ul>";
                 }
-                $renderer->doc .= "</ul>";
             }
         }
         else {
