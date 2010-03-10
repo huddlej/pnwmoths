@@ -45,8 +45,13 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
         if (count($matches) > 0) {
             $data["species"] = $matches[1];
 
-            $model = new PNWMoths_Data_SimilarSpecies();
-            $data["data"] = $model->getData(array("species" => $data["species"]));
+            try {
+                $model = new PNWMoths_Data_SimilarSpecies();
+                $data["data"] = $model->getData(array("species" => $data["species"]));
+            }
+            catch (Exception $e) {
+                $data["data"] = array();
+            }
         }
 
         return $data;
@@ -56,19 +61,17 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
         if($mode != 'xhtml') return false;
 
         if (count($data["data"]) > 0) {
+            $renderer->doc .= "<ul class='similar-species jcarousel-skin-tango'>";
             foreach($data["data"] as $row) {
-                $renderer->doc .= "<p>";
-                $renderer->internalLink($row["species"], $row["species"]);
-                $renderer->doc .= "</p>";
-
                 if (count($row["images"]) > 0) {
-                    $renderer->doc .= "<ul class='similar-species jcarousel-skin-tango'>";
                     foreach($row["images"] as $image_url) {
-                        $renderer->doc .= "<li><img src='$image_url' /></li>";
+                        $renderer->doc .= "<li><img src='$image_url' />";
+                        $renderer->internalLink($row["species"], $row["species"]);
+                        $renderer->doc .= "</li>";
                     }
-                    $renderer->doc .= "</ul>";
                 }
             }
+            $renderer->doc .= "</ul>";
         }
         else {
             $renderer->doc .= "None.";
