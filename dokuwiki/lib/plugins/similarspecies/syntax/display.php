@@ -61,6 +61,7 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
         if($mode != 'xhtml') return false;
 
         if (count($data["data"]) > 0) {
+            $renderer->doc .= "<div id='similar'>";
             $renderer->doc .= "<ul class='similar-species jcarousel-skin-tango'>";
             foreach($data["data"] as $row) {
                 if (count($row["images"]) > 0) {
@@ -72,6 +73,7 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
                 }
             }
             $renderer->doc .= "</ul>";
+            $renderer->doc .= "</div>";
         }
         else {
             $renderer->doc .= "None.";
