@@ -67,7 +67,12 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
                     $firstRow = false;
                 }
 
-                $renderer->doc .= "<li><img src='$image_url' /></li>";
+                if (property_exists($row["data"], "caption")) {
+                    $renderer->doc .= "<li><img src='$image_url' title='{$row["data"]->caption}' /></li>";
+                }
+                else {
+                    $renderer->doc .= "<li><img src='$image_url' /></li>";
+                }
             }
             $renderer->doc .= "</ul>";
             $renderer->doc .= "</div>";
