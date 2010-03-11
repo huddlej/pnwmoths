@@ -211,6 +211,7 @@
     background-color: #ccc;
     -moz-border-radius-bottomleft: 10px;
     -moz-border-radius-bottomright: 10px;
+    width: 375px;
 }
 #current-image img {
     height: 250px;
@@ -235,17 +236,16 @@
     padding-bottom: 10px;
     padding-top: 10px;
 }
-#images .jcarousel-skin-tango .jcarousel-container-horizontal, .jcarousel-skin-tango .jcarousel-clip-horizontal {
-    width: 293px!important;
+#images .jcarousel-skin-tango .jcarousel-container-horizontal, #images .jcarousel-skin-tango .jcarousel-clip-horizontal {
+    width: 293px;
 }
 #images .jcarousel-skin-tango .jcarousel-item {
-    height: 93px!important;
+    height: 93px;
     width: 140px;
 }
 #images .jcarousel-skin-tango .jcarousel-item-horizontal {
-    margin-right: 6px;
+    margin-right: 10px;
 }
-
-#images .jcarousel-skin-tango .jcarousel-clip-horizontal, .jcarousel-skin-tango .jcarousel-list {
-    height: 93px!important;
+#images .jcarousel-skin-tango .jcarousel-clip-horizontal, #images .jcarousel-skin-tango .jcarousel-list {
+    height: 93px;
 }
