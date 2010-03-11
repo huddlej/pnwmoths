@@ -208,28 +208,27 @@
  * Custom jCarousel CSS
  */
 .similar-species img {
-    height: 93px;
-    width: 140px;
+    height: 123px;
+    width: 215px;
 }
 .similar-species {
     text-align: center;
 }
 
-.jcarousel-skin-tango .jcarousel-container-horizontal {
+#similar .jcarousel-skin-tango .jcarousel-container-horizontal {
     padding-bottom: 10px;
     padding-top: 10px;
 }
-.jcarousel-skin-tango .jcarousel-container-horizontal, .jcarousel-skin-tango .jcarousel-clip-horizontal {
-    width: 580px!important;
+#similar .jcarousel-skin-tango .jcarousel-container-horizontal, #similar .jcarousel-skin-tango .jcarousel-clip-horizontal {
+    width: 665px;
 }
-.jcarousel-skin-tango .jcarousel-item {
-    height: 110px!important;
-    width: 140px;
+#similar .jcarousel-skin-tango .jcarousel-item {
+    height: 140px;
+    width: 215px;
 }
-.jcarousel-skin-tango .jcarousel-item-horizontal {
-    margin-right: 5px;
+#similar .jcarousel-skin-tango .jcarousel-item-horizontal {
+    margin-right: 10px;
 }
-
-.jcarousel-skin-tango .jcarousel-clip-horizontal, .jcarousel-skin-tango .jcarousel-list {
-    height: 115px!important;
+#similar .jcarousel-skin-tango .jcarousel-clip-horizontal, #similar .jcarousel-skin-tango .jcarousel-list {
+    height: 145px;
 }
