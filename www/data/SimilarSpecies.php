@@ -19,8 +19,14 @@ class PNWMoths_Data_SimilarSpecies extends PNWMoths_Data {
         $viewParams = array("include_docs" => 'true',
                             "key" => $species);
 
-        $results = $db->getView($this->designDoc, $this->viewName,
-                                $viewParams);
+        try {
+            $results = $db->getView($this->designDoc, $this->viewName,
+                                    $viewParams);
+        }
+        catch (Zend_Http_Client_Adapter_Exception $e) {
+            // Return no results when the database isn't available.
+            return array();
+        }
 
         $similar_species = array();
         foreach ($results->rows as $row) {
