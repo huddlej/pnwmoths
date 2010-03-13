@@ -1,10 +1,10 @@
 <?php
-require_once 'Data.php';
+require_once 'Model.php';
 
 /**
  * Represents a single instance of a similar species.
  */
-class PNWMoths_Data_SimilarSpecies extends PNWMoths_Data {
+class PNWMoths_Model_SimilarSpecies extends PNWMoths_Model {
     protected $designDoc = "moths";
     protected $viewName = "by_similar_species";
 

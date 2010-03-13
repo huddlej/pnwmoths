@@ -1,10 +1,10 @@
 <?php
-require_once 'Data.php';
+require_once 'Model.php';
 
 /**
  * Represents a way to obtain a set of moth sample data.
  */
-class PNWMoths_Data_MothSample extends PNWMoths_Data {
+class PNWMoths_Model_MothSample extends PNWMoths_Model {
     protected $designDoc = "moths";
     protected $viewName = "by_species";
 

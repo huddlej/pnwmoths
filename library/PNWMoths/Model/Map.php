@@ -1,7 +1,7 @@
 <?php
-require_once 'Data.php';
+require_once 'Model.php';
 
-class PNWMoths_Data_Map extends PNWMoths_Data {
+class PNWMoths_Model_Map extends PNWMoths_Model {
     public function getData(array $params = array()) {
         $db = $this->getDatabase();
 
