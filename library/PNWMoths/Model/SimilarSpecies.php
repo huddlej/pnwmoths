@@ -1,6 +1,4 @@
 <?php
-require_once 'Model.php';
-
 /**
  * Represents a single instance of a similar species.
  */
