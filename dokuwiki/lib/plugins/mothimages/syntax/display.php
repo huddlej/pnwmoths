@@ -45,7 +45,7 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
         if (count($matches) > 0) {
             $data["species"] = $matches[1];
 
-            $model = new PNWMoths_Model_MothImage();
+            $model = new PNWMoths_Model_Image();
             $data["data"] = $model->getData(array("species" => $data["species"]));
         }
 

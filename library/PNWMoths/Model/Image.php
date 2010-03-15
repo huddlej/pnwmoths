@@ -2,7 +2,7 @@
 /**
  * Represents a single instance of a similar species.
  */
-class PNWMoths_Model_MothImage extends PNWMoths_Model {
+class PNWMoths_Model_Image extends PNWMoths_Model {
     protected $designDoc = "moths";
     protected $viewName = "by_species_image";
 
