@@ -2,7 +2,7 @@
 /**
  * Represents a way to obtain a set of moth sample data.
  */
-class PNWMoths_Model_MothSample extends PNWMoths_Model {
+class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
     protected $designDoc = "moths";
     protected $viewName = "by_species";
 
