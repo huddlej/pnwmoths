@@ -14,7 +14,7 @@ if (!defined('DOKU_TAB')) define('DOKU_TAB', "\t");
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 
 require_once(DOKU_PLUGIN.'syntax.php');
-require_once 'MothImage.php';
+require_once 'bootstrap.php';
 
 class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
 
@@ -45,7 +45,7 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
         if (count($matches) > 0) {
             $data["species"] = $matches[1];
 
-            $model = new PNWMoths_Data_MothImage();
+            $model = new PNWMoths_Model_MothImage();
             $data["data"] = $model->getData(array("species" => $data["species"]));
         }
 
