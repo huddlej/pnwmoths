@@ -1,0 +1,7 @@
+base   phenology
+author John Huddleston
+email  huddlej@gmail.com
+date   2010-03-15
+name   phenology plugin
+desc   Displays phenology data for a given species name.
+url    http://www.biol.wwu.edu/PNWmoths
