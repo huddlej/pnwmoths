@@ -8,7 +8,7 @@ require_once 'Zend/Loader/Autoloader.php';
 $loader = Zend_Loader_Autoloader::getInstance();
 $loader->registerNamespace('Tillikum_');
 
-class PNWMoths_Data {
+class PNWMoths_Model {
     public function getDatabase() {
         try {
             $couchdb = new Tillikum_CouchDb("http://localhost:5984");
