@@ -1,6 +1,4 @@
 <?php
-require_once 'Model.php';
-
 /**
  * Represents a way to obtain a set of moth sample data.
  */

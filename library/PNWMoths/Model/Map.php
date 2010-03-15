@@ -1,6 +1,4 @@
 <?php
-require_once 'Model.php';
-
 class PNWMoths_Model_Map extends PNWMoths_Model {
     public function getData(array $params = array()) {
         $db = $this->getDatabase();
