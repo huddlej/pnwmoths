@@ -1,7 +1,7 @@
 <?php
-require_once 'Data.php';
+require_once 'bootstrap.php';
 
-$data = new PNWMoths_Data();
+$data = new PNWMoths_Model();
 $db = $data->getDatabase();
 
 if (array_key_exists("doc_id", $_GET)) {
