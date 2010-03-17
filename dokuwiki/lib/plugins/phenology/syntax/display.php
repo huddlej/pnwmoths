@@ -56,13 +56,18 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
         if($mode != 'xhtml') return false;
 
         if (count($data["data"]) > 0) {
-            $renderer->doc .= "<table class='phenology'>";
+            $renderer->doc .= "<div id='plot'></div>";
+            $renderer->doc .= "<table class='phenology' border=1>";
+            $renderer->doc .= "<caption>{$data["species"]} Phenology</caption>";
+            $renderer->doc .= "<thead><tr><th>Month</th><th>Number of Records</th></tr></thead>";
+            $renderer->doc .= "<tbody>";
             foreach ($data["data"] as $key => $value) {
                 $renderer->doc .= "<tr>";
                 $renderer->doc .= "<td>$key</td>";
                 $renderer->doc .= "<td>$value</td>";
                 $renderer->doc .= "</tr>";
             }
+            $renderer->doc .= "</tbody>";
             $renderer->doc .= "</table>";
         }
         else {
