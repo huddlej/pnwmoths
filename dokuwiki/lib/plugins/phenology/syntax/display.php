@@ -44,9 +44,6 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
 
         if (count($matches) > 0) {
             $data["species"] = $matches[1];
-
-            $model = new PNWMoths_Model_Phenology();
-            $data["data"] = $model->getData(array("species" => $data["species"]));
         }
 
         return $data;
@@ -55,20 +52,9 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
     function render($mode, &$renderer, $data) {
         if($mode != 'xhtml') return false;
 
-        if (count($data["data"]) > 0) {
+        if (array_key_exists("species", $data)) {
+            $renderer->doc .= "<p id='species'>{$data['species']}</p>";
             $renderer->doc .= "<div id='plot'></div>";
-            $renderer->doc .= "<table class='phenology' border=1>";
-            $renderer->doc .= "<caption>{$data["species"]} Phenology</caption>";
-            $renderer->doc .= "<thead><tr><th>Month</th><th>Number of Records</th></tr></thead>";
-            $renderer->doc .= "<tbody>";
-            foreach ($data["data"] as $key => $value) {
-                $renderer->doc .= "<tr>";
-                $renderer->doc .= "<td>$key</td>";
-                $renderer->doc .= "<td>$value</td>";
-                $renderer->doc .= "</tr>";
-            }
-            $renderer->doc .= "</tbody>";
-            $renderer->doc .= "</table>";
         }
         else {
             $renderer->doc .= "None.";
