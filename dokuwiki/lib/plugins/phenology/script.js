@@ -1,15 +1,28 @@
 jQuery(document).ready(function () {
-    var data = [],
-        rowData,
-        table = jQuery("table.phenology");
-    table.hide();
-    jQuery.each(
-        jQuery("table.phenology tbody").children(),
-        function (i) {
-            data.push(parseInt(jQuery(this).children("td:last").text()));
+    var species = jQuery("#species").hide().text();
+
+    jQuery.get(
+        "http://localhost/~huddlej/service.php",
+        {
+            "method": "getPhenology",
+            "arg1": species
+        },
+        function (data, textStatus) {
+            var phenology = [];
+            jQuery(data).children().children().each(
+                function () {
+                    if (jQuery(this).text() != "success") {
+                        phenology.push(parseInt(jQuery(this).text()));
+                    }
+                }
+            );
+
+            return new Phenology(species, phenology);
         }
     );
+});
 
+function Phenology (species, data) {
     jQuery.jqplot(
         "plot",
         [data],
@@ -19,7 +32,7 @@ jQuery(document).ready(function () {
                 rendererOptions: {shadowAlpha: 0}
             },
             grid: {drawGridlines: false},
-            title: table.children("caption").text(),
+            title: species + " Phenology",
             axes: {
                 xaxis: {
                     label: 'Month',
@@ -37,4 +50,4 @@ jQuery(document).ready(function () {
             }
         }
     );
-});
+};
