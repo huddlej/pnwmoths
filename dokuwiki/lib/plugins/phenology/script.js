@@ -1,30 +1,21 @@
 jQuery(document).ready(function () {
     var species = jQuery("#species").hide().text();
 
-    jQuery.get(
+    jQuery.getJSON(
         "http://localhost/~huddlej/service.php",
         {
             "method": "getPhenology",
-            "arg1": species
+            "species": species
         },
         function (data, textStatus) {
-            var phenology = [];
-            jQuery(data).children().children().each(
-                function () {
-                    if (jQuery(this).text() != "success") {
-                        phenology.push(parseInt(jQuery(this).text()));
-                    }
-                }
-            );
-
-            return new Phenology(species, phenology);
+            return new Phenology(species, data);
         }
     );
 });
 
 function Phenology (species, data) {
     jQuery.jqplot(
-        "plot",
+        "map",
         [data],
         {
             seriesDefaults: {
