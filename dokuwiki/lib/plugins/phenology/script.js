@@ -15,7 +15,7 @@ jQuery(document).ready(function () {
 
 function Phenology (species, data) {
     jQuery.jqplot(
-        "map",
+        "plot",
         [data],
         {
             seriesDefaults: {

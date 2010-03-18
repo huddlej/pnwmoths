@@ -35,9 +35,8 @@ if (!defined('DOKU_INC')) die();
     ?>
     <script src="http://sorgalla.com/projects/jcarousel/lib/jquery.jcarousel.pack.js"
             type="text/javascript"></script>
-<!--    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=abcdefg&sensor=true_or_false"
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=abcdefg&sensor=true_or_false"
             type="text/javascript"></script>
--->
 
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jquery.jqplot.min.js"></script>
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.barRenderer.min.js"></script>
@@ -48,17 +47,15 @@ if (!defined('DOKU_INC')) die();
     <!--[if IE]><script language="javascript" type="text/javascript" src="/~huddlej/js/excanvas.min.js"></script><![endif]-->
     <link rel="stylesheet" href="/~huddlej/css/jquery.jqplot.css" type="text/css">
 
-<!--
     <script type="text/javascript">
     function initialize() {
-      if (GBrowserIsCompatible() && jQuery("#map") != null) {
+      if (GBrowserIsCompatible() && jQuery("#map").length > 0) {
         var map = new GMap2(document.getElementById("map"));
         map.setCenter(new GLatLng(37.4419, -122.1419), 13);
         map.setUIToDefault();
       }
     }
     </script>
--->
     <?php
   }
   ?>
