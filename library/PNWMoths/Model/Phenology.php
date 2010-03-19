@@ -1,13 +1,14 @@
 <?php
 class PNWMoths_Model_Phenology extends PNWMoths_Model {
-    public function getData(array $params = array()) {
+    public static function getData(array $params = array()) {
         if (array_key_exists("species", $params) === false) {
             return array();
         }
 
         $species = $params["species"];
-        $samplesModel = new PNWMoths_Model_SpeciesSample();
-        $samples = $samplesModel->getData(array("species" => $species));
+        $samples = PNWMoths_Model_SpeciesSample::getData(
+            array("species" => $species)
+        );
 
         $samplesByInterval = array();
 

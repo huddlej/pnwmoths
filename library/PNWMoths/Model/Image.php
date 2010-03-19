@@ -1,13 +1,18 @@
 <?php
 /**
- * Represents a single instance of a similar species.
+ * Represents an image of a particular species specimen.
  */
 class PNWMoths_Model_Image extends PNWMoths_Model {
-    protected $designDoc = "moths";
-    protected $viewName = "by_species_image";
+    protected static $designDoc = "moths";
+    protected static $viewName = "by_species_image";
 
-    public function getData(array $params = array()) {
-        $db = $this->getDatabase();
+    protected $baseUrl = "http://localhost/~huddlej/getFile.php";
+    protected $docId;
+    protected $imageId;
+    protected $attributes;
+
+    public static function getData(array $params = array()) {
+        $db = parent::getDatabase();
 
         if ($db === false || array_key_exists("species", $params) === false) {
             return array();
@@ -18,7 +23,7 @@ class PNWMoths_Model_Image extends PNWMoths_Model {
                             "key" => $species);
 
         try {
-            $results = $db->getView($this->designDoc, $this->viewName,
+            $results = $db->getView(self::$designDoc, self::$viewName,
                                     $viewParams);
         }
         catch (Zend_Http_Client_Adapter_Exception $e) {
@@ -35,6 +40,28 @@ class PNWMoths_Model_Image extends PNWMoths_Model {
         }
 
         return $images;
+    }
+
+    public function __construct($docId, $imageId, $attributes) {
+        $this->docId = $docId;
+        $this->imageId = $imageId;
+        $this->attributes = $attributes;
+    }
+
+    public function getUrl() {
+        return sprintf("%s?doc_id=%s&attachment_id=%s",
+                       $this->baseUrl,
+                       $this->docId,
+                       $this->imageId);
+    }
+
+    public function getCaption() {
+        if (array_key_exists("caption", $this->attributes)) {
+            return $this->attributes["caption"];
+        }
+        else {
+            return "";
+        }
     }
 }
 ?>

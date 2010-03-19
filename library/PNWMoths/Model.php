@@ -9,7 +9,7 @@ $loader = Zend_Loader_Autoloader::getInstance();
 $loader->registerNamespace('Tillikum_');
 
 class PNWMoths_Model {
-    public function getDatabase() {
+    public static function getDatabase() {
         try {
             $couchdb = new Tillikum_CouchDb("http://localhost:5984");
             $db = new Tillikum_CouchDb_Database($couchdb, "pnwmoths");
@@ -20,7 +20,7 @@ class PNWMoths_Model {
         }
     }
 
-    public function getData(array $params = array()) {
+    public static function getData(array $params = array()) {
         throw new Exception("Not defined.");
     }
 }

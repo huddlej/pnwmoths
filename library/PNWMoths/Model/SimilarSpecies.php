@@ -3,11 +3,11 @@
  * Represents a single instance of a similar species.
  */
 class PNWMoths_Model_SimilarSpecies extends PNWMoths_Model {
-    protected $designDoc = "moths";
-    protected $viewName = "by_similar_species";
+    protected static $designDoc = "moths";
+    protected static $viewName = "by_similar_species";
 
-    public function getData(array $params = array()) {
-        $db = $this->getDatabase();
+    public static function getData(array $params = array()) {
+        $db = parent::getDatabase();
 
         if ($db === false || array_key_exists("species", $params) === false) {
             return array();
@@ -18,7 +18,7 @@ class PNWMoths_Model_SimilarSpecies extends PNWMoths_Model {
                             "key" => $species);
 
         try {
-            $results = $db->getView($this->designDoc, $this->viewName,
+            $results = $db->getView(self::$designDoc, self::$viewName,
                                     $viewParams);
         }
         catch (Zend_Http_Client_Adapter_Exception $e) {

@@ -1,6 +1,6 @@
 <?php
 class PNWMoths_Model_Map extends PNWMoths_Model {
-    public function getData(array $params = array()) {
+    public static function getData(array $params = array()) {
         $db = $this->getDatabase();
 
         /**

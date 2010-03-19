@@ -2,14 +2,15 @@
 require_once 'bootstrap.php';
 
 function getSamples($species) {
-    $model = new PNWMoths_Model_SpeciesSample();
-    $samples = $model->getData(array("species" => $species));
-    return $samples;
+    return PNWMoths_Model_SpeciesSample::getData(
+        array("species" => $species)
+    );
 }
 
 function getPhenology($species) {
-    $model = new PNWMoths_Model_Phenology();
-    $phenology = $model->getData(array("species" => $species));
+    $phenology = PNWMoths_Model_Phenology::getData(
+        array("species" => $species)
+    );
     return array_values($phenology);
 }
 

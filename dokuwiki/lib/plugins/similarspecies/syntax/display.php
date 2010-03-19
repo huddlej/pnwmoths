@@ -45,8 +45,9 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
         if (count($matches) > 0) {
             $data["species"] = $matches[1];
 
-            $model = new PNWMoths_Model_SimilarSpecies();
-            $data["data"] = $model->getData(array("species" => $data["species"]));
+            $data["data"] = PNWMoths_Model_SimilarSpecies::getData(
+                array("species" => $data["species"])
+            );
         }
 
         return $data;
