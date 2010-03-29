@@ -28,11 +28,9 @@ class PNWMoths_Model_SimilarSpecies extends PNWMoths_Model {
 
         $similar_species = array();
         foreach ($results->rows as $row) {
-            // Get the first key in the array of attachment ids.
-            $attachment_id = array_shift(array_keys((array)$row->doc->_attachments));
-            // TODO: make URL a property
+            list($doc_id, $attachment_id) = (array)$row->doc->image;
             $images = array(
-                "http://localhost/~huddlej/getFile.php?doc_id={$row->id}&attachment_id={$attachment_id}"
+                new PNWMoths_Model_Image($doc_id, $attachment_id)
             );
             $similar_species[] = array("species" => $row->doc->similar_species,
                                        "images" => $images);
