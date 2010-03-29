@@ -63,12 +63,12 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
                 $image_url = $row->getUrl();
 
                 if ($firstRow) {
-                    $renderer->doc .= "<div id='current-image'><img src='$image_url' /></div>";
+                    $renderer->doc .= "<div id='current-image'>$row</div>";
                     $renderer->doc .= "<ul id='other-images' class='jcarousel-skin-tango'>";
                     $firstRow = false;
                 }
 
-                $renderer->doc .= "<li><a href=''><img src='$image_url' title='{$row->getCaption()}' /></a></li>";
+                $renderer->doc .= "<li><a href=''>$row</a></li>";
             }
             $renderer->doc .= "</ul>";
             $renderer->doc .= "</div>";
