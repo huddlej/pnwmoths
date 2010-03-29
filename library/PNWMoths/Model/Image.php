@@ -41,10 +41,16 @@ class PNWMoths_Model_Image extends PNWMoths_Model {
         return $images;
     }
 
-    public function __construct($docId, $imageId, $attributes) {
+    public function __construct($docId, $imageId, $attributes=null) {
         $this->docId = $docId;
         $this->imageId = $imageId;
-        $this->attributes = $attributes;
+
+        if ($attributes === null) {
+            $this->attributes = array();
+        }
+        else {
+            $this->attributes = $attributes;
+        }
     }
 
     public function getUrl() {
