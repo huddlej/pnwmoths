@@ -10,9 +10,14 @@ if (array_key_exists("doc_id", $_GET)) {
     if (array_key_exists("attachment_id", $_GET)) {
         $attachment_id = $_GET["attachment_id"];        
         $attachment = $db->getAttachment($doc_id, $attachment_id);
-        header('Content-Type', $attachment->getHeader('Content-Type'));
-        header('Content-Length', $attachment->getHeader('Content-Length'));
-        echo $attachment->getBody();
+        if ($attachment->getStatus() == 200) {
+            $headers = explode("\n", $attachment->getHeadersAsString());
+            foreach ($headers as $header) {
+                header($header);
+            }
+
+            print $attachment->getBody();
+        }
     }
 }
 ?>
