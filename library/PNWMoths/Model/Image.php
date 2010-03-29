@@ -53,6 +53,12 @@ class PNWMoths_Model_Image extends PNWMoths_Model {
         }
     }
 
+    public function __toString() {
+        return sprintf("<img src='%s' title='%s' />",
+                       $this->getUrl(),
+                       $this->getCaption());
+    }
+
     public function getUrl() {
         return sprintf("%s?doc_id=%s&attachment_id=%s",
                        $this->baseUrl,
