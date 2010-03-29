@@ -35,8 +35,7 @@ class PNWMoths_Model_Image extends PNWMoths_Model {
         foreach ($results->rows as $row) {
             // Get the last value in the array of attachment ids.
             $attachment_id = array_pop(array_keys((array)$row->doc->_attachments));
-            $images[] = array("data" => $row->doc,
-                              "image" => "http://localhost/~huddlej/getFile.php?doc_id={$row->id}&attachment_id={$attachment_id}");
+            $images[] = new PNWMoths_Model_Image($row->id, $attachment_id, (array)$row->doc);
         }
 
         return $images;

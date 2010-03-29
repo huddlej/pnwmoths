@@ -60,7 +60,7 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
             $firstRow = true;
             $renderer->doc .= "<div id='images'>";
             foreach($data["data"] as $row) {
-                $image_url = $row["image"];
+                $image_url = $row->getUrl();
 
                 if ($firstRow) {
                     $renderer->doc .= "<div id='current-image'><img src='$image_url' /></div>";
@@ -68,12 +68,7 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
                     $firstRow = false;
                 }
 
-                if (property_exists($row["data"], "caption")) {
-                    $renderer->doc .= "<li><a href=''><img src='$image_url' title='{$row["data"]->caption}' /></a></li>";
-                }
-                else {
-                    $renderer->doc .= "<li><a href=''><img src='$image_url' /></a></li>";
-                }
+                $renderer->doc .= "<li><a href=''><img src='$image_url' title='{$row->getCaption()}' /></a></li>";
             }
             $renderer->doc .= "</ul>";
             $renderer->doc .= "</div>";
