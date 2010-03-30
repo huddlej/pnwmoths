@@ -111,8 +111,8 @@ ol.image-list li {
     text-align: center;
 }
 
-#map {
-    height: 367px;
+#googlemap {
+    height: 363px;
     width: 100%;
 }
 

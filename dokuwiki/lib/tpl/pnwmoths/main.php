@@ -35,14 +35,16 @@ if (!defined('DOKU_INC')) die();
     ?>
     <script src="http://sorgalla.com/projects/jcarousel/lib/jquery.jcarousel.pack.js"
             type="text/javascript"></script>
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=abcdefg&sensor=true_or_false"
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSzkSklZUfvCZ2DkVLa3pDPglmbAQ&sensor=true_or_false"
             type="text/javascript"></script>
+    <script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js" type="text/javascript"></script>
 
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jquery.jqplot.min.js"></script>
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.barRenderer.min.js"></script>
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.canvasTextRenderer.min.js"></script>
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.canvasAxisLabelRenderer.min.js"></script>
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.categoryAxisRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/~huddlej/js/map.js"></script>
 
     <!--[if IE]><script language="javascript" type="text/javascript" src="/~huddlej/js/excanvas.min.js"></script><![endif]-->
     <link rel="stylesheet" href="/~huddlej/css/jquery.jqplot.min.css" type="text/css">
