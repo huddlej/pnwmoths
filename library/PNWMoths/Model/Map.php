@@ -15,39 +15,30 @@ class PNWMoths_Model_Map extends PNWMoths_Model {
         foreach ($samples as $sample) {
             $point = implode("|", array($sample->latitude, $sample->longitude));
 
-            if (array_key_exists($point, $points)) {
-            }
-            else {
+            if (array_key_exists($point, $points) === false) {
                 $points[$point] = array(
                     "lat" => (float)$sample->latitude,
                     "lng" => (float)$sample->longitude,
                     "info" => array(
-                        "site_name" => $sample->site_name,
-                        "county" => $sample->county,
-                        "state" => $sample->state,
-                        "elevation" => $sample->elevation
+                        "Site name" => $sample->site_name,
+                        "County" => $sample->county,
+                        "State" => $sample->state,
+                        "Elevation" => $sample->elevation,
+                        "Collections" => array()
                     )
                 );
             }
+
+            $points[$point]["info"]["Collections"][] = PNWMoths_Model_SpeciesSample::getCollection($sample);
         }
 
         foreach ($points as $point_index => $point) {
-            $html = "<h2>$species</h2>";
-            $html .= "<table>";
-            foreach ($point["info"] as $key => $value) {
-                if ($value === null) {
-                    $clean_value = "";
-                }
-                else {
-                    $clean_value = $value;
-                }
-                $html .= "<tr>";
-                $html .= "<td>$key</td>";
-                $html .= "<td>$clean_value</td>";
-                $html .= "</tr>";
-            }
-            $html .= "</table>";
-            $points[$point_index]["info"] = $html;
+            $view = new Zend_View();
+            $view->setScriptPath("/home/huddlej/pnwmoths/library/PNWMoths/Model/scripts");
+            $view->species = $species;
+            $point["info"]["Collections"] = implode("<br />", $point["info"]["Collections"]);
+            $view->info = $point["info"];
+            $points[$point_index]["info"] = $view->render("info_window.phtml");
         }
 
         return array_values($points);
