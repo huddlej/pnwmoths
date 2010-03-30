@@ -33,5 +33,33 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
 
         return $samples;
     }
+
+    public static function getDate($record) {
+        return implode("/", array($record->month,
+                                  $record->day,
+                                  $record->year));
+    }
+
+    public static function getCollection($record) {
+        $summary = self::getDate($record);
+
+        if ($record->collector) {
+            $summary .= " by " . $record->collector;
+
+            if ($record->number_of_males) {
+                $summary .= ", " . $record->number_of_males . " males";
+            }
+
+            if ($record->number_of_females) {
+                $summary .= ", " . $record->number_of_females . " females";
+            }
+
+            if ($record->collection) {
+                $summary .= " (" . $record->collection . ")";
+            }
+        }
+
+        return $summary;
+    }
 }
 ?>
