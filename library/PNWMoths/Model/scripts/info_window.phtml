@@ -1,0 +1,10 @@
+<h2><?php echo $this->species ?></h2>
+
+<table>
+<?php foreach ($this->info as $key => $value): ?>
+    <tr>
+        <td><?php echo $key; ?></td>
+        <td><?php echo $value; ?></td>
+    </tr>
+<?php endforeach; ?>
+</table>
