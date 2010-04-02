@@ -28,20 +28,25 @@ class PNWMoths_Model_Map extends PNWMoths_Model {
                         "County" => $sample->county,
                         "State" => $sample->state,
                         "Elevation" => $sample->elevation,
-                        "Collections" => array()
-                    )
+                    ),
+                    "collections" => array()
                 );
             }
 
-            $points[$point]["info"]["Collections"][] = PNWMoths_Model_SpeciesSample::getCollection($sample);
+            // Get a string representation of this sample's collection data.
+            $collection = PNWMoths_Model_SpeciesSample::getCollection($sample);
+            if ($collection) {
+                $points[$point]["collections"][] = $collection;
+            }
         }
 
         foreach ($points as $point_index => $point) {
             $view = new Zend_View();
             $view->setScriptPath("/home/huddlej/pnwmoths/library/PNWMoths/Model/scripts");
             $view->species = $species;
-            $point["info"]["Collections"] = implode("<br />", $point["info"]["Collections"]);
             $view->info = $point["info"];
+            $view->collections = $point["collections"];
+            unset($points[$point_index]["collections"]);
             $points[$point_index]["info"] = $view->render("info_window.phtml");
         }
 
