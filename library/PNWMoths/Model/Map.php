@@ -10,6 +10,10 @@ class PNWMoths_Model_Map extends PNWMoths_Model {
             array("species" => $species)
         );
 
+        // Sort samples by date so all collection date is in order when it gets
+        // displayed in the map info window.
+        usort($samples, array("PNWMoths_Model_SpeciesSample", "compareByDate"));
+
         // Create a unique list of points indexed by latitude|longitude.
         $points = array();
         foreach ($samples as $sample) {
