@@ -44,6 +44,8 @@ function Map(data) {
     map.addMapType(G_PHYSICAL_MAP);
     map.setMapType(G_PHYSICAL_MAP);
 
+    mgr = new MarkerManager(map);
+
     // Add filters to map container.
     map.getContainer().appendChild(jQuery("#filters").get(0));
 
@@ -56,7 +58,6 @@ function Map(data) {
     // Use the marker manager to add multiple markers simulataneously and set
     // the maximum and minimum zoom levels at which the markers should be
     // displayed.
-    mgr = new MarkerManager(map);
     mgr.addMarkers(markers, 3, 10);
     mgr.refresh();
 }
