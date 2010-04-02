@@ -38,6 +38,7 @@ if (array_key_exists("method", $_GET) && array_key_exists("species", $_GET)) {
     }
 
     if (isset($data)) {
+        header("Content-type: text/plain");
         echo Zend_Json::encode($data);
     }
 }
