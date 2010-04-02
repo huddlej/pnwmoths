@@ -14,15 +14,16 @@ jQuery(document).ready(function () {
         }
     );
 
-    data = [
-         {lat: 46.90,
-          lng: -118.00,
-          info: "<p>Hey, I'm some info!!!</p>"},
-         {lat: 47.0,
-          lng: -118.5,
-          info: "<p>Oh hai, I'm also info.</p>"}
-    ];
-    //return new Map(data);
+     var div = jQuery("#filters");
+     div.css("background-color", "#ccc");
+     div.css("position", "relative");
+
+    jQuery("#toggle-filters").click(
+        function (event) {
+            event.preventDefault();
+            div.toggle();
+        }
+    );
 });
 
 function Map(data) {
@@ -42,6 +43,9 @@ function Map(data) {
     map.addControl(new GMapTypeControl());
     map.addMapType(G_PHYSICAL_MAP);
     map.setMapType(G_PHYSICAL_MAP);
+
+    // Add filters to map container.
+    map.getContainer().appendChild(jQuery("#filters").get(0));
 
     // Build a list of markers for the given data.
     for (var i = 0; i < data.length; i++) {
