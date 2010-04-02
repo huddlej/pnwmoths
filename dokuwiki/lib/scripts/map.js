@@ -39,7 +39,7 @@ function Map(data) {
 
     // Center on Washington State.
     map.setCenter(new GLatLng(46.90, -118.00), 5);
-    map.addControl(new GLargeMapControl());
+    map.addControl(new GSmallMapControl());
     map.addControl(new GMapTypeControl());
     map.addMapType(G_PHYSICAL_MAP);
     map.setMapType(G_PHYSICAL_MAP);
