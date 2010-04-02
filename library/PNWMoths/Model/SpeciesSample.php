@@ -40,6 +40,22 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
                                   $record->year));
     }
 
+    /**
+     * Compare two species samples by date. Used to sort an array of samples by
+     * date.
+     */
+    public static function compareByDate($a, $b) {
+        $a = array($a->year, $a->month, $a->day);
+        $b = array($b->year, $b->month, $b->day);
+
+        if ($a == $b) {
+            return 0;
+        }
+        else {
+            return ($a < $b) ? -1 : 1;
+        }
+    }
+
     public static function getCollection($record) {
         $summary = self::getDate($record);
 
