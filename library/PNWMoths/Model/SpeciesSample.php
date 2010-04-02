@@ -35,9 +35,18 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
     }
 
     public static function getDate($record) {
-        return implode("/", array($record->month,
-                                  $record->day,
-                                  $record->year));
+        if ($record->year && $record->month && $record->day) {
+            return $record->month . "/" . $record->day . "/" . $record->year;
+        }
+        elseif($record->year && $record->month)  {
+            return $record->month . "/" . $record->year;
+        }
+        elseif ($record->year) {
+            return $record->year;
+        }
+        else {
+            return "";
+        }
     }
 
     /**
