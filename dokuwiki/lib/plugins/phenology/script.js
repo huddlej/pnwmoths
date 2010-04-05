@@ -23,7 +23,7 @@ function Phenology (species, data) {
                 rendererOptions: {shadowAlpha: 0}
             },
             grid: {drawGridlines: false},
-            title: species + " Phenology",
+            title: "Phenology",
             axes: {
                 xaxis: {
                     label: 'Month',
@@ -41,4 +41,6 @@ function Phenology (species, data) {
             }
         }
     );
+
+    jQuery("#plot").hide();
 };
