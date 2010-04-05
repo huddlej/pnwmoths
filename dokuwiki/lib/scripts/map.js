@@ -1,18 +1,8 @@
 var map, mgr;
 
 jQuery(document).ready(function () {
-    var species = jQuery("#species").hide().text();
-
-    jQuery.getJSON(
-        "http://localhost/~huddlej/service.php",
-        {
-            "method": "getMap",
-            "species": species
-        },
-        function (data, textStatus) {
-            return new Map(data);
-        }
-    );
+     var species = jQuery("#species").hide().text(),
+         newmap = new Map();
 
      var div = jQuery("#filters");
      div.css("background-color", "#ccc");
@@ -24,12 +14,26 @@ jQuery(document).ready(function () {
             div.toggle();
         }
     );
+
+    var phenology = jQuery("#plot");
+    phenology.css("background-color", "#fff");
+    jQuery("#toggle-phenology").click(
+        function (event) {
+            event.preventDefault();
+            phenology.toggle();
+        }
+    );
+
+    jQuery(document).bind(
+        "dataIsReady",
+        function (event) {
+            console.log("load map data");
+            createMarkers(data);
+        }
+    );
 });
 
-function Map(data) {
-    var markers = [],
-        point;
-
+function Map() {
     if (!GBrowserIsCompatible()) {
         jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
         return;
@@ -48,10 +52,20 @@ function Map(data) {
 
     // Add filters to map container.
     map.getContainer().appendChild(jQuery("#filters").get(0));
+    map.getContainer().appendChild(jQuery("#plot").get(0));
+}
+
+function createMarkers(data) {
+    var markers = [],
+        point,
+        i;
+
+    // Always clear the current marker set before adding new markers.
+    mgr.clearMarkers();
 
     // Build a list of markers for the given data.
-    for (var i = 0; i < data.length; i++) {
-        point = new GLatLng(data[i].lat, data[i].lng);
+    for (i = 0; i < data.length; i++) {
+        point = new GLatLng(data[i].latitude, data[i].longitude);
         markers.push(createMarker(point, i, data[i].info, {}));
     }
 
