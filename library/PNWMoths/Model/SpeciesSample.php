@@ -26,8 +26,25 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
             return array();
         }
 
+        // Prepare filters to apply when looping through result set.
+        if (array_key_exists("filters", $params)) {
+            $filters = $params["filters"];
+        }
+        else {
+            $filters = array();
+        }
+
         $samples = array();
         foreach ($results->rows as $row) {
+            if (array_key_exists("elevation", $filters)) {
+                if ($row->doc->elevation < (int)$filters["elevation"][0] ||
+                    $row->doc->elevation > (int)$filters["elevation"][1]) {
+                    continue;
+                }
+            }
+
+            $row->doc->latitude = (float)$row->doc->latitude;
+            $row->doc->longitude = (float)$row->doc->longitude;
             $samples[] = $row->doc;
         }
 
