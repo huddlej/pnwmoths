@@ -1,4 +1,10 @@
 #plot {
-    height: 150px;
-    width: 200px;
+    -moz-border-radius-bottomleft: 2em;
+    -moz-border-radius-bottomright: 2em;
+    background-color: #ffffff;
+    height: 250px;
+    padding-left: 1em;
+    padding-bottom: 1em;
+    position: relative;
+    width: 95%;
 }
