@@ -1,17 +1,13 @@
 var map, mgr;
 
 jQuery(document).ready(function () {
-     var species = jQuery("#species").hide().text(),
-         newmap = new Map();
-
-     var div = jQuery("#filters");
-     div.css("background-color", "#ccc");
-     div.css("position", "relative");
+    var species = jQuery("#species").hide().text(),
+        newmap = new Map();
 
     jQuery("#toggle-filters").click(
         function (event) {
             event.preventDefault();
-            div.toggle();
+            jQuery("#filters").toggle(200);
         }
     );
 

@@ -116,6 +116,21 @@ ol.image-list li {
     width: 100%;
 }
 
+/* filter styles */
+
+#filters {
+    -moz-border-radius-bottomleft: 2em;
+    -moz-border-radius-bottomright: 2em;
+    background-color: beige;
+    padding-left: 1em;
+    padding-bottom: 1em;
+    position: relative;
+    top: -0.3em;
+}
+#filters p {
+    margin: 0.25em 0 0;
+}
+
 #similar-species ol.image-list img {
     width: 230px;
 }
