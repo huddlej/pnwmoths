@@ -111,6 +111,8 @@ ol.image-list li {
     text-align: center;
 }
 
+/* map styles */
+
 #googlemap {
     height: 363px;
     width: 100%;
