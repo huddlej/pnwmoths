@@ -4,18 +4,20 @@ jQuery(document).ready(function () {
     var species = jQuery("#species").hide().text(),
         newmap = new Map();
 
+    var filters = jQuery("#filters");
     jQuery("#toggle-filters").click(
         function (event) {
             event.preventDefault();
-            jQuery("#filters").toggle(200);
+            filters.siblings(".tab").hide();
+            filters.toggle();
         }
     );
 
     var phenology = jQuery("#plot");
-    phenology.css("background-color", "#fff");
     jQuery("#toggle-phenology").click(
         function (event) {
-            event.preventDefault();
+            event.preventDefault()
+            phenology.siblings(".tab").hide();
             phenology.toggle();
         }
     );
