@@ -66,7 +66,7 @@ function createMarkers(data) {
     // Build a list of markers for the given data.
     for (i = 0; i < data.length; i++) {
         point = new GLatLng(data[i].latitude, data[i].longitude);
-        markers.push(createMarker(point, i, data[i].info, {}));
+        markers.push(createMarker(point, i, data[i].collection, {}));
     }
 
     // Use the marker manager to add multiple markers simulataneously and set
