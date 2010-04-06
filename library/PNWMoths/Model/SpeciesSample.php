@@ -66,6 +66,23 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
         }
     }
 
+    public static function getSortableDate($record) {
+        if ($record->year && $record->month && $record->day) {
+            $date = array($record->year, $record->month, $record->day);
+        }
+        elseif($record->year && $record->month)  {
+            $date = array($record->year, $record->month, 1);
+        }
+        elseif ($record->year) {
+            $date = array($record->year, 1, 1);
+        }
+        else {
+            $date = array();
+        }
+
+        return strtotime(implode("/", $date));
+    }
+
     /**
      * Compare two species samples by date. Used to sort an array of samples by
      * date.
