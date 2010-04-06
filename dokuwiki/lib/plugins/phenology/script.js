@@ -5,7 +5,8 @@ jQuery(document).ready(function () {
             var phenologyData = [],
                 startInterval = 0,
                 endInterval = 12,
-                i;
+                i,
+                plot;
 
             // Pre-populate samples by interval with zeros.
             for (i = startInterval; i < endInterval; i++) {
@@ -20,8 +21,11 @@ jQuery(document).ready(function () {
                 }
             }
 
-            jQuery("#plot").empty();
-            return new Phenology(species, phenologyData);
+            plotDiv = jQuery("#plot");
+            plotDiv.show();
+            plotDiv.empty();
+            plot = new Phenology(species, phenologyData);
+            plotDiv.hide();
         }
     );
 });
