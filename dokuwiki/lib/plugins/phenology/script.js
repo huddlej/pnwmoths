@@ -33,7 +33,7 @@ function Phenology (species, data) {
         {
             seriesDefaults: {
                 renderer: jQuery.jqplot.BarRenderer,
-                rendererOptions: {shadowAlpha: 0}
+                rendererOptions: {shadowAlpha: 0, barWidth: 5}
             },
             grid: {drawGridlines: false},
             title: "Phenology",
