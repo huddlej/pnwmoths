@@ -23,7 +23,6 @@ jQuery(document).ready(function () {
     jQuery(document).bind(
         "dataIsReady",
         function (event) {
-            console.log("load map data");
             createMarkers(data);
         }
     );
