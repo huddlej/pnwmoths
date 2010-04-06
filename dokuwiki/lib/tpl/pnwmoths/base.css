@@ -123,7 +123,7 @@ ol.image-list li {
 #filters {
     -moz-border-radius-bottomleft: 2em;
     -moz-border-radius-bottomright: 2em;
-    background-color: beige;
+    background-color: #ffffff;
     padding-left: 1em;
     padding-bottom: 1em;
     position: relative;
@@ -131,6 +131,11 @@ ol.image-list li {
 }
 #filters p {
     margin: 0.25em 0 0;
+}
+#tabs {
+    background-color: #ffffff;
+    position: relative;
+    width: 110px;
 }
 
 #similar-species ol.image-list img {
