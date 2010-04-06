@@ -42,6 +42,14 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
                     continue;
                 }
             }
+            if (array_key_exists("date", $filters)) {
+                $rowDate = self::getSortableDate($row->doc);
+
+                if ($rowDate < strtotime($filters["date"][0]) ||
+                    $rowDate > strtotime($filters["date"][1])) {
+                    continue;
+                }
+            }
 
             $row->doc->latitude = (float)$row->doc->latitude;
             $row->doc->longitude = (float)$row->doc->longitude;
