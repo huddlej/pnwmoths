@@ -1,23 +1,90 @@
-var data;
+var species,
+    data,
+    filters = {};
 
 jQuery(document).ready(function () {
-    var species = jQuery("#species").hide().text();
+    species = jQuery("#species").hide().text();
 
-    jQuery(document).bind("dataIsReady", function (event) { console.log("Data is ready!"); });
+    //
+    // Setup filters.
+    //
+
+    // All filters
+    jQuery("#clear-filters").click(
+        function (event) {
+            event.preventDefault();
+            filters = {};
+            jQuery(document).trigger("requestData");
+        }
+    );
+
+    // Elevation
+    jQuery("#form-elevation").submit(
+        function (event) {
+            event.preventDefault();
+            var start = jQuery("#startelevation").val(),
+                end = jQuery("#endelevation").val();
+            filters["elevation"] = [start, end];
+            jQuery(document).trigger("requestData");
+        }
+    );
+    jQuery("#clear-filter-elevation").click(
+        function (event) {
+            event.preventDefault();
+            if (filters.hasOwnProperty("elevation")) {
+                delete filters["elevation"];
+                jQuery(document).trigger("requestData");
+            }
+        }
+    );
+
+    // Date
+    jQuery("#form-date").submit(
+        function (event) {
+            event.preventDefault();
+            var start = jQuery("#startdate").val(),
+                end = jQuery("#enddate").val();
+            filters["date"] = [start, end];
+            jQuery(document).trigger("requestData");
+        }
+    );
+    jQuery("#clear-filter-date").click(
+        function (event) {
+            event.preventDefault();
+            if (filters.hasOwnProperty("date")) {
+                delete filters["date"];
+                jQuery(document).trigger("requestData");
+            }
+        }
+    );
+
+    jQuery(document).bind("requestData", function (event) { getData(species, filters); });
+    jQuery(document).trigger("requestData");
+});
+
+function getData(species, filters) {
+    var key,
+        requestData = {
+            "method": "getSamples",
+            "species": species
+        };
+
+    // Add filter values to the request data.
+    for (key in filters) {
+        if (filters.hasOwnProperty(key)) {
+           requestData[key] = filters[key];
+        }
+    }
 
     jQuery.getJSON(
         "http://localhost/~huddlej/service.php",
-        {
-            "method": "getSamples",
-            "species": species,
-            "elevation": [2000, 3000]
-        },
+        requestData,
         function (new_data, textStatus) {
+            // Update global data variable.
             data = new_data;
-            
+
             // Trigger "data is ready" event.
             jQuery(document).trigger("dataIsReady");
-            // "date": ["1990/03/01", "2000/03/01"]
         }
     );
-});
+}
