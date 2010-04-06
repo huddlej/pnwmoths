@@ -1,20 +1,33 @@
 jQuery(document).ready(function () {
-    var species = jQuery("#species").hide().text();
+    jQuery(document).bind(
+        "dataIsReady",
+        function (event) {
+            var phenologyData = [],
+                startInterval = 0,
+                endInterval = 12,
+                i;
 
-    jQuery.getJSON(
-        "http://localhost/~huddlej/service.php",
-        {
-            "method": "getPhenology",
-            "species": species
-        },
-        function (data, textStatus) {
-            return new Phenology(species, data);
+            // Pre-populate samples by interval with zeros.
+            for (i = startInterval; i < endInterval; i++) {
+                phenologyData[i] = 0;
+            }
+
+            // Map sample data to the given interval by counting each sample
+            // that matches an interval marker.
+            for (i in data) {
+                if (data.hasOwnProperty(i) && data[i].month) {
+                    phenologyData[parseInt(data[i].month) - 1] += 1;
+                }
+            }
+
+            jQuery("#plot").empty();
+            return new Phenology(species, phenologyData);
         }
     );
 });
 
 function Phenology (species, data) {
-    jQuery.jqplot(
+    return jQuery.jqplot(
         "plot",
         [data],
         {
@@ -41,6 +54,4 @@ function Phenology (species, data) {
             }
         }
     );
-
-    jQuery("#plot").hide();
 };
