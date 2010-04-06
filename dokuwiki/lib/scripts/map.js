@@ -48,18 +48,9 @@ function Map() {
     mgr = new MarkerManager(map);
 
     // Add filters to map container.
-    var filtersTab = jQuery("<div><a href='' id='toggle-filters'>Filters</a></div>");
-    filtersTab.css("background-color", "beige");
-    filtersTab.css("position", "relative");
-    filtersTab.css("width", "80px");
+    var tabs = jQuery("<div id='tabs'><a href='' id='toggle-filters'>Filters</a> | <a href='' id='toggle-phenology'>Phenology</a></div>");
 
-    var phenologyTab = jQuery("<div><a href='' id='toggle-phenology'>Phenology</a></div>");
-    phenologyTab.css("background-color", "beige");
-    phenologyTab.css("position", "relative");
-    phenologyTab.css("width", "80px");
-
-    map.getContainer().appendChild(filtersTab.get(0));
-    map.getContainer().appendChild(phenologyTab.get(0));
+    map.getContainer().appendChild(tabs.get(0));
     map.getContainer().appendChild(jQuery("#filters").get(0));
     map.getContainer().appendChild(jQuery("#plot").get(0));
 }
