@@ -54,7 +54,7 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
 
         if (array_key_exists("species", $data)) {
             $renderer->doc .= "<p id='species'>{$data['species']}</p>";
-            $renderer->doc .= "<div id='plot'></div>";
+            $renderer->doc .= "<div id='plot' class='tab'></div>";
         }
         else {
             $renderer->doc .= "None.";
