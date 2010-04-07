@@ -157,8 +157,9 @@ function renderMarkerRecord(record) {
                       "county": "Country",
                       "state": "State",
                       "elevation": "Elevation"},
-        html = "<div class='infowindow'>",
-        attribute, attribute_name, attribute_value;
+        pointHtml = "<div class='infowindow'>",
+        collectionHtml = "",
+        attribute, attribute_name, attribute_value, i;
 
     for (attribute in attributes) {
         if (attributes.hasOwnProperty(attribute)) {
@@ -169,12 +170,25 @@ function renderMarkerRecord(record) {
             else {
                 attribute_value = "";
             }
-            html += "<p>" + attribute_name + ": " + attribute_value + "</p>";
+            pointHtml += "<p>" + attribute_name + ": " + attribute_value + "</p>";
         }
     }
 
-    html += "</div>";
-    return html;
+    pointHtml += "</div>";
+
+    if (record.hasOwnProperty("collections") && record.collections.length > 0) {
+        collectionHtml = "<div class='infowindow'>";
+        collectionHtml += "<ol>";
+        for (i in record.collections) {
+            if (record.collections.hasOwnProperty(i)) {
+                collectionHtml += "<li>" + record.collections[i] + "</li>";
+            }
+        }
+        collectionHtml += "</ol>";
+        collectionHtml += "</div>";
+    }
+
+    return [pointHtml, collectionHtml];
 }
 
 function createMarkers(data) {
@@ -205,7 +219,8 @@ function createMarker(point, number, html, marker_options) {
     var marker = new GMarker(point, marker_options);
     marker.value = number;
     GEvent.addListener(marker, "click", function() {
-        map.openInfoWindowHtml(point, html);
+        marker.openInfoWindowTabsHtml([new GInfoWindowTab("Site", html[0]),
+                                       new GInfoWindowTab("Collections", html[1])]);
     });
 
     return marker;
