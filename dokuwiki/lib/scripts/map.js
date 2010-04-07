@@ -91,13 +91,67 @@ function groupMarkerData(data) {
                     groupedData[key][attribute] = data[i][attribute];
                 }
             }
+
+            // Add any collection data available for this record.
+            collection = renderCollection(data[i]);
+            if (collection !== null) {
+                if (groupedData[key].hasOwnProperty("collections") === false) {
+                    groupedData[key]["collections"] = [];
+                }
+
+                groupedData[key]["collections"].push(collection);
+            }
         }
     }
 
     return groupedData;
 }
 
-// Render one marker data record to HTML for the marker info window.
+// Render a date string for a given record.
+function renderDate(record) {
+    if (record.year && record.month && record.day) {
+        return record.month + "/" + record.day + "/" + record.year;
+    }
+    else if(record.year && record.month)  {
+        return record.month + "/" + record.year;
+    }
+    else if(record.year) {
+        return record.year;
+    }
+    else {
+        return "";
+    }
+}
+
+// Render all collection related information for a given record.
+function renderCollection(record) {
+    // Set the date for this marker.
+    var summary = renderDate(record);
+    if (summary != "") {
+        if (record.collector) {
+            summary += " by " + record.collector;
+
+            if (record.number_of_males) {
+                summary += ", " + record.number_of_males + " males";
+            }
+
+            if (record.number_of_females) {
+                summary += ", " + record.number_of_females + " females";
+            }
+
+            if (record.collection) {
+                summary += " (" + record.collection + ")";
+            }
+        }
+
+        return summary;
+    }
+
+    return null;
+}
+
+// Render one marker data record to an array of HTML for the marker info window
+// tabs.
 function renderMarkerRecord(record) {
     var attributes = {"site_name": "Site Name",
                       "county": "Country",
