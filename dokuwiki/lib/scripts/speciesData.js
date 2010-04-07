@@ -14,6 +14,7 @@ jQuery(document).ready(function () {
         function (event) {
             event.preventDefault();
             filters = {};
+            jQuery("#filters input:text").val("");
             jQuery(document).trigger("requestData");
         }
     );
@@ -33,6 +34,7 @@ jQuery(document).ready(function () {
             event.preventDefault();
             if (filters.hasOwnProperty("elevation")) {
                 delete filters["elevation"];
+                jQuery(this).siblings("input:text").val("");
                 jQuery(document).trigger("requestData");
             }
         }
@@ -53,6 +55,7 @@ jQuery(document).ready(function () {
             event.preventDefault();
             if (filters.hasOwnProperty("date")) {
                 delete filters["date"];
+                jQuery(this).siblings("input:text").val("");
                 jQuery(document).trigger("requestData");
             }
         }
