@@ -120,6 +120,9 @@ ol.image-list li {
 div.infowindow p {
     margin: 0.1em 0;
 }
+div.infowindow ol li {
+    list-style-type: none;
+}
 
 /* filter styles */
 
