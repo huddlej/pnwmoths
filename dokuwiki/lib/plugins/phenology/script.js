@@ -1,4 +1,6 @@
 jQuery(document).ready(function () {
+    // Listen for the custom "dataIsReady" event which indicates the JSON data
+    // from the server is ready for use.
     jQuery(document).bind(
         "dataIsReady",
         function (event) {
@@ -21,6 +23,10 @@ jQuery(document).ready(function () {
                 }
             }
 
+            // jqPlot requires the placeholder div to be visible in the DOM when
+            // the plot is created. Each time a new plot is generated the div
+            // needs to be emptied and shown. After the plot is generated, the
+            // div can be hidden again.
             plotDiv = jQuery("#plot");
             plotDiv.show();
             plotDiv.empty();
@@ -31,6 +37,7 @@ jQuery(document).ready(function () {
 });
 
 function Phenology (species, data) {
+    // Return a new jqPlot. This mostly consists of a lot of jqPlot options.
     return jQuery.jqplot(
         "plot",
         [data],
