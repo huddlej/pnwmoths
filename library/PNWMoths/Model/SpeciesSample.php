@@ -56,6 +56,10 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
             $samples[] = $row->doc;
         }
 
+        // Sort samples by date so all collection date is in order when it gets
+        // displayed in the map info window.
+        usort($samples, array("PNWMoths_Model_SpeciesSample", "compareByDate"));
+
         return $samples;
     }
 
