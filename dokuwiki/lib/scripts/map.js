@@ -31,6 +31,8 @@ jQuery(document).ready(function () {
 });
 
 function Map() {
+    var bottomLeft, bottomRight;
+
     if (!GBrowserIsCompatible()) {
         jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
         return;
@@ -40,9 +42,15 @@ function Map() {
 
     // Center on Washington State.
     map.setCenter(new GLatLng(46.90, -118.00), 5);
-    map.addControl(new GSmallMapControl());
-    map.addControl(new GMapTypeControl());
+    bottomLeft = new GControlPosition(G_ANCHOR_BOTTOM_LEFT,
+                                       new GSize(10, 10));
+    bottomRight = new GControlPosition(G_ANCHOR_BOTTOM_RIGHT,
+                                       new GSize(10, 10));
+    map.addControl(new GSmallMapControl(), bottomLeft);
+    map.addControl(new GMapTypeControl(), bottomRight);
     map.addMapType(G_PHYSICAL_MAP);
+    map.removeMapType(G_NORMAL_MAP);
+    map.removeMapType(G_SATELLITE_MAP);
     map.setMapType(G_PHYSICAL_MAP);
 
     mgr = new MarkerManager(map);
