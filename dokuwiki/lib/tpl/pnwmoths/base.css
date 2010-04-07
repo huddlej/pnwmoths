@@ -117,6 +117,9 @@ ol.image-list li {
     height: 363px;
     width: 100%;
 }
+div.infowindow p {
+    margin: 0.1em 0;
+}
 
 /* filter styles */
 

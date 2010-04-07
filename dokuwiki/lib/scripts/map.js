@@ -25,7 +25,7 @@ jQuery(document).ready(function () {
     jQuery(document).bind(
         "dataIsReady",
         function (event) {
-            createMarkers(data);
+            createMarkers(groupMarkerData(data));
         }
     );
 });
@@ -55,6 +55,66 @@ function Map() {
     map.getContainer().appendChild(jQuery("#plot").get(0));
 }
 
+// Group marker data by latitude and longitude values.
+function groupMarkerData(data) {
+    var groupedData = {},
+        i,
+        j,
+        attributes = ["latitude", "longitude", "site_name", "county", "state", "elevation"],
+        key,
+        attribute;
+
+    for (i in data) {
+        if (data.hasOwnProperty(i)) {
+            key = [data[i].latitude, data[i].longitude];
+
+            // Create an entry for this record's latitude and longitude if one
+            // doesn't exist yet.
+            if (groupedData.hasOwnProperty(key) === false) {
+                groupedData[key] = {};
+            }
+
+            // Get the first non-empty value for each attribute associated with
+            // this latitude/longitude pair.
+            for (j in attributes) {
+                attribute = attributes[j];
+                if (groupedData[key].hasOwnProperty(attribute) === false &&
+                    typeof(data[i][attribute]) !== 'undefined') {
+                    groupedData[key][attribute] = data[i][attribute];
+                }
+            }
+        }
+    }
+
+    return groupedData;
+}
+
+// Render one marker data record to HTML for the marker info window.
+function renderMarkerRecord(record) {
+    var attributes = {"site_name": "Site Name",
+                      "county": "Country",
+                      "state": "State",
+                      "elevation": "Elevation"},
+        html = "<div class='infowindow'>",
+        attribute, attribute_name, attribute_value;
+
+    for (attribute in attributes) {
+        if (attributes.hasOwnProperty(attribute)) {
+            attribute_name = attributes[attribute];
+            if (record[attribute]) {
+                attribute_value = record[attribute];
+            }
+            else {
+                attribute_value = "";
+            }
+            html += "<p>" + attribute_name + ": " + attribute_value + "</p>";
+        }
+    }
+
+    html += "</div>";
+    return html;
+}
+
 function createMarkers(data) {
     var markers = [],
         point,
@@ -63,10 +123,13 @@ function createMarkers(data) {
     // Always clear the current marker set before adding new markers.
     mgr.clearMarkers();
 
-    // Build a list of markers for the given data.
-    for (i = 0; i < data.length; i++) {
-        point = new GLatLng(data[i].latitude, data[i].longitude);
-        markers.push(createMarker(point, i, data[i].collection, {}));
+    // Build a list of markers for the given data. Data is indexed by a
+    // latitude/longitude tuple so i[0] is latitude and i[1] is longitude.
+    for (i in data) {
+        if (data.hasOwnProperty(i)) {
+            point = new GLatLng(data[i].latitude, data[i].longitude);
+            markers.push(createMarker(point, i, renderMarkerRecord(data[i]), {}));
+        }
     }
 
     // Use the marker manager to add multiple markers simulataneously and set
