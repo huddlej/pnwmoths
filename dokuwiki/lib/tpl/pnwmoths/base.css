@@ -121,7 +121,13 @@ div.infowindow p {
     margin: 0.1em 0;
 }
 div.infowindow ol li {
+    font-size: 100%;
     list-style-type: none;
+    margin-bottom: 0;
+}
+div.infowindow ol.collections {
+    max-height: 120px;
+    overflow: auto;
 }
 
 /* filter styles */
