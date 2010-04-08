@@ -70,7 +70,7 @@ function groupMarkerData(data) {
         j,
         attributes = ["latitude", "longitude", "site_name", "county", "state", "elevation"],
         key,
-        attribute;
+        attribute, collection;
 
     for (i in data) {
         if (data.hasOwnProperty(i)) {
@@ -78,7 +78,7 @@ function groupMarkerData(data) {
 
             // Create an entry for this record's latitude and longitude if one
             // doesn't exist yet.
-            if (groupedData.hasOwnProperty(key) === false) {
+            if (typeof(groupedData[key]) === "undefined") {
                 groupedData[key] = {};
             }
 
@@ -93,12 +93,12 @@ function groupMarkerData(data) {
             }
 
             // Add any collection data available for this record.
+            if (typeof(groupedData[key]["collections"]) === "undefined") {
+                groupedData[key]["collections"] = [];
+            }
+
             collection = renderCollection(data[i]);
             if (collection !== null) {
-                if (groupedData[key].hasOwnProperty("collections") === false) {
-                    groupedData[key]["collections"] = [];
-                }
-
                 groupedData[key]["collections"].push(collection);
             }
         }
