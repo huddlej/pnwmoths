@@ -178,7 +178,7 @@ function renderMarkerRecord(record) {
 
     if (record.hasOwnProperty("collections") && record.collections.length > 0) {
         collectionHtml = "<div class='infowindow'>";
-        collectionHtml += "<ol>";
+        collectionHtml += "<ol class='collections'>";
         for (i in record.collections) {
             if (record.collections.hasOwnProperty(i)) {
                 collectionHtml += "<li>" + record.collections[i] + "</li>";
