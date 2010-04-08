@@ -154,9 +154,9 @@ function renderCollection(record) {
 // tabs.
 function renderMarkerRecord(record) {
     var attributes = {"site_name": "Site Name",
-                      "county": "Country",
+                      "county": "County",
                       "state": "State",
-                      "elevation": "Elevation"},
+                      "elevation": "Elevation (ft.)"},
         pointHtml = "<div class='infowindow'>",
         collectionHtml = "",
         attribute, attribute_name, attribute_value, i;
