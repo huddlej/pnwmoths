@@ -142,21 +142,16 @@ div.collections table td {
 /* filter styles */
 
 #filters {
-    -moz-border-radius-bottomleft: 2em;
-    -moz-border-radius-bottomright: 2em;
+    -moz-border-radius: 1em;
     background-color: #ffffff;
-    padding-left: 1em;
-    padding-bottom: 1em;
+    margin: 0 auto;
+    padding: 1em;
     position: relative;
-    top: -0.3em;
+    top: 100px;
+    width: 90%;
 }
 #filters p {
     margin: 0.25em 0 0;
-}
-#tabs {
-    background-color: #ffffff;
-    position: relative;
-    width: 60px;
 }
 
 #similar-species ol.image-list img {
