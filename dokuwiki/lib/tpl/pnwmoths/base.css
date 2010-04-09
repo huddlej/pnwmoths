@@ -120,14 +120,23 @@ ol.image-list li {
 div.infowindow p {
     margin: 0.1em 0;
 }
-div.infowindow ol li {
+div.collections {
     font-size: 100%;
-    list-style-type: none;
-    margin-bottom: 0;
-}
-div.infowindow ol.collections {
     max-height: 120px;
     overflow: auto;
+    table-layout: fixed;
+}
+div.collections table {
+    border-collapse: collapse;
+    margin-left: 1px;
+}
+div.collections table th {
+    font-weight: bold;
+}
+div.collections table td {
+    border: 1px solid #ccc;
+    padding: 1px;
+    padding-right: 5px;
 }
 
 /* filter styles */

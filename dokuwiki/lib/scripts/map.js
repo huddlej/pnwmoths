@@ -114,7 +114,7 @@ function renderDate(record) {
                          "Sep", "Oct", "Nov", "Dec"];
 
     if (record.year && record.month && record.day) {
-        return month_choices[record.month - 1] + " " + record.day + ", " + record.year;
+        return month_choices[record.month - 1] + " " + record.day + " " + record.year;
     }
     else if(record.year && record.month)  {
         return month_choices[record.month - 1] + " " + record.year;
@@ -130,25 +130,9 @@ function renderDate(record) {
 // Render all collection related information for a given record.
 function renderCollection(record) {
     // Set the date for this marker.
-    var summary = renderDate(record);
-    if (summary != "") {
-        if (record.collector) {
-            summary += " by " + record.collector;
-
-            if (record.number_of_males) {
-                summary += ", " + record.number_of_males + " males";
-            }
-
-            if (record.number_of_females) {
-                summary += ", " + record.number_of_females + " females";
-            }
-
-            if (record.collection) {
-                summary += " (" + record.collection + ")";
-            }
-        }
-
-        return summary;
+    var date = renderDate(record);
+    if (date != "") {
+        return [date, record.collector, record.collection];
     }
 
     return null;
@@ -163,7 +147,7 @@ function renderMarkerRecord(record) {
                       "elevation": "Elevation (ft.)"},
         pointHtml = "<div class='infowindow'>",
         collectionHtml = "",
-        attribute, attribute_name, attribute_value, i;
+        attribute, attribute_name, attribute_value, i, j;
 
     for (attribute in attributes) {
         if (attributes.hasOwnProperty(attribute)) {
@@ -181,14 +165,19 @@ function renderMarkerRecord(record) {
     pointHtml += "</div>";
 
     if (record.hasOwnProperty("collections") && record.collections.length > 0) {
-        collectionHtml = "<div class='infowindow'>";
-        collectionHtml += "<ol class='collections'>";
+        collectionHtml = "<div class='infowindow collections'>";
+        collectionHtml += "<table>";
+        collectionHtml += "<tr><th>Date</th><th>Collector</th><th>Site</th>";
         for (i in record.collections) {
             if (record.collections.hasOwnProperty(i)) {
-                collectionHtml += "<li>" + record.collections[i] + "</li>";
+                collectionHtml += "<tr>";
+                for (j in record.collections[i]) {
+                    collectionHtml += "<td>" + record.collections[i][j] + "</td>";
+                }
+                collectionHtml += "</tr>";
             }
         }
-        collectionHtml += "</ol>";
+        collectionHtml += "</table>";
         collectionHtml += "</div>";
     }
 
