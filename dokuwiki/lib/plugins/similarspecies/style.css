@@ -207,28 +207,31 @@
 /**
  * Custom jCarousel CSS
  */
-.similar-species img {
-    height: 123px;
-    width: 215px;
-}
-.similar-species {
+
+#similar {
     text-align: center;
 }
+#similar img {
+    height: 93px;
+    width: 140px;
+}
 
+#similar .jcarousel-skin-tango {
+    width: 375px;
+}
 #similar .jcarousel-skin-tango .jcarousel-container-horizontal {
     padding-bottom: 10px;
     padding-top: 10px;
 }
 #similar .jcarousel-skin-tango .jcarousel-container-horizontal, #similar .jcarousel-skin-tango .jcarousel-clip-horizontal {
-    width: 665px;
+    width: 293px;
 }
 #similar .jcarousel-skin-tango .jcarousel-item {
-    height: 140px;
-    width: 215px;
+    width: 140px;
 }
 #similar .jcarousel-skin-tango .jcarousel-item-horizontal {
     margin-right: 10px;
 }
-#similar .jcarousel-skin-tango .jcarousel-clip-horizontal, #similar .jcarousel-skin-tango .jcarousel-list {
-    height: 145px;
+#similar .jcarousel-skin-tango .jcarousel-item, #similar .jcarousel-skin-tango .jcarousel-clip-horizontal, #similar .jcarousel-skin-tango .jcarousel-list {
+    height: 115px;
 }
