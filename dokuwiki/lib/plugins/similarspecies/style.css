@@ -209,6 +209,7 @@
  */
 
 #similar {
+    margin-top: 1em;
     text-align: center;
 }
 #similar img {
@@ -233,5 +234,5 @@
     margin-right: 10px;
 }
 #similar .jcarousel-skin-tango .jcarousel-item, #similar .jcarousel-skin-tango .jcarousel-clip-horizontal, #similar .jcarousel-skin-tango .jcarousel-list {
-    height: 115px;
+    height: 130px;
 }
