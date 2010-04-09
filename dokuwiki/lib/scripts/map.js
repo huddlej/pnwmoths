@@ -109,25 +109,15 @@ function groupMarkerData(data) {
 
 // Render a date string for a given record.
 function renderDate(record) {
-    var month_choices = [["", ""],
-                         [1, "Jan"],
-                         [2, "Feb"],
-                         [3, "Mar"],
-                         [4, "Apr"],
-                         [5, "May"],
-                         [6, "Jun"],
-                         [7, "Jul"],
-                         [8, "Aug"],
-                         [9, "Sep"],
-                         [10, "Oct"],
-                         [11, "Nov"],
-                         [12, "Dec"]];
+    var month_choices = ["Jan", "Feb", "Mar", "Apr",
+                         "May", "Jun", "Jul", "Aug",
+                         "Sep", "Oct", "Nov", "Dec"];
 
     if (record.year && record.month && record.day) {
-        return month_choices[record.month][1] + " " + record.day + ", " + record.year;
+        return month_choices[record.month - 1] + " " + record.day + ", " + record.year;
     }
     else if(record.year && record.month)  {
-        return month_choices[record.month][1] + " " + record.year;
+        return month_choices[record.month - 1] + " " + record.year;
     }
     else if(record.year) {
         return record.year;
