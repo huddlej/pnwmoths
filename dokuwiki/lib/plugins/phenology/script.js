@@ -28,10 +28,8 @@ jQuery(document).ready(function () {
             // needs to be emptied and shown. After the plot is generated, the
             // div can be hidden again.
             plotDiv = jQuery("#plot");
-            plotDiv.show();
             plotDiv.empty();
             plot = new Phenology(species, phenologyData);
-            plotDiv.hide();
         }
     );
 });

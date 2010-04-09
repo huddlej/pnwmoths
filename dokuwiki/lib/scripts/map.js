@@ -13,15 +13,6 @@ jQuery(document).ready(function () {
         }
     );
 
-    var phenology = jQuery("#plot");
-    jQuery("#toggle-phenology").click(
-        function (event) {
-            event.preventDefault()
-            phenology.siblings(".tab").hide();
-            phenology.toggle();
-        }
-    );
-
     jQuery(document).bind(
         "dataIsReady",
         function (event) {
@@ -50,11 +41,10 @@ function Map() {
     mgr = new MarkerManager(map);
 
     // Add filters to map container.
-    var tabs = jQuery("<div id='tabs'><a href='' id='toggle-filters'>Filters</a> | <a href='' id='toggle-phenology'>Phenology</a></div>");
+    var tabs = jQuery("<div id='tabs'><a href='' id='toggle-filters'>Filters</a></div>");
 
     map.getContainer().appendChild(tabs.get(0));
     map.getContainer().appendChild(jQuery("#filters").get(0));
-    map.getContainer().appendChild(jQuery("#plot").get(0));
 }
 
 // Group marker data by latitude and longitude values.
