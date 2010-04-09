@@ -3,16 +3,6 @@ var map, mgr;
 jQuery(document).ready(function () {
     var species = jQuery("#species").hide().text(),
         newmap = new Map();
-
-    var filters = jQuery("#filters");
-    jQuery("#toggle-filters").click(
-        function (event) {
-            event.preventDefault();
-            filters.siblings(".tab").hide();
-            filters.toggle();
-        }
-    );
-
     jQuery(document).bind(
         "dataIsReady",
         function (event) {
@@ -20,6 +10,45 @@ jQuery(document).ready(function () {
         }
     );
 });
+
+//
+// Setup a custom Google map control for toggling the display of the filters.
+//
+function FiltersControl() {
+}
+FiltersControl.prototype = new GControl();
+FiltersControl.prototype.initialize = function (map) {
+    var container = document.createElement("div"),
+        filterDiv = document.createElement("div");
+
+    this.setButtonStyle_(filterDiv);
+    container.appendChild(filterDiv);
+    filterDiv.appendChild(document.createTextNode("Filters"));
+    GEvent.addDomListener(
+        filterDiv,
+        "click",
+        function () {
+            jQuery("#filters").toggle();
+        }
+    );
+
+    map.getContainer().appendChild(container);
+    return container;
+};
+// Sets the proper CSS for the given button element.
+FiltersControl.prototype.setButtonStyle_ = function (button) {
+    button.style.backgroundColor = "white";
+    button.style.font = "small Arial";
+    button.style.border = "1px solid black";
+    button.style.padding = "2px";
+    button.style.marginBottom = "3px";
+    button.style.textAlign = "center";
+    button.style.width = "5em";
+    button.style.cursor = "pointer";
+};
+FiltersControl.prototype.getDefaultPosition = function() {
+    return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
+};
 
 function Map() {
     if (!GBrowserIsCompatible()) {
@@ -33,6 +62,7 @@ function Map() {
     map.setCenter(new GLatLng(46.90, -118.00), 5);
     map.addControl(new GSmallMapControl());
     map.addControl(new GMapTypeControl());
+    map.addControl(new FiltersControl());
     map.addMapType(G_PHYSICAL_MAP);
     map.removeMapType(G_NORMAL_MAP);
     map.removeMapType(G_SATELLITE_MAP);
@@ -41,9 +71,6 @@ function Map() {
     mgr = new MarkerManager(map);
 
     // Add filters to map container.
-    var tabs = jQuery("<div id='tabs'><a href='' id='toggle-filters'>Filters</a></div>");
-
-    map.getContainer().appendChild(tabs.get(0));
     map.getContainer().appendChild(jQuery("#filters").get(0));
 }
 
