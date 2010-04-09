@@ -47,7 +47,7 @@ function Phenology (species, data) {
                 rendererOptions: {shadowAlpha: 0, barWidth: 5}
             },
             grid: {drawGridlines: false},
-            title: "Phenology",
+            title: "Flight Season",
             axes: {
                 xaxis: {
                     label: 'Month',
