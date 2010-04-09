@@ -111,49 +111,6 @@ ol.image-list li {
     text-align: center;
 }
 
-/* map styles */
-
-#googlemap {
-    height: 363px;
-    width: 100%;
-}
-div.infowindow p {
-    margin: 0.1em 0;
-}
-div.collections {
-    font-size: 100%;
-    max-height: 120px;
-    overflow: auto;
-    table-layout: fixed;
-}
-div.collections table {
-    border-collapse: collapse;
-    margin-left: 1px;
-}
-div.collections table th {
-    font-weight: bold;
-}
-div.collections table td {
-    border: 1px solid #ccc;
-    padding: 1px;
-    padding-right: 5px;
-}
-
-/* filter styles */
-
-#filters {
-    -moz-border-radius: 1em;
-    background-color: #ffffff;
-    margin: 0 auto;
-    padding: 1em;
-    position: relative;
-    top: 100px;
-    width: 90%;
-}
-#filters p {
-    margin: 0.25em 0 0;
-}
-
 #similar-species ol.image-list img {
     width: 230px;
 }
