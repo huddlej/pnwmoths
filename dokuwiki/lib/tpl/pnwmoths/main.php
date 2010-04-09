@@ -44,7 +44,6 @@ if (!defined('DOKU_INC')) die();
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.canvasTextRenderer.min.js"></script>
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.canvasAxisLabelRenderer.min.js"></script>
     <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.categoryAxisRenderer.min.js"></script>
-    <script language="javascript" type="text/javascript" src="/~huddlej/js/speciesData.js"></script>
 
     <!--[if IE]><script language="javascript" type="text/javascript" src="/~huddlej/js/excanvas.min.js"></script><![endif]-->
     <link rel="stylesheet" href="/~huddlej/css/jquery.jqplot.min.css" type="text/css">
