@@ -55,6 +55,7 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
         if (array_key_exists("species", $data)) {
             $species = $data["species"];
             $renderer->doc .= <<<HTML
+<div class="yui-u">
 <p id="species">$species</p>
 <div id="googlemap"></div>
 <div id="filters" class="tab" style="display: none;">
@@ -83,6 +84,7 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
     </p>
 </div>
 <div id="plot" class="tab"></div>
+</div>
 HTML;
         }
         else {
