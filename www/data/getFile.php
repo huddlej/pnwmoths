@@ -15,6 +15,7 @@ if (array_key_exists("doc_id", $_GET)) {
             foreach ($headers as $header) {
                 header($header);
             }
+            header('Content-Disposition: inline; filename="' . $attachment_id .'"');
 
             print $attachment->getBody();
         }
