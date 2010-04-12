@@ -208,8 +208,12 @@
  * Custom jCarousel CSS
  */
 
-#similar {
-    margin-top: 1em;
+#similar h2 {
+    font-size: 150%;
+    margin: 0;
+    margin-top: 4px;
+}
+#similar li {
     text-align: center;
 }
 #similar img {

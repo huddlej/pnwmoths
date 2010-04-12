@@ -58,6 +58,7 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
 
         if (count($data["data"]) > 0) {
             $renderer->doc .= "<div id='similar'>";
+            $renderer->doc .= "<h2>Similar species</h2>";
             $renderer->doc .= "<ul class='similar-species jcarousel-skin-tango'>";
             foreach($data["data"] as $row) {
                 if (count($row["images"]) > 0) {
