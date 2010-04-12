@@ -28,10 +28,15 @@ class PNWMoths_Model_SimilarSpecies extends PNWMoths_Model {
 
         $similar_species = array();
         foreach ($results->rows as $row) {
-            list($doc_id, $attachment_id) = (array)$row->doc->image;
-            $images = array(
-                new PNWMoths_Model_Image($doc_id, $attachment_id)
-            );
+            if ($row->doc->image) {
+                list($doc_id, $attachment_id) = (array)$row->doc->image;
+                $images = array(
+                    new PNWMoths_Model_Image($doc_id, $attachment_id)
+                );
+            }
+            else {
+                $images = array("<img src='http://www.sheppardsoftware.com/content/animals/images/invertebrates/moth_45_45.gif' />");
+            }
             $similar_species[] = array("species" => $row->doc->similar_species,
                                        "images" => $images);
         }
