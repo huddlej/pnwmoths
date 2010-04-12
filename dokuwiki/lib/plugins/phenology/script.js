@@ -337,7 +337,8 @@ function renderMarkerRecord(record) {
     if (record.hasOwnProperty("collections") && record.collections.length > 0) {
         collectionHtml = "<div class='infowindow collections'>";
         collectionHtml += "<table>";
-        collectionHtml += "<tr><th>Date</th><th>Collector</th><th>Site</th>";
+        collectionHtml += "<tr><th>Date</th><th>Collector</th>";
+        collectionHtml += "<th><a href='http://localhost/dokuwiki/doku.php?id=factsheets:collection_glossary' target='_new'>Site</a></th>";
         for (i in record.collections) {
             if (record.collections.hasOwnProperty(i)) {
                 collectionHtml += "<tr>";
