@@ -24,6 +24,14 @@ jQuery(document).ready(function () {
     // Setup filters.
     //
 
+    // Close filter window
+    jQuery("#filters-close").click(
+        function (event) {
+            event.preventDefault();
+            jQuery("#filters").hide();
+        }
+    );
+
     // All filters
     jQuery("#clear-filters").click(
         function (event) {

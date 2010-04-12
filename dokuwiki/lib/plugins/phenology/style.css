@@ -50,3 +50,6 @@ div.collections table td {
 #filters p {
     margin: 0.25em 0 0;
 }
+#filters .right {
+    float: right;
+}

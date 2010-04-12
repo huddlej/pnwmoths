@@ -58,6 +58,7 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
 <p id="species">$species</p>
 <div id="googlemap"></div>
 <div id="filters" class="tab" style="display: none;">
+    <p class="right"><a href="" id="filters-close"><img src="http://maps.gstatic.com/intl/en_us/mapfiles/iw_close.gif" /></a></p>
     <p><form><input type="button" id="clear-filters" value="Clear filters" /></form></p>
     <p id="filter-elevation">
         Elevation (ft.):
