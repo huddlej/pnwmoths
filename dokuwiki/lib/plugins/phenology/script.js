@@ -355,6 +355,9 @@ function renderMarkerRecord(record) {
     return [pointHtml, collectionHtml];
 }
 
+// Creates markers for a given set of data for which each record has a
+// "latitude" and "longitude" attribute. Clears any previously existing markers
+// from the map before displaying these markers.
 function createMarkers(data) {
     var markers = [],
         point,
@@ -379,10 +382,17 @@ function createMarkers(data) {
     mgr.refresh();
 }
 
+// Creates a map marker for a given Google map Point instance. The given number
+// is used to distinguish this marker from all other markers. The marker uses a
+// tabbed info window, so the given HTML is split into one part for each of the
+// (two) tabs.
 function createMarker(point, number, html, marker_options) {
     var marker = new GMarker(point, marker_options);
     marker.value = number;
     GEvent.addListener(marker, "click", function() {
+        // TODO: this code could be more reuseable if it looped through the
+        // "html" variable and created a tab for each entry with the tab name in
+        // the variable.
         marker.openInfoWindowTabsHtml([new GInfoWindowTab("Site", html[0]),
                                        new GInfoWindowTab("Collections", html[1])]);
     });
