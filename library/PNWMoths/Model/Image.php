@@ -60,7 +60,7 @@ class PNWMoths_Model_Image extends PNWMoths_Model {
     }
 
     public function getUrl() {
-        return sprintf("%s?doc_id=%s&attachment_id=%s",
+        return sprintf("%s?id=%s/%s",
                        $this->baseUrl,
                        $this->docId,
                        $this->imageId);
