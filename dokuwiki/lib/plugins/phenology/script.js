@@ -469,6 +469,6 @@ function addTerritoryBoundaries() {
         new GLatLng(53, -126),
         new GLatLng(40, -126),
         new GLatLng(40, -109.5)
-  ], "#0099ff", 2, 1, "#ccffff", 0.2);
+  ], "#0099ff", 1, 1, "#ccffff", 0.2);
   map.addOverlay(polygon);
 }
