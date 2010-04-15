@@ -35,7 +35,7 @@ if (!defined('DOKU_INC')) die();
     ?>
     <script src="http://sorgalla.com/projects/jcarousel/lib/jquery.jcarousel.pack.js"
             type="text/javascript"></script>
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSzkSklZUfvCZ2DkVLa3pDPglmbAQ&sensor=true_or_false"
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSzkSklZUfvCZ2DkVLa3pDPglmbAQ&sensor=false"
             type="text/javascript"></script>
     <script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js" type="text/javascript"></script>
 
