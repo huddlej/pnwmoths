@@ -1,6 +1,10 @@
 <?php
 require_once 'bootstrap.php';
 
+function getCounties() {
+    return PNWMoths_Model_County::getData();
+}
+
 function getSamples($species, $options) {
     $sampleOptions = array(
         "filters" => array(),
@@ -20,7 +24,7 @@ function getSamples($species, $options) {
     return PNWMoths_Model_SpeciesSample::getData($sampleOptions);
 }
 
-if (array_key_exists("method", $_GET) && array_key_exists("species", $_GET)) {
+if (array_key_exists("method", $_GET)) {
     $species = $_GET["species"];
     unset($_GET["species"]);
     $method = $_GET["method"];
@@ -30,7 +34,12 @@ if (array_key_exists("method", $_GET) && array_key_exists("species", $_GET)) {
 
     switch ($method) {
         case 'getSamples':
-            $data = getSamples($species, $options);
+            if (array_key_exists("species", $_GET)) {
+                $data = getSamples($species, $options);
+            }
+            break;
+        case 'getCounties':
+            $data = getCounties();
             break;
         default:
             break;
