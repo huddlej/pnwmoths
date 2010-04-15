@@ -86,7 +86,9 @@ jQuery(document).ready(function () {
     );
 
     // Trigger the initial request for data.
-    jQuery(document).trigger("requestData");
+    if (species) {
+        jQuery(document).trigger("requestData");
+    }
 });
 
 // Requests data from the data service for the given species and filtering by
@@ -106,8 +108,10 @@ function getData(species, filters) {
         }
     }
 
+    // TODO: need a configuration option for the service address or the host
+    // address.
     jQuery.getJSON(
-        "http://localhost/~huddlej/service.php",
+        "http://140.160.86.142/~huddlej/service.php",
         requestData,
         function (new_data, textStatus) {
             // Update global data variable.
@@ -359,7 +363,7 @@ function renderMarkerRecord(record) {
         collectionHtml = "<div class='infowindow collections'>";
         collectionHtml += "<table>";
         collectionHtml += "<tr><th>Date</th><th>Collector</th>";
-        collectionHtml += "<th><a href='http://localhost/dokuwiki/doku.php?id=factsheets:collection_glossary' target='_new'>Site</a></th>";
+        collectionHtml += "<th><a href='/dokuwiki/doku.php?id=factsheets:collection_glossary' target='_new'>Site</a></th>";
         for (i in record.collections) {
             if (record.collections.hasOwnProperty(i)) {
                 collectionHtml += "<tr>";
