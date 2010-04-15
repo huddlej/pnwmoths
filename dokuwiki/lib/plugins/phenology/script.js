@@ -250,11 +250,18 @@ function Map() {
 // Group marker data by latitude and longitude values.
 function groupMarkerData(data) {
     var groupedData = {},
-        i,
-        j,
-        attributes = ["latitude", "longitude", "site_name", "county", "state", "elevation", "precision"],
-        key,
-        attribute, collection;
+        i, j, key,
+        attribute,
+        collection,
+        attributes = [
+            "latitude",
+            "longitude",
+            "site_name",
+            "county",
+            "state",
+            "elevation",
+            "precision"
+        ];
 
     for (i in data) {
         if (data.hasOwnProperty(i)) {
