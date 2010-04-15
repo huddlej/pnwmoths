@@ -235,6 +235,7 @@ function Map() {
     map.removeMapType(G_NORMAL_MAP);
     map.removeMapType(G_SATELLITE_MAP);
     map.setMapType(G_PHYSICAL_MAP);
+    addTerritoryBoundaries();
 
     icons = buildMapIcons();
     mgr = new MarkerManager(map);
@@ -448,4 +449,16 @@ function buildMapIcons() {
     }
 
     return icons;
+}
+
+function addTerritoryBoundaries() {
+  // Place a polygon around the area we're most interested in.
+  var polygon = new GPolygon([
+        new GLatLng(40, -109.5),
+        new GLatLng(53, -109.5),
+        new GLatLng(53, -126),
+        new GLatLng(40, -126),
+        new GLatLng(40, -109.5)
+  ], "#0099ff", 2, 1, "#ccffff", 0.2);
+  map.addOverlay(polygon);
 }
