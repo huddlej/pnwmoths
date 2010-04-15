@@ -246,7 +246,7 @@ function groupMarkerData(data) {
     var groupedData = {},
         i,
         j,
-        attributes = ["latitude", "longitude", "site_name", "county", "state", "elevation"],
+        attributes = ["latitude", "longitude", "site_name", "county", "state", "elevation", "precision"],
         key,
         attribute, collection;
 
