@@ -111,7 +111,7 @@ function getData(species, filters) {
     // TODO: need a configuration option for the service address or the host
     // address.
     jQuery.getJSON(
-        "http://140.160.86.142/~huddlej/service.php",
+        "http://localhost/~huddlej/service.php",
         requestData,
         function (new_data, textStatus) {
             // Update global data variable.
