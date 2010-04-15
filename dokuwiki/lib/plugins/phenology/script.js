@@ -237,6 +237,9 @@ function Map() {
     map.setMapType(G_PHYSICAL_MAP);
     addTerritoryBoundaries();
 
+    geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
+    map.addOverlay(geo_xml);
+
     icons = buildMapIcons();
     mgr = new MarkerManager(map);
 
