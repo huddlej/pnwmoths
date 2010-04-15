@@ -1,4 +1,16 @@
 /**
+ * Styles for the group of species images and similar species images.
+ */
+
+.all-images {
+    -moz-border-radius-bottomleft: 10px;
+    -moz-border-radius-bottomright: 10px;
+    background-color: #F0F6F9;
+    border: 1px solid #346F97;
+    width: 375px!important;
+}
+
+/**
  * This <div> element is wrapped by jCarousel around the list
  * and has the classname "jcarousel-container".
  */
@@ -54,9 +66,7 @@
  */
 
 .jcarousel-skin-tango .jcarousel-container {
-    -moz-border-radius: 10px;
     background: #F0F6F9;
-    border: 1px solid #346F97;
 }
 
 .jcarousel-skin-tango .jcarousel-container-horizontal {
@@ -208,9 +218,6 @@
  * Custom jCarousel CSS
  */
 #images {
-    background-color: #ccc;
-    -moz-border-radius-bottomleft: 10px;
-    -moz-border-radius-bottomright: 10px;
     width: 375px;
 }
 #current-image img {
@@ -229,15 +236,15 @@
     width: 375px;
 }
 #images .jcarousel-skin-tango .jcarousel-container {
-    -moz-border-radius-topleft: 0;
-    -moz-border-radius-topright: 0;
+    -moz-border-radius: 0;
+    border: 0;
 }
 #images .jcarousel-skin-tango .jcarousel-container-horizontal {
     padding-bottom: 10px;
     padding-top: 10px;
 }
 #images .jcarousel-skin-tango .jcarousel-container-horizontal, #images .jcarousel-skin-tango .jcarousel-clip-horizontal {
-    width: 293px;
+    width: 295px;
 }
 #images .jcarousel-skin-tango .jcarousel-item {
     height: 93px;
