@@ -53,6 +53,7 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
 
             $row->doc->latitude = (float)$row->doc->latitude;
             $row->doc->longitude = (float)$row->doc->longitude;
+            $row->doc->precision = $row->value->precision;
             $samples[] = $row->doc;
         }
 
