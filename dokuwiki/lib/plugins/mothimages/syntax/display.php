@@ -68,7 +68,7 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
                     $firstRow = false;
                 }
 
-                $renderer->doc .= "<li><a href=''>$row</a></li>";
+                $renderer->doc .= "<li><a href='$image_url'>$row</a></li>";
             }
             $renderer->doc .= "</ul>";
             $renderer->doc .= "</div>";
