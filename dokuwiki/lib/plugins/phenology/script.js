@@ -87,6 +87,26 @@ jQuery(document).ready(function () {
         }
     );
 
+    // County
+    jQuery("#form-county").submit(
+        function (event) {
+            event.preventDefault();
+            var start = jQuery("#county").val();
+            filters["county"] = start;
+            jQuery(document).trigger("requestData");
+        }
+    );
+    jQuery("#clear-filter-county").click(
+        function (event) {
+            event.preventDefault();
+            if (filters.hasOwnProperty("county")) {
+                delete filters["county"];
+                jQuery(this).siblings("select").val("");
+                jQuery(document).trigger("requestData");
+            }
+        }
+    );
+
     // Setup option filters (those with select fields).
     var requestData = {};
     for (i in optionFilters) {
