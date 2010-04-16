@@ -15,7 +15,14 @@ jQuery(document).ready(function () {
     // Setup custom events "requestData" and "dataIsReady". The latter initiates
     // a request to the data service passing any filters that have been
     // set. When the data is ready, the "dataIsReady" event is triggered.
-    jQuery(document).bind("requestData", function (event) { getSpeciesData(species, filters); });
+    jQuery(document).bind("requestData", function (event) {
+        // Fade out temporarily to let the user see the effects of their
+        // filters.
+        if (jQuery("#filters").css("display") != "none") {
+            jQuery("#filters").fadeTo(10, 0.3).fadeTo(5000, 1);
+        }
+        getSpeciesData(species, filters);
+    });
     jQuery(document).bind("dataIsReady", preparePhenologyData);
     jQuery(document).bind(
         "dataIsReady",
