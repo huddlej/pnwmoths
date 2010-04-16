@@ -7,7 +7,8 @@ var map,
 
 jQuery(document).ready(function () {
     var newmap = new Map(),
-        optionFilters = [["county", "getCounties"]],
+        optionFilters = [["county", "getCounties"],
+                         ["state", "getStates"]],
         i, j;
     species = jQuery("#species").hide().text();
 
@@ -101,6 +102,26 @@ jQuery(document).ready(function () {
             event.preventDefault();
             if (filters.hasOwnProperty("county")) {
                 delete filters["county"];
+                jQuery(this).siblings("select").val("");
+                jQuery(document).trigger("requestData");
+            }
+        }
+    );
+
+    // State
+    jQuery("#form-state").submit(
+        function (event) {
+            event.preventDefault();
+            var start = jQuery("#state").val();
+            filters["state"] = start;
+            jQuery(document).trigger("requestData");
+        }
+    );
+    jQuery("#clear-filter-state").click(
+        function (event) {
+            event.preventDefault();
+            if (filters.hasOwnProperty("state")) {
+                delete filters["state"];
                 jQuery(this).siblings("select").val("");
                 jQuery(document).trigger("requestData");
             }
