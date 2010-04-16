@@ -6,7 +6,9 @@ var map,
     icons;
 
 jQuery(document).ready(function () {
-    var newmap = new Map();
+    var newmap = new Map(),
+        optionFilters = [["county", "getCounties"]],
+        i, j;
     species = jQuery("#species").hide().text();
 
     // Setup custom events "requestData" and "dataIsReady". The latter initiates
@@ -84,6 +86,28 @@ jQuery(document).ready(function () {
             }
         }
     );
+
+    // Setup option filters (those with select fields).
+    var requestData = {};
+    for (i in optionFilters) {
+        if (optionFilters.hasOwnProperty(i)) {
+            var optionFilter = optionFilters[i];
+            requestData["method"] = optionFilter[1];
+            getData(requestData, function (new_data) {
+                var select = jQuery("#" + optionFilter[0]),
+                    option;
+                for (j in new_data) {
+                    if (new_data.hasOwnProperty(j)) {
+                        console.log(new_data[j]);
+                        option = jQuery("<option></option>");
+                        option.val(new_data[j]);
+                        option.text(new_data[j]);
+                        select.append(option);
+                    }
+                }
+            });
+        }
+    }
 
     // Trigger the initial request for data.
     if (species) {
