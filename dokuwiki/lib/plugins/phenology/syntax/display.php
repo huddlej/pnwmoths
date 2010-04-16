@@ -92,6 +92,16 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
             <input type="button" id="clear-filter-county" value="Clear" />
         </form>
     </p>
+    <p id="filter-state">
+        State:
+        <form id="form-state">
+            <select id="state" name="state">
+                <option>Select a state</option>
+            </select>
+            <input type="submit" value="Filter" />
+            <input type="button" id="clear-filter-state" value="Clear" />
+        </form>
+    </p>
 </div>
 <div id="plot" class="tab"></div>
 </div>
