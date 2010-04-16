@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
     // Setup custom events "requestData" and "dataIsReady". The latter initiates
     // a request to the data service passing any filters that have been
     // set. When the data is ready, the "dataIsReady" event is triggered.
-    jQuery(document).bind("requestData", function (event) { getData(species, filters); });
+    jQuery(document).bind("requestData", function (event) { getSpeciesData(species, filters); });
     jQuery(document).bind("dataIsReady", preparePhenologyData);
     jQuery(document).bind(
         "dataIsReady",
@@ -94,7 +94,7 @@ jQuery(document).ready(function () {
 // Requests data from the data service for the given species and filtering by
 // the given filters. Filtering takes place on the server before the data is
 // returned.
-function getData(species, filters) {
+function getSpeciesData(species, filters) {
     var key,
         requestData = {
             "method": "getSamples",
@@ -108,18 +108,25 @@ function getData(species, filters) {
         }
     }
 
-    // TODO: need a configuration option for the service address or the host
-    // address.
-    jQuery.getJSON(
-        "http://localhost/~huddlej/service.php",
-        requestData,
-        function (new_data, textStatus) {
+    return getData(
+         requestData,
+         function (new_data, textStatus) {
             // Update global data variable.
             data = new_data;
 
             // Trigger "data is ready" event.
             jQuery(document).trigger("dataIsReady");
         }
+    );
+}
+
+function getData(requestData, callback) {
+    // TODO: need a configuration option for the service address or the host
+    // address.
+    jQuery.getJSON(
+        "http://localhost/~huddlej/service.php",
+        requestData,
+        callback
     );
 }
 
