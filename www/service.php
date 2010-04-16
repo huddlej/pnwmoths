@@ -25,16 +25,19 @@ function getSamples($species, $options) {
 }
 
 if (array_key_exists("method", $_GET)) {
-    $species = $_GET["species"];
-    unset($_GET["species"]);
     $method = $_GET["method"];
     unset($_GET["method"]);
+
+    if (array_key_exists("species", $_GET)) {
+        $species = $_GET["species"];
+        unset($_GET["species"]);
+    }
 
     $options = $_GET;
 
     switch ($method) {
         case 'getSamples':
-            if (array_key_exists("species", $_GET)) {
+            if (isset($species)) {
                 $data = getSamples($species, $options);
             }
             break;
