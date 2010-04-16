@@ -89,7 +89,7 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
                 <option>Select a county</option>
             </select>
             <input type="submit" value="Filter" />
-            <input type="button" id="clear-filter-date" value="Clear" />
+            <input type="button" id="clear-filter-county" value="Clear" />
         </form>
     </p>
 </div>
