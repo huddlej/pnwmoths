@@ -223,6 +223,7 @@ function preparePhenologyData(event) {
     // div can be hidden again.
     plotDiv = jQuery("#plot");
     plotDiv.empty();
+    plotDiv.show();
     plot = new Phenology(species, phenologyData);
 }
 
@@ -297,12 +298,16 @@ FiltersControl.prototype.getDefaultPosition = function() {
 };
 
 function Map() {
+    var mapDiv;
+
     if (!GBrowserIsCompatible()) {
         jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
         return;
     }
 
-    map = new GMap2(jQuery("#googlemap").get(0));
+    mapDiv = jQuery("#googlemap");
+    mapDiv.show();
+    map = new GMap2(mapDiv.get(0));
 
     // Center on Washington State.
     map.setCenter(new GLatLng(46.90, -118.00), 5);

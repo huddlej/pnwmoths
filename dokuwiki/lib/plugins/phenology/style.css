@@ -1,8 +1,13 @@
+#species {
+    display: none;
+}
+
 #plot {
     -moz-border-radius-bottomleft: 10px;
     -moz-border-radius-bottomright: 10px;
     background-color: #F0F6F9;
     border: 1px solid #346F97;
+    display: none;
     height: 180px;
     margin: 0 auto;
     width: 100%;
@@ -12,6 +17,7 @@
 
 #googlemap {
     height: 363px;
+    display: none;
     width: 100%;
 }
 div.infowindow p {
