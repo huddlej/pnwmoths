@@ -5,12 +5,19 @@ function getCounties() {
     return PNWMoths_Model_County::getData();
 }
 
+function getStates() {
+    return PNWMoths_Model_State::getData();
+}
+
 function getSamples($species, $options) {
     $sampleOptions = array(
         "filters" => array(),
         "species" => $species
     );
-    $allowedFilters = array("elevation", "date");
+
+    // TODO: added method to SpeciesSample to register filters from external
+    // code so new filters only need to be added in one place.
+    $allowedFilters = array("elevation", "date", "county", "state");
 
     foreach ($allowedFilters as $allowedFilter) {
         if (array_key_exists($allowedFilter, $options)) {
@@ -43,6 +50,9 @@ if (array_key_exists("method", $_GET)) {
             break;
         case 'getCounties':
             $data = getCounties();
+            break;
+        case 'getStates':
+            $data = getStates();
             break;
         default:
             break;
