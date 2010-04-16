@@ -130,24 +130,10 @@ jQuery(document).ready(function () {
 
     // Setup option filters (those with select fields).
     var requestData = {};
-    for (i in optionFilters) {
-        if (optionFilters.hasOwnProperty(i)) {
-            var optionFilter = optionFilters[i];
-            requestData["method"] = optionFilter[1];
-            getData(requestData, function (new_data) {
-                var select = jQuery("#" + optionFilter[0]),
-                    option;
-                for (j in new_data) {
-                    if (new_data.hasOwnProperty(j)) {
-                        console.log(new_data[j]);
-                        option = jQuery("<option></option>");
-                        option.val(new_data[j]);
-                        option.text(new_data[j]);
-                        select.append(option);
-                    }
-                }
-            });
-        }
+    for (i = 0; i < optionFilters.length; i++) {
+        var optionFilter = optionFilters[i];
+        requestData["method"] = optionFilter[1];
+        getData(requestData, buildOptionFilterCallback(optionFilter));
     }
 
     // Trigger the initial request for data.
@@ -155,6 +141,22 @@ jQuery(document).ready(function () {
         jQuery(document).trigger("requestData");
     }
 });
+
+// Builds the callback function for each option filter.
+function buildOptionFilterCallback(optionFilter) {
+    return function (new_data) {
+        var select = jQuery("#" + optionFilter[0]),
+            option;
+        for (j in new_data) {
+            if (new_data.hasOwnProperty(j)) {
+                option = jQuery("<option></option>");
+                option.val(new_data[j]);
+                option.text(new_data[j]);
+                select.append(option);
+            }
+        }
+    };
+}
 
 // Requests data from the data service for the given species and filtering by
 // the given filters. Filtering takes place on the server before the data is
