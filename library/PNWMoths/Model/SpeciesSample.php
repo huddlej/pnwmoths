@@ -55,6 +55,11 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
                     continue;
                 }
             }
+            if (array_key_exists("state", $filters)) {
+                if ($row->doc->state != $filters["state"]) {
+                    continue;
+                }
+            }
 
             $row->doc->latitude = (float)$row->doc->latitude;
             $row->doc->longitude = (float)$row->doc->longitude;
