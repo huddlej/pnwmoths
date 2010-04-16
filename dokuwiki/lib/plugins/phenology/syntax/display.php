@@ -82,6 +82,16 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
             <span class="help">(e.g., 1/1/1999 - 12/1/2000)</span>
         </form>
     </p>
+    <p id="filter-county">
+        County:
+        <form id="form-county">
+            <select id="county" name="county">
+                <option>Select a county</option>
+            </select>
+            <input type="submit" value="Filter" />
+            <input type="button" id="clear-filter-date" value="Clear" />
+        </form>
+    </p>
 </div>
 <div id="plot" class="tab"></div>
 </div>
