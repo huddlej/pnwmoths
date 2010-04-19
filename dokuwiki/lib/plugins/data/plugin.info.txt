@@ -1,0 +1,7 @@
+base   data
+author John Huddleston
+email  huddlej@gmail.com
+date   2010-04-19
+name   data plugin
+desc   Provides JSON data to the wiki page that includes it.
+url    http://www.biol.wwu.edu/PNWmoths
