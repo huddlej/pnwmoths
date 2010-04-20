@@ -5,11 +5,22 @@ var map,
     filters = {},
     icons;
 
+jQuery(document).unload(function () {
+    if (typeof(GUnload) != "undefined") {
+        GUnload();
+    }
+});
+
 jQuery(document).ready(function () {
     var newmap = new Map(),
         optionFilters = [["county", "getCounties"],
                          ["state", "getStates"]],
         i, j;
+
+    if (jQuery("#species").length == 0) {
+        return;
+    }
+
     species = jQuery("#species").hide().text();
 
     // Setup custom events "requestData" and "dataIsReady". The latter initiates
@@ -307,7 +318,7 @@ FiltersControl.prototype.getDefaultPosition = function() {
 function Map() {
     var mapDiv;
 
-    if (!GBrowserIsCompatible()) {
+    if (typeof(GBrowserIsCompatible) == "undefined" || !GBrowserIsCompatible()) {
         jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
         return;
     }

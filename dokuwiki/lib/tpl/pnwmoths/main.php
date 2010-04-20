@@ -46,16 +46,6 @@ if (!defined('DOKU_INC')) die();
 
     <!--[if IE]><script language="javascript" type="text/javascript" src="/~huddlej/js/excanvas.min.js"></script><![endif]-->
     <link rel="stylesheet" href="/~huddlej/css/jquery.jqplot.min.css" type="text/css">
-
-    <script type="text/javascript">
-    function initialize() {
-      if (GBrowserIsCompatible() && jQuery("#map").length > 0) {
-        var map = new GMap2(document.getElementById("map"));
-        map.setCenter(new GLatLng(37.4419, -122.1419), 13);
-        map.setUIToDefault();
-      }
-    }
-    </script>
     <?php
   }
   ?>
@@ -66,7 +56,7 @@ if (!defined('DOKU_INC')) die();
   <?php /*old includehook*/ @include(dirname(__FILE__).'/meta.html')?>
 </head>
 
-<body onload="initialize()" onunload="GUnload()">
+<body>
 <?php /*old includehook*/ @include(dirname(__FILE__).'/topheader.html')?>
 <div id="doc" class="yui-t7 dokuwiki">
   <?php html_msgarea()?>
