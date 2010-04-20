@@ -54,6 +54,15 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
         if (array_key_exists("data", $data)) {
             $options = Zend_Json::decode($data["data"]);
             if (is_array($options) && array_key_exists("name", $options)) {
+                // If the user hasn't specified another service URL, use the
+                // default.
+                if (array_key_exists("_service_url", $options) === false) {
+                    // Load the data service URL from the plugin configuration
+                    // and add it to the JSON data available to the javascript
+                    // that will request the data.
+                    $options["_service_url"] = $this->getConf("service_url");
+                    $data["data"] = Zend_Json::encode($options);
+                }
                 $renderer->doc .= "<span class='dokuwiki-data' id='{$options["name"]}'>" . $data["data"] . "</span>";
             }
         }
