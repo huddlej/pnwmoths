@@ -7,6 +7,7 @@ jQuery(document).ready(function () {
     // to the data service based on the arguments found.
     jQuery(".dokuwiki-data").each(function () {
         var i,
+            data_name,
             requestData,
             dataset;
 
@@ -36,12 +37,19 @@ jQuery(document).ready(function () {
             }
         }
 
-        // Make the request to the data service.
-        jQuery.getJSON(
-            dataset._service_url,
-            requestData,
-            getCallback(jQuery(this).attr("id"))
-        );
+        // Create a custom event to request this data set for other applications
+        // that need to re-request data later.
+        data_name = jQuery(this).attr("id");
+        jQuery("#" + data_name).bind("requestData", function (event) {
+            jQuery.getJSON(
+                dataset._service_url,
+                requestData,
+                getCallback(data_name)
+            );
+        });
+
+        // Trigger the initial request to the data service.
+        jQuery("#" + data_name).trigger("requestData");
     });
 });
 
