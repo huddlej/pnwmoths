@@ -12,7 +12,7 @@ jQuery(document).unload(function () {
 });
 
 jQuery(document).ready(function () {
-    var newmap = new Map(),
+    var newmap,
         optionFilters = [["county", "getCounties"],
                          ["state", "getStates"]],
         i, j;
@@ -21,6 +21,7 @@ jQuery(document).ready(function () {
         return;
     }
 
+    newmap = new Map();
     species = jQuery("#species").hide().text();
 
     // Setup custom events "requestData" and "dataIsReady". The latter initiates
