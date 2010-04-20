@@ -1,3 +1,5 @@
 jQuery(document).ready(function() {
-    jQuery('.similar-species').jcarousel();
+    if (jQuery(".similar-species").length > 0) {
+        jQuery('.similar-species').jcarousel();
+    }
 });
