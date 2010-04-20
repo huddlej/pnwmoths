@@ -2,16 +2,10 @@
 var dokuwiki_data = {};
 
 jQuery(document).ready(function () {
-    // All data sets have the dokuwiki-data class.
-    var datasets = jQuery(".dokuwiki-data");
-
-    if (datasets.length == 0) {
-        return;
-    }
-
-    // For each data set declaration, parse the contents of the container and
-    // make a request to the data service based on the arguments found.
-    datasets.each(function () {
+    // All data set declarations have the dokuwiki-data class.  For each data
+    // set declaration, parse the contents of the container and make a request
+    // to the data service based on the arguments found.
+    jQuery(".dokuwiki-data").each(function () {
         var i,
             serviceUrl,
             requestData,
