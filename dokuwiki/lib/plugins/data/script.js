@@ -13,6 +13,7 @@ jQuery(document).ready(function () {
     // make a request to the data service based on the arguments found.
     datasets.each(function () {
         var i,
+            serviceUrl,
             requestData,
             dataset;
 
@@ -27,11 +28,13 @@ jQuery(document).ready(function () {
         // Stop processing this data set if the declaration is empty or missing
         // required values.
         if (dataset == null ||
+            typeof(dataset._service_url) == "undefined" ||
             typeof(dataset.name) == "undefined" ||
             typeof(dataset.method) == "undefined") {
             return;
         }
 
+        serviceUrl = dataset._service_url;
         requestData = {"method": dataset.method};
 
         // Loop through optional arguments and add them to the request data.
@@ -42,7 +45,8 @@ jQuery(document).ready(function () {
         }
 
         // Make the request to the data service.
-        getData(
+        jQuery.getJSON(
+            serviceUrl,
             requestData,
             getCallback(jQuery(this).attr("id"))
         );
@@ -57,14 +61,4 @@ function getCallback(data_name) {
         // Trigger "data is ready" event for this data set.
         jQuery("#" + data_name).trigger("dataIsReady");
     }
-}
-
-function getData(requestData, callback) {
-    // TODO: need a configuration option for the service address or the host
-    // address.
-    jQuery.getJSON(
-        "http://localhost/~huddlej/service.php",
-        requestData,
-        callback
-    );
 }
