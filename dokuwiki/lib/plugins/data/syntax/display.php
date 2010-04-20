@@ -14,6 +14,7 @@ if (!defined('DOKU_TAB')) define('DOKU_TAB', "\t");
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 
 require_once DOKU_PLUGIN.'syntax.php';
+require_once 'bootstrap.php';
 
 class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
     function getType() {
@@ -28,24 +29,21 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
         return 307;
     }
 
-
     function connectTo($mode) {
-        // Use a lookahead pattern to make sure there is a closing tag before
-        // activating this plugin. The values preceded by forward slashes are
-        // equivalent to "<" and ">" characters.
-        $this->Lexer->addEntryPattern(
-            '<data>(?=.*\x3C/data\x3E)',
+        $this->Lexer->addSpecialPattern(
+            '<data>.*?</data>',
             $mode,
             'plugin_data_display'
         );
     }
 
-    function postConnect() {
-        $this->Lexer->addExitPattern('</data>','plugin_data_display');
-    }
-
     function handle($match, $state, $pos, &$handler){
         $data = array();
+        preg_match('/<data>(.*?)<\/data>/', $match, $matches);
+
+        if (count($matches) > 0) {
+            $data["data"] = $matches[1];
+        }
 
         return $data;
     }
@@ -53,10 +51,13 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
     function render($mode, &$renderer, $data) {
         if($mode != 'xhtml') return false;
 
-        $renderer->doc = "<p>DATA</p>";
+        if (array_key_exists("data", $data)) {
+            $options = Zend_Json::decode($data["data"]);
+            if (is_array($options) && array_key_exists("name", $options)) {
+                $renderer->doc .= "<span class='dokuwiki-data' id='{$options["name"]}'>" . $data["data"] . "</span>";
+            }
+        }
 
         return true;
     }
 }
-
-// vim:ts=4:sw=4:et:enc=utf-8:
