@@ -7,7 +7,6 @@ jQuery(document).ready(function () {
     // to the data service based on the arguments found.
     jQuery(".dokuwiki-data").each(function () {
         var i,
-            serviceUrl,
             requestData,
             dataset;
 
@@ -28,7 +27,6 @@ jQuery(document).ready(function () {
             return;
         }
 
-        serviceUrl = dataset._service_url;
         requestData = {"method": dataset.method};
 
         // Loop through optional arguments and add them to the request data.
@@ -40,7 +38,7 @@ jQuery(document).ready(function () {
 
         // Make the request to the data service.
         jQuery.getJSON(
-            serviceUrl,
+            dataset._service_url,
             requestData,
             getCallback(jQuery(this).attr("id"))
         );
