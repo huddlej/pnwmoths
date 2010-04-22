@@ -49,15 +49,11 @@ jQuery(document).ready(function () {
 
     // Clear text inputs.
     function clearText() {
-        console.log("Clearing text: ");
-        console.log(this);
         jQuery(this).children("input:text").val("");
     }
 
     // Clear dropdown inputs.
     function clearSelect() {
-        console.log("Clearing select: ");
-        console.log(this);
         jQuery(this).children("select").val("");
     }
 
