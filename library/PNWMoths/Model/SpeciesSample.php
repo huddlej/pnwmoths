@@ -51,7 +51,19 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
                 }
             }
             if (array_key_exists("county", $filters)) {
-                if ($row->doc->county != $filters["county"]) {
+                if ($row->doc->county) {
+                    if ($row->doc->state) {
+                        $county = $row->doc->county . " (" . $row->doc->state . ")";
+                    }
+                    else {
+                        $county = $row->doc->county;
+                    }
+
+                    if ($county != $filters["county"]) {
+                        continue;
+                    }
+                }
+                else {
                     continue;
                 }
             }

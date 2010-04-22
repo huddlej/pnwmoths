@@ -1,5 +1,10 @@
 function(doc) {
     if (doc.county) {
-        emit(doc.county, null);
+        if (doc.state) {
+            emit(doc.county + " (" + doc.state + ")", null);
+        }
+        else {
+            emit(doc.county, null);
+        }
     }
 }
