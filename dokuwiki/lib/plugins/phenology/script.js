@@ -599,11 +599,11 @@ function buildMapIcons() {
     // http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|CCCCCC|000000
     // where "CCCCCC" can be replaced by the color hex code you want.
     simpleIcon = new GIcon();
-    simpleIcon.iconSize = new GSize(21,21);
-    simpleIcon.shadowSize = new GSize(32,21);
-    simpleIcon.iconAnchor = new GPoint(11,21);
-    simpleIcon.infoWindowAnchor = new GPoint(11,0);
-    simpleIcon.imageMap = [14,1,15,2,16,3,17,4,18,5,19,6,19,7,19,8,19,9,19,10,19,11,19,12,19,13,19,14,18,15,17,16,16,17,15,18,14,19,6,19,5,18,4,17,3,16,2,15,1,14,1,13,1,12,1,11,1,10,1,9,1,8,1,7,1,6,2,5,3,4,4,3,5,2,6,1];
+    simpleIcon.iconSize = new GSize(12, 12);
+    simpleIcon.shadowSize = new GSize(18, 12);
+    simpleIcon.iconAnchor = new GPoint(6, 12);
+    simpleIcon.infoWindowAnchor = new GPoint(6, 0);
+    simpleIcon.imageMap = [9,0,10,1,11,2,11,3,11,4,11,5,11,6,11,7,11,8,11,9,10,10,9,11,2,11,1,10,0,9,0,8,0,7,0,6,0,5,0,4,0,3,1,2,2,1,3,0];
 
     // Icon color darkness is proportional to the precision of the
     // latitude/longitude values used for the marker. Thus, a precision of 0 has
