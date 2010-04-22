@@ -68,8 +68,8 @@ if (!defined('DOKU_INC')) die();
       <h1 id="site-id">PNW Moths</h1>
       <ol id="navigation">
           <li><a href="/dokuwiki/">Home</a></li>
-          <li><a href="">Identify</a></li>
-          <li><a href="">Browse</a></li>
+          <li><a href="/dokuwiki/doku.php?id=identification_keys">Identify</a></li>
+          <li><a href="/dokuwiki/doku.php?id=factsheets:start">Browse</a></li>
           <li id="search"><?php tpl_searchform()?></li>
       </ol>
       <!-- end site nav -->
