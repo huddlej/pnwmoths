@@ -47,6 +47,20 @@ jQuery(document).ready(function () {
     // Setup filters.
     //
 
+    // Clear text inputs.
+    function clearText() {
+        console.log("Clearing text: ");
+        console.log(this);
+        jQuery(this).children("input:text").val("");
+    }
+
+    // Clear dropdown inputs.
+    function clearSelect() {
+        console.log("Clearing select: ");
+        console.log(this);
+        jQuery(this).children("select").val("");
+    }
+
     // Close filter window
     jQuery("#filters-close").click(
         function (event) {
@@ -60,7 +74,7 @@ jQuery(document).ready(function () {
         function (event) {
             event.preventDefault();
             filters = {};
-            jQuery("#filters input:text").val("");
+            jQuery("#filters form").trigger("clear");
             jQuery(document).trigger("requestData");
         }
     );
@@ -75,12 +89,13 @@ jQuery(document).ready(function () {
             jQuery(document).trigger("requestData");
         }
     );
+    jQuery("#form-elevation").bind("clear", clearText);
     jQuery("#clear-filter-elevation").click(
         function (event) {
             event.preventDefault();
             if (filters.hasOwnProperty("elevation")) {
                 delete filters["elevation"];
-                jQuery(this).siblings("input:text").val("");
+                jQuery("#form-elevation").trigger("clear");
                 jQuery(document).trigger("requestData");
             }
         }
@@ -96,12 +111,13 @@ jQuery(document).ready(function () {
             jQuery(document).trigger("requestData");
         }
     );
+    jQuery("#form-date").bind("clear", clearText);
     jQuery("#clear-filter-date").click(
         function (event) {
             event.preventDefault();
             if (filters.hasOwnProperty("date")) {
                 delete filters["date"];
-                jQuery(this).siblings("input:text").val("");
+                jQuery("#form-date").trigger("clear");
                 jQuery(document).trigger("requestData");
             }
         }
@@ -116,12 +132,13 @@ jQuery(document).ready(function () {
             jQuery(document).trigger("requestData");
         }
     );
+    jQuery("#form-county").bind("clear", clearSelect);
     jQuery("#clear-filter-county").click(
         function (event) {
             event.preventDefault();
             if (filters.hasOwnProperty("county")) {
                 delete filters["county"];
-                jQuery(this).siblings("select").val("");
+                jQuery("#form-county").trigger("clear");
                 jQuery(document).trigger("requestData");
             }
         }
@@ -136,12 +153,13 @@ jQuery(document).ready(function () {
             jQuery(document).trigger("requestData");
         }
     );
+    jQuery("#form-state").bind("clear", clearSelect);
     jQuery("#clear-filter-state").click(
         function (event) {
             event.preventDefault();
             if (filters.hasOwnProperty("state")) {
                 delete filters["state"];
-                jQuery(this).siblings("select").val("");
+                jQuery("#form-state").trigger("clear");
                 jQuery(document).trigger("requestData");
             }
         }
