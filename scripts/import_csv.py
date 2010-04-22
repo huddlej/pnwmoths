@@ -15,7 +15,7 @@ rows = [row for row in csv_reader]
 
 column_names = ["id", "family", "genus", "species", "longitude", "latitude",
                 "state", "county", "city", "elevation", "elevation_units",
-                "year", "month", "day", "collector", "collection", "males", 
+                "year", "month", "day", "collector", "collection", "males",
                 "females", "notes"]
 host = "localhost"
 port = 5984
@@ -24,6 +24,8 @@ uri = "".join(["/", db_name, "/"])
 headers = {"Content-type": "application/json"}
 integer_fields = ["elevation"]
 notes_index = column_names.index("notes")
+
+# TODO: merge state into county name when storing in the database.
 
 for i in xrange(len(rows)):
     row = rows[i]
