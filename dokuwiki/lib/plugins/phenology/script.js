@@ -232,21 +232,73 @@ function getData(requestData, callback) {
 
 function preparePhenologyData(event) {
     var phenologyData = [],
+        flatPhenologyData = [],
         startInterval = 0,
         endInterval = 12,
-        i,
-        plot;
+        daysPerSegment = 10,
+        maxSegments = 2,
+        i, j,
+        plot,
+        month, segment,
+        ticks = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
+        dataLabels = [],
+        tick;
 
     // Pre-populate samples by interval with zeros.
     for (i = startInterval; i < endInterval; i++) {
-        phenologyData[i] = 0;
+            phenologyData[i] = [];
+        // One value per segment per month in the phenology.
+        for (j = 0; j <= maxSegments; j++) {
+            phenologyData[i][j] = 0;
+        }
     }
 
     // Map sample data to the given interval by counting each sample
     // that matches an interval marker.
     for (i in data) {
         if (data.hasOwnProperty(i) && data[i].month) {
-            phenologyData[parseInt(data[i].month) - 1] += 1;
+            month = parseInt(data[i].month) - 1;
+
+            if (data[i].day) {
+                // If a record has a day value, place it in the right segment.
+                segment = Math.floor(parseInt(data[i].day) / daysPerSegment);
+
+                // The graph will never display more than the max number of
+                // segments, so days 30 and 31 get placed into the last segment.
+                segment = Math.min(segment, maxSegments);
+            }
+            else {
+                // If a record doesn't have a "day" value, map the record to the
+                // beginning of the month.
+                segment = 0;
+            }
+
+            // Count the number of records for this month and this segment.
+            phenologyData[month][segment] += 1;
+        }
+    }
+
+    // Flatten nested phenology data into a single list.
+    for (i in phenologyData) {
+        for (j in phenologyData[i]) {
+            flatPhenologyData.push(phenologyData[i][j]);
+        }
+    }
+
+    // Prepare data for jqPlot by nesting our single data set in a list of data
+    // sets.
+    flatPhenologyData = [flatPhenologyData];
+
+    // Prepare data labels.
+
+    // Build a sequence of tick values consisting of one month letter and n
+    // empty values for all months where n is the number of segments per month
+    // in the phenology minus 1. For example: ["J", "", "", "F", "", "",...] for
+    // n=3.
+    for (tick in ticks) {
+        dataLabels.push(ticks[tick]);
+        for (i = 0; i <= maxSegments - 1; i++) {
+            dataLabels.push(" ");
         }
     }
 
@@ -257,14 +309,14 @@ function preparePhenologyData(event) {
     plotDiv = jQuery("#plot");
     plotDiv.empty();
     plotDiv.show();
-    plot = new Phenology(species, phenologyData);
+    plot = new Phenology(species, flatPhenologyData, dataLabels);
 }
 
-function Phenology (species, data) {
+function Phenology (species, data, dataLabels) {
     // Return a new jqPlot. This mostly consists of a lot of jqPlot options.
     return jQuery.jqplot(
         "plot",
-        [data],
+        data,
         {
             seriesDefaults: {
                 renderer: jQuery.jqplot.BarRenderer,
@@ -277,7 +329,7 @@ function Phenology (species, data) {
                     label: 'Month',
                     renderer: jQuery.jqplot.CategoryAxisRenderer,
                     labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
-                    ticks: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
+                    ticks: dataLabels
                 },
                 yaxis: {
                     label: 'Number of Records',
