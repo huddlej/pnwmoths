@@ -18,10 +18,10 @@ The results of the AJAX call to the data service are stored in a global variable
 
 ## Arguments
 
-**Emphasized arguments** are required.
+*Emphasized arguments* are required.
 
 <dl>
-    <dt>**_name**</dt>
+    <dt><em>_name</em></dt>
     <dd>(String) Name of the dataset used by javascript to identify the associated data in the global data store.</dd>
     <dt>_service_url</dt>
     <dd>(String) Complete URL for a data service that can receive the same arguments through GET parameters and return JSON data.</dd>
