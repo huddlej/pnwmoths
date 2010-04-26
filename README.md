@@ -1,8 +1,6 @@
-PNW Moths
-=========
+# PNW Moths
 
-Dependencies
-------------
+## Dependencies
 
  * [Zend Framework](http://framework.zend.com/)
  * [Tillikum CouchDB](http://github.com/strattg/tillikum-couchdb)
@@ -11,13 +9,11 @@ Dependencies
  * [jCarousel](http://sorgalla.com/jcarousel/)
  * [jqPlot](http://www.jqplot.com)
 
-Dokuwiki Plugins
-################
+### Dokuwiki Plugins
 
  * [templater](http://www.dokuwiki.org/plugin:templater)
 
-CouchDB
--------
+## CouchDB
 
 The CouchDB design document used by this application are stored in the couchdb
 directory. These files are designed for use with "couchapp", a Python utility
