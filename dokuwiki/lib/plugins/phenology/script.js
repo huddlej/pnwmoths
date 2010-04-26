@@ -1,5 +1,7 @@
 var map,
     mgr,
+    mapCenter,
+    bounds,
     species,
     data,
     filters = {},
@@ -23,6 +25,12 @@ jQuery(document).ready(function () {
 
     newmap = new Map();
     species = jQuery("#species").hide().text();
+
+    jQuery("#googlemap").bind("fullscreen", function () {
+        jQuery(this).toggleClass("fullscreen");
+        map.checkResize();
+        map.setCenter(mapCenter, map.getBoundsZoomLevel(bounds));
+    });
 
     // Setup custom events "requestData" and "dataIsReady". The latter initiates
     // a request to the data service passing any filters that have been
@@ -346,6 +354,19 @@ function Phenology (species, data, dataLabels) {
 //
 // Setup a custom Google map control for toggling the display of the filters.
 //
+
+// Sets the proper CSS for the given button element.
+function setButtonStyles(button) {
+    button.style.backgroundColor = "white";
+    button.style.font = "small Arial";
+    button.style.border = "1px solid black";
+    button.style.padding = "2px";
+    button.style.marginBottom = "3px";
+    button.style.textAlign = "center";
+    button.style.width = "5em";
+    button.style.cursor = "pointer";
+}
+
 function FiltersControl() {
 }
 FiltersControl.prototype = new GControl();
@@ -368,18 +389,37 @@ FiltersControl.prototype.initialize = function (map) {
     return container;
 };
 // Sets the proper CSS for the given button element.
-FiltersControl.prototype.setButtonStyle_ = function (button) {
-    button.style.backgroundColor = "white";
-    button.style.font = "small Arial";
-    button.style.border = "1px solid black";
-    button.style.padding = "2px";
-    button.style.marginBottom = "3px";
-    button.style.textAlign = "center";
-    button.style.width = "5em";
-    button.style.cursor = "pointer";
-};
+FiltersControl.prototype.setButtonStyle_ = setButtonStyles;
 FiltersControl.prototype.getDefaultPosition = function() {
     return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
+};
+
+// Full screen control
+function FullscreenControl() {
+}
+FullscreenControl.prototype = new GControl();
+FullscreenControl.prototype.initialize = function (map) {
+    var container = document.createElement("div"),
+        filterDiv = document.createElement("div");
+
+    this.setButtonStyle_(filterDiv);
+    container.appendChild(filterDiv);
+    filterDiv.appendChild(document.createTextNode("Fullscreen"));
+    GEvent.addDomListener(
+        filterDiv,
+        "click",
+        function () {
+            jQuery("#googlemap").trigger("fullscreen");
+        }
+    );
+
+    map.getContainer().appendChild(container);
+    return container;
+};
+// Sets the proper CSS for the given button element.
+FullscreenControl.prototype.setButtonStyle_ = setButtonStyles;
+FullscreenControl.prototype.getDefaultPosition = function() {
+    return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
 };
 
 function Map() {
@@ -392,13 +432,15 @@ function Map() {
 
     mapDiv = jQuery("#googlemap");
     mapDiv.show();
+    mapCenter = new GLatLng(46.90, -118.00);
     map = new GMap2(mapDiv.get(0));
 
     // Center on Washington State.
-    map.setCenter(new GLatLng(46.90, -118.00), 5);
+    map.setCenter(mapCenter, 5);
     map.addControl(new GSmallMapControl());
     map.addControl(new GMapTypeControl());
     map.addControl(new FiltersControl());
+    map.addControl(new FullscreenControl());
     map.addMapType(G_PHYSICAL_MAP);
     map.removeMapType(G_NORMAL_MAP);
     map.removeMapType(G_SATELLITE_MAP);
@@ -638,4 +680,6 @@ function addTerritoryBoundaries() {
         new GLatLng(40, -109.5)
   ], "#000000", 2, 1, "#ffffff", 0);
   map.addOverlay(polygon);
+
+  bounds = polygon.getBounds();
 }
