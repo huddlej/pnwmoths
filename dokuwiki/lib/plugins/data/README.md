@@ -33,12 +33,12 @@ The results of the AJAX call to the data service are stored in a global variable
 
 Method without arguments:
 
-<data>{"_name": "counties", "method": "getCounties"}</data>
+    <data>{"_name": "counties", "method": "getCounties"}</data>
 
 Method with one argument:
 
-<data>{"_name": "species-data", "method": "getSamples", "species": "Autographa ampla"}</data>
+    <data>{"_name": "species-data", "method": "getSamples", "species": "Autographa ampla"}</data>
 
 Method with one argument and rendering by plugin:
 
-<data>{"_name": "species-data", "_render": true, "method": "getSamples", "species": "Autographa ampla"}</data>
+    <data>{"_name": "species-data", "_render": true, "method": "getSamples", "species": "Autographa ampla"}</data>
