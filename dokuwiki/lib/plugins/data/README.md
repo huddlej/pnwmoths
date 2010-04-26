@@ -18,14 +18,14 @@ The results of the AJAX call to the data service are stored in a global variable
 
 ## Arguments
 
-Arguments in *italics* are optional.
+**Emphasized arguments** are required.
 
 <dl>
-    <dt>_name</dt>
+    <dt>**_name**</dt>
     <dd>(String) Name of the dataset used by javascript to identify the associated data in the global data store.</dd>
     <dt>_service_url</dt>
     <dd>(String) Complete URL for a data service that can receive the same arguments through GET parameters and return JSON data.</dd>
-    <dt><em>_render</em></dt>
+    <dt>_render</dt>
     <dd>(Boolean) Whether data represented by the current declaration should be dumped directly to the page but the plugin or not. If data is dumped directly, the data service is not queried through an AJAX call.</dd>
 </dl>
 
