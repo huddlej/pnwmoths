@@ -68,7 +68,7 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
 
                 // Determine whether to load the data into the wiki directly or
                 // to let the javascript handle it.
-                if (array_key_exists("_render", $options)) {
+                if (array_key_exists("_render", $options) && $options["_render"]) {
                     // If loading data directly, we need to fetch the data first
                     // and then dump the JSON to the document. Javascript will
                     // check for the "_name" attribute in the JSON data. If the
