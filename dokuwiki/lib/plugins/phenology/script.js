@@ -645,7 +645,9 @@ function buildMapIcons() {
     simpleIcon.shadowSize = new GSize(18, 12);
     simpleIcon.iconAnchor = new GPoint(6, 12);
     simpleIcon.infoWindowAnchor = new GPoint(6, 0);
-    simpleIcon.imageMap = [9,0,10,1,11,2,11,3,11,4,11,5,11,6,11,7,11,8,11,9,10,10,9,11,2,11,1,10,0,9,0,8,0,7,0,6,0,5,0,4,0,3,1,2,2,1,3,0];
+    simpleIcon.imageMap = [9,0,10,1,11,2,11,3,11,4,11,5,11,6,11,7,11,8,11,9,10,
+                           10,9,11,2,11,1,10,0,9,0,8,0,7,0,6,0,5,0,4,0,3,1,2,2,
+                           1,3,0];
 
     // Icon color darkness is proportional to the precision of the
     // latitude/longitude values used for the marker. Thus, a precision of 0 has
