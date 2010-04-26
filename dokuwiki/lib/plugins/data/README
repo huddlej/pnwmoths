@@ -6,7 +6,7 @@ The data plugin provides syntax for users to specify calls to a predefined data 
 How It Works
 ------------
 
-The user defines a data set by entering a JSON string containing at least a "name" and a "method" property.  The plugin replaces the data set declaration with a hidden span tag containing the JSON string.  The span tag has a class attribute identifying it as a dokuwiki data set.
+The user defines a data set by entering a JSON string containing at least a "_name" and a "method" property.  The plugin replaces the data set declaration with a hidden span tag containing the JSON string.  The span tag has a class attribute identifying it as a dokuwiki data set.
 
 When the dokuwiki page loads, the plugin's javascript looks for all DOM elements with the dokuwiki data set class.  The contents of each element are parsed as JSON and used to make an AJAX call to the data service.  The data service URL is embedded in the plugin output by the server side code.
 
@@ -18,13 +18,27 @@ This URL is the equivalent of calling getSamples(species="Autographa ampla") on 
 
 The results of the AJAX call to the data service are stored in a global variable indexed by the name of the data set.  Additionally, a custom event is triggered for the original data set span.  These two global actions, updating a global variable and triggering an event, allow other javascript applications to act on the data set.
 
+Arguments
+---------
+
+Arguments in *italics* are optional.
+
+<dl>
+    <dt>_name</dt>
+    <dd>(String) Name of the dataset used by javascript to identify the associated data in the global data store.</dd>
+    <dt>_service_url</dt>
+    <dd>(String) Complete URL for a data service that can receive the same arguments through GET parameters and return JSON data.</dd>
+    <dt><em>_render</em></dt>
+    <dd>(Boolean) Whether data represented by the current declaration should be dumped directly to the page but the plugin or not. If data is dumped directly, the data service is not queried through an AJAX call.</dd>
+</dl>
+
 Syntax Examples
 ---------------
 
 Method without arguments:
 
-<data>{"name": "counties", "method": "getCounties"}</data>
+<data>{"_name": "counties", "method": "getCounties"}</data>
 
 Method with one argument:
 
-<data>{"name": "species-data", "method": "getSamples", "args": {"species": "Autographa ampla"}}</data>
+<data>{"_name": "species-data", "method": "getSamples", "species": "Autographa ampla"}</data>

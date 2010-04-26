@@ -53,7 +53,7 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
 
         if (array_key_exists("data", $data)) {
             $options = Zend_Json::decode($data["data"]);
-            if (is_array($options) && array_key_exists("name", $options)) {
+            if (is_array($options) && array_key_exists("_name", $options)) {
                 // If the user hasn't specified another service URL, use the
                 // default.
                 if (array_key_exists("_service_url", $options) === false) {
@@ -63,7 +63,29 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
                     $options["_service_url"] = $this->getConf("service_url");
                     $data["data"] = Zend_Json::encode($options);
                 }
-                $renderer->doc .= "<span class='dokuwiki-data' id='{$options["name"]}'>" . $data["data"] . "</span>";
+
+                $renderer->doc .= "<span class='dokuwiki-data' id='{$options["_name"]}'>";
+
+                // Determine whether to load the data into the wiki directly or
+                // to let the javascript handle it.
+                if (array_key_exists("_render", $options)) {
+                    // If loading data directly, we need to fetch the data first
+                    // and then dump the JSON to the document. Javascript will
+                    // check for the "_name" attribute in the JSON data. If the
+                    // attribute doesn't exist, javascript will assume the data
+                    // has been dumped directly.
+                    $client = new Zend_Http_Client($options["_service_url"]);
+                    $client->setParameterGet($options);
+                    $response = $client->request();
+                    $renderer->doc .= $response->getBody();
+                }
+                else {
+                    // If letting javascript handle data fetching, just output
+                    // the plugin arguments in the span.
+                    $renderer->doc .= $data["data"];
+                }
+
+                $renderer->doc .= "</span>";
             }
         }
 

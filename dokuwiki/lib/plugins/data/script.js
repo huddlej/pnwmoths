@@ -18,38 +18,35 @@ jQuery(document).ready(function () {
         // Each declaration may optionally include an "args" property which
         // declares arguments to be passed to the specified method.
         dataset = jQuery.parseJSON(jQuery(this).text());
+        data_name = jQuery(this).attr("id");
 
-        // Stop processing this data set if the declaration is empty or missing
-        // required values.
-        if (dataset == null ||
-            typeof(dataset._service_url) == "undefined" ||
-            typeof(dataset.name) == "undefined" ||
-            typeof(dataset.method) == "undefined") {
+        // Stop processing this data set if the declaration is empty.
+        if (dataset == null) {
             return;
         }
 
-        requestData = {"method": dataset.method};
-
-        // Loop through optional arguments and add them to the request data.
-        for (i in dataset.args) {
-            if (dataset.args.hasOwnProperty(i)) {
-                requestData[i] = dataset.args[i];
-            }
+        // If the declaration is missing required values but is valid JSON then
+        // the data was dumped directly by the plugin and nothing more needs to
+        // be done.
+        if (typeof(dataset._service_url) == "undefined" ||
+            typeof(dataset._name) == "undefined" ||
+            typeof(dataset.method) == "undefined") {
+            getCallback(data_name)(dataset);
         }
+        else {
+            // Create a custom event to request this data set for other
+            // applications that need to re-request data later.
+            jQuery("#" + data_name).bind("requestData", function (event) {
+                jQuery.getJSON(
+                    dataset._service_url,
+                    dataset,
+                    getCallback(data_name)
+                );
+            });
 
-        // Create a custom event to request this data set for other applications
-        // that need to re-request data later.
-        data_name = jQuery(this).attr("id");
-        jQuery("#" + data_name).bind("requestData", function (event) {
-            jQuery.getJSON(
-                dataset._service_url,
-                requestData,
-                getCallback(data_name)
-            );
-        });
-
-        // Trigger the initial request to the data service.
-        jQuery("#" + data_name).trigger("requestData");
+            // Trigger the initial request to the data service.
+            jQuery("#" + data_name).trigger("requestData");
+        }
     });
 });
 
