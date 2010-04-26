@@ -11,6 +11,11 @@ Dependencies
  * [jCarousel](http://sorgalla.com/jcarousel/)
  * [jqPlot](http://www.jqplot.com)
 
+Dokuwiki Plugins
+################
+
+ * [templater](http://www.dokuwiki.org/plugin:templater)
+
 CouchDB
 -------
 
