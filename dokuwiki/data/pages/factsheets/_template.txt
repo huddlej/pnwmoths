@@ -1,5 +1,7 @@
 ====== @!PAGE@ ======
 
+{{template>factsheets:template|species=@!PAGE@}}
+
 ===== Identification =====
 
 ===== Habitat =====
