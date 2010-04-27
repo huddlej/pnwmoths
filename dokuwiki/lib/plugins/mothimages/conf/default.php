@@ -1,8 +1,8 @@
 <?php
 /**
- * Default settings for the similarspecies plugin
+ * Default settings for the speciesimages plugin
  *
  * @author John Huddleston <huddlej@gmail.com>
  */
 
-//$conf['fixme']    = 'FIXME';
+$conf['image_url'] = "http://localhost/~huddlej/getFile.php";

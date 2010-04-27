@@ -1,10 +1,9 @@
 <?php
 /**
- * Options for the similarspecies plugin
+ * Options for the speciesimages plugin
  *
  * @author John Huddleston <huddlej@gmail.com>
  */
 
-
-//$meta['fixme'] = array('string');
+$meta['image_url'] = array('string');
 
