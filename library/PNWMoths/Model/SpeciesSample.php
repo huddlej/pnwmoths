@@ -86,21 +86,6 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
         return $samples;
     }
 
-    public static function getDate($record) {
-        if ($record->year && $record->month && $record->day) {
-            return $record->month . "/" . $record->day . "/" . $record->year;
-        }
-        elseif($record->year && $record->month)  {
-            return $record->month . "/" . $record->year;
-        }
-        elseif ($record->year) {
-            return $record->year;
-        }
-        else {
-            return "";
-        }
-    }
-
     public static function getSortableDate($record) {
         if ($record->year && $record->month && $record->day) {
             $date = array($record->year, $record->month, $record->day);
@@ -132,28 +117,6 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
         else {
             return ($a < $b) ? -1 : 1;
         }
-    }
-
-    public static function getCollection($record) {
-        $summary = self::getDate($record);
-
-        if ($record->collector) {
-            $summary .= " by " . $record->collector;
-
-            if ($record->number_of_males) {
-                $summary .= ", " . $record->number_of_males . " males";
-            }
-
-            if ($record->number_of_females) {
-                $summary .= ", " . $record->number_of_females . " females";
-            }
-
-            if ($record->collection) {
-                $summary .= " (" . $record->collection . ")";
-            }
-        }
-
-        return $summary;
     }
 }
 ?>
