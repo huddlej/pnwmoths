@@ -44,10 +44,36 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
 
         if (count($matches) > 0) {
             $data["species"] = $matches[1];
-
-            $data["data"] = PNWMoths_Model_Image::getData(
-                array("species" => $data["species"])
+            $species = Zend_Json::encode($data["species"]);
+            $list_design_doc = "moths";
+            $list_name = "images";
+            $view_name = "by_species_image";
+            $view_design_doc = "";
+            $params = array(
+                "include_docs" => 'true',
+                "key" => $species,
+                "image_url" => $this->getConf("image_url")
             );
+
+            $db = PNWMoths_Model::getDatabase();
+            $response = $db->getList(
+                $list_design_doc,
+                $list_name,
+                $view_name,
+                $view_design_doc,
+                $params
+            );
+            $data["data"] = $response->getBody();
+
+            $params["limit"] = 1;
+            $response = $db->getList(
+                $list_design_doc,
+                $list_name,
+                $view_name,
+                $view_design_doc,
+                $params
+            );
+            $data["first_image"] = $response->getBody();
         }
 
         return $data;
@@ -56,27 +82,12 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
     function render($mode, &$renderer, $data) {
         if($mode != 'xhtml') return false;
 
-        if (count($data["data"]) > 0) {
-            $firstRow = true;
-            $renderer->doc .= "<div id='images'>";
-            foreach($data["data"] as $row) {
-                $image_url = $row->getUrl();
-
-                if ($firstRow) {
-                    $renderer->doc .= "<div id='current-image'>$row</div>";
-                    $renderer->doc .= "<ul id='other-images' class='jcarousel-skin-tango'>";
-                    $firstRow = false;
-                }
-
-                $renderer->doc .= "<li><a href='$image_url'>$row</a></li>";
-            }
-            $renderer->doc .= "</ul>";
-            $renderer->doc .= "</div>";
-        }
-        else {
-            $renderer->doc .= "None.";
-        }
-
+        $renderer->doc .= "<div id='images'>";
+        $renderer->doc .= "<div id='current-image'>{$data["first_image"]}</div>";
+        $renderer->doc .= "<ul id='other-images' class='jcarousel-skin-tango'>";
+        $renderer->doc .= $data["data"];
+        $renderer->doc .= "</ul>";
+        $renderer->doc .= "</div>";
         return true;
     }
 }
