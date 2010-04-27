@@ -15,7 +15,7 @@ function (head, req) {
                         image_src = image_url + "?id=" + row.id + "/" + attachment;
                         send("<li>");
                         send("<a href='" + image_src + "'>");
-                        send("<img src='" + image_src + "' />");
+                        send("<img src='" + image_src + "' title='" + (row.doc.caption || "") + "' />");
                         if (req.query.show_title) {
                             send("<br />" + row.doc.species);
                         }
