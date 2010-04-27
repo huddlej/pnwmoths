@@ -367,60 +367,62 @@ function setButtonStyles(button) {
     button.style.cursor = "pointer";
 }
 
-function FiltersControl() {
+if (typeof(GControl) !== "undefined") {
+    function FiltersControl() {
+    }
+    FiltersControl.prototype = new GControl();
+    FiltersControl.prototype.initialize = function (map) {
+        var container = document.createElement("div"),
+            filterDiv = document.createElement("div");
+
+        this.setButtonStyle_(filterDiv);
+        container.appendChild(filterDiv);
+        filterDiv.appendChild(document.createTextNode("Filters"));
+        GEvent.addDomListener(
+            filterDiv,
+            "click",
+            function () {
+                jQuery("#filters").toggle();
+            }
+        );
+
+        map.getContainer().appendChild(container);
+        return container;
+    };
+    // Sets the proper CSS for the given button element.
+    FiltersControl.prototype.setButtonStyle_ = setButtonStyles;
+    FiltersControl.prototype.getDefaultPosition = function() {
+        return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
+    };
+
+    // Full screen control
+    function FullscreenControl() {
+    }
+    FullscreenControl.prototype = new GControl();
+    FullscreenControl.prototype.initialize = function (map) {
+        var container = document.createElement("div"),
+            filterDiv = document.createElement("div");
+
+        this.setButtonStyle_(filterDiv);
+        container.appendChild(filterDiv);
+        filterDiv.appendChild(document.createTextNode("Fullscreen"));
+        GEvent.addDomListener(
+            filterDiv,
+            "click",
+            function () {
+                jQuery("#googlemap").trigger("fullscreen");
+            }
+        );
+
+        map.getContainer().appendChild(container);
+        return container;
+    };
+    // Sets the proper CSS for the given button element.
+    FullscreenControl.prototype.setButtonStyle_ = setButtonStyles;
+    FullscreenControl.prototype.getDefaultPosition = function() {
+        return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
+    };
 }
-FiltersControl.prototype = new GControl();
-FiltersControl.prototype.initialize = function (map) {
-    var container = document.createElement("div"),
-        filterDiv = document.createElement("div");
-
-    this.setButtonStyle_(filterDiv);
-    container.appendChild(filterDiv);
-    filterDiv.appendChild(document.createTextNode("Filters"));
-    GEvent.addDomListener(
-        filterDiv,
-        "click",
-        function () {
-            jQuery("#filters").toggle();
-        }
-    );
-
-    map.getContainer().appendChild(container);
-    return container;
-};
-// Sets the proper CSS for the given button element.
-FiltersControl.prototype.setButtonStyle_ = setButtonStyles;
-FiltersControl.prototype.getDefaultPosition = function() {
-    return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
-};
-
-// Full screen control
-function FullscreenControl() {
-}
-FullscreenControl.prototype = new GControl();
-FullscreenControl.prototype.initialize = function (map) {
-    var container = document.createElement("div"),
-        filterDiv = document.createElement("div");
-
-    this.setButtonStyle_(filterDiv);
-    container.appendChild(filterDiv);
-    filterDiv.appendChild(document.createTextNode("Fullscreen"));
-    GEvent.addDomListener(
-        filterDiv,
-        "click",
-        function () {
-            jQuery("#googlemap").trigger("fullscreen");
-        }
-    );
-
-    map.getContainer().appendChild(container);
-    return container;
-};
-// Sets the proper CSS for the given button element.
-FullscreenControl.prototype.setButtonStyle_ = setButtonStyles;
-FullscreenControl.prototype.getDefaultPosition = function() {
-    return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
-};
 
 function Map() {
     var mapDiv;
