@@ -13,7 +13,14 @@ function (head, req) {
                 if (row.doc) {
                     for (attachment in row.doc._attachments) {
                         image_src = image_url + "?id=" + row.id + "/" + attachment;
-                        send("<li><a href='" + image_src + "'><img src='" + image_src + "' /></a></li>");
+                        send("<li>");
+                        send("<a href='" + image_src + "'>");
+                        send("<img src='" + image_src + "' />");
+                        if (req.query.show_title) {
+                            send("<br />" + row.doc.species);
+                        }
+                        send("</a>");
+                        send("</li>\n");
                      }
                 }
             }
