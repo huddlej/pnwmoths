@@ -26,6 +26,8 @@ integer_fields = ["elevation"]
 notes_index = column_names.index("notes")
 
 # TODO: merge state into county name when storing in the database.
+# TODO: calculate latitude/longitude precision and store it in a field
+# TODO: calculate sortable date and store it
 
 for i in xrange(len(rows)):
     row = rows[i]
