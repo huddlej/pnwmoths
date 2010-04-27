@@ -2,6 +2,10 @@ function(doc) {
     var longitude_precision = 0,
         latitude_precision = 0;
 
+    if (doc.type) {
+        return;
+    }
+
     if(doc.elevation) {
         doc.elevation = parseInt(doc.elevation);
     }
