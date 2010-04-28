@@ -5,6 +5,5 @@
  * @author John Huddleston <huddlej@gmail.com>
  */
 
-
-//$meta['fixme'] = array('string');
+$meta['couchdb_url'] = array('string');
 

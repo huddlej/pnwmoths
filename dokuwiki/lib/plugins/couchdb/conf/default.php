@@ -5,4 +5,4 @@
  * @author John Huddleston <huddlej@gmail.com>
  */
 
-//$conf['fixme']    = 'FIXME';
+$conf['couchdb_url']    = 'http://localhost:5984';

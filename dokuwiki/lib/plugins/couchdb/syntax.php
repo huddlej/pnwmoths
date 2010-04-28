@@ -42,8 +42,9 @@ class syntax_plugin_couchdb extends DokuWiki_Syntax_Plugin {
 
         if (count($matches) > 0) {
             $json = Zend_Json::decode($matches[1]);
-            $client = new Zend_Http_Client($json["url"]);
-            $client->setParameterGet($json["params"]);
+            $url = sprintf("%s%s", $this->getConf("couchdb_url"), $json["url"]);
+            $client = new Zend_Http_Client();
+            $client->setUri($url)->setParameterGet($json["params"]);
             $data["data"] = $client->request()->getBody();
         }
 

@@ -6,8 +6,4 @@
  */
 
 // keys need to match the config setting name
-// $lang['fixme'] = 'FIXME';
-
-
-
-//Setup VIM: ex: et ts=4 enc=utf-8 :
+$lang['couchdb_url'] = 'URL of your CouchDB server including port number';
