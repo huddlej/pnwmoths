@@ -38,12 +38,12 @@ class syntax_plugin_couchdb extends DokuWiki_Syntax_Plugin {
 
     function handle($match, $state, $pos, &$handler){
         $data = array();
-        $data = array();
         preg_match('/<couchdb>(.*?)<\/couchdb>/', $match, $matches);
 
         if (count($matches) > 0) {
-            $data["url"] = $matches[1];
-            $client = new Zend_Http_Client($data["url"]);
+            $json = Zend_Json::decode($matches[1]);
+            $client = new Zend_Http_Client($json["url"]);
+            $client->setParameterGet($json["params"]);
             $data["data"] = $client->request()->getBody();
         }
 
