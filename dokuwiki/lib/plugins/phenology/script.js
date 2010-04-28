@@ -687,3 +687,35 @@ function addTerritoryBoundaries() {
 
   bounds = polygon.getBounds();
 }
+
+var ffilters = {"elevation": 10};
+var fakeData = [{"elevation": 10, "score": 200, "name": "John"},
+                {"elevation": 100, "score": 100, "name": "Firass"},
+                {"elevation": 1000, "score": 5, "name": "Gordon"}];
+
+function getFilter(name, values) {
+    return function (record) {
+        if (typeof(values) !== "object" && record[name] == values) {
+            return record;
+        }
+        else if (typeof(values) === "object" && values.length == 2 &&
+                 record[name] >= values[0] && record[name] <= values[1]) {
+            return record;
+        }
+        else {
+            return null;
+        }
+    };
+}
+
+function filterData(data, filters) {
+    var filtered_data = data,
+        filter;
+    for (filter in filters) {
+        if (filters.hasOwnProperty(filter)) {
+            filtered_data = jQuery.map(filtered_data,
+                                       getFilter(filter, filters[filter]));
+        }
+    }
+    return filtered_data;
+}
