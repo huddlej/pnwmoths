@@ -29,33 +29,38 @@ class syntax_plugin_couchdb extends DokuWiki_Syntax_Plugin {
     }
 
     function connectTo($mode) {
-        $this->Lexer->addSpecialPattern(
-            '<couchdb>.*?</couchdb>',
-            $mode,
-            'plugin_couchdb'
-        );
+        $this->Lexer->addEntryPattern('<couchdb.*?>(?=.*?</couchdb>)',$mode,'plugin_couchdb');
+    }
+
+    function postConnect() {
+        $this->Lexer->addExitPattern('</couchdb>','plugin_couchdb');
     }
 
     function handle($match, $state, $pos, &$handler){
-        $data = array();
-        preg_match('/<couchdb>(.*?)<\/couchdb>/', $match, $matches);
-
-        if (count($matches) > 0) {
-            $json = Zend_Json::decode($matches[1]);
-            $url = sprintf("%s%s", $this->getConf("couchdb_url"), $json["url"]);
-            $client = new Zend_Http_Client();
-            $client->setUri($url)->setParameterGet($json["params"]);
-            $data["data"] = $client->request()->getBody();
+        switch ($state) {
+            case DOKU_LEXER_UNMATCHED:
+                $json = Zend_Json::decode($match);
+                $url = sprintf("%s%s", $this->getConf("couchdb_url"), $json["url"]);
+                $client = new Zend_Http_Client();
+                $client->setUri($url)->setParameterGet($json["params"]);
+                $data = $client->request()->getBody();
+                return array($state, $data);
+            default:
+                return array($state);
         }
-
-        return $data;
     }
 
-    function render($mode, &$renderer, $data) {
+    function render($mode, &$renderer, $indata) {
         if($mode != 'xhtml') return false;
 
-        if (array_key_exists("data", $data)) {
-            $renderer->doc .= $data["data"];
+        list($state, $data) = $indata;
+
+        switch ($state) {
+            case DOKU_LEXER_UNMATCHED:
+                $renderer->doc .= $data;
+                break;
+            default:
+                break;
         }
 
         return true;
