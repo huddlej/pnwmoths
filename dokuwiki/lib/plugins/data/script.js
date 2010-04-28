@@ -29,8 +29,7 @@ jQuery(document).ready(function () {
         // the data was dumped directly by the plugin and nothing more needs to
         // be done.
         if (typeof(dataset._service_url) == "undefined" ||
-            typeof(dataset._name) == "undefined" ||
-            typeof(dataset.method) == "undefined") {
+            typeof(dataset._name) == "undefined") {
             getCallback(data_name)(dataset);
         }
         else {
