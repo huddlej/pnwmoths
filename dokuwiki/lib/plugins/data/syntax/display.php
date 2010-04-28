@@ -22,7 +22,7 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
     }
 
     function getPType() {
-        return 'block';
+        return 'normal';
     }
 
     function getSort() {

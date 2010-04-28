@@ -27,7 +27,7 @@ class syntax_plugin_mothimages_display extends DokuWiki_Syntax_Plugin {
     }
 
     function getPType() {
-        return 'block';
+        return 'normal';
     }
 
     function getSort() {
