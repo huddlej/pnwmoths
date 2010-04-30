@@ -36,41 +36,8 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
 
         $samples = array();
         foreach ($results->rows as $row) {
-            if (array_key_exists("elevation", $filters)) {
-                if ($row->doc->elevation < (int)$filters["elevation"][0] ||
-                    $row->doc->elevation > (int)$filters["elevation"][1]) {
-                    continue;
-                }
-            }
-            if (array_key_exists("date", $filters)) {
-                $rowDate = self::getSortableDate($row->doc);
-
-                if ($rowDate < strtotime($filters["date"][0]) ||
-                    $rowDate > strtotime($filters["date"][1])) {
-                    continue;
-                }
-            }
-            if (array_key_exists("county", $filters)) {
-                if ($row->doc->county) {
-                    if ($row->doc->state) {
-                        $county = $row->doc->county . " (" . $row->doc->state . ")";
-                    }
-                    else {
-                        $county = $row->doc->county;
-                    }
-
-                    if ($county != $filters["county"]) {
-                        continue;
-                    }
-                }
-                else {
-                    continue;
-                }
-            }
-            if (array_key_exists("state", $filters)) {
-                if ($row->doc->state != $filters["state"]) {
-                    continue;
-                }
+            if ($row->doc->state) {
+                $row->doc->county = $row->doc->county . " (" . $row->doc->state . ")";
             }
 
             $row->doc->latitude = (float)$row->doc->latitude;
