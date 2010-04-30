@@ -43,6 +43,7 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
             $row->doc->latitude = (float)$row->doc->latitude;
             $row->doc->longitude = (float)$row->doc->longitude;
             $row->doc->precision = $row->value->precision;
+            $row->doc->date = self::getSortableDate($row->doc);
             $samples[] = $row->doc;
         }
 
@@ -58,16 +59,16 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
             $date = array($record->year, $record->month, $record->day);
         }
         elseif($record->year && $record->month)  {
-            $date = array($record->year, $record->month, 1);
+            $date = array($record->year, $record->month, "1");
         }
         elseif ($record->year) {
-            $date = array($record->year, 1, 1);
+            $date = array($record->year, "1", "1");
         }
         else {
             $date = array();
         }
 
-        return strtotime(implode("/", $date));
+        return implode("/", $date);
     }
 
     /**
