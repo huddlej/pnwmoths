@@ -46,7 +46,7 @@ jQuery(document).ready(function () {
         // just filter data locally and let all listeners know the data is
         // ready.
         if (data == null) {
-            getSpeciesData(species, filters);
+            getSpeciesData(species);
         }
         else {
             jQuery(document).trigger("dataIsReady",
@@ -218,19 +218,11 @@ function buildOptionFilterCallback(optionFilter) {
 // Requests data from the data service for the given species and filtering by
 // the given filters. Filtering takes place on the server before the data is
 // returned.
-function getSpeciesData(species, filters) {
-    var key,
-        requestData = {
+function getSpeciesData(species) {
+    var requestData = {
             "method": "getSamples",
             "species": species
         };
-
-    // Add filter values to the request data.
-    for (key in filters) {
-        if (filters.hasOwnProperty(key)) {
-           requestData[key] = filters[key];
-        }
-    }
 
     return getData(
          requestData,
