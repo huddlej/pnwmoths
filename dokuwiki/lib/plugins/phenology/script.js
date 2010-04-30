@@ -3,7 +3,7 @@ var map,
     mapCenter,
     bounds,
     species,
-    data,
+    data = null,
     filters = {},
     icons;
 
@@ -41,15 +41,31 @@ jQuery(document).ready(function () {
         if (jQuery("#filters").css("display") != "none") {
             jQuery("#filters").fadeTo(10, 0.3).fadeTo(5000, 1);
         }
-        getSpeciesData(species, filters);
+
+        // Get data from the server if it hasn't been loaded yet. Otherwise,
+        // just filter data locally and let all listeners know the data is
+        // ready.
+        if (data == null) {
+            getSpeciesData(species, filters);
+        }
+        else {
+            jQuery(document).trigger("dataIsReady",
+                                     [filterData(data, filters)]);
+        }
     });
+
     jQuery(document).bind("dataIsReady", preparePhenologyData);
     jQuery(document).bind(
         "dataIsReady",
-        function (event) {
+        function (event, data) {
             createMarkers(groupMarkerData(data));
         }
     );
+
+    function getSortableDate(date) {
+        var date_pieces = date.split("/");
+        return [date_pieces.pop()].concat(date_pieces).join("/");
+    }
 
     //
     // Setup filters.
@@ -111,7 +127,7 @@ jQuery(document).ready(function () {
             event.preventDefault();
             var start = jQuery("#startdate").val(),
                 end = jQuery("#enddate").val();
-            filters["date"] = [start, end];
+            filters["date"] = [getSortableDate(start), getSortableDate(end)];
             jQuery(document).trigger("requestData");
         }
     );
@@ -219,11 +235,13 @@ function getSpeciesData(species, filters) {
     return getData(
          requestData,
          function (new_data, textStatus) {
-            // Update global data variable.
-            data = new_data;
+             // Update global data variable.
+             data = new_data;
 
-            // Trigger "data is ready" event.
-            jQuery(document).trigger("dataIsReady");
+             // Trigger "data is ready" event. The second parameter is expected
+             // to be an array so data needs to be passed as the only value of
+             // that array.
+             jQuery(document).trigger("dataIsReady", [data]);
         }
     );
 }
@@ -238,7 +256,7 @@ function getData(requestData, callback) {
     );
 }
 
-function preparePhenologyData(event) {
+function preparePhenologyData(event, data) {
     var phenologyData = [],
         flatPhenologyData = [],
         startInterval = 0,
@@ -687,11 +705,6 @@ function addTerritoryBoundaries() {
 
   bounds = polygon.getBounds();
 }
-
-var ffilters = {"elevation": 10};
-var fakeData = [{"elevation": 10, "score": 200, "name": "John"},
-                {"elevation": 100, "score": 100, "name": "Firass"},
-                {"elevation": 1000, "score": 5, "name": "Gordon"}];
 
 function getFilter(name, values) {
     return function (record) {
