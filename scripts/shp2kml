@@ -5,4 +5,3 @@
 #
 ogr2ogr -f "GeoJSON" $1.json $1.shp
 ogr2ogr -f "KML" $1.kml $1.json
-rm $1.json
