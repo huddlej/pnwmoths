@@ -54,9 +54,14 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
 
         if (array_key_exists("species", $data)) {
             $species = $data["species"];
+            $api_key = $this->getConf("google_maps_api_key");
             $renderer->doc .= <<<HTML
 <div class="yui-u">
 <p id="species">$species</p>
+
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=$api_key&sensor=false" type="text/javascript"></script>
+<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js" type="text/javascript"></script>
+
 <div id="googlemap"></div>
 <div id="filters" class="tab" style="display: none;">
     <p class="right"><a href="" id="filters-close"><img src="http://maps.gstatic.com/intl/en_us/mapfiles/iw_close.gif" /></a></p>
