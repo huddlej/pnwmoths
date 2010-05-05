@@ -1,5 +1,5 @@
 <?php
-require_once 'bootstrap.php';
+require_once '../bootstrap.php';
 
 function getCounties() {
     return PNWMoths_Model_County::getData();
