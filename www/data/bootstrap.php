@@ -1,1 +1,0 @@
-/home/huddlej/pnwmoths/www/bootstrap.php
