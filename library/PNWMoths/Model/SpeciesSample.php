@@ -36,7 +36,7 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
 
         $samples = array();
         foreach ($results->rows as $row) {
-            if ($row->doc->state) {
+            if (property_exists($row->doc, "state") && $row->doc->state) {
                 $row->doc->county = $row->doc->county . " (" . $row->doc->state . ")";
             }
 
@@ -55,13 +55,13 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
     }
 
     public static function getSortableDate($record) {
-        if ($record->year && $record->month && $record->day) {
+        if (property_exists($record, "year") && $record->year && property_exists($record, "month") && $record->month && property_exists($record, "day") && $record->day) {
             $date = array($record->year, $record->month, $record->day);
         }
-        elseif($record->year && $record->month)  {
+        elseif(property_exists($record, "year") && $record->year && property_exists($record, "month") && $record->month)  {
             $date = array($record->year, $record->month, "1");
         }
-        elseif ($record->year) {
+        elseif (property_exists($record, "year") && $record->year) {
             $date = array($record->year, "1", "1");
         }
         else {
