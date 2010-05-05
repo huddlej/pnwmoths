@@ -1,8 +1,9 @@
 # Installing PNW Moths
 
 All data for the PNW Moths project is stored in version control. All project
-code is stored in the pnwmoths repository and all project content is stored in
-pnwmoths-www repository.
+code is stored in the [pnwmoths](http://github.com/huddlej/pnwmoths/) repository
+and all project content is stored in
+[pnwmoths-www](http://github.com/huddlej/pnwmoths-www/) repository.
 
 To get the latest code and content, checkout both repositories:
 
@@ -23,7 +24,8 @@ All custom DokuWiki code is stored in "pnwmoths/dokuwiki".
 ### Template
 
  1. Copy the DokuWiki template files from the pnwmoths directory to the DokuWiki template directory:
-    cp -R /usr/src/pnwmoths/dokuwiki/lib/tpl/pnwmoths /usr/local/www/dokuwiki/lib/tpl/pnwmoths
+
+     <pre><code>cp -R /usr/src/pnwmoths/dokuwiki/lib/tpl/pnwmoths /usr/local/www/dokuwiki/lib/tpl/pnwmoths</code></pre>
  1. Enter the DokuWiki admin site.
  1. Select "Configuration Settings".
  1. Find the "Template" setting under "Basic Settings" and select "pnwmoths".
@@ -37,7 +39,7 @@ third-party plugins.
 
 The following third-party plugins need to be installed:
 
- * http://www.dokuwiki.org/plugin:templater
+ * [Templater](http://www.dokuwiki.org/plugin:templater)
 
 ### Custom Plugins
 
