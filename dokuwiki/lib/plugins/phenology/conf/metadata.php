@@ -5,6 +5,5 @@
  * @author John Huddleston <huddlej@gmail.com>
  */
 
-
-//$meta['fixme'] = array('string');
+$meta['google_maps_api_key'] = array('string');
 
