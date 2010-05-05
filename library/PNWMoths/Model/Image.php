@@ -6,7 +6,7 @@ class PNWMoths_Model_Image extends PNWMoths_Model {
     protected static $designDoc = "moths";
     protected static $viewName = "by_species_image";
 
-    protected $baseUrl = "http://localhost/~huddlej/getFile.php";
+    protected $baseUrl = "http://localhost/services/getFile.php";
     protected $docId;
     protected $imageId;
     protected $attributes;
