@@ -1,4 +1,9 @@
 <?php
+// TODO: use Tillikum_CouchDb instead of CouchSimple.
+// TODO: merge state into county name when storing in the database.
+// TODO: calculate latitude/longitude precision and store it in a field
+// TODO: calculate sortable date and store it
+// TODO: remove pushing of views because we have couchapp now
 include("CouchSimple.php");
 include("JSON.php");
 
@@ -9,7 +14,7 @@ $couch = new CouchSimple($options);
 // Future-friendly json_encode
 if(!function_exists('json_encode'))
 {
-    function json_encode($data) 
+    function json_encode($data)
     {
         $json = new Services_JSON();
         return $json->encode($data);
@@ -114,7 +119,7 @@ function load_data($file_name)
     $handle = fopen($file_name, "r");
 
     $rows = array();
-    while (($data = fgetcsv($handle, 2000, ",")) !== false) 
+    while (($data = fgetcsv($handle, 2000, ",")) !== false)
     {
         $rows[] = $data;
     }
@@ -152,7 +157,7 @@ function load_data($file_name)
                 $column_name = "notes";
             }
             else
-            {              
+            {
                 $column_name = $column_names[$j];
             }
 
@@ -173,7 +178,7 @@ function load_data($file_name)
         }
 
         // Convert meters to feet.
-        if (array_key_exists("elevation_units", $document) && 
+        if (array_key_exists("elevation_units", $document) &&
             $document["elevation_units"] == "m.")
         {
             $document["elevation"] = $document["elevation"] * $feet_per_meter;
@@ -187,7 +192,7 @@ function load_data($file_name)
     }
 
     if (count($documents) > 0)
-    {  
+    {
         // Add document to the database.
         print "Sending bulk docs to database\n";
         $documents = array("docs" => $documents);
