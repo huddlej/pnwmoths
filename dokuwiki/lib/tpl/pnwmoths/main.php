@@ -33,15 +33,15 @@ if (!defined('DOKU_INC')) die();
   <?php
   if (strpos($ID, "factsheets:") !== false) {
     ?>
-    <script language="javascript" type="text/javascript" src="/~huddlej/js/jquery.jcarousel.min.js"></script>
-    <script language="javascript" type="text/javascript" src="/~huddlej/js/jquery.jqplot.min.js"></script>
-    <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.barRenderer.min.js"></script>
-    <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.canvasTextRenderer.min.js"></script>
-    <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.canvasAxisLabelRenderer.min.js"></script>
-    <script language="javascript" type="text/javascript" src="/~huddlej/js/jqplot.categoryAxisRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/media/js/jquery.jcarousel.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/media/js/jquery.jqplot.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/media/js/jqplot.barRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/media/js/jqplot.canvasTextRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/media/js/jqplot.canvasAxisLabelRenderer.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/media/js/jqplot.categoryAxisRenderer.min.js"></script>
 
-    <!--[if IE]><script language="javascript" type="text/javascript" src="/~huddlej/js/excanvas.min.js"></script><![endif]-->
-    <link rel="stylesheet" href="/~huddlej/css/jquery.jqplot.min.css" type="text/css">
+    <!--[if IE]><script language="javascript" type="text/javascript" src="/media/js/excanvas.min.js"></script><![endif]-->
+    <link rel="stylesheet" href="/media/css/jquery.jqplot.min.css" type="text/css">
     <?php
   }
   ?>
