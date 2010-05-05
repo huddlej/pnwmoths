@@ -41,7 +41,7 @@ if (!defined('DOKU_INC')) die();
     <script language="javascript" type="text/javascript" src="/media/js/jqplot.categoryAxisRenderer.min.js"></script>
 
     <!--[if IE]><script language="javascript" type="text/javascript" src="/media/js/excanvas.min.js"></script><![endif]-->
-    <link rel="stylesheet" href="/media/css/jquery.jqplot.min.css" type="text/css">
+    <link rel="stylesheet" href="/media/css/jquery.jqplot.css" type="text/css">
     <?php
   }
   ?>
