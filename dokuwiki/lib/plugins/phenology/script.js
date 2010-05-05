@@ -377,7 +377,7 @@ function setButtonStyles(button) {
     button.style.cursor = "pointer";
 }
 
-if (typeof(GControl) !== "undefined") {
+function getFiltersControl() {
     function FiltersControl() {
     }
     FiltersControl.prototype = new GControl();
@@ -405,6 +405,10 @@ if (typeof(GControl) !== "undefined") {
         return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
     };
 
+    return new FiltersControl();
+}
+
+function getFullscreenControl() {
     // Full screen control
     function FullscreenControl() {
     }
@@ -432,6 +436,8 @@ if (typeof(GControl) !== "undefined") {
     FullscreenControl.prototype.getDefaultPosition = function() {
         return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
     };
+
+    return new FullscreenControl();
 }
 
 function Map() {
@@ -451,8 +457,8 @@ function Map() {
     map.setCenter(mapCenter, 5);
     map.addControl(new GSmallMapControl());
     map.addControl(new GMapTypeControl());
-    map.addControl(new FiltersControl());
-    map.addControl(new FullscreenControl());
+    map.addControl(getFiltersControl());
+    map.addControl(getFullscreenControl());
     map.addMapType(G_PHYSICAL_MAP);
     map.removeMapType(G_NORMAL_MAP);
     map.removeMapType(G_SATELLITE_MAP);
