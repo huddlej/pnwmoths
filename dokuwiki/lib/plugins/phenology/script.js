@@ -242,7 +242,7 @@ function getData(requestData, callback) {
     // TODO: need a configuration option for the service address or the host
     // address.
     jQuery.getJSON(
-        "http://localhost/~huddlej/service.php",
+        "http://localhost/services/service.php",
         requestData,
         callback
     );
