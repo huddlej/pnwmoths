@@ -17,7 +17,8 @@ jQuery(document).ready(function () {
     var newmap,
         optionFilters = [["county", "getCounties"],
                          ["state", "getStates"]],
-        i, j;
+        i, j,
+        data_id, data_name;
 
     if (jQuery("#species").length == 0) {
         return;
@@ -25,6 +26,8 @@ jQuery(document).ready(function () {
 
     newmap = new Map();
     species = jQuery("#species").hide().text();
+    data_name = "species-data";
+    data_id = "#" + data_name;
 
     jQuery("#googlemap").bind("fullscreen", function () {
         jQuery(this).toggleClass("fullscreen");
@@ -32,6 +35,7 @@ jQuery(document).ready(function () {
         map.setCenter(mapCenter, map.getBoundsZoomLevel(bounds));
     });
 
+    // TODO: rename event to filterData?
     // Setup custom events "requestData" and "dataIsReady". The latter initiates
     // a request to the data service passing any filters that have been
     // set. When the data is ready, the "dataIsReady" event is triggered.
@@ -42,20 +46,13 @@ jQuery(document).ready(function () {
             jQuery("#filters").fadeTo(10, 0.3).fadeTo(5000, 1);
         }
 
-        // Get data from the server if it hasn't been loaded yet. Otherwise,
-        // just filter data locally and let all listeners know the data is
-        // ready.
-        if (data == null) {
-            getSpeciesData(species);
-        }
-        else {
-            jQuery(document).trigger("dataIsReady",
-                                     [filterData(data, filters)]);
-        }
+        // Filter data locally and let all listeners know the data is ready.
+        jQuery(data_id).trigger("dataIsReady",
+                                [filterData(dokuwiki_data[data_name], filters)]);
     });
 
-    jQuery(document).bind("dataIsReady", preparePhenologyData);
-    jQuery(document).bind(
+    jQuery(data_id).bind("dataIsReady", preparePhenologyData);
+    jQuery(data_id).bind(
         "dataIsReady",
         function (event, data) {
             createMarkers(groupMarkerData(data));
@@ -185,17 +182,13 @@ jQuery(document).ready(function () {
         }
     );
 
+    // TODO: replace getData calls with data plugin references.
     // Setup option filters (those with select fields).
     var requestData = {};
     for (i = 0; i < optionFilters.length; i++) {
         var optionFilter = optionFilters[i];
         requestData["method"] = optionFilter[1];
         getData(requestData, buildOptionFilterCallback(optionFilter));
-    }
-
-    // Trigger the initial request for data.
-    if (species) {
-        jQuery(document).trigger("requestData");
     }
 });
 
@@ -213,29 +206,6 @@ function buildOptionFilterCallback(optionFilter) {
             }
         }
     };
-}
-
-// Requests data from the data service for the given species and filtering by
-// the given filters. Filtering takes place on the server before the data is
-// returned.
-function getSpeciesData(species) {
-    var requestData = {
-            "method": "getSamples",
-            "species": species
-        };
-
-    return getData(
-         requestData,
-         function (new_data, textStatus) {
-             // Update global data variable.
-             data = new_data;
-
-             // Trigger "data is ready" event. The second parameter is expected
-             // to be an array so data needs to be passed as the only value of
-             // that array.
-             jQuery(document).trigger("dataIsReady", [data]);
-        }
-    );
 }
 
 function getData(requestData, callback) {
