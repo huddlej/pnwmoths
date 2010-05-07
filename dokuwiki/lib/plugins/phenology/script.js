@@ -1,11 +1,6 @@
 var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Map = function () {
     return {
-        "map": null,
-        "mgr": null,
-        "mapCenter": null,
-        "bounds": null,
-        "icons": null
     };
 }();
 PNWMOTHS.Filters = function () {
