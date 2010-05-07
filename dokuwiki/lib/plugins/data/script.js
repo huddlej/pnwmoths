@@ -1,4 +1,9 @@
 // Global storage for data sets indexed by data set name.
+var PNWMOTHS = PNWMOTHS || {};
+PNWMOTHS.Data = function () {
+    console.log("Initialize Data namespace");
+    return {};
+}();
 var dokuwiki_data = {};
 
 jQuery(document).ready(function () {
