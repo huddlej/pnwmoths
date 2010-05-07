@@ -182,40 +182,33 @@ jQuery(document).ready(function () {
         }
     );
 
-    // TODO: replace getData calls with data plugin references.
     // Setup option filters (those with select fields).
-    var requestData = {};
+    // TODO: move this logic into prototype-based code.
     for (i = 0; i < optionFilters.length; i++) {
         var optionFilter = optionFilters[i];
-        requestData["method"] = optionFilter[1];
-        getData(requestData, buildOptionFilterCallback(optionFilter));
+        // When the data for this option filter is ready, build the select field
+        // with the options available in the data.
+        jQuery("#" + optionFilter[0] + "-data").bind(
+            "dataIsReady",
+            buildOptionFilterCallback(optionFilter[0])
+        );
     }
 });
 
-// Builds the callback function for each option filter.
-function buildOptionFilterCallback(optionFilter) {
-    return function (new_data) {
-        var select = jQuery("#" + optionFilter[0]),
-            option;
-        for (j in new_data) {
-            if (new_data.hasOwnProperty(j)) {
+function buildOptionFilterCallback(optionFilterName) {
+    // Builds an option filter's options given a set of data.
+    return function (event, data) {
+        var select = jQuery("#" + optionFilterName),
+            option, i;
+        for (i in data) {
+            if (data.hasOwnProperty(i)) {
                 option = jQuery("<option></option>");
-                option.val(new_data[j]);
-                option.text(new_data[j]);
+                option.val(data[i]);
+                option.text(data[i]);
                 select.append(option);
             }
         }
     };
-}
-
-function getData(requestData, callback) {
-    // TODO: need a configuration option for the service address or the host
-    // address.
-    jQuery.getJSON(
-        "http://localhost/services/service.php",
-        requestData,
-        callback
-    );
 }
 
 function preparePhenologyData(event, data) {
