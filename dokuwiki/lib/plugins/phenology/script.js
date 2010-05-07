@@ -313,9 +313,9 @@ function Phenology (species, data, dataLabels) {
                     ticks: dataLabels
                 },
                 yaxis: {
+                    autoscale: true,
                     label: 'Number of Records',
                     labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
-                    min: 0,
                     tickOptions: {formatString: '%i'},
                     showTickMarks: false
                 }
