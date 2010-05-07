@@ -50,6 +50,20 @@ linking as follows (substituting each plugin name for "<plugin>"):
 
     ln -s /usr/src/pnwmoths/dokuwiki/lib/plugins/<plugin> /usr/local/www/dokuwiki/lib/plugins/<plugin>
 
+### Content
+
+All website content is stored in the [pnwmoths-www
+repository](http://github.com/huddlej/pnwmoths-www). To load this content into a new DokuWiki installation, check out the repository into the DokuWiki data directory like so:
+
+    git clone http://github.com/huddlej/pnwmoths-www.git /usr/local/www/dokuwiki/data/pages
+
+The DokuWiki content needs to be owned by the same user that owns everything
+else in the DokuWiki root directory. This is usually the "www" user on FreeBSD
+systems. Run this command as the root user to set the right permissions (where
+"www:www" is the user and group that owns all other DokuWiki content):
+
+    chown -R www:www /usr/local/www/dokuwiki/data/pages
+
 ## Google Maps
 
 Each domain that uses the Google Maps API needs its own API key. If the domain
