@@ -55,6 +55,6 @@ function getCallback(data_name) {
         dokuwiki_data[data_name] = new_data;
 
         // Trigger "data is ready" event for this data set.
-        jQuery("#" + data_name).trigger("dataIsReady");
+        jQuery("#" + data_name).trigger("dataIsReady", [new_data]);
     }
 }
