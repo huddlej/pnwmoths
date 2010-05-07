@@ -1,11 +1,23 @@
-var map,
-    mgr,
-    mapCenter,
-    bounds,
-    species,
+var PNWMOTHS = PNWMOTHS || {};
+PNWMOTHS.Map = function () {
+    return {
+        "map": null,
+        "mgr": null,
+        "mapCenter": null,
+        "bounds": null,
+        "icons": null
+    };
+}();
+PNWMOTHS.Filters = function () {
+    console.log("Initialize Filters namespace");
+    return {
+        "filters": {}
+    };
+}();
+
+var species,
     data = null,
-    filters = {},
-    icons;
+    filters = {};
 
 jQuery(document).unload(function () {
     if (typeof(GUnload) != "undefined") {
@@ -31,8 +43,11 @@ jQuery(document).ready(function () {
 
     jQuery("#googlemap").bind("fullscreen", function () {
         jQuery(this).toggleClass("fullscreen");
-        map.checkResize();
-        map.setCenter(mapCenter, map.getBoundsZoomLevel(bounds));
+        PNWMOTHS.Map.map.checkResize();
+        PNWMOTHS.Map.map.setCenter(
+            PNWMOTHS.Map.mapCenter,
+            PNWMOTHS.Map.map.getBoundsZoomLevel(PNWMOTHS.Map.bounds)
+        );
     });
 
     // TODO: rename event to filterData?
@@ -360,7 +375,7 @@ function getFiltersControl() {
             }
         );
 
-        map.getContainer().appendChild(container);
+        PNWMOTHS.Map.map.getContainer().appendChild(container);
         return container;
     };
     // Sets the proper CSS for the given button element.
@@ -392,7 +407,7 @@ function getFullscreenControl() {
             }
         );
 
-        map.getContainer().appendChild(container);
+        PNWMOTHS.Map.map.getContainer().appendChild(container);
         return container;
     };
     // Sets the proper CSS for the given button element.
@@ -405,20 +420,21 @@ function getFullscreenControl() {
 }
 
 function Map() {
-    var mapDiv;
+    var mapDiv, map, geo_xml;
 
     if (typeof(GBrowserIsCompatible) == "undefined" || !GBrowserIsCompatible()) {
         jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
         return;
     }
 
+    PNWMOTHS.Map.mapCenter = new GLatLng(46.90, -118.00);
     mapDiv = jQuery("#googlemap");
     mapDiv.show();
-    mapCenter = new GLatLng(46.90, -118.00);
     map = new GMap2(mapDiv.get(0));
+    PNWMOTHS.Map.map = map;
 
     // Center on Washington State.
-    map.setCenter(mapCenter, 5);
+    map.setCenter(PNWMOTHS.Map.mapCenter, 5);
     map.addControl(new GSmallMapControl());
     map.addControl(new GMapTypeControl());
     map.addControl(getFiltersControl());
@@ -427,13 +443,13 @@ function Map() {
     map.removeMapType(G_NORMAL_MAP);
     map.removeMapType(G_SATELLITE_MAP);
     map.setMapType(G_PHYSICAL_MAP);
-    addTerritoryBoundaries();
 
     geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
     map.addOverlay(geo_xml);
 
-    icons = buildMapIcons();
-    mgr = new MarkerManager(map);
+    PNWMOTHS.Map.bounds = addTerritoryBoundaries(map);
+    PNWMOTHS.Map.icons = buildMapIcons();
+    PNWMOTHS.Map.mgr = new MarkerManager(map);
 
     // Add filters to map container.
     map.getContainer().appendChild(jQuery("#filters").get(0));
@@ -577,23 +593,25 @@ function createMarkers(data) {
         i;
 
     // Always clear the current marker set before adding new markers.
-    mgr.clearMarkers();
+    PNWMOTHS.Map.mgr.clearMarkers();
 
     // Build a list of markers for the given data. Data is indexed by a
     // latitude/longitude tuple so i[0] is latitude and i[1] is longitude.
     for (i in data) {
         if (data.hasOwnProperty(i)) {
             point = new GLatLng(data[i].latitude, data[i].longitude);
-            markers.push(createMarker(point, i, renderMarkerRecord(data[i]),
-                                      {icon: icons[data[i].precision]}));
+            markers.push(
+                createMarker(point, i, renderMarkerRecord(data[i]),
+                             {icon: PNWMOTHS.Map.icons[data[i].precision]})
+            );
         }
     }
 
     // Use the marker manager to add multiple markers simulataneously and set
     // the maximum and minimum zoom levels at which the markers should be
     // displayed.
-    mgr.addMarkers(markers, 3, 10);
-    mgr.refresh();
+    PNWMOTHS.Map.mgr.addMarkers(markers, 3, 10);
+    PNWMOTHS.Map.mgr.refresh();
 }
 
 // Creates a map marker for a given Google map Point instance. The given number
@@ -654,7 +672,7 @@ function buildMapIcons() {
     return icons;
 }
 
-function addTerritoryBoundaries() {
+function addTerritoryBoundaries(map) {
   // Place a polygon around the area we're most interested in.
   var polygon = new GPolygon([
         new GLatLng(40, -109.5),
@@ -665,7 +683,7 @@ function addTerritoryBoundaries() {
   ], "#000000", 2, 1, "#ffffff", 0);
   map.addOverlay(polygon);
 
-  bounds = polygon.getBounds();
+  return polygon.getBounds();
 }
 
 function getFilter(name, values) {
