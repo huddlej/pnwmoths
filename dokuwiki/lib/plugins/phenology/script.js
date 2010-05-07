@@ -635,7 +635,7 @@ function buildMapIcons() {
     // the lightest grey icon while a precision of 4 would have a much darker
     // grey icon.
     iconColors = ["ffffff", "e5e5e5", "cccccc", "999999", "7f7f7f"];
-    imagePath = "/~huddlej/images/markers/";
+    imagePath = "/media/images/markers/";
     icons = [];
     for (i in iconColors) {
         if (iconColors.hasOwnProperty(i)) {
