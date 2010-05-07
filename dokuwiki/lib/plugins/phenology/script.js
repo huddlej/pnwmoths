@@ -238,24 +238,25 @@ function preparePhenologyData(event, data) {
     // that matches an interval marker.
     for (i in data) {
         if (data.hasOwnProperty(i) && data[i].month) {
-            month = parseInt(data[i].month) - 1;
-
+            // If a record doesn't have a "day" value, don't use it. It is
+            // better to omit a record than mislead users by defaulting the
+            // record to the beginning of the month or some other similar
+            // strategy.
             if (data[i].day) {
+                // Records are indexed starting with 0 so all months are shifted
+                // by 1.
+                month = parseInt(data[i].month) - 1;
+
                 // If a record has a day value, place it in the right segment.
                 segment = Math.floor(parseInt(data[i].day) / daysPerSegment);
 
                 // The graph will never display more than the max number of
                 // segments, so days 30 and 31 get placed into the last segment.
                 segment = Math.min(segment, maxSegments);
-            }
-            else {
-                // If a record doesn't have a "day" value, map the record to the
-                // beginning of the month.
-                segment = 0;
-            }
 
-            // Count the number of records for this month and this segment.
-            phenologyData[month][segment] += 1;
+                // Count the number of records for this month and this segment.
+                phenologyData[month][segment] += 1;
+            }
         }
     }
 
