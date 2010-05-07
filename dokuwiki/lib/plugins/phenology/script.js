@@ -4,15 +4,13 @@ PNWMOTHS.Map = function () {
     };
 }();
 PNWMOTHS.Filters = function () {
-    console.log("Initialize Filters namespace");
     return {
         "filters": {}
     };
 }();
 
 var species,
-    data = null,
-    filters = {};
+    data = null;
 
 jQuery(document).unload(function () {
     if (typeof(GUnload) != "undefined") {
@@ -57,8 +55,10 @@ jQuery(document).ready(function () {
         }
 
         // Filter data locally and let all listeners know the data is ready.
-        jQuery(data_id).trigger("dataIsReady",
-                                [filterData(dokuwiki_data[data_name], filters)]);
+        jQuery(data_id).trigger(
+            "dataIsReady",
+            [filterData(dokuwiki_data[data_name], PNWMOTHS.Filters.filters)]
+        );
     });
 
     jQuery(data_id).bind("dataIsReady", preparePhenologyData);
@@ -100,7 +100,7 @@ jQuery(document).ready(function () {
     jQuery("#clear-filters").click(
         function (event) {
             event.preventDefault();
-            filters = {};
+            PNWMOTHS.Filters.filters = {};
             jQuery("#filters form").trigger("clear");
             jQuery(document).trigger("requestData");
         }
@@ -112,7 +112,7 @@ jQuery(document).ready(function () {
             event.preventDefault();
             var start = jQuery("#startelevation").val(),
                 end = jQuery("#endelevation").val();
-            filters["elevation"] = [start, end];
+            PNWMOTHS.Filters.filters["elevation"] = [start, end];
             jQuery(document).trigger("requestData");
         }
     );
@@ -120,8 +120,8 @@ jQuery(document).ready(function () {
     jQuery("#clear-filter-elevation").click(
         function (event) {
             event.preventDefault();
-            if (filters.hasOwnProperty("elevation")) {
-                delete filters["elevation"];
+            if (PNWMOTHS.Filters.filters.hasOwnProperty("elevation")) {
+                delete PNWMOTHS.Filters.filters["elevation"];
                 jQuery("#form-elevation").trigger("clear");
                 jQuery(document).trigger("requestData");
             }
@@ -134,7 +134,8 @@ jQuery(document).ready(function () {
             event.preventDefault();
             var start = jQuery("#startdate").val(),
                 end = jQuery("#enddate").val();
-            filters["date"] = [getSortableDate(start), getSortableDate(end)];
+            PNWMOTHS.Filters.filters["date"] = [getSortableDate(start),
+                                                getSortableDate(end)];
             jQuery(document).trigger("requestData");
         }
     );
@@ -142,8 +143,8 @@ jQuery(document).ready(function () {
     jQuery("#clear-filter-date").click(
         function (event) {
             event.preventDefault();
-            if (filters.hasOwnProperty("date")) {
-                delete filters["date"];
+            if (PNWMOTHS.Filters.filters.hasOwnProperty("date")) {
+                delete PNWMOTHS.Filters.filters["date"];
                 jQuery("#form-date").trigger("clear");
                 jQuery(document).trigger("requestData");
             }
@@ -155,7 +156,7 @@ jQuery(document).ready(function () {
         function (event) {
             event.preventDefault();
             var start = jQuery("#county").val();
-            filters["county"] = start;
+            PNWMOTHS.Filters.filters["county"] = start;
             jQuery(document).trigger("requestData");
         }
     );
@@ -163,8 +164,8 @@ jQuery(document).ready(function () {
     jQuery("#clear-filter-county").click(
         function (event) {
             event.preventDefault();
-            if (filters.hasOwnProperty("county")) {
-                delete filters["county"];
+            if (PNWMOTHS.Filters.filters.hasOwnProperty("county")) {
+                delete PNWMOTHS.Filters.filters["county"];
                 jQuery("#form-county").trigger("clear");
                 jQuery(document).trigger("requestData");
             }
@@ -176,7 +177,7 @@ jQuery(document).ready(function () {
         function (event) {
             event.preventDefault();
             var start = jQuery("#state").val();
-            filters["state"] = start;
+            PNWMOTHS.Filters.filters["state"] = start;
             jQuery(document).trigger("requestData");
         }
     );
@@ -184,8 +185,8 @@ jQuery(document).ready(function () {
     jQuery("#clear-filter-state").click(
         function (event) {
             event.preventDefault();
-            if (filters.hasOwnProperty("state")) {
-                delete filters["state"];
+            if (PNWMOTHS.Filters.filters.hasOwnProperty("state")) {
+                delete PNWMOTHS.Filters.filters["state"];
                 jQuery("#form-state").trigger("clear");
                 jQuery(document).trigger("requestData");
             }
