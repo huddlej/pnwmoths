@@ -20,6 +20,8 @@ All custom DokuWiki code is stored in "pnwmoths/dokuwiki".
  1. Select "Configuration Settings".
  1. Find the "Editing Settings" section.
  1. Check the "Allow embedded HTML" option.
+ 1. Find the "Display Settings" section.
+ 1. Select "Always" for the "Use first heading for pagenames" option.
 
 ### Template
 
