@@ -302,10 +302,10 @@ function preparePhenologyData(event, data) {
     plotDiv = jQuery("#plot");
     plotDiv.empty();
     plotDiv.show();
-    plot = new Phenology(species, flatPhenologyData, dataLabels);
+    plot = new Phenology(flatPhenologyData, dataLabels);
 }
 
-function Phenology (species, data, dataLabels) {
+function Phenology (data, dataLabels) {
     // Return a new jqPlot. This mostly consists of a lot of jqPlot options.
     return jQuery.jqplot(
         "plot",
