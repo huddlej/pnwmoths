@@ -561,8 +561,12 @@ function Map() {
                 if (data.hasOwnProperty(i)) {
                     point = new GLatLng(data[i].latitude, data[i].longitude);
                     markers.push(
-                        createMarker(point, i, PNWMOTHS.Map.renderMarkerRecord(data[i]),
-                                     {icon: PNWMOTHS.Map.icons[data[i].precision]})
+                        PNWMOTHS.Map.createMarker(
+                            point,
+                            i,
+                            PNWMOTHS.Map.renderMarkerRecord(data[i]),
+                            {icon: PNWMOTHS.Map.icons[data[i].precision]}
+                        )
                     );
                 }
             }
@@ -572,26 +576,25 @@ function Map() {
             // should be displayed.
             PNWMOTHS.Map.mgr.addMarkers(markers, 3, 10);
             PNWMOTHS.Map.mgr.refresh();
+        },
+        createMarker: function (point, number, html, marker_options) {
+            // Creates a map marker for a given Google map Point instance. The
+            // given number is used to distinguish this marker from all other
+            // markers. The marker uses a tabbed info window, so the given HTML
+            // is split into one part for each of the (two) tabs.
+            var marker = new GMarker(point, marker_options);
+            marker.value = number;
+            GEvent.addListener(marker, "click", function() {
+                // TODO: this code could be more reuseable if it looped through
+                // the "html" variable and created a tab for each entry with the
+                // tab name in the variable.
+                marker.openInfoWindowTabsHtml([new GInfoWindowTab("Site", html[0]),
+                                               new GInfoWindowTab("Collections", html[1])]);
+            });
+
+            return marker;
         }
     }
-}
-
-// Creates a map marker for a given Google map Point instance. The given number
-// is used to distinguish this marker from all other markers. The marker uses a
-// tabbed info window, so the given HTML is split into one part for each of the
-// (two) tabs.
-function createMarker(point, number, html, marker_options) {
-    var marker = new GMarker(point, marker_options);
-    marker.value = number;
-    GEvent.addListener(marker, "click", function() {
-        // TODO: this code could be more reuseable if it looped through the
-        // "html" variable and created a tab for each entry with the tab name in
-        // the variable.
-        marker.openInfoWindowTabsHtml([new GInfoWindowTab("Site", html[0]),
-                                       new GInfoWindowTab("Collections", html[1])]);
-    });
-
-    return marker;
 }
 
 function buildMapIcons() {
