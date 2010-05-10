@@ -9,8 +9,7 @@ PNWMOTHS.Filters = function () {
     };
 }();
 
-var species,
-    data = null;
+var data = null;
 
 jQuery(document).unload(function () {
     if (typeof(GUnload) != "undefined") {
@@ -24,13 +23,8 @@ jQuery(document).ready(function () {
         i, j,
         data_id, data_name;
 
-    if (jQuery("#species").length == 0) {
-        return;
-    }
-
     PNWMOTHS.Map = new Map();
     PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
-    species = jQuery("#species").hide().text();
     data_name = "species-data";
     data_id = "#" + data_name;
 
