@@ -372,7 +372,7 @@ function getFiltersControl() {
             }
         );
 
-        PNWMOTHS.Map.map.getContainer().appendChild(container);
+        map.getContainer().appendChild(container);
         return container;
     };
     // Sets the proper CSS for the given button element.
@@ -404,7 +404,7 @@ function getFullscreenControl() {
             }
         );
 
-        PNWMOTHS.Map.map.getContainer().appendChild(container);
+        map.getContainer().appendChild(container);
         return container;
     };
     // Sets the proper CSS for the given button element.
