@@ -29,8 +29,7 @@ jQuery(document).ready(function () {
     }
 
     PNWMOTHS.Map = new Map();
-    // TODO: return google map object.
-    PNWMOTHS.Map.initialize();
+    PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
     species = jQuery("#species").hide().text();
     data_name = "species-data";
     data_id = "#" + data_name;
@@ -430,7 +429,6 @@ function Map() {
             mapDiv = jQuery("#googlemap");
             mapDiv.show();
             map = new GMap2(mapDiv.get(0));
-            PNWMOTHS.Map.map = map;
 
             // Center on Washington State.
             map.setCenter(PNWMOTHS.Map.mapCenter, 5);
@@ -452,6 +450,8 @@ function Map() {
 
             // Add filters to map container.
             map.getContainer().appendChild(jQuery("#filters").get(0));
+
+            return map;
         },
         groupMarkerData: function (data) {
             // Group marker data by latitude and longitude values.
