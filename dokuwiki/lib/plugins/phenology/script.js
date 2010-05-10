@@ -19,7 +19,7 @@ jQuery(document).unload(function () {
 });
 
 jQuery(document).ready(function () {
-    var newmap,
+    var map,
         optionFilters = [["county", "getCounties"],
                          ["state", "getStates"]],
         i, j,
@@ -29,7 +29,8 @@ jQuery(document).ready(function () {
         return;
     }
 
-    newmap = new Map();
+    map = new Map();
+    map.initialize();
     species = jQuery("#species").hide().text();
     data_name = "species-data";
     data_id = "#" + data_name;
@@ -416,39 +417,43 @@ function getFullscreenControl() {
 }
 
 function Map() {
-    var mapDiv, map, geo_xml;
+    return {
+        initialize: function () {
+            var mapDiv, map, geo_xml;
 
-    if (typeof(GBrowserIsCompatible) == "undefined" || !GBrowserIsCompatible()) {
-        jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
-        return;
+            if (typeof(GBrowserIsCompatible) == "undefined" || !GBrowserIsCompatible()) {
+                jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
+                return;
+            }
+
+            PNWMOTHS.Map.mapCenter = new GLatLng(46.90, -118.00);
+            mapDiv = jQuery("#googlemap");
+            mapDiv.show();
+            map = new GMap2(mapDiv.get(0));
+            PNWMOTHS.Map.map = map;
+
+            // Center on Washington State.
+            map.setCenter(PNWMOTHS.Map.mapCenter, 5);
+            map.addControl(new GSmallMapControl());
+            map.addControl(new GMapTypeControl());
+            map.addControl(getFiltersControl());
+            map.addControl(getFullscreenControl());
+            map.addMapType(G_PHYSICAL_MAP);
+            map.removeMapType(G_NORMAL_MAP);
+            map.removeMapType(G_SATELLITE_MAP);
+            map.setMapType(G_PHYSICAL_MAP);
+
+            geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
+            map.addOverlay(geo_xml);
+
+            PNWMOTHS.Map.bounds = addTerritoryBoundaries(map);
+            PNWMOTHS.Map.icons = buildMapIcons();
+            PNWMOTHS.Map.mgr = new MarkerManager(map);
+
+            // Add filters to map container.
+            map.getContainer().appendChild(jQuery("#filters").get(0));
+        }
     }
-
-    PNWMOTHS.Map.mapCenter = new GLatLng(46.90, -118.00);
-    mapDiv = jQuery("#googlemap");
-    mapDiv.show();
-    map = new GMap2(mapDiv.get(0));
-    PNWMOTHS.Map.map = map;
-
-    // Center on Washington State.
-    map.setCenter(PNWMOTHS.Map.mapCenter, 5);
-    map.addControl(new GSmallMapControl());
-    map.addControl(new GMapTypeControl());
-    map.addControl(getFiltersControl());
-    map.addControl(getFullscreenControl());
-    map.addMapType(G_PHYSICAL_MAP);
-    map.removeMapType(G_NORMAL_MAP);
-    map.removeMapType(G_SATELLITE_MAP);
-    map.setMapType(G_PHYSICAL_MAP);
-
-    geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
-    map.addOverlay(geo_xml);
-
-    PNWMOTHS.Map.bounds = addTerritoryBoundaries(map);
-    PNWMOTHS.Map.icons = buildMapIcons();
-    PNWMOTHS.Map.mgr = new MarkerManager(map);
-
-    // Add filters to map container.
-    map.getContainer().appendChild(jQuery("#filters").get(0));
 }
 
 // Group marker data by latitude and longitude values.
