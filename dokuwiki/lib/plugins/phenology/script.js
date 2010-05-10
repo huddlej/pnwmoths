@@ -375,38 +375,6 @@ function getFiltersControl() {
     return new FiltersControl();
 }
 
-function getFullscreenControl() {
-    // Full screen control
-    function FullscreenControl() {
-    }
-    FullscreenControl.prototype = new GControl();
-    FullscreenControl.prototype.initialize = function (map) {
-        var container = document.createElement("div"),
-            filterDiv = document.createElement("div");
-
-        this.setButtonStyle_(filterDiv);
-        container.appendChild(filterDiv);
-        filterDiv.appendChild(document.createTextNode("Fullscreen"));
-        GEvent.addDomListener(
-            filterDiv,
-            "click",
-            function () {
-                jQuery("#googlemap").trigger("fullscreen");
-            }
-        );
-
-        map.getContainer().appendChild(container);
-        return container;
-    };
-    // Sets the proper CSS for the given button element.
-    FullscreenControl.prototype.setButtonStyle_ = setButtonStyles;
-    FullscreenControl.prototype.getDefaultPosition = function() {
-        return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
-    };
-
-    return new FullscreenControl();
-}
-
 function Map() {
     return {
         initialize: function () {
@@ -427,7 +395,7 @@ function Map() {
             map.addControl(new GSmallMapControl());
             map.addControl(new GMapTypeControl());
             map.addControl(getFiltersControl());
-            map.addControl(getFullscreenControl());
+            map.addControl(PNWMOTHS.Map.getFullscreenControl());
             map.addMapType(G_PHYSICAL_MAP);
             map.removeMapType(G_NORMAL_MAP);
             map.removeMapType(G_SATELLITE_MAP);
@@ -494,6 +462,37 @@ function Map() {
             }
 
             return groupedData;
+        },
+        getFullscreenControl: function () {
+            // Full screen control
+            function FullscreenControl() {
+            }
+            FullscreenControl.prototype = new GControl();
+            FullscreenControl.prototype.initialize = function (map) {
+                var container = document.createElement("div"),
+                    filterDiv = document.createElement("div");
+
+                this.setButtonStyle_(filterDiv);
+                container.appendChild(filterDiv);
+                filterDiv.appendChild(document.createTextNode("Fullscreen"));
+                GEvent.addDomListener(
+                    filterDiv,
+                    "click",
+                    function () {
+                        jQuery("#googlemap").trigger("fullscreen");
+                    }
+                );
+
+                map.getContainer().appendChild(container);
+                return container;
+            };
+            // Sets the proper CSS for the given button element.
+            FullscreenControl.prototype.setButtonStyle_ = setButtonStyles;
+            FullscreenControl.prototype.getDefaultPosition = function() {
+                return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
+            };
+
+            return new FullscreenControl();
         }
     }
 }
