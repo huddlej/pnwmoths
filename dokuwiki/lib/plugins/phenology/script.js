@@ -65,7 +65,7 @@ jQuery(document).ready(function () {
     jQuery(data_id).bind(
         "dataIsReady",
         function (event, data) {
-            createMarkers(groupMarkerData(data));
+            createMarkers(data);
         }
     );
 
@@ -587,6 +587,9 @@ function createMarkers(data) {
     var markers = [],
         point,
         i;
+
+    // First group marker data.
+    data = groupMarkerData(data);
 
     // Always clear the current marker set before adding new markers.
     PNWMOTHS.Map.mgr.clearMarkers();
