@@ -404,7 +404,7 @@ function Map() {
             geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
             map.addOverlay(geo_xml);
 
-            PNWMOTHS.Map.bounds = addTerritoryBoundaries(map);
+            PNWMOTHS.Map.bounds = PNWMOTHS.Map.addTerritoryBoundaries(map);
             PNWMOTHS.Map.icons = PNWMOTHS.Map.buildMapIcons();
             PNWMOTHS.Map.mgr = new MarkerManager(map);
 
@@ -632,22 +632,21 @@ function Map() {
             }
 
             return icons;
+        },
+        addTerritoryBoundaries: function (map) {
+            // Place a polygon around the area we're most interested in.
+            var polygon = new GPolygon([
+                  new GLatLng(40, -109.5),
+                  new GLatLng(53, -109.5),
+                  new GLatLng(53, -126),
+                  new GLatLng(40, -126),
+                  new GLatLng(40, -109.5)
+            ], "#000000", 2, 1, "#ffffff", 0);
+            map.addOverlay(polygon);
+
+            return polygon.getBounds();
         }
     }
-}
-
-function addTerritoryBoundaries(map) {
-  // Place a polygon around the area we're most interested in.
-  var polygon = new GPolygon([
-        new GLatLng(40, -109.5),
-        new GLatLng(53, -109.5),
-        new GLatLng(53, -126),
-        new GLatLng(40, -126),
-        new GLatLng(40, -109.5)
-  ], "#000000", 2, 1, "#ffffff", 0);
-  map.addOverlay(polygon);
-
-  return polygon.getBounds();
 }
 
 function getFilter(name, values) {
