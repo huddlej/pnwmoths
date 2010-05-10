@@ -19,8 +19,7 @@ jQuery(document).unload(function () {
 });
 
 jQuery(document).ready(function () {
-    var map,
-        optionFilters = [["county", "getCounties"],
+    var optionFilters = [["county", "getCounties"],
                          ["state", "getStates"]],
         i, j,
         data_id, data_name;
@@ -29,8 +28,9 @@ jQuery(document).ready(function () {
         return;
     }
 
-    map = new Map();
-    map.initialize();
+    PNWMOTHS.Map = new Map();
+    // TODO: return google map object.
+    PNWMOTHS.Map.initialize();
     species = jQuery("#species").hide().text();
     data_name = "species-data";
     data_id = "#" + data_name;
@@ -452,59 +452,58 @@ function Map() {
 
             // Add filters to map container.
             map.getContainer().appendChild(jQuery("#filters").get(0));
-        }
-    }
-}
+        },
+        groupMarkerData: function (data) {
+            // Group marker data by latitude and longitude values.
+            var groupedData = {},
+                i, j, key,
+                attribute,
+                collection,
+                attributes = [
+                    "latitude",
+                    "longitude",
+                    "site_name",
+                    "county",
+                    "state",
+                    "elevation",
+                    "precision"
+                ];
 
-// Group marker data by latitude and longitude values.
-function groupMarkerData(data) {
-    var groupedData = {},
-        i, j, key,
-        attribute,
-        collection,
-        attributes = [
-            "latitude",
-            "longitude",
-            "site_name",
-            "county",
-            "state",
-            "elevation",
-            "precision"
-        ];
+            for (i in data) {
+                if (data.hasOwnProperty(i)) {
+                    key = [data[i].latitude, data[i].longitude];
 
-    for (i in data) {
-        if (data.hasOwnProperty(i)) {
-            key = [data[i].latitude, data[i].longitude];
+                    // Create an entry for this record's latitude and longitude
+                    // if one doesn't exist yet.
+                    if (typeof(groupedData[key]) === "undefined") {
+                        groupedData[key] = {};
+                    }
 
-            // Create an entry for this record's latitude and longitude if one
-            // doesn't exist yet.
-            if (typeof(groupedData[key]) === "undefined") {
-                groupedData[key] = {};
-            }
+                    // Get the first non-empty value for each attribute
+                    // associated with this latitude/longitude pair.
+                    for (j in attributes) {
+                        attribute = attributes[j];
+                        if (groupedData[key].hasOwnProperty(attribute) === false &&
+                            typeof(data[i][attribute]) !== 'undefined') {
+                            groupedData[key][attribute] = data[i][attribute];
+                        }
+                    }
 
-            // Get the first non-empty value for each attribute associated with
-            // this latitude/longitude pair.
-            for (j in attributes) {
-                attribute = attributes[j];
-                if (groupedData[key].hasOwnProperty(attribute) === false &&
-                    typeof(data[i][attribute]) !== 'undefined') {
-                    groupedData[key][attribute] = data[i][attribute];
+                    // Add any collection data available for this record.
+                    if (typeof(groupedData[key]["collections"]) === "undefined") {
+                        groupedData[key]["collections"] = [];
+                    }
+
+                    collection = renderCollection(data[i]);
+                    if (collection !== null) {
+                        groupedData[key]["collections"].push(collection);
+                    }
                 }
             }
 
-            // Add any collection data available for this record.
-            if (typeof(groupedData[key]["collections"]) === "undefined") {
-                groupedData[key]["collections"] = [];
-            }
-
-            collection = renderCollection(data[i]);
-            if (collection !== null) {
-                groupedData[key]["collections"].push(collection);
-            }
+            return groupedData;
         }
     }
-
-    return groupedData;
 }
 
 // Render one marker data record to an array of HTML for the marker info window
@@ -563,7 +562,7 @@ function createMarkers(data) {
         i;
 
     // First group marker data.
-    data = groupMarkerData(data);
+    data = PNWMOTHS.Map.groupMarkerData(data);
 
     // Always clear the current marker set before adding new markers.
     PNWMOTHS.Map.mgr.clearMarkers();
