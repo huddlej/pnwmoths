@@ -57,7 +57,7 @@ jQuery(document).ready(function () {
     jQuery(data_id).bind(
         "dataIsReady",
         function (event, data) {
-            createMarkers(data);
+            PNWMOTHS.Map.createMarkers(data);
         }
     );
 
@@ -493,88 +493,87 @@ function Map() {
             };
 
             return new FullscreenControl();
-        }
-    }
-}
+        },
+        renderMarkerRecord: function (record) {
+            // Render one marker data record to an array of HTML for the marker
+            // info window tabs.
+            var attributes = {"site_name": "Site Name",
+                              "county": "County",
+                              "state": "State",
+                              "elevation": "Elevation (ft.)"},
+                pointHtml = "<div class='infowindow'>",
+                collectionHtml = "",
+                attribute, attribute_name, attribute_value, i, j;
 
-// Render one marker data record to an array of HTML for the marker info window
-// tabs.
-function renderMarkerRecord(record) {
-    var attributes = {"site_name": "Site Name",
-                      "county": "County",
-                      "state": "State",
-                      "elevation": "Elevation (ft.)"},
-        pointHtml = "<div class='infowindow'>",
-        collectionHtml = "",
-        attribute, attribute_name, attribute_value, i, j;
-
-    for (attribute in attributes) {
-        if (attributes.hasOwnProperty(attribute)) {
-            attribute_name = attributes[attribute];
-            if (record[attribute]) {
-                attribute_value = record[attribute];
-            }
-            else {
-                attribute_value = "";
-            }
-            pointHtml += "<p>" + attribute_name + ": " + attribute_value + "</p>";
-        }
-    }
-
-    pointHtml += "</div>";
-
-    if (record.hasOwnProperty("collections") && record.collections.length > 0) {
-        collectionHtml = "<div class='infowindow collections'>";
-        collectionHtml += "<table>";
-        collectionHtml += "<tr><th>Date</th><th>Collector</th>";
-        collectionHtml += "<th><a href='/dokuwiki/doku.php?id=factsheets:collection_glossary' target='_new'>Collection</a></th>";
-        for (i in record.collections) {
-            if (record.collections.hasOwnProperty(i)) {
-                collectionHtml += "<tr>";
-                for (j in record.collections[i]) {
-                    collectionHtml += "<td>" + record.collections[i][j] + "</td>";
+            for (attribute in attributes) {
+                if (attributes.hasOwnProperty(attribute)) {
+                    attribute_name = attributes[attribute];
+                    if (record[attribute]) {
+                        attribute_value = record[attribute];
+                    }
+                    else {
+                        attribute_value = "";
+                    }
+                    pointHtml += "<p>" + attribute_name + ": " + attribute_value + "</p>";
                 }
-                collectionHtml += "</tr>";
             }
+
+            pointHtml += "</div>";
+
+            if (record.hasOwnProperty("collections") && record.collections.length > 0) {
+                collectionHtml = "<div class='infowindow collections'>";
+                collectionHtml += "<table>";
+                collectionHtml += "<tr><th>Date</th><th>Collector</th>";
+                collectionHtml += "<th><a href='/dokuwiki/doku.php?id=factsheets:collection_glossary' target='_new'>Collection</a></th>";
+                for (i in record.collections) {
+                    if (record.collections.hasOwnProperty(i)) {
+                        collectionHtml += "<tr>";
+                        for (j in record.collections[i]) {
+                            collectionHtml += "<td>" + record.collections[i][j] + "</td>";
+                        }
+                        collectionHtml += "</tr>";
+                    }
+                }
+                collectionHtml += "</table>";
+                collectionHtml += "</div>";
+            }
+
+            return [pointHtml, collectionHtml];
+        },
+        createMarkers: function (data) {
+            // Creates markers for a given set of data for which each record has
+            // a "latitude" and "longitude" attribute. Clears any previously
+            // existing markers from the map before displaying these markers.
+            var markers = [],
+                point,
+                i;
+
+            // First group marker data.
+            data = PNWMOTHS.Map.groupMarkerData(data);
+
+            // Always clear the current marker set before adding new markers.
+            PNWMOTHS.Map.mgr.clearMarkers();
+
+            // Build a list of markers for the given data. Data is indexed by a
+            // latitude/longitude tuple so i[0] is latitude and i[1] is
+            // longitude.
+            for (i in data) {
+                if (data.hasOwnProperty(i)) {
+                    point = new GLatLng(data[i].latitude, data[i].longitude);
+                    markers.push(
+                        createMarker(point, i, PNWMOTHS.Map.renderMarkerRecord(data[i]),
+                                     {icon: PNWMOTHS.Map.icons[data[i].precision]})
+                    );
+                }
+            }
+
+            // Use the marker manager to add multiple markers simulataneously
+            // and set the maximum and minimum zoom levels at which the markers
+            // should be displayed.
+            PNWMOTHS.Map.mgr.addMarkers(markers, 3, 10);
+            PNWMOTHS.Map.mgr.refresh();
         }
-        collectionHtml += "</table>";
-        collectionHtml += "</div>";
     }
-
-    return [pointHtml, collectionHtml];
-}
-
-// Creates markers for a given set of data for which each record has a
-// "latitude" and "longitude" attribute. Clears any previously existing markers
-// from the map before displaying these markers.
-function createMarkers(data) {
-    var markers = [],
-        point,
-        i;
-
-    // First group marker data.
-    data = PNWMOTHS.Map.groupMarkerData(data);
-
-    // Always clear the current marker set before adding new markers.
-    PNWMOTHS.Map.mgr.clearMarkers();
-
-    // Build a list of markers for the given data. Data is indexed by a
-    // latitude/longitude tuple so i[0] is latitude and i[1] is longitude.
-    for (i in data) {
-        if (data.hasOwnProperty(i)) {
-            point = new GLatLng(data[i].latitude, data[i].longitude);
-            markers.push(
-                createMarker(point, i, renderMarkerRecord(data[i]),
-                             {icon: PNWMOTHS.Map.icons[data[i].precision]})
-            );
-        }
-    }
-
-    // Use the marker manager to add multiple markers simulataneously and set
-    // the maximum and minimum zoom levels at which the markers should be
-    // displayed.
-    PNWMOTHS.Map.mgr.addMarkers(markers, 3, 10);
-    PNWMOTHS.Map.mgr.refresh();
 }
 
 // Creates a map marker for a given Google map Point instance. The given number
