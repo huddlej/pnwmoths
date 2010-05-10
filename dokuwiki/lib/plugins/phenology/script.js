@@ -9,8 +9,6 @@ PNWMOTHS.Filters = function () {
     };
 }();
 
-var data = null;
-
 jQuery(document).unload(function () {
     if (typeof(GUnload) != "undefined") {
         GUnload();
