@@ -3,7 +3,6 @@ var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Data = function () {
     return {};
 }();
-var dokuwiki_data = {};
 
 jQuery(document).ready(function () {
     // All data set declarations have the dokuwiki-data class.  For each data
@@ -56,7 +55,7 @@ jQuery(document).ready(function () {
 function getCallback(data_name) {
     return function (new_data, textStatus) {
         // Update global data variable.
-        dokuwiki_data[data_name] = new_data;
+        PNWMOTHS.Data[data_name] = new_data;
 
         // Trigger "data is ready" event for this data set.
         jQuery("#" + data_name).trigger("dataIsReady", [new_data]);
