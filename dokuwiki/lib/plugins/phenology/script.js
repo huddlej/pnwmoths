@@ -502,37 +502,6 @@ function groupMarkerData(data) {
     return groupedData;
 }
 
-// Render a date string for a given record.
-function renderDate(record) {
-    var month_choices = ["Jan", "Feb", "Mar", "Apr",
-                         "May", "Jun", "Jul", "Aug",
-                         "Sep", "Oct", "Nov", "Dec"];
-
-    if (record.year && record.month && record.day) {
-        return month_choices[record.month - 1] + " " + record.day + " " + record.year;
-    }
-    else if(record.year && record.month)  {
-        return month_choices[record.month - 1] + " " + record.year;
-    }
-    else if(record.year) {
-        return record.year;
-    }
-    else {
-        return "";
-    }
-}
-
-// Render all collection related information for a given record.
-function renderCollection(record) {
-    // Set the date for this marker.
-    var date = renderDate(record);
-    if (date != "") {
-        return [date, record.collector, record.collection];
-    }
-
-    return null;
-}
-
 // Render one marker data record to an array of HTML for the marker info window
 // tabs.
 function renderMarkerRecord(record) {
@@ -710,4 +679,35 @@ function filterData(data, filters) {
         }
     }
     return filtered_data;
+}
+
+// Render a date string for a given record.
+function renderDate(record) {
+    var month_choices = ["Jan", "Feb", "Mar", "Apr",
+                         "May", "Jun", "Jul", "Aug",
+                         "Sep", "Oct", "Nov", "Dec"];
+
+    if (record.year && record.month && record.day) {
+        return month_choices[record.month - 1] + " " + record.day + " " + record.year;
+    }
+    else if(record.year && record.month)  {
+        return month_choices[record.month - 1] + " " + record.year;
+    }
+    else if(record.year) {
+        return record.year;
+    }
+    else {
+        return "";
+    }
+}
+
+// Render all collection related information for a given record.
+function renderCollection(record) {
+    // Set the date for this marker.
+    var date = renderDate(record);
+    if (date != "") {
+        return [date, record.collector, record.collection];
+    }
+
+    return null;
 }
