@@ -551,7 +551,7 @@ jQuery(document).ready(function () {
     // TODO: move this logic into prototype-based code.
     for (i = 0; i < optionFilters.length; i++) {
         var optionFilter = optionFilters[i],
-            filter = new SelectFilter(optionFilter[0]);
+            filter = new OptionFilter(optionFilter[0]);
 
         filter.initialize();
 
@@ -673,8 +673,8 @@ function renderCollection(record) {
     return null;
 }
 
-function SelectFilter(name) {
-    // Handles processing of select filters. Expects the following ids in the DOM:
+function OptionFilter(name) {
+    // Handles processing of option filters. Expects the following ids in the DOM:
     //
     //  * #form-{name} - the form that wraps the filter's select field.
     //  * #clear-filter-{name} - the element that is used to clear the filter.
