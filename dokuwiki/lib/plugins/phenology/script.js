@@ -643,8 +643,7 @@ function TextFilter(name, valueCallback) {
     };
 }
 
-// TODO: add valueCallback argument
-function OptionFilter(name) {
+function OptionFilter(name, valueCallback) {
     // Handles processing of option filters. Expects the following ids in the DOM:
     //
     //  * #form-{name} - the form that wraps the filter's select field.
@@ -659,7 +658,14 @@ function OptionFilter(name) {
         submit: function (event) {
             event.preventDefault();
             var start = jQuery("#" + name).val();
-            PNWMOTHS.Filters.filters[name] = start;
+
+            if (typeof(valueCallback) == "function") {
+                PNWMOTHS.Filters.filters[name] = valueCallback(start);
+            }
+            else {
+                PNWMOTHS.Filters.filters[name] = start;
+            }
+
             jQuery(document).trigger("requestData");
         },
         clear: function (event) {
