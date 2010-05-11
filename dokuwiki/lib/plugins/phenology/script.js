@@ -613,6 +613,7 @@ function TextFilter(name, valueCallback) {
         initialize: function () {
             jQuery("#form-" + name).submit(this.submit);
             jQuery("#clear-filter-" + name).click(this.clear);
+            jQuery("#form-" + name).bind("clear", this.clear);
         },
         submit: function (event) {
             event.preventDefault();
@@ -651,6 +652,7 @@ function OptionFilter(name) {
         initialize: function () {
             jQuery("#form-" + name).submit(this.submit);
             jQuery("#clear-filter-" + name).click(this.clear);
+            jQuery("#form-" + name).bind("clear", this.clear);
         },
         submit: function (event) {
             event.preventDefault();
