@@ -78,7 +78,7 @@ PNWMOTHS.Map = function () {
                         groupedData[key]["collections"] = [];
                     }
 
-                    collection = renderCollection(data[i]);
+                    collection = PNWMOTHS.Map.renderCollection(data[i]);
                     if (collection !== null) {
                         groupedData[key]["collections"].push(collection);
                     }
@@ -280,6 +280,16 @@ PNWMOTHS.Map = function () {
             button.style.textAlign = "center";
             button.style.width = "5em";
             button.style.cursor = "pointer";
+        },
+        "renderCollection": function (record) {
+            // Render all collection related information for a given record.
+            // Set the date for this marker.
+            var date = renderDate(record);
+            if (date != "") {
+                return [date, record.collector, record.collection];
+            }
+
+            return null;
         }
     };
 }();
@@ -677,15 +687,4 @@ function renderDate(record) {
     else {
         return "";
     }
-}
-
-// Render all collection related information for a given record.
-function renderCollection(record) {
-    // Set the date for this marker.
-    var date = renderDate(record);
-    if (date != "") {
-        return [date, record.collector, record.collection];
-    }
-
-    return null;
 }
