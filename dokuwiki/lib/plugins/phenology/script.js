@@ -378,10 +378,6 @@ PNWMOTHS.Chart = function () {
                 }
             }
 
-            // Prepare data for jqPlot by nesting our single data set in a list of data
-            // sets.
-            flatPhenologyData = [flatPhenologyData];
-
             // Prepare data labels.
 
             // Build a sequence of tick values consisting of one month letter and n
@@ -402,7 +398,10 @@ PNWMOTHS.Chart = function () {
             plotDiv = jQuery("#plot");
             plotDiv.empty();
             plotDiv.show();
-            return PNWMOTHS.Chart.render(flatPhenologyData, dataLabels);
+
+            // Prepare data for jqPlot by nesting our single data set in a list
+            // of data sets.
+            return PNWMOTHS.Chart.render([flatPhenologyData], dataLabels);
         },
         render: function (data, dataLabels) {
             // Return a new jqPlot. This mostly consists of a lot of jqPlot
