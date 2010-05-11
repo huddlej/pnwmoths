@@ -548,20 +548,14 @@ jQuery(document).ready(function () {
                      ["state", "getStates"]];
 
     // Setup option filters (those with select fields).
-    // TODO: move this logic into prototype-based code.
-    for (i = 0; i < optionFilters.length; i++) {
-        var optionFilter = optionFilters[i],
-            filter = new OptionFilter(optionFilter[0]);
-
+    jQuery.each(optionFilters, function (index, optionFilter) {
+        var filter = new OptionFilter(optionFilter[0]);
         filter.initialize();
 
         // When the data for this option filter is ready, build the select field
         // with the options available in the data.
-        jQuery("#" + optionFilter[0] + "-data").bind(
-            "dataIsReady",
-            filter.render
-        );
-    }
+        jQuery("#" + optionFilter[0] + "-data").bind("dataIsReady", filter.render);
+    });
 });
 
 //
