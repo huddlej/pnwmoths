@@ -417,6 +417,19 @@ PNWMOTHS.Filters = function () {
                 }
             };
         },
+        "filterData": function (data, filters) {
+            var filtered_data = data,
+                filter;
+            for (filter in filters) {
+                if (filters.hasOwnProperty(filter)) {
+                    filtered_data = jQuery.map(
+                        filtered_data,
+                        PNWMOTHS.Filters.getFilterFunction(filter, filters[filter])
+                    );
+                }
+            }
+            return filtered_data;
+        },
         "TextFilter": function (name, valueCallback) {
             // Handles processing of text filters. Expects the following ids in
             // the DOM:
@@ -545,7 +558,10 @@ jQuery(document).ready(function () {
         // Filter data locally and let all listeners know the data is ready.
         jQuery(data_id).trigger(
             "dataIsReady",
-            [filterData(PNWMOTHS.Data.data[data_name], PNWMOTHS.Filters.filters)]
+            [PNWMOTHS.Filters.filterData(
+                PNWMOTHS.Data.data[data_name],
+                PNWMOTHS.Filters.filters
+            )]
         );
     });
 
@@ -644,20 +660,6 @@ function getFiltersControl() {
     };
 
     return new FiltersControl();
-}
-
-function filterData(data, filters) {
-    var filtered_data = data,
-        filter;
-    for (filter in filters) {
-        if (filters.hasOwnProperty(filter)) {
-            filtered_data = jQuery.map(
-                filtered_data,
-                PNWMOTHS.Filters.getFilterFunction(filter, filters[filter])
-            );
-        }
-    }
-    return filtered_data;
 }
 
 // Render a date string for a given record.
