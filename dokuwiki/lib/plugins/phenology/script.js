@@ -646,7 +646,7 @@ function Map() {
 
             return polygon.getBounds();
         }
-    }
+    };
 }
 
 function getFilter(name, values) {
