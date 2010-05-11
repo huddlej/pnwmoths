@@ -605,6 +605,12 @@ function renderCollection(record) {
 }
 
 function TextFilter(name, valueCallback) {
+    // Handles processing of text filters. Expects the following ids in the DOM:
+    //
+    //  * #form-{name} - the form that wraps the filter's select field.
+    //  * #clear-filter-{name} - the element that is used to clear the filter.
+    //  * #start{name} - the element that has the start value of the filter range.
+    //  * #end{name} - the element that has the end value of the filter range.
     return {
         initialize: function () {
             jQuery("#form-" + name).submit(this.submit);
