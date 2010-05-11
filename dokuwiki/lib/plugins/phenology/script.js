@@ -42,6 +42,7 @@ jQuery(document).ready(function () {
     jQuery(document).bind("requestData", function (event) {
         // Fade out temporarily to let the user see the effects of their
         // filters.
+        // TODO: use is_hidden() method instead of testing for display != none
         if (jQuery("#filters").css("display") != "none") {
             jQuery("#filters").fadeTo(10, 0.3).fadeTo(5000, 1);
         }
