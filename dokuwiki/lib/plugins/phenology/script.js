@@ -284,12 +284,31 @@ PNWMOTHS.Map = function () {
         "renderCollection": function (record) {
             // Render all collection related information for a given record.
             // Set the date for this marker.
-            var date = renderDate(record);
+            var date = PNWMOTHS.Map.renderDate(record);
             if (date != "") {
                 return [date, record.collector, record.collection];
             }
 
             return null;
+        },
+        "renderDate": function (record) {
+            // Render a date string for a given record.
+            var month_choices = ["Jan", "Feb", "Mar", "Apr",
+                                 "May", "Jun", "Jul", "Aug",
+                                 "Sep", "Oct", "Nov", "Dec"];
+
+            if (record.year && record.month && record.day) {
+                return month_choices[record.month - 1] + " " + record.day + " " + record.year;
+            }
+            else if(record.year && record.month)  {
+                return month_choices[record.month - 1] + " " + record.year;
+            }
+            else if(record.year) {
+                return record.year;
+            }
+            else {
+                return "";
+            }
         }
     };
 }();
@@ -668,23 +687,3 @@ jQuery(document).ready(function () {
         }
     });
 });
-
-// Render a date string for a given record.
-function renderDate(record) {
-    var month_choices = ["Jan", "Feb", "Mar", "Apr",
-                         "May", "Jun", "Jul", "Aug",
-                         "Sep", "Oct", "Nov", "Dec"];
-
-    if (record.year && record.month && record.day) {
-        return month_choices[record.month - 1] + " " + record.day + " " + record.year;
-    }
-    else if(record.year && record.month)  {
-        return month_choices[record.month - 1] + " " + record.year;
-    }
-    else if(record.year) {
-        return record.year;
-    }
-    else {
-        return "";
-    }
-}
