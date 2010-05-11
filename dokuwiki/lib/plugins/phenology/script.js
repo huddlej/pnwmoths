@@ -544,17 +544,16 @@ jQuery(document).ready(function () {
         }
     );
 
-    optionFilters = [["county", "getCounties"],
-                     ["state", "getStates"]];
+    optionFilters = ["county", "state"];
 
     // Setup option filters (those with select fields).
     jQuery.each(optionFilters, function (index, optionFilter) {
-        var filter = new OptionFilter(optionFilter[0]);
+        var filter = new OptionFilter(optionFilter);
         filter.initialize();
 
         // When the data for this option filter is ready, build the select field
         // with the options available in the data.
-        jQuery("#" + optionFilter[0] + "-data").bind("dataIsReady", filter.render);
+        jQuery("#" + optionFilter + "-data").bind("dataIsReady", filter.render);
     });
 });
 
