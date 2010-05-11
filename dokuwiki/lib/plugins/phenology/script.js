@@ -307,41 +307,41 @@ function Chart() {
             plotDiv = jQuery("#plot");
             plotDiv.empty();
             plotDiv.show();
-            plot = new Phenology(flatPhenologyData, dataLabels);
+            return PNWMOTHS.Chart.render(flatPhenologyData, dataLabels);
+        },
+        render: function (data, dataLabels) {
+            // Return a new jqPlot. This mostly consists of a lot of jqPlot
+            // options.
+            return jQuery.jqplot(
+                "plot",
+                data,
+                {
+                    seriesDefaults: {
+                        renderer: jQuery.jqplot.BarRenderer,
+                        rendererOptions: {shadowAlpha: 0, barWidth: 5}
+                    },
+                    grid: {drawGridlines: false},
+                    title: "Flight Season",
+                    axes: {
+                        xaxis: {
+                            label: 'Month',
+                            renderer: jQuery.jqplot.CategoryAxisRenderer,
+                            labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
+                            ticks: dataLabels
+                        },
+                        yaxis: {
+                            autoscale: true,
+                            label: 'Number of Records',
+                            labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
+                            tickOptions: {formatString: '%i'},
+                            showTickMarks: false
+                        }
+                    }
+                }
+            );
         }
     };
 }
-
-function Phenology (data, dataLabels) {
-    // Return a new jqPlot. This mostly consists of a lot of jqPlot options.
-    return jQuery.jqplot(
-        "plot",
-        data,
-        {
-            seriesDefaults: {
-                renderer: jQuery.jqplot.BarRenderer,
-                rendererOptions: {shadowAlpha: 0, barWidth: 5}
-            },
-            grid: {drawGridlines: false},
-            title: "Flight Season",
-            axes: {
-                xaxis: {
-                    label: 'Month',
-                    renderer: jQuery.jqplot.CategoryAxisRenderer,
-                    labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
-                    ticks: dataLabels
-                },
-                yaxis: {
-                    autoscale: true,
-                    label: 'Number of Records',
-                    labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
-                    tickOptions: {formatString: '%i'},
-                    showTickMarks: false
-                }
-            }
-        }
-    );
-};
 
 //
 // Setup a custom Google map control for toggling the display of the filters.
