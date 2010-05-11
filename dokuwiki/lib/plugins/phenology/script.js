@@ -676,6 +676,11 @@ function renderCollection(record) {
 }
 
 function SelectFilter(name) {
+    // Handles processing of select filters. Expects the following ids in the DOM:
+    //
+    //  * #form-{name} - the form that wraps the filter's select field.
+    //  * #clear-filter-{name} - the element that is used to clear the filter.
+    //  * #{name} - the element that has the value of the filter.
     return {
         initialize: function () {
             jQuery("#form-" + name).submit(this.submit);
