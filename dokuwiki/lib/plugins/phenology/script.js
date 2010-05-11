@@ -111,7 +111,7 @@ PNWMOTHS.Map = function () {
                 return container;
             };
             // Sets the proper CSS for the given button element.
-            FullscreenControl.prototype.setButtonStyle_ = setButtonStyles;
+            FullscreenControl.prototype.setButtonStyle_ = PNWMOTHS.Map.setButtonStyles;
             FullscreenControl.prototype.getDefaultPosition = function() {
                 return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
             };
@@ -269,6 +269,17 @@ PNWMOTHS.Map = function () {
             map.addOverlay(polygon);
 
             return polygon.getBounds();
+        },
+        setButtonStyles: function (button) {
+            // Sets the proper CSS for the given button element.
+            button.style.backgroundColor = "white";
+            button.style.font = "small Arial";
+            button.style.border = "1px solid black";
+            button.style.padding = "2px";
+            button.style.marginBottom = "3px";
+            button.style.textAlign = "center";
+            button.style.width = "5em";
+            button.style.cursor = "pointer";
         }
     };
 }();
@@ -609,18 +620,6 @@ function buildOptionFilterCallback(optionFilterName) {
 // Setup a custom Google map control for toggling the display of the filters.
 //
 
-// Sets the proper CSS for the given button element.
-function setButtonStyles(button) {
-    button.style.backgroundColor = "white";
-    button.style.font = "small Arial";
-    button.style.border = "1px solid black";
-    button.style.padding = "2px";
-    button.style.marginBottom = "3px";
-    button.style.textAlign = "center";
-    button.style.width = "5em";
-    button.style.cursor = "pointer";
-}
-
 function getFiltersControl() {
     function FiltersControl() {
     }
@@ -644,7 +643,7 @@ function getFiltersControl() {
         return container;
     };
     // Sets the proper CSS for the given button element.
-    FiltersControl.prototype.setButtonStyle_ = setButtonStyles;
+    FiltersControl.prototype.setButtonStyle_ = PNWMOTHS.Map.setButtonStyles;
     FiltersControl.prototype.getDefaultPosition = function() {
         return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
     };
