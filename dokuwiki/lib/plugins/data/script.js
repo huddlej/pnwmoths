@@ -1,7 +1,18 @@
 // Global storage for data sets indexed by data set name.
 var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Data = function () {
-    return {};
+    return {
+        data: {},
+        getCallback: function (data_name) {
+            return function (new_data, textStatus) {
+                // Update global data variable.
+                PNWMOTHS.Data.data[data_name] = new_data;
+
+                // Trigger "data is ready" event for this data set.
+                jQuery("#" + data_name).trigger("dataIsReady", [new_data]);
+            }
+        }
+    };
 }();
 
 jQuery(document).ready(function () {
@@ -33,7 +44,7 @@ jQuery(document).ready(function () {
         // be done.
         if (typeof(dataset._service_url) == "undefined" ||
             typeof(dataset._name) == "undefined") {
-            getCallback(data_name)(dataset);
+            PNWMOTHS.Data.getCallback(data_name)(dataset);
         }
         else {
             // Create a custom event to request this data set for other
@@ -42,7 +53,7 @@ jQuery(document).ready(function () {
                 jQuery.getJSON(
                     dataset._service_url,
                     dataset,
-                    getCallback(data_name)
+                    PNWMOTHS.Data.getCallback(data_name)
                 );
             });
 
@@ -51,13 +62,3 @@ jQuery(document).ready(function () {
         }
     });
 });
-
-function getCallback(data_name) {
-    return function (new_data, textStatus) {
-        // Update global data variable.
-        PNWMOTHS.Data[data_name] = new_data;
-
-        // Trigger "data is ready" event for this data set.
-        jQuery("#" + data_name).trigger("dataIsReady", [new_data]);
-    }
-}

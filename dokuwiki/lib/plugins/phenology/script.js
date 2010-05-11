@@ -55,7 +55,7 @@ jQuery(document).ready(function () {
         // Filter data locally and let all listeners know the data is ready.
         jQuery(data_id).trigger(
             "dataIsReady",
-            [filterData(PNWMOTHS.Data[data_name], PNWMOTHS.Filters.filters)]
+            [filterData(PNWMOTHS.Data.data[data_name], PNWMOTHS.Filters.filters)]
         );
     });
 
