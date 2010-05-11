@@ -620,11 +620,6 @@ jQuery(document).ready(function () {
         }
     );
 
-    function getSortableDate(date) {
-        var date_pieces = date.split("/");
-        return [date_pieces.pop()].concat(date_pieces).join("/");
-    }
-
     //
     // Setup filters.
     //
@@ -646,6 +641,11 @@ jQuery(document).ready(function () {
             jQuery(document).trigger("requestData");
         }
     );
+
+    function getSortableDate(date) {
+        var date_pieces = date.split("/");
+        return [date_pieces.pop()].concat(date_pieces).join("/");
+    }
 
     // Define filters.
     filters = [
