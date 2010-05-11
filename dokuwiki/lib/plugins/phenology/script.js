@@ -547,13 +547,11 @@ jQuery(document).ready(function () {
 
     // County
     var county_filter = new SelectFilter("county");
-    jQuery("#form-county").submit(county_filter.submit);
-    jQuery("#clear-filter-county").click(county_filter.clear);
+    county_filter.initialize();
 
     // State
     var state_filter = new SelectFilter("state");
-    jQuery("#form-state").submit(state_filter.submit);
-    jQuery("#clear-filter-state").click(state_filter.clear);
+    state_filter.initialize();
 
     // Setup option filters (those with select fields).
     // TODO: move this logic into prototype-based code.
@@ -679,6 +677,10 @@ function renderCollection(record) {
 
 function SelectFilter(name) {
     return {
+        initialize: function () {
+            jQuery("#form-" + name).submit(this.submit);
+            jQuery("#clear-filter-" + name).click(this.clear);
+        },
         submit: function (event) {
             event.preventDefault();
             var start = jQuery("#" + name).val();
