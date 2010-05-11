@@ -471,11 +471,6 @@ jQuery(document).ready(function () {
     // Setup filters.
     //
 
-    // Clear text inputs.
-    function clearText() {
-        jQuery(this).children("input:text").val("");
-    }
-
     // Close filter window
     jQuery("#filters-close").click(
         function (event) {
@@ -494,24 +489,25 @@ jQuery(document).ready(function () {
         }
     );
 
-    // Elevation
-    var elevation_filter = new TextFilter("elevation");
-    elevation_filter.initialize();
+    // Define filters.
+    filters = [
+        {"name": "elevation", "type": TextFilter},
+        {"name": "date", "type": TextFilter, "callback": getSortableDate},
+        {"name": "county", "type": OptionFilter},
+        {"name": "state", "type": OptionFilter}
+    ];
 
-    // Date
-    var date_filter = new TextFilter("date", getSortableDate);
-    date_filter.initialize();
-
-    optionFilters = ["county", "state"];
-
-    // Setup option filters (those with select fields).
-    jQuery.each(optionFilters, function (index, optionFilter) {
-        var filter = new OptionFilter(optionFilter);
+    // Initialize each filter based on its type.
+    jQuery.each(filters, function (index, filterConfig) {
+        var filter = new filterConfig.type(filterConfig.name, filterConfig.callback);
         filter.initialize();
 
-        // When the data for this option filter is ready, build the select field
-        // with the options available in the data.
-        jQuery("#" + optionFilter + "-data").bind("dataIsReady", filter.render);
+        // Option filters rely on externally loaded data for their options.
+        if (filterConfig.type == OptionFilter) {
+            // When the data for this option filter is ready, build the select
+            // field with the options available in the data.
+            jQuery("#" + filterConfig.name + "-data").bind("dataIsReady", filter.render);
+        }
     });
 });
 
