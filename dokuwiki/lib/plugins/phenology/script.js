@@ -413,9 +413,7 @@ jQuery(document).unload(function () {
 });
 
 jQuery(document).ready(function () {
-    var optionFilters,
-        i, j,
-        data_id, data_name;
+    var data_id, data_name;
 
     PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
     data_name = "species-data";
