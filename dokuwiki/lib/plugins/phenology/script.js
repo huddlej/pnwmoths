@@ -402,7 +402,95 @@ PNWMOTHS.Chart = function () {
 }();
 PNWMOTHS.Filters = function () {
     return {
-        "filters": {}
+        "filters": {},
+        "TextFilter": function (name, valueCallback) {
+            // Handles processing of text filters. Expects the following ids in
+            // the DOM:
+            //
+            //  * #form-{name} - the form that wraps the filter's select field.
+            //  * #clear-filter-{name} - the element that is used to clear the filter.
+            //  * #start{name} - the element that has the start value of the filter range.
+            //  * #end{name} - the element that has the end value of the filter range.
+            return {
+                initialize: function () {
+                    jQuery("#form-" + name).submit(this.submit);
+                    jQuery("#clear-filter-" + name).click(this.clear);
+                    jQuery("#form-" + name).bind("clear", this.clear);
+                },
+                submit: function (event) {
+                    event.preventDefault();
+                    var start = jQuery("#start" + name).val(),
+                        end = jQuery("#end" + name).val();
+
+                    if (typeof(valueCallback) == "function") {
+                        PNWMOTHS.Filters.filters[name] = [valueCallback(start),
+                                                          valueCallback(end)];
+                    }
+                    else {
+                        PNWMOTHS.Filters.filters[name] = [start, end];
+                    }
+
+                    jQuery(document).trigger("requestData");
+                },
+                clear: function (event) {
+                    jQuery("#form-" + name).children("input:text").val("");
+                    event.preventDefault();
+                    if (PNWMOTHS.Filters.filters.hasOwnProperty(name)) {
+                        delete PNWMOTHS.Filters.filters[name];
+                        jQuery(document).trigger("requestData");
+                    }
+                }
+            };
+        },
+        "OptionFilter": function (name, valueCallback) {
+            // Handles processing of option filters. Expects the following ids
+            // in the DOM:
+            //
+            //  * #form-{name} - the form that wraps the filter's select field.
+            //  * #clear-filter-{name} - the element that is used to clear the filter.
+            //  * #{name} - the element that has the value of the filter.
+            return {
+                initialize: function () {
+                    jQuery("#form-" + name).submit(this.submit);
+                    jQuery("#clear-filter-" + name).click(this.clear);
+                    jQuery("#form-" + name).bind("clear", this.clear);
+                },
+                submit: function (event) {
+                    event.preventDefault();
+                    var start = jQuery("#" + name).val();
+
+                    if (typeof(valueCallback) == "function") {
+                        PNWMOTHS.Filters.filters[name] = valueCallback(start);
+                    }
+                    else {
+                        PNWMOTHS.Filters.filters[name] = start;
+                    }
+
+                    jQuery(document).trigger("requestData");
+                },
+                clear: function (event) {
+                    event.preventDefault();
+                    jQuery("#form-" + name).children("select").val("");
+                    if (PNWMOTHS.Filters.filters.hasOwnProperty(name)) {
+                        delete PNWMOTHS.Filters.filters[name];
+                        jQuery(document).trigger("requestData");
+                    }
+                },
+                render: function (event, data) {
+                    // Builds an option filter's options given a set of data.
+                    var select = jQuery("#" + name),
+                        option, i;
+                    for (i in data) {
+                        if (data.hasOwnProperty(i)) {
+                            option = jQuery("<option></option>");
+                            option.val(data[i]);
+                            option.text(data[i]);
+                            select.append(option);
+                        }
+                    }
+                }
+            };
+        }
     };
 }();
 
@@ -489,10 +577,10 @@ jQuery(document).ready(function () {
 
     // Define filters.
     filters = [
-        {"name": "elevation", "type": TextFilter},
-        {"name": "date", "type": TextFilter, "callback": getSortableDate},
-        {"name": "county", "type": OptionFilter},
-        {"name": "state", "type": OptionFilter}
+        {"name": "elevation", "type": PNWMOTHS.Filters.TextFilter},
+        {"name": "date", "type": PNWMOTHS.Filters.TextFilter, "callback": getSortableDate},
+        {"name": "county", "type": PNWMOTHS.Filters.OptionFilter},
+        {"name": "state", "type": PNWMOTHS.Filters.OptionFilter}
     ];
 
     // Initialize each filter based on its type.
@@ -501,7 +589,7 @@ jQuery(document).ready(function () {
         filter.initialize();
 
         // Option filters rely on externally loaded data for their options.
-        if (filterConfig.type == OptionFilter) {
+        if (filterConfig.type == PNWMOTHS.Filters.OptionFilter) {
             // When the data for this option filter is ready, build the select
             // field with the options available in the data.
             jQuery("#" + filterConfig.name + "-data").bind("dataIsReady", filter.render);
@@ -600,92 +688,4 @@ function renderCollection(record) {
     }
 
     return null;
-}
-
-function TextFilter(name, valueCallback) {
-    // Handles processing of text filters. Expects the following ids in the DOM:
-    //
-    //  * #form-{name} - the form that wraps the filter's select field.
-    //  * #clear-filter-{name} - the element that is used to clear the filter.
-    //  * #start{name} - the element that has the start value of the filter range.
-    //  * #end{name} - the element that has the end value of the filter range.
-    return {
-        initialize: function () {
-            jQuery("#form-" + name).submit(this.submit);
-            jQuery("#clear-filter-" + name).click(this.clear);
-            jQuery("#form-" + name).bind("clear", this.clear);
-        },
-        submit: function (event) {
-            event.preventDefault();
-            var start = jQuery("#start" + name).val(),
-                end = jQuery("#end" + name).val();
-
-            if (typeof(valueCallback) == "function") {
-                PNWMOTHS.Filters.filters[name] = [valueCallback(start),
-                                                  valueCallback(end)];
-            }
-            else {
-                PNWMOTHS.Filters.filters[name] = [start, end];
-            }
-
-            jQuery(document).trigger("requestData");
-        },
-        clear: function (event) {
-            jQuery("#form-" + name).children("input:text").val("");
-            event.preventDefault();
-            if (PNWMOTHS.Filters.filters.hasOwnProperty(name)) {
-                delete PNWMOTHS.Filters.filters[name];
-                jQuery(document).trigger("requestData");
-            }
-        }
-    };
-}
-
-function OptionFilter(name, valueCallback) {
-    // Handles processing of option filters. Expects the following ids in the DOM:
-    //
-    //  * #form-{name} - the form that wraps the filter's select field.
-    //  * #clear-filter-{name} - the element that is used to clear the filter.
-    //  * #{name} - the element that has the value of the filter.
-    return {
-        initialize: function () {
-            jQuery("#form-" + name).submit(this.submit);
-            jQuery("#clear-filter-" + name).click(this.clear);
-            jQuery("#form-" + name).bind("clear", this.clear);
-        },
-        submit: function (event) {
-            event.preventDefault();
-            var start = jQuery("#" + name).val();
-
-            if (typeof(valueCallback) == "function") {
-                PNWMOTHS.Filters.filters[name] = valueCallback(start);
-            }
-            else {
-                PNWMOTHS.Filters.filters[name] = start;
-            }
-
-            jQuery(document).trigger("requestData");
-        },
-        clear: function (event) {
-            event.preventDefault();
-            jQuery("#form-" + name).children("select").val("");
-            if (PNWMOTHS.Filters.filters.hasOwnProperty(name)) {
-                delete PNWMOTHS.Filters.filters[name];
-                jQuery(document).trigger("requestData");
-            }
-        },
-        render: function (event, data) {
-            // Builds an option filter's options given a set of data.
-            var select = jQuery("#" + name),
-                option, i;
-            for (i in data) {
-                if (data.hasOwnProperty(i)) {
-                    option = jQuery("<option></option>");
-                    option.val(data[i]);
-                    option.text(data[i]);
-                    select.append(option);
-                }
-            }
-        }
-    };
 }
