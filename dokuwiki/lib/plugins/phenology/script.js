@@ -413,8 +413,7 @@ jQuery(document).unload(function () {
 });
 
 jQuery(document).ready(function () {
-    var optionFilters = [["county", "getCounties"],
-                         ["state", "getStates"]],
+    var optionFilters,
         i, j,
         data_id, data_name;
 
@@ -545,18 +544,17 @@ jQuery(document).ready(function () {
         }
     );
 
-    // County
-    var county_filter = new SelectFilter("county");
-    county_filter.initialize();
-
-    // State
-    var state_filter = new SelectFilter("state");
-    state_filter.initialize();
+    optionFilters = [["county", "getCounties"],
+                     ["state", "getStates"]];
 
     // Setup option filters (those with select fields).
     // TODO: move this logic into prototype-based code.
     for (i = 0; i < optionFilters.length; i++) {
-        var optionFilter = optionFilters[i];
+        var optionFilter = optionFilters[i],
+            filter = new SelectFilter(optionFilter[0]);
+
+        filter.initialize();
+
         // When the data for this option filter is ready, build the select field
         // with the options available in the data.
         jQuery("#" + optionFilter[0] + "-data").bind(
