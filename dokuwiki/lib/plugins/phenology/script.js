@@ -652,9 +652,6 @@ function getFiltersControl() {
     return new FiltersControl();
 }
 
-function Map() {
-}
-
 function getFilter(name, values) {
     return function (record) {
         if (typeof(values) !== "object" && record[name] == values) {
