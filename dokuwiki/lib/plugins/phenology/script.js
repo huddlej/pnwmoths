@@ -559,26 +559,10 @@ jQuery(document).ready(function () {
         // with the options available in the data.
         jQuery("#" + optionFilter[0] + "-data").bind(
             "dataIsReady",
-            buildOptionFilterCallback(optionFilter[0])
+            filter.render
         );
     }
 });
-
-function buildOptionFilterCallback(optionFilterName) {
-    // Builds an option filter's options given a set of data.
-    return function (event, data) {
-        var select = jQuery("#" + optionFilterName),
-            option, i;
-        for (i in data) {
-            if (data.hasOwnProperty(i)) {
-                option = jQuery("<option></option>");
-                option.val(data[i]);
-                option.text(data[i]);
-                select.append(option);
-            }
-        }
-    };
-}
 
 //
 // Setup a custom Google map control for toggling the display of the filters.
@@ -696,6 +680,19 @@ function OptionFilter(name) {
             if (PNWMOTHS.Filters.filters.hasOwnProperty(name)) {
                 delete PNWMOTHS.Filters.filters[name];
                 jQuery(document).trigger("requestData");
+            }
+        },
+        render: function (event, data) {
+            // Builds an option filter's options given a set of data.
+            var select = jQuery("#" + name),
+                option, i;
+            for (i in data) {
+                if (data.hasOwnProperty(i)) {
+                    option = jQuery("<option></option>");
+                    option.val(data[i]);
+                    option.text(data[i]);
+                    select.append(option);
+                }
             }
         }
     };
