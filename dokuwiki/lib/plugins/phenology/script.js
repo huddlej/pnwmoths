@@ -476,11 +476,6 @@ jQuery(document).ready(function () {
         jQuery(this).children("input:text").val("");
     }
 
-    // Clear dropdown inputs.
-    function clearSelect() {
-        jQuery(this).children("select").val("");
-    }
-
     // Close filter window
     jQuery("#filters-close").click(
         function (event) {
