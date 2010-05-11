@@ -546,46 +546,14 @@ jQuery(document).ready(function () {
     );
 
     // County
-    jQuery("#form-county").submit(
-        function (event) {
-            event.preventDefault();
-            var start = jQuery("#county").val();
-            PNWMOTHS.Filters.filters["county"] = start;
-            jQuery(document).trigger("requestData");
-        }
-    );
-    jQuery("#form-county").bind("clear", clearSelect);
-    jQuery("#clear-filter-county").click(
-        function (event) {
-            event.preventDefault();
-            if (PNWMOTHS.Filters.filters.hasOwnProperty("county")) {
-                delete PNWMOTHS.Filters.filters["county"];
-                jQuery("#form-county").trigger("clear");
-                jQuery(document).trigger("requestData");
-            }
-        }
-    );
+    var county_filter = new SelectFilter("county");
+    jQuery("#form-county").submit(county_filter.submit);
+    jQuery("#clear-filter-county").click(county_filter.clear);
 
     // State
-    jQuery("#form-state").submit(
-        function (event) {
-            event.preventDefault();
-            var start = jQuery("#state").val();
-            PNWMOTHS.Filters.filters["state"] = start;
-            jQuery(document).trigger("requestData");
-        }
-    );
-    jQuery("#form-state").bind("clear", clearSelect);
-    jQuery("#clear-filter-state").click(
-        function (event) {
-            event.preventDefault();
-            if (PNWMOTHS.Filters.filters.hasOwnProperty("state")) {
-                delete PNWMOTHS.Filters.filters["state"];
-                jQuery("#form-state").trigger("clear");
-                jQuery(document).trigger("requestData");
-            }
-        }
-    );
+    var state_filter = new SelectFilter("state");
+    jQuery("#form-state").submit(state_filter.submit);
+    jQuery("#clear-filter-state").click(state_filter.clear);
 
     // Setup option filters (those with select fields).
     // TODO: move this logic into prototype-based code.
@@ -707,4 +675,23 @@ function renderCollection(record) {
     }
 
     return null;
+}
+
+function SelectFilter(name) {
+    return {
+        submit: function (event) {
+            event.preventDefault();
+            var start = jQuery("#" + name).val();
+            PNWMOTHS.Filters.filters[name] = start;
+            jQuery(document).trigger("requestData");
+        },
+        clear: function (event) {
+            event.preventDefault();
+            jQuery("#form-" + name).children("select").val("");
+            if (PNWMOTHS.Filters.filters.hasOwnProperty(name)) {
+                delete PNWMOTHS.Filters.filters[name];
+                jQuery(document).trigger("requestData");
+            }
+        }
+    };
 }
