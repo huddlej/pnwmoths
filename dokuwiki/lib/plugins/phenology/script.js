@@ -9,12 +9,12 @@ PNWMOTHS.Map = function () {
                 return;
             }
 
-            PNWMOTHS.Map.mapCenter = new GLatLng(46.90, -118.00);
             mapDiv = jQuery("#googlemap");
             mapDiv.show();
             map = new GMap2(mapDiv.get(0));
 
             // Center on Washington State.
+            PNWMOTHS.Map.mapCenter = new GLatLng(46.90, -118.00);
             map.setCenter(PNWMOTHS.Map.mapCenter, 5);
             map.addControl(new GSmallMapControl());
             map.addControl(new GMapTypeControl());
