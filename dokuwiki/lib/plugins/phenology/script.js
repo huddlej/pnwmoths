@@ -18,7 +18,7 @@ PNWMOTHS.Map = function () {
             map.setCenter(PNWMOTHS.Map.mapCenter, 5);
             map.addControl(new GSmallMapControl());
             map.addControl(new GMapTypeControl());
-            map.addControl(getFiltersControl());
+            map.addControl(PNWMOTHS.Filters.getFiltersControl());
             map.addControl(PNWMOTHS.Map.getFullscreenControl());
             map.addMapType(G_PHYSICAL_MAP);
             map.removeMapType(G_NORMAL_MAP);
@@ -517,6 +517,38 @@ PNWMOTHS.Filters = function () {
                     }
                 }
             };
+        },
+        "getFiltersControl": function () {
+            // Setup a custom Google map control for toggling the display of the
+            // filters.
+            function FiltersControl() {
+            }
+            FiltersControl.prototype = new GControl();
+            FiltersControl.prototype.initialize = function (map) {
+                var container = document.createElement("div"),
+                    filterDiv = document.createElement("div");
+
+                this.setButtonStyle_(filterDiv);
+                container.appendChild(filterDiv);
+                filterDiv.appendChild(document.createTextNode("Filters"));
+                GEvent.addDomListener(
+                    filterDiv,
+                    "click",
+                    function () {
+                        jQuery("#filters").toggle();
+                    }
+                );
+
+                map.getContainer().appendChild(container);
+                return container;
+            };
+            // Sets the proper CSS for the given button element.
+            FiltersControl.prototype.setButtonStyle_ = PNWMOTHS.Map.setButtonStyles;
+            FiltersControl.prototype.getDefaultPosition = function() {
+                return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
+            };
+
+            return new FiltersControl();
         }
     };
 }();
@@ -626,41 +658,6 @@ jQuery(document).ready(function () {
         }
     });
 });
-
-//
-// Setup a custom Google map control for toggling the display of the filters.
-//
-
-function getFiltersControl() {
-    function FiltersControl() {
-    }
-    FiltersControl.prototype = new GControl();
-    FiltersControl.prototype.initialize = function (map) {
-        var container = document.createElement("div"),
-            filterDiv = document.createElement("div");
-
-        this.setButtonStyle_(filterDiv);
-        container.appendChild(filterDiv);
-        filterDiv.appendChild(document.createTextNode("Filters"));
-        GEvent.addDomListener(
-            filterDiv,
-            "click",
-            function () {
-                jQuery("#filters").toggle();
-            }
-        );
-
-        map.getContainer().appendChild(container);
-        return container;
-    };
-    // Sets the proper CSS for the given button element.
-    FiltersControl.prototype.setButtonStyle_ = PNWMOTHS.Map.setButtonStyles;
-    FiltersControl.prototype.getDefaultPosition = function() {
-        return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
-    };
-
-    return new FiltersControl();
-}
 
 // Render a date string for a given record.
 function renderDate(record) {
