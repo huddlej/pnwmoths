@@ -495,49 +495,12 @@ jQuery(document).ready(function () {
     );
 
     // Elevation
-    jQuery("#form-elevation").submit(
-        function (event) {
-            event.preventDefault();
-            var start = jQuery("#startelevation").val(),
-                end = jQuery("#endelevation").val();
-            PNWMOTHS.Filters.filters["elevation"] = [start, end];
-            jQuery(document).trigger("requestData");
-        }
-    );
-    jQuery("#form-elevation").bind("clear", clearText);
-    jQuery("#clear-filter-elevation").click(
-        function (event) {
-            event.preventDefault();
-            if (PNWMOTHS.Filters.filters.hasOwnProperty("elevation")) {
-                delete PNWMOTHS.Filters.filters["elevation"];
-                jQuery("#form-elevation").trigger("clear");
-                jQuery(document).trigger("requestData");
-            }
-        }
-    );
+    var elevation_filter = new TextFilter("elevation");
+    elevation_filter.initialize();
 
     // Date
-    jQuery("#form-date").submit(
-        function (event) {
-            event.preventDefault();
-            var start = jQuery("#startdate").val(),
-                end = jQuery("#enddate").val();
-            PNWMOTHS.Filters.filters["date"] = [getSortableDate(start),
-                                                getSortableDate(end)];
-            jQuery(document).trigger("requestData");
-        }
-    );
-    jQuery("#form-date").bind("clear", clearText);
-    jQuery("#clear-filter-date").click(
-        function (event) {
-            event.preventDefault();
-            if (PNWMOTHS.Filters.filters.hasOwnProperty("date")) {
-                delete PNWMOTHS.Filters.filters["date"];
-                jQuery("#form-date").trigger("clear");
-                jQuery(document).trigger("requestData");
-            }
-        }
-    );
+    var date_filter = new TextFilter("date", getSortableDate);
+    date_filter.initialize();
 
     optionFilters = ["county", "state"];
 
@@ -645,6 +608,39 @@ function renderCollection(record) {
     return null;
 }
 
+function TextFilter(name, valueCallback) {
+    return {
+        initialize: function () {
+            jQuery("#form-" + name).submit(this.submit);
+            jQuery("#clear-filter-" + name).click(this.clear);
+        },
+        submit: function (event) {
+            event.preventDefault();
+            var start = jQuery("#start" + name).val(),
+                end = jQuery("#end" + name).val();
+
+            if (typeof(valueCallback) == "function") {
+                PNWMOTHS.Filters.filters[name] = [valueCallback(start),
+                                                  valueCallback(end)];
+            }
+            else {
+                PNWMOTHS.Filters.filters[name] = [start, end];
+            }
+
+            jQuery(document).trigger("requestData");
+        },
+        clear: function (event) {
+            jQuery("#form-" + name).children("input:text").val("");
+            event.preventDefault();
+            if (PNWMOTHS.Filters.filters.hasOwnProperty(name)) {
+                delete PNWMOTHS.Filters.filters[name];
+                jQuery(document).trigger("requestData");
+            }
+        }
+    };
+}
+
+// TODO: add valueCallback argument
 function OptionFilter(name) {
     // Handles processing of option filters. Expects the following ids in the DOM:
     //
