@@ -1,6 +1,275 @@
 var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Map = function () {
     return {
+        initialize: function () {
+            var mapDiv, map, geo_xml;
+
+            if (typeof(GBrowserIsCompatible) == "undefined" || !GBrowserIsCompatible()) {
+                jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
+                return;
+            }
+
+            PNWMOTHS.Map.mapCenter = new GLatLng(46.90, -118.00);
+            mapDiv = jQuery("#googlemap");
+            mapDiv.show();
+            map = new GMap2(mapDiv.get(0));
+
+            // Center on Washington State.
+            map.setCenter(PNWMOTHS.Map.mapCenter, 5);
+            map.addControl(new GSmallMapControl());
+            map.addControl(new GMapTypeControl());
+            map.addControl(getFiltersControl());
+            map.addControl(PNWMOTHS.Map.getFullscreenControl());
+            map.addMapType(G_PHYSICAL_MAP);
+            map.removeMapType(G_NORMAL_MAP);
+            map.removeMapType(G_SATELLITE_MAP);
+            map.setMapType(G_PHYSICAL_MAP);
+
+            geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
+            map.addOverlay(geo_xml);
+
+            PNWMOTHS.Map.bounds = PNWMOTHS.Map.addTerritoryBoundaries(map);
+            PNWMOTHS.Map.icons = PNWMOTHS.Map.buildMapIcons();
+            PNWMOTHS.Map.mgr = new MarkerManager(map);
+
+            // Add filters to map container.
+            map.getContainer().appendChild(jQuery("#filters").get(0));
+
+            return map;
+        },
+        groupMarkerData: function (data) {
+            // Group marker data by latitude and longitude values.
+            var groupedData = {},
+                i, j, key,
+                attribute,
+                collection,
+                attributes = [
+                    "latitude",
+                    "longitude",
+                    "site_name",
+                    "county",
+                    "state",
+                    "elevation",
+                    "precision"
+                ];
+
+            for (i in data) {
+                if (data.hasOwnProperty(i)) {
+                    key = [data[i].latitude, data[i].longitude];
+
+                    // Create an entry for this record's latitude and longitude
+                    // if one doesn't exist yet.
+                    if (typeof(groupedData[key]) === "undefined") {
+                        groupedData[key] = {};
+                    }
+
+                    // Get the first non-empty value for each attribute
+                    // associated with this latitude/longitude pair.
+                    for (j in attributes) {
+                        attribute = attributes[j];
+                        if (groupedData[key].hasOwnProperty(attribute) === false &&
+                            typeof(data[i][attribute]) !== 'undefined') {
+                            groupedData[key][attribute] = data[i][attribute];
+                        }
+                    }
+
+                    // Add any collection data available for this record.
+                    if (typeof(groupedData[key]["collections"]) === "undefined") {
+                        groupedData[key]["collections"] = [];
+                    }
+
+                    collection = renderCollection(data[i]);
+                    if (collection !== null) {
+                        groupedData[key]["collections"].push(collection);
+                    }
+                }
+            }
+
+            return groupedData;
+        },
+        getFullscreenControl: function () {
+            // Full screen control
+            function FullscreenControl() {
+            }
+            FullscreenControl.prototype = new GControl();
+            FullscreenControl.prototype.initialize = function (map) {
+                var container = document.createElement("div"),
+                    filterDiv = document.createElement("div");
+
+                this.setButtonStyle_(filterDiv);
+                container.appendChild(filterDiv);
+                filterDiv.appendChild(document.createTextNode("Fullscreen"));
+                GEvent.addDomListener(
+                    filterDiv,
+                    "click",
+                    function () {
+                        jQuery("#googlemap").trigger("fullscreen");
+                    }
+                );
+
+                map.getContainer().appendChild(container);
+                return container;
+            };
+            // Sets the proper CSS for the given button element.
+            FullscreenControl.prototype.setButtonStyle_ = setButtonStyles;
+            FullscreenControl.prototype.getDefaultPosition = function() {
+                return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
+            };
+
+            return new FullscreenControl();
+        },
+        renderMarkerRecord: function (record) {
+            // Render one marker data record to an array of HTML for the marker
+            // info window tabs.
+            var attributes = {"site_name": "Site Name",
+                              "county": "County",
+                              "state": "State",
+                              "elevation": "Elevation (ft.)"},
+                pointHtml = "<div class='infowindow'>",
+                collectionHtml = "",
+                attribute, attribute_name, attribute_value, i, j;
+
+            for (attribute in attributes) {
+                if (attributes.hasOwnProperty(attribute)) {
+                    attribute_name = attributes[attribute];
+                    if (record[attribute]) {
+                        attribute_value = record[attribute];
+                    }
+                    else {
+                        attribute_value = "";
+                    }
+                    pointHtml += "<p>" + attribute_name + ": " + attribute_value + "</p>";
+                }
+            }
+
+            pointHtml += "</div>";
+
+            if (record.hasOwnProperty("collections") && record.collections.length > 0) {
+                collectionHtml = "<div class='infowindow collections'>";
+                collectionHtml += "<table>";
+                collectionHtml += "<tr><th>Date</th><th>Collector</th>";
+                collectionHtml += "<th><a href='/dokuwiki/doku.php?id=factsheets:collection_glossary' target='_new'>Collection</a></th>";
+                for (i in record.collections) {
+                    if (record.collections.hasOwnProperty(i)) {
+                        collectionHtml += "<tr>";
+                        for (j in record.collections[i]) {
+                            collectionHtml += "<td>" + record.collections[i][j] + "</td>";
+                        }
+                        collectionHtml += "</tr>";
+                    }
+                }
+                collectionHtml += "</table>";
+                collectionHtml += "</div>";
+            }
+
+            return [pointHtml, collectionHtml];
+        },
+        createMarkers: function (data) {
+            // Creates markers for a given set of data for which each record has
+            // a "latitude" and "longitude" attribute. Clears any previously
+            // existing markers from the map before displaying these markers.
+            var markers = [],
+                point,
+                i;
+
+            // First group marker data.
+            data = PNWMOTHS.Map.groupMarkerData(data);
+
+            // Always clear the current marker set before adding new markers.
+            PNWMOTHS.Map.mgr.clearMarkers();
+
+            // Build a list of markers for the given data. Data is indexed by a
+            // latitude/longitude tuple so i[0] is latitude and i[1] is
+            // longitude.
+            for (i in data) {
+                if (data.hasOwnProperty(i)) {
+                    point = new GLatLng(data[i].latitude, data[i].longitude);
+                    markers.push(
+                        PNWMOTHS.Map.createMarker(
+                            point,
+                            i,
+                            PNWMOTHS.Map.renderMarkerRecord(data[i]),
+                            {icon: PNWMOTHS.Map.icons[data[i].precision]}
+                        )
+                    );
+                }
+            }
+
+            // Use the marker manager to add multiple markers simulataneously
+            // and set the maximum and minimum zoom levels at which the markers
+            // should be displayed.
+            PNWMOTHS.Map.mgr.addMarkers(markers, 3, 10);
+            PNWMOTHS.Map.mgr.refresh();
+        },
+        createMarker: function (point, number, html, marker_options) {
+            // Creates a map marker for a given Google map Point instance. The
+            // given number is used to distinguish this marker from all other
+            // markers. The marker uses a tabbed info window, so the given HTML
+            // is split into one part for each of the (two) tabs.
+            var marker = new GMarker(point, marker_options);
+            marker.value = number;
+            GEvent.addListener(marker, "click", function() {
+                // TODO: this code could be more reuseable if it looped through
+                // the "html" variable and created a tab for each entry with the
+                // tab name in the variable.
+                marker.openInfoWindowTabsHtml([new GInfoWindowTab("Site", html[0]),
+                                               new GInfoWindowTab("Collections", html[1])]);
+            });
+
+            return marker;
+        },
+        buildMapIcons: function () {
+            var simpleIcon, iconColors, imagePath, i, icons;
+
+            // Icon code generated by
+            // http://www.powerhut.co.uk/googlemaps/custom_markers.php using
+            // seed icons generated by Google's Chart API:
+            // http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|CCCCCC|000000
+            // where "CCCCCC" can be replaced by the color hex code you want.
+            simpleIcon = new GIcon();
+            simpleIcon.iconSize = new GSize(12, 12);
+            simpleIcon.shadowSize = new GSize(18, 12);
+            simpleIcon.iconAnchor = new GPoint(6, 12);
+            simpleIcon.infoWindowAnchor = new GPoint(6, 0);
+            simpleIcon.imageMap = [9,0,10,1,11,2,11,3,11,4,11,5,11,6,11,7,11,8,11,9,10,
+                                   10,9,11,2,11,1,10,0,9,0,8,0,7,0,6,0,5,0,4,0,3,1,2,2,
+                                   1,3,0];
+
+            // Icon color darkness is proportional to the precision of the
+            // latitude/longitude values used for the marker. Thus, a precision
+            // of 0 has the lightest grey icon while a precision of 4 would have
+            // a much darker grey icon.
+            iconColors = ["ffffff", "e5e5e5", "cccccc", "999999", "7f7f7f"];
+            imagePath = "/media/images/markers/";
+            icons = [];
+            for (i in iconColors) {
+                if (iconColors.hasOwnProperty(i)) {
+                    var icon = new GIcon(simpleIcon);
+                    icon.image = imagePath + iconColors[i] + "/image.png";
+                    icon.printImage = imagePath + iconColors[i] + "/printImage.gif";
+                    icon.mozPrintImage = imagePath + iconColors[i] + "/mozPrintImage.gif";
+                    icon.shadow = imagePath + iconColors[i] + "/shadow.png";
+                    icon.transparent = imagePath + iconColors[i] + "/transparent.png";
+                    icon.printShadow = imagePath + iconColors[i] + "/printShadow.gif";
+                    icons.push(icon);
+                }
+            }
+
+            return icons;
+        },
+        addTerritoryBoundaries: function (map) {
+            // Place a polygon around the area we're most interested in.
+            var polygon = new GPolygon([
+                  new GLatLng(40, -109.5),
+                  new GLatLng(53, -109.5),
+                  new GLatLng(53, -126),
+                  new GLatLng(40, -126),
+                  new GLatLng(40, -109.5)
+            ], "#000000", 2, 1, "#ffffff", 0);
+            map.addOverlay(polygon);
+
+            return polygon.getBounds();
+        }
     };
 }();
 PNWMOTHS.Chart = function () {
@@ -26,7 +295,6 @@ jQuery(document).ready(function () {
         data_id, data_name;
 
     PNWMOTHS.Chart= new Chart();
-    PNWMOTHS.Map = new Map();
     PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
     data_name = "species-data";
     data_id = "#" + data_name;
@@ -391,277 +659,6 @@ function getFiltersControl() {
 }
 
 function Map() {
-    return {
-        initialize: function () {
-            var mapDiv, map, geo_xml;
-
-            if (typeof(GBrowserIsCompatible) == "undefined" || !GBrowserIsCompatible()) {
-                jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
-                return;
-            }
-
-            PNWMOTHS.Map.mapCenter = new GLatLng(46.90, -118.00);
-            mapDiv = jQuery("#googlemap");
-            mapDiv.show();
-            map = new GMap2(mapDiv.get(0));
-
-            // Center on Washington State.
-            map.setCenter(PNWMOTHS.Map.mapCenter, 5);
-            map.addControl(new GSmallMapControl());
-            map.addControl(new GMapTypeControl());
-            map.addControl(getFiltersControl());
-            map.addControl(PNWMOTHS.Map.getFullscreenControl());
-            map.addMapType(G_PHYSICAL_MAP);
-            map.removeMapType(G_NORMAL_MAP);
-            map.removeMapType(G_SATELLITE_MAP);
-            map.setMapType(G_PHYSICAL_MAP);
-
-            geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
-            map.addOverlay(geo_xml);
-
-            PNWMOTHS.Map.bounds = PNWMOTHS.Map.addTerritoryBoundaries(map);
-            PNWMOTHS.Map.icons = PNWMOTHS.Map.buildMapIcons();
-            PNWMOTHS.Map.mgr = new MarkerManager(map);
-
-            // Add filters to map container.
-            map.getContainer().appendChild(jQuery("#filters").get(0));
-
-            return map;
-        },
-        groupMarkerData: function (data) {
-            // Group marker data by latitude and longitude values.
-            var groupedData = {},
-                i, j, key,
-                attribute,
-                collection,
-                attributes = [
-                    "latitude",
-                    "longitude",
-                    "site_name",
-                    "county",
-                    "state",
-                    "elevation",
-                    "precision"
-                ];
-
-            for (i in data) {
-                if (data.hasOwnProperty(i)) {
-                    key = [data[i].latitude, data[i].longitude];
-
-                    // Create an entry for this record's latitude and longitude
-                    // if one doesn't exist yet.
-                    if (typeof(groupedData[key]) === "undefined") {
-                        groupedData[key] = {};
-                    }
-
-                    // Get the first non-empty value for each attribute
-                    // associated with this latitude/longitude pair.
-                    for (j in attributes) {
-                        attribute = attributes[j];
-                        if (groupedData[key].hasOwnProperty(attribute) === false &&
-                            typeof(data[i][attribute]) !== 'undefined') {
-                            groupedData[key][attribute] = data[i][attribute];
-                        }
-                    }
-
-                    // Add any collection data available for this record.
-                    if (typeof(groupedData[key]["collections"]) === "undefined") {
-                        groupedData[key]["collections"] = [];
-                    }
-
-                    collection = renderCollection(data[i]);
-                    if (collection !== null) {
-                        groupedData[key]["collections"].push(collection);
-                    }
-                }
-            }
-
-            return groupedData;
-        },
-        getFullscreenControl: function () {
-            // Full screen control
-            function FullscreenControl() {
-            }
-            FullscreenControl.prototype = new GControl();
-            FullscreenControl.prototype.initialize = function (map) {
-                var container = document.createElement("div"),
-                    filterDiv = document.createElement("div");
-
-                this.setButtonStyle_(filterDiv);
-                container.appendChild(filterDiv);
-                filterDiv.appendChild(document.createTextNode("Fullscreen"));
-                GEvent.addDomListener(
-                    filterDiv,
-                    "click",
-                    function () {
-                        jQuery("#googlemap").trigger("fullscreen");
-                    }
-                );
-
-                map.getContainer().appendChild(container);
-                return container;
-            };
-            // Sets the proper CSS for the given button element.
-            FullscreenControl.prototype.setButtonStyle_ = setButtonStyles;
-            FullscreenControl.prototype.getDefaultPosition = function() {
-                return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
-            };
-
-            return new FullscreenControl();
-        },
-        renderMarkerRecord: function (record) {
-            // Render one marker data record to an array of HTML for the marker
-            // info window tabs.
-            var attributes = {"site_name": "Site Name",
-                              "county": "County",
-                              "state": "State",
-                              "elevation": "Elevation (ft.)"},
-                pointHtml = "<div class='infowindow'>",
-                collectionHtml = "",
-                attribute, attribute_name, attribute_value, i, j;
-
-            for (attribute in attributes) {
-                if (attributes.hasOwnProperty(attribute)) {
-                    attribute_name = attributes[attribute];
-                    if (record[attribute]) {
-                        attribute_value = record[attribute];
-                    }
-                    else {
-                        attribute_value = "";
-                    }
-                    pointHtml += "<p>" + attribute_name + ": " + attribute_value + "</p>";
-                }
-            }
-
-            pointHtml += "</div>";
-
-            if (record.hasOwnProperty("collections") && record.collections.length > 0) {
-                collectionHtml = "<div class='infowindow collections'>";
-                collectionHtml += "<table>";
-                collectionHtml += "<tr><th>Date</th><th>Collector</th>";
-                collectionHtml += "<th><a href='/dokuwiki/doku.php?id=factsheets:collection_glossary' target='_new'>Collection</a></th>";
-                for (i in record.collections) {
-                    if (record.collections.hasOwnProperty(i)) {
-                        collectionHtml += "<tr>";
-                        for (j in record.collections[i]) {
-                            collectionHtml += "<td>" + record.collections[i][j] + "</td>";
-                        }
-                        collectionHtml += "</tr>";
-                    }
-                }
-                collectionHtml += "</table>";
-                collectionHtml += "</div>";
-            }
-
-            return [pointHtml, collectionHtml];
-        },
-        createMarkers: function (data) {
-            // Creates markers for a given set of data for which each record has
-            // a "latitude" and "longitude" attribute. Clears any previously
-            // existing markers from the map before displaying these markers.
-            var markers = [],
-                point,
-                i;
-
-            // First group marker data.
-            data = PNWMOTHS.Map.groupMarkerData(data);
-
-            // Always clear the current marker set before adding new markers.
-            PNWMOTHS.Map.mgr.clearMarkers();
-
-            // Build a list of markers for the given data. Data is indexed by a
-            // latitude/longitude tuple so i[0] is latitude and i[1] is
-            // longitude.
-            for (i in data) {
-                if (data.hasOwnProperty(i)) {
-                    point = new GLatLng(data[i].latitude, data[i].longitude);
-                    markers.push(
-                        PNWMOTHS.Map.createMarker(
-                            point,
-                            i,
-                            PNWMOTHS.Map.renderMarkerRecord(data[i]),
-                            {icon: PNWMOTHS.Map.icons[data[i].precision]}
-                        )
-                    );
-                }
-            }
-
-            // Use the marker manager to add multiple markers simulataneously
-            // and set the maximum and minimum zoom levels at which the markers
-            // should be displayed.
-            PNWMOTHS.Map.mgr.addMarkers(markers, 3, 10);
-            PNWMOTHS.Map.mgr.refresh();
-        },
-        createMarker: function (point, number, html, marker_options) {
-            // Creates a map marker for a given Google map Point instance. The
-            // given number is used to distinguish this marker from all other
-            // markers. The marker uses a tabbed info window, so the given HTML
-            // is split into one part for each of the (two) tabs.
-            var marker = new GMarker(point, marker_options);
-            marker.value = number;
-            GEvent.addListener(marker, "click", function() {
-                // TODO: this code could be more reuseable if it looped through
-                // the "html" variable and created a tab for each entry with the
-                // tab name in the variable.
-                marker.openInfoWindowTabsHtml([new GInfoWindowTab("Site", html[0]),
-                                               new GInfoWindowTab("Collections", html[1])]);
-            });
-
-            return marker;
-        },
-        buildMapIcons: function () {
-            var simpleIcon, iconColors, imagePath, i, icons;
-
-            // Icon code generated by
-            // http://www.powerhut.co.uk/googlemaps/custom_markers.php using
-            // seed icons generated by Google's Chart API:
-            // http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|CCCCCC|000000
-            // where "CCCCCC" can be replaced by the color hex code you want.
-            simpleIcon = new GIcon();
-            simpleIcon.iconSize = new GSize(12, 12);
-            simpleIcon.shadowSize = new GSize(18, 12);
-            simpleIcon.iconAnchor = new GPoint(6, 12);
-            simpleIcon.infoWindowAnchor = new GPoint(6, 0);
-            simpleIcon.imageMap = [9,0,10,1,11,2,11,3,11,4,11,5,11,6,11,7,11,8,11,9,10,
-                                   10,9,11,2,11,1,10,0,9,0,8,0,7,0,6,0,5,0,4,0,3,1,2,2,
-                                   1,3,0];
-
-            // Icon color darkness is proportional to the precision of the
-            // latitude/longitude values used for the marker. Thus, a precision
-            // of 0 has the lightest grey icon while a precision of 4 would have
-            // a much darker grey icon.
-            iconColors = ["ffffff", "e5e5e5", "cccccc", "999999", "7f7f7f"];
-            imagePath = "/media/images/markers/";
-            icons = [];
-            for (i in iconColors) {
-                if (iconColors.hasOwnProperty(i)) {
-                    var icon = new GIcon(simpleIcon);
-                    icon.image = imagePath + iconColors[i] + "/image.png";
-                    icon.printImage = imagePath + iconColors[i] + "/printImage.gif";
-                    icon.mozPrintImage = imagePath + iconColors[i] + "/mozPrintImage.gif";
-                    icon.shadow = imagePath + iconColors[i] + "/shadow.png";
-                    icon.transparent = imagePath + iconColors[i] + "/transparent.png";
-                    icon.printShadow = imagePath + iconColors[i] + "/printShadow.gif";
-                    icons.push(icon);
-                }
-            }
-
-            return icons;
-        },
-        addTerritoryBoundaries: function (map) {
-            // Place a polygon around the area we're most interested in.
-            var polygon = new GPolygon([
-                  new GLatLng(40, -109.5),
-                  new GLatLng(53, -109.5),
-                  new GLatLng(53, -126),
-                  new GLatLng(40, -126),
-                  new GLatLng(40, -109.5)
-            ], "#000000", 2, 1, "#ffffff", 0);
-            map.addOverlay(polygon);
-
-            return polygon.getBounds();
-        }
-    };
 }
 
 function getFilter(name, values) {
