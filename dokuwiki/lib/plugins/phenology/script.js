@@ -403,6 +403,20 @@ PNWMOTHS.Chart = function () {
 PNWMOTHS.Filters = function () {
     return {
         "filters": {},
+        "getFilterFunction": function (name, values) {
+            return function (record) {
+                if (typeof(values) !== "object" && record[name] == values) {
+                    return record;
+                }
+                else if (typeof(values) === "object" && values.length == 2 &&
+                         record[name] >= values[0] && record[name] <= values[1]) {
+                    return record;
+                }
+                else {
+                    return null;
+                }
+            };
+        },
         "TextFilter": function (name, valueCallback) {
             // Handles processing of text filters. Expects the following ids in
             // the DOM:
@@ -632,28 +646,15 @@ function getFiltersControl() {
     return new FiltersControl();
 }
 
-function getFilterFunction(name, values) {
-    return function (record) {
-        if (typeof(values) !== "object" && record[name] == values) {
-            return record;
-        }
-        else if (typeof(values) === "object" && values.length == 2 &&
-                 record[name] >= values[0] && record[name] <= values[1]) {
-            return record;
-        }
-        else {
-            return null;
-        }
-    };
-}
-
 function filterData(data, filters) {
     var filtered_data = data,
         filter;
     for (filter in filters) {
         if (filters.hasOwnProperty(filter)) {
-            filtered_data = jQuery.map(filtered_data,
-                                       getFilterFunction(filter, filters[filter]));
+            filtered_data = jQuery.map(
+                filtered_data,
+                PNWMOTHS.Filters.getFilterFunction(filter, filters[filter])
+            );
         }
     }
     return filtered_data;
