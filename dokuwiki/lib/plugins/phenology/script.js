@@ -632,7 +632,7 @@ function getFiltersControl() {
     return new FiltersControl();
 }
 
-function getFilter(name, values) {
+function getFilterFunction(name, values) {
     return function (record) {
         if (typeof(values) !== "object" && record[name] == values) {
             return record;
@@ -653,7 +653,7 @@ function filterData(data, filters) {
     for (filter in filters) {
         if (filters.hasOwnProperty(filter)) {
             filtered_data = jQuery.map(filtered_data,
-                                       getFilter(filter, filters[filter]));
+                                       getFilterFunction(filter, filters[filter]));
         }
     }
     return filtered_data;
