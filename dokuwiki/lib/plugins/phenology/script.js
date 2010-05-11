@@ -1,3 +1,11 @@
+/*
+ * The PNWMOTHS namespace includes the following sections:
+ *
+ * - Map: methods for displaying a Google Map of species data
+ * - Chart: methods for displaying a chart of seasonality data
+ * - Filters: methods and classes for filtering data used by Map and Chart methods
+ */
+
 var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Map = function () {
     return {
@@ -595,6 +603,7 @@ jQuery(document).ready(function () {
     data_name = "species-data";
     data_id = "#" + data_name;
 
+    // TODO: maybe this should go into the fullscreen control.
     jQuery("#googlemap").bind("fullscreen", function () {
         jQuery(this).toggleClass("fullscreen");
         PNWMOTHS.Map.map.checkResize();
@@ -643,7 +652,7 @@ jQuery(document).ready(function () {
     // Setup filters.
     //
 
-    // Close filter window
+    // Close filter window.
     jQuery("#filters-close").click(
         function (event) {
             event.preventDefault();
@@ -651,7 +660,7 @@ jQuery(document).ready(function () {
         }
     );
 
-    // All filters
+    // Clear all filters.
     jQuery("#clear-filters").click(
         function (event) {
             event.preventDefault();
