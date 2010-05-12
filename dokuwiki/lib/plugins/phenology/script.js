@@ -561,7 +561,7 @@ PNWMOTHS.Filters = function () {
                         jQuery(document).trigger("requestData");
                     }
                 },
-                render: function (event, data) {
+                populate: function (event, data) {
                     // Builds an option filter's options given a set of data.
                     var select = jQuery("#" + name),
                         option, i;
@@ -713,7 +713,7 @@ jQuery(document).ready(function () {
         if (filterConfig.type == PNWMOTHS.Filters.OptionFilter) {
             // When the data for this option filter is ready, build the select
             // field with the options available in the data.
-            jQuery("#" + filterConfig.name + "-data").bind("dataIsReady", filter.render);
+            jQuery("#" + filterConfig.name + "-data").bind("dataIsReady", filter.populate);
         }
     });
 });
