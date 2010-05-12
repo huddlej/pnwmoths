@@ -439,6 +439,12 @@ PNWMOTHS.Chart = function () {
 PNWMOTHS.Filters = function () {
     return {
         "filters": {},
+        "capitalize": function (word) {
+            // Capitalize the first letter of the given word. Stolen from John
+            // Resig's more complete titleCaps function:
+            // http://ejohn.org/files/titleCaps.js
+            return word.substr(0,1).toUpperCase() + word.substr(1);
+        },
         "getFilterFunction": function (name, values) {
             return function (record) {
                 if (typeof(values) !== "object" && record[name] == values) {
