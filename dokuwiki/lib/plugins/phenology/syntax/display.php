@@ -66,47 +66,6 @@ class syntax_plugin_phenology_display extends DokuWiki_Syntax_Plugin {
 <div id="filters" class="tab" style="display: none;">
     <p class="right"><a href="" id="filters-close"><img src="http://maps.gstatic.com/intl/en_us/mapfiles/iw_close.gif" /></a></p>
     <p><form><input type="button" id="clear-filters" value="Clear filters" /></form></p>
-    <p id="filter-elevation">
-        Elevation (ft.):
-        <form id="form-elevation">
-            <input type="text" id="startelevation" size="5" /> -
-            <input type="text" id="endelevation" size="5" />
-            <input type="submit" value="Filter" /> <input type="button" id="clear-filter-elevation" value="Clear" />
-            <br />
-            <span class="help">(e.g., 2000 - 10000)</span>
-        </form>
-    </p>
-    <p id="filter-date">
-        Date:
-        <form id="form-date">
-            <input type="text" id="startdate" size="8" title="start date" /> -
-            <input type="text" id="enddate" size="8" title="end date" />
-            <input type="submit" value="Filter" />
-            <input type="button" id="clear-filter-date" value="Clear" />
-            <br />
-            <span class="help">(e.g., 1/1/1999 - 12/1/2000)</span>
-        </form>
-    </p>
-    <p id="filter-county">
-        County:
-        <form id="form-county">
-            <select id="county" name="county">
-                <option>Select a county</option>
-            </select>
-            <input type="submit" value="Filter" />
-            <input type="button" id="clear-filter-county" value="Clear" />
-        </form>
-    </p>
-    <p id="filter-state">
-        State:
-        <form id="form-state">
-            <select id="state" name="state">
-                <option>Select a state</option>
-            </select>
-            <input type="submit" value="Filter" />
-            <input type="button" id="clear-filter-state" value="Clear" />
-        </form>
-    </p>
 </div>
 <div id="plot" class="tab"></div>
 </div>

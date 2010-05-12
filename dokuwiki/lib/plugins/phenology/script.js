@@ -516,6 +516,23 @@ PNWMOTHS.Filters = function () {
                         delete PNWMOTHS.Filters.filters[name];
                         jQuery(document).trigger("requestData");
                     }
+                },
+                render: function (parent) {
+                    var p, form, start_input, end_input;
+                    p = jQuery("<p id=\"filter-" + name + "\">" + PNWMOTHS.Filters.capitalize(name) + ":</p>");
+                    form = jQuery("<form id=\"form-" + name + "\"></form>");
+                    start_input = jQuery("<input type=\"text\" id=\"start" + name + "\" size=\"8\" title=\"start " + name + "\" />");
+                    end_input = jQuery("<input type=\"text\" id=\"end" + name + "\" size=\"8\" title=\"end " + name + "\" />");
+                    form.append(start_input);
+                    form.append(end_input);
+                    form.append(jQuery("<input type=\"submit\" value=\"Filter\" />"));
+                    form.append(jQuery("<input type=\"button\" id=\"clear-filter-" + name + "\" value=\"Clear\" />"));
+                    if (helpText != "") {
+                        form.append(jQuery("<br />"));
+                        form.append(jQuery("<span class=\"help\">" + helpText + "</span>"));
+                    }
+                    parent.append(p);
+                    parent.append(form);
                 }
             };
         },
@@ -573,6 +590,22 @@ PNWMOTHS.Filters = function () {
                             select.append(option);
                         }
                     }
+                },
+                render: function (parent) {
+                    var p, form, select_input;
+                    p = jQuery("<p id=\"filter-" + name + "\">" + PNWMOTHS.Filters.capitalize(name) + ":</p>");
+                    form = jQuery("<form id=\"form-" + name + "\"></form>");
+                    select_input = jQuery("<select id=\"" + name + "\" name=\"" + name + "\"></select>");
+                    select_input.append(jQuery("<option>Select a " + name + "</option>"));
+                    form.append(select_input);
+                    form.append(jQuery("<input type=\"submit\" value=\"Filter\" />"));
+                    form.append(jQuery("<input type=\"button\" id=\"clear-filter-" + name + "\" value=\"Clear\" />"));
+                    if (helpText != "") {
+                        form.append(jQuery("<br />"));
+                        form.append(jQuery("<span class=\"help\">" + helpText + "</span>"));
+                    }
+                    parent.append(p);
+                    parent.append(form);
                 }
             };
         },
@@ -698,8 +731,8 @@ jQuery(document).ready(function () {
 
     // Define filters.
     filters = [
-        {"name": "elevation", "type": PNWMOTHS.Filters.TextFilter},
-        {"name": "date", "type": PNWMOTHS.Filters.TextFilter, "callback": getSortableDate},
+        {"name": "elevation", "type": PNWMOTHS.Filters.TextFilter, "help_text": "(e.g., 2000 - 10000)"},
+        {"name": "date", "type": PNWMOTHS.Filters.TextFilter, "callback": getSortableDate, "help_text": "(e.g., 1/1/1999 - 12/1/2000)"},
         {"name": "county", "type": PNWMOTHS.Filters.OptionFilter},
         {"name": "state", "type": PNWMOTHS.Filters.OptionFilter}
     ];
@@ -707,6 +740,7 @@ jQuery(document).ready(function () {
     // Initialize each filter based on its type.
     jQuery.each(filters, function (index, filterConfig) {
         var filter = new filterConfig.type(filterConfig);
+        filter.render(jQuery("#filters"));
         filter.initialize();
 
         // Option filters rely on externally loaded data for their options.
