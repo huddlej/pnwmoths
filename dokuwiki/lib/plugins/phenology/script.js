@@ -472,7 +472,7 @@ PNWMOTHS.Filters = function () {
             }
             return filtered_data;
         },
-        "TextFilter": function (name, valueCallback) {
+        "TextFilter": function (filterConfig) {
             // Handles processing of text filters. Expects the following ids in
             // the DOM:
             //
@@ -480,6 +480,14 @@ PNWMOTHS.Filters = function () {
             //  * #clear-filter-{name} - the element that is used to clear the filter.
             //  * #start{name} - the element that has the start value of the filter range.
             //  * #end{name} - the element that has the end value of the filter range.
+            var name = filterConfig.name,
+                valueCallback = filterConfig.callback,
+                helpText = "";
+
+            if (filterConfig.hasOwnProperty("help_text")) {
+                helpText = filterConfig.help_text;
+            }
+
             return {
                 initialize: function () {
                     jQuery("#form-" + name).submit(this.submit);
@@ -511,13 +519,21 @@ PNWMOTHS.Filters = function () {
                 }
             };
         },
-        "OptionFilter": function (name, valueCallback) {
+        "OptionFilter": function (filterConfig) {
             // Handles processing of option filters. Expects the following ids
             // in the DOM:
             //
             //  * #form-{name} - the form that wraps the filter's select field.
             //  * #clear-filter-{name} - the element that is used to clear the filter.
             //  * #{name} - the element that has the value of the filter.
+            var name = filterConfig.name,
+                valueCallback = filterConfig.callback,
+                helpText = "";
+
+            if (filterConfig.hasOwnProperty("help_text")) {
+                helpText = filterConfig.help_text;
+            }
+
             return {
                 initialize: function () {
                     jQuery("#form-" + name).submit(this.submit);
@@ -690,7 +706,7 @@ jQuery(document).ready(function () {
 
     // Initialize each filter based on its type.
     jQuery.each(filters, function (index, filterConfig) {
-        var filter = new filterConfig.type(filterConfig.name, filterConfig.callback);
+        var filter = new filterConfig.type(filterConfig);
         filter.initialize();
 
         // Option filters rely on externally loaded data for their options.
