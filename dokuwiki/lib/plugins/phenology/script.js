@@ -336,6 +336,23 @@ PNWMOTHS.Chart = function () {
                 dataLabels = [],
                 tick;
 
+            // Prepare data labels.
+
+            // Build a sequence of tick values consisting of one month letter and n
+            // empty values for all months where n is the number of segments per month
+            // in the phenology minus 1. For example: ["J", "", "", "F", "", "",...] for
+            // n=3.
+            for (tick in ticks) {
+                dataLabels.push(ticks[tick]);
+                for (i = 0; i <= maxSegments - 1; i++) {
+                    dataLabels.push(" ");
+                }
+            }
+
+            if (data.length == 0) {
+                return PNWMOTHS.Chart.render([flatPhenologyData], dataLabels);
+            }
+
             // Pre-populate samples by interval with zeros.
             for (i = startInterval; i < endInterval; i++) {
                     phenologyData[i] = [];
@@ -378,18 +395,12 @@ PNWMOTHS.Chart = function () {
                 }
             }
 
-            // Prepare data labels.
-
-            // Build a sequence of tick values consisting of one month letter and n
-            // empty values for all months where n is the number of segments per month
-            // in the phenology minus 1. For example: ["J", "", "", "F", "", "",...] for
-            // n=3.
-            for (tick in ticks) {
-                dataLabels.push(ticks[tick]);
-                for (i = 0; i <= maxSegments - 1; i++) {
-                    dataLabels.push(" ");
-                }
-            }
+            // Prepare data for jqPlot by nesting our single data set in a list
+            // of data sets.
+            return PNWMOTHS.Chart.render([flatPhenologyData], dataLabels);
+        },
+        render: function (data, dataLabels) {
+            var y_max, min_data_value = 3;
 
             // jqPlot requires the placeholder div to be visible in the DOM when
             // the plot is created. Each time a new plot is generated the div
@@ -399,11 +410,22 @@ PNWMOTHS.Chart = function () {
             plotDiv.empty();
             plotDiv.show();
 
-            // Prepare data for jqPlot by nesting our single data set in a list
-            // of data sets.
-            return PNWMOTHS.Chart.render([flatPhenologyData], dataLabels);
-        },
-        render: function (data, dataLabels) {
+            // Set a maximum value for the y-axis based on the maximum value of
+            // the current data set plus a buffer.
+            y_max = Math.max.apply(Math, data[0]);
+
+            // Determine the buffer to add to the y-axis maximum based on the
+            // maximum value. If the value is too small, jqPlot will add
+            // multiple zeros to the y-axis. To avoid this problem, add the
+            // minimum data value as a buffer. In all other cases, just add one
+            // extra value.
+            if (y_max < min_data_value) {
+                y_max = y_max + min_data_value;
+            }
+            else {
+                y_max = y_max + 1;
+            }
+
             // Return a new jqPlot. This mostly consists of a lot of jqPlot
             // options.
             return jQuery.jqplot(
@@ -424,7 +446,8 @@ PNWMOTHS.Chart = function () {
                             ticks: dataLabels
                         },
                         yaxis: {
-                            autoscale: true,
+                            min: 0,
+                            max: y_max,
                             label: 'Number of Records',
                             labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
                             tickOptions: {formatString: '%i'},
