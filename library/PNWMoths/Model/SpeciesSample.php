@@ -42,6 +42,7 @@ class PNWMoths_Model_SpeciesSample extends PNWMoths_Model {
 
             $row->doc->latitude = (float)$row->doc->latitude;
             $row->doc->longitude = (float)$row->doc->longitude;
+            $row->doc->site_name = $row->value->site_name;
             $row->doc->precision = $row->value->precision;
             $row->doc->date = self::getSortableDate($row->doc);
             $samples[] = $row->doc;
