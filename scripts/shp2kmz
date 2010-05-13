@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# Convert zipped Shapefile directory into a compressed KML file (KMZ).
+#
+# Usage: shp2kmz my-zipped-shapefile
+# Note: Omit the .zip extension from the file.
+
+# Extract zipped shapefiles into directory with the same name as the zip file.
+unzip -q $1.zip -d $1
+
+# ogr2ogr treats an entire directory of shapefiles as one shapefile with one
+# layer per shapefile in the directory.
+ogr2ogr -f "KML" $1.kml $1
+
+# A KMZ file is simple a zipped KML file which is more efficient to transmit
+# online.
+zip -q $1.kmz $1.kml
+
+# Remove intermediary files.
+rm -rf $1
+rm $1.kml
