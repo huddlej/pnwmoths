@@ -9,6 +9,15 @@
 var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Map = function () {
     return {
+        states: [
+            "washington",
+            "oregon",
+            "idaho",
+            "utah",
+            "montana",
+            "california",
+            "nevada"
+        ],
         initialize: function () {
             var mapDiv, map, geo_xml;
 
@@ -33,8 +42,10 @@ PNWMOTHS.Map = function () {
             map.removeMapType(G_SATELLITE_MAP);
             map.setMapType(G_PHYSICAL_MAP);
 
-            geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/counties9.kml");
-            map.addOverlay(geo_xml);
+            jQuery.each(PNWMOTHS.Map.states, function (index, state) {
+                geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/" + state + ".kmz");
+                map.addOverlay(geo_xml);
+            });
 
             PNWMOTHS.Map.bounds = PNWMOTHS.Map.addTerritoryBoundaries(map);
             PNWMOTHS.Map.icons = PNWMOTHS.Map.buildMapIcons();
