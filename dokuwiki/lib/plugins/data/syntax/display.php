@@ -82,7 +82,7 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
                         // Plugin options are all prefixed by an underscore
                         // character like "_name".
                         if (substr($key, 0, 1) != "_") {
-                            $clean_options[$key] = $value;
+                            $clean_options[$key] = Zend_Json::encode($value);
                         }
                     }
 
