@@ -22,7 +22,7 @@ jQuery(document).ready(function () {
     jQuery(".dokuwiki-data").each(function () {
         var i,
             data_name,
-            requestData,
+            requestData = {},
             dataset;
 
         // Each data set declaration should contain a valid JSON string
@@ -47,12 +47,21 @@ jQuery(document).ready(function () {
             PNWMOTHS.Data.getCallback(data_name)(dataset);
         }
         else {
+            // Remove plugin options from request data.
+            jQuery.each(dataset, function (key, value) {
+                // Plugin options are all prefixed by an underscore character
+                // like "_name".
+                if (key[0] != "_") {
+                    requestData[key] = value;
+                }
+            });
+
             // Create a custom event to request this data set for other
             // applications that need to re-request data later.
             jQuery("#" + data_name).bind("requestData", function (event) {
                 jQuery.getJSON(
                     dataset._service_url,
-                    dataset,
+                    requestData,
                     PNWMOTHS.Data.getCallback(data_name)
                 );
             });

@@ -75,7 +75,18 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
                     // attribute doesn't exist, javascript will assume the data
                     // has been dumped directly.
                     $client = new Zend_Http_Client($options["_service_url"]);
-                    $client->setParameterGet($options);
+
+                    // Remove plugin options from request data.
+                    $clean_options = array();
+                    foreach ($options as $key => $value) {
+                        // Plugin options are all prefixed by an underscore
+                        // character like "_name".
+                        if (substr($key, 0, 1) != "_") {
+                            $clean_options[$key] = $value;
+                        }
+                    }
+
+                    $client->setParameterGet($clean_options);
                     $response = $client->request();
                     $renderer->doc .= $response->getBody();
                 }
