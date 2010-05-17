@@ -27,6 +27,8 @@ The results of the AJAX call to the data service are stored in a global variable
     <dd>(String) Complete URL for a data service that can receive the same arguments through GET parameters and return JSON data.</dd>
     <dt>_render</dt>
     <dd>(Boolean) Whether data represented by the current declaration should be dumped directly to the page but the plugin or not. If data is dumped directly, the data service is not queried through an AJAX call.</dd>
+    <dt>_format</dt>
+    <dd>(String) Format in which arguments should be sent to the service.</dd>
 </dl>
 
 ## Syntax Examples
@@ -42,3 +44,7 @@ Method with one argument:
 Method with one argument and rendering by plugin:
 
     <data>{"_name": "species-data", "_render": true, "method": "getSamples", "species": "Autographa ampla"}</data>
+
+Method expecting JSON formatted arguments:
+
+    <data>{"_name": "species-data", "_format": "json", "method": "getSamples", "species": "Autographa ampla"}</data>
