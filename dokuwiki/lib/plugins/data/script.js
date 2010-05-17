@@ -23,7 +23,7 @@ jQuery(document).ready(function () {
         var i,
             data_name,
             requestData = {},
-            dataset;
+            dataset = null;
 
         // Each data set declaration should contain a valid JSON string
         // containing an object with at least a data set name and a method to
@@ -31,13 +31,16 @@ jQuery(document).ready(function () {
         //
         // Each declaration may optionally include an "args" property which
         // declares arguments to be passed to the specified method.
-        dataset = jQuery.parseJSON(jQuery(this).text());
-        data_name = jQuery(this).attr("id");
-
-        // Stop processing this data set if the declaration is empty.
-        if (dataset == null) {
-            return;
+        if (jQuery(this).text().length > 0) {
+            dataset = jQuery.parseJSON(jQuery(this).text());
         }
+
+        // Use an empty data set if the declaration is empty.
+        if (dataset == null) {
+            dataset = [];
+        }
+
+        data_name = jQuery(this).attr("id");
 
         // If the declaration is missing required values but is valid JSON then
         // the data was dumped directly by the plugin and nothing more needs to
