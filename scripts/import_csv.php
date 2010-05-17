@@ -1,119 +1,13 @@
 <?php
-// TODO: use Tillikum_CouchDb instead of CouchSimple.
 // TODO: merge state into county name when storing in the database.
 // TODO: calculate latitude/longitude precision and store it in a field
 // TODO: calculate sortable date and store it
-// TODO: remove pushing of views because we have couchapp now
-include("CouchSimple.php");
-include("JSON.php");
+// TODO: mark Royal British Columbia (RBC) data as sensitive
+include("Tillikum/CouchDB.php");
+include("Zend/Json.php");
 
-$options = array("host" => "localhost",
-                 "port" => 5984);
-$couch = new CouchSimple($options);
-
-// Future-friendly json_encode
-if(!function_exists('json_encode'))
+function load_data($db, $file_name)
 {
-    function json_encode($data)
-    {
-        $json = new Services_JSON();
-        return $json->encode($data);
-    }
- }
-
-// Future-friendly json_decode
-if (!function_exists('json_decode'))
-{
-    function json_decode($data)
-    {
-        $json = new Services_JSON();
-        return $json->decode($data);
-    }
-}
-
-function create_db()
-{
-    global $couch;
-    print "Creating database\n";
-    $resp = json_decode($couch->send("PUT", "/pnwmoths/"));
-    print_r($resp);
-}
-
-function delete_db()
-{
-    global $couch;
-    print "Deleting database\n";
-    $resp = json_decode($couch->send("DELETE", "/pnwmoths/"));
-    print_r($resp);
-}
-
-function add_views()
-{
-    global $couch;
-
-    print "Checking for existing views\n";
-    $resp = json_decode($couch->send("GET", "/pnwmoths/_design/moths"));
-
-    // If there wasn't a "not found" error while fetching the views, delete the
-    // views.
-    if (empty($resp->error) || $resp->error != "not_found")
-    {
-        $revision = $resp->_rev;
-        print "Deleting existing views (rev $revision)\n";
-        $resp = json_decode($couch->send("DELETE", "/pnwmoths/_design/moths?rev=$revision"));
-        print_r($resp);
-    }
-
-    print "Adding views\n";
-    $design_doc = array("_id" => "_design/moths",
-                        "language" => "javascript",
-                        "views" => array("by_species" => array("map" => 'function(doc) {
- if(doc.elevation) {
-   doc.elevation = parseInt(doc.elevation);
- }
- else {
-   doc.elevation = "";
- }
-
- var longitude_precision = 0;
- var latitude_precision = 0;
- if(doc.longitude) {
-   try {
-     longitude_precision = doc.longitude.split(".")[1].length;
-   }
-   catch (e) {
-   }
-   doc.longitude = Number(doc.longitude).toFixed(1);
- }
-
- if(doc.latitude) {
-   try {
-     latitude_precision = doc.latitude.split(".")[1].length;
-   }
-   catch (e) {
-   }
-   doc.latitude = Number(doc.latitude).toFixed(1);
- }
-
- doc.precision = Math.min(longitude_precision, latitude_precision);
- doc.site_name = doc.city;
- emit(doc.genus + " " + doc.species, doc);
-}'),
-                                         "unique_species" => array("map" => 'function(doc) {
- emit(doc.genus + " " + doc.species, doc);
-}',
-                                                                   "reduce" => 'function(keys, values) {
- return null;
-}')
-));
-    $json_design_doc = json_encode($design_doc);
-    $resp = $couch->send("PUT", "/pnwmoths/_design/moths", $json_design_doc);
-    print_r($resp);
-}
-
-function load_data($file_name)
-{
-    global $couch;
     $feet_per_meter = 3.2808399;
     print "Loading data\n";
     $handle = fopen($file_name, "r");
@@ -129,9 +23,6 @@ function load_data($file_name)
                           "state", "county", "city", "elevation", "elevation_units",
                           "year", "month", "day", "collector", "collection", "males",
                           "females", "notes");
-    $db_name = "pnwmoths";
-    $uri = implode("", array("/", $db_name, "/"));
-    $headers = array("Content-type" => "application/json");
     $integer_fields = array("elevation");
     $notes_index = array_search("notes", $column_names);
 
@@ -195,28 +86,21 @@ function load_data($file_name)
     {
         // Add document to the database.
         print "Sending bulk docs to database\n";
-        $documents = array("docs" => $documents);
-        $resp = $couch->send("POST", "/pnwmoths/_bulk_docs", json_encode($documents));
-        print substr($resp, 0, 2000) . "\n";
+        $resp = $db->saveBulk($documents);
+        print_r($resp);
     }
 }
 
-function show_all_docs()
-{
-    global $couch;
-    $resp = $couch->send("GET", "/pnwmoths/_all_docs");
-    print_r($resp);
-}
+$db_name = "pnwmoths";
+$couchdb = new Tillikum_CouchDb("http://localhost:5984");
+$couchdb->delete($db_name);
+$couchdb->put($db_name);
 
-delete_db();
-create_db();
-add_views();
-load_data("moths.csv");
-//show_all_docs();
+$db = new Tillikum_CouchDb_Database($couchdb, $db_name);
+load_data($db, "moths.csv");
 
-// // Run the by_species view to build the index.
-$key = urlencode("Autographa californica");
-$query = "/pnwmoths/_design/moths/_view/by_species/?key=\"$key\"";
-$resp = $couch->send("GET", $query);
-print "Response was " . strlen($resp) . " characters long.";
+// Run the by_species view to build the index.
+$params = array("key" => Zend_Json::encode("Autographa californica"));
+$view = $db->getView("moths", "by_species", $params);
+print "Found " . count($view->rows) . " rows in the view.";
 ?>
