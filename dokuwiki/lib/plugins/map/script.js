@@ -558,6 +558,10 @@ jQuery(document).ready(function () {
     // TODO: replace hardcoded "googlemap" id with custom id based on plugin arguments.
     var data_id, data_name;
 
+    if (jQuery("#googlemap .data").length == 0) {
+        return;
+    }
+
     data_name = jQuery.parseJSON(jQuery("#googlemap .data").text());
     if (typeof(data_name) != "string") {
         // Take the first argument from a list or object.
