@@ -555,6 +555,7 @@ jQuery(document).unload(function () {
 });
 
 jQuery(document).ready(function () {
+    // TODO: replace hardcoded "googlemap" id with custom id based on plugin arguments.
     var data_id, data_name;
 
     data_name = jQuery.parseJSON(jQuery("#googlemap .data").text());
