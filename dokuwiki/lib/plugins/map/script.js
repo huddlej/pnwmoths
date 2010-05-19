@@ -51,7 +51,7 @@ PNWMOTHS.Map = function () {
             PNWMOTHS.Map.mgr = new MarkerManager(map);
 
             // Add filters to map container.
-            map.getContainer().appendChild(jQuery("#filters").get(0));
+            map.getContainer().appendChild(PNWMOTHS.Filters.getFilterElement().get(0));
 
             return map;
         },
@@ -335,6 +335,9 @@ PNWMOTHS.Filters = function () {
 
     return {
         "filters": {},
+        "getFilterElement": function () {
+            return filter_element;
+        },
         "capitalize": function (word) {
             // Capitalize the first letter of the given word. Stolen from John
             // Resig's more complete titleCaps function:
@@ -416,8 +419,9 @@ PNWMOTHS.Filters = function () {
                         jQuery(document).trigger("requestData");
                     }
                 },
-                render: function (parent) {
-                    var p, form, start_input, end_input;
+                render: function () {
+                    var p, form, start_input, end_input, parent;
+                    parent = filter_element;
                     p = jQuery("<p id=\"filter-" + name + "\">" + PNWMOTHS.Filters.capitalize(name) + ":</p>");
                     form = jQuery("<form id=\"form-" + name + "\"></form>");
                     start_input = jQuery("<input type=\"text\" id=\"start" + name + "\" size=\"8\" title=\"start " + name + "\" />");
@@ -490,8 +494,9 @@ PNWMOTHS.Filters = function () {
                         }
                     }
                 },
-                render: function (parent) {
-                    var p, form, select_input;
+                render: function () {
+                    var p, form, select_input, parent;
+                    parent = filter_element;
                     p = jQuery("<p id=\"filter-" + name + "\">" + PNWMOTHS.Filters.capitalize(name) + ":</p>");
                     form = jQuery("<form id=\"form-" + name + "\"></form>");
                     select_input = jQuery("<select id=\"" + name + "\" name=\"" + name + "\"></select>");
@@ -525,7 +530,7 @@ PNWMOTHS.Filters = function () {
                     filterDiv,
                     "click",
                     function () {
-                        jQuery("#filters").toggle();
+                        filter_element.toggle();
                     }
                 );
 
@@ -612,7 +617,7 @@ jQuery(document).ready(function () {
     jQuery("#filters-close").click(
         function (event) {
             event.preventDefault();
-            jQuery("#filters").hide();
+            PNWMOTHS.Filters.getFilterElement().hide();
         }
     );
 
@@ -642,7 +647,7 @@ jQuery(document).ready(function () {
     // Initialize each filter based on its type.
     jQuery.each(filters, function (index, filterConfig) {
         var filter = new filterConfig.type(filterConfig);
-        filter.render(jQuery("#filters"));
+        filter.render();
         filter.initialize();
 
         // Option filters rely on externally loaded data for their options.
