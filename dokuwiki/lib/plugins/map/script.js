@@ -331,6 +331,8 @@ PNWMOTHS.Map = function () {
     };
 }();
 PNWMOTHS.Filters = function () {
+    var filter_element;
+
     return {
         "filters": {},
         "capitalize": function (word) {
@@ -338,6 +340,9 @@ PNWMOTHS.Filters = function () {
             // Resig's more complete titleCaps function:
             // http://ejohn.org/files/titleCaps.js
             return word.substr(0,1).toUpperCase() + word.substr(1);
+        },
+        "initialize": function (element) {
+            filter_element = jQuery(element);
         },
         "getFilterFunction": function (name, values) {
             return function (record) {
@@ -599,6 +604,9 @@ jQuery(document).ready(function () {
     //
     // Setup filters.
     //
+
+    // Initialize filters.
+    PNWMOTHS.Filters.initialize("#filters");
 
     // Close filter window.
     jQuery("#filters-close").click(
