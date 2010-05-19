@@ -8,6 +8,7 @@
 var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Map = function () {
     return {
+        xml: [],
         states: [
             "washington",
             "oregon",
@@ -18,7 +19,7 @@ PNWMOTHS.Map = function () {
             "nevada"
         ],
         initialize: function () {
-            var mapDiv, map, geo_xml;
+            var mapDiv, map;
             if (typeof(GBrowserIsCompatible) == "undefined" || !GBrowserIsCompatible()) {
                 jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
                 return;
@@ -40,11 +41,6 @@ PNWMOTHS.Map = function () {
             map.removeMapType(G_SATELLITE_MAP);
             map.setMapType(G_PHYSICAL_MAP);
 
-            jQuery.each(PNWMOTHS.Map.states, function (index, state) {
-                geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/" + state + ".kmz");
-                map.addOverlay(geo_xml);
-            });
-
             PNWMOTHS.Map.bounds = PNWMOTHS.Map.addTerritoryBoundaries(map);
             PNWMOTHS.Map.icons = PNWMOTHS.Map.buildMapIcons();
             PNWMOTHS.Map.mgr = new MarkerManager(map);
@@ -53,6 +49,33 @@ PNWMOTHS.Map = function () {
             map.getContainer().appendChild(PNWMOTHS.Filters.getFilterElement().get(0));
 
             return map;
+        },
+        toggleXml: function () {
+            var geo_xml;
+
+            // If the XML attribute is empty but the states attribute isn't, the
+            // XML needs to be loaded.
+            if (PNWMOTHS.Map.xml.length != PNWMOTHS.Map.states.length) {
+                jQuery.each(PNWMOTHS.Map.states, function (index, state) {
+                    // Adding the new GGeoXml overlay to the map will load the
+                    // overlay data for the first time.
+                    geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/" + state + ".kmz");
+                    PNWMOTHS.Map.xml.push(geo_xml);
+                    PNWMOTHS.Map.map.addOverlay(geo_xml);
+                });
+            }
+            else {
+                // After border data has been loaded, it only needs to be
+                // toggled on or off.
+                jQuery.each(PNWMOTHS.Map.xml, function (index, xml) {
+                    if (xml.isHidden()) {
+                        xml.show();
+                    }
+                    else {
+                        xml.hide();
+                    }
+                });
+            }
         },
         groupMarkerData: function (data) {
             // Group marker data by latitude and longitude values.
@@ -621,6 +644,15 @@ jQuery(document).ready(function () {
     });
 
     PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
+
+    // Toggle map borders.
+    jQuery("#toggle-borders").click(
+        function (event) {
+            event.preventDefault();
+            console.log("toggle xml!");
+            PNWMOTHS.Map.toggleXml();
+        }
+    );
 
     // TODO: maybe this should go into the fullscreen control.
     jQuery("#googlemap").bind("fullscreen", function () {

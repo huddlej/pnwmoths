@@ -70,7 +70,12 @@ class syntax_plugin_map_display extends DokuWiki_Syntax_Plugin {
     <span class="data">$data_source</span>
     <div id="filters">
         <p class="right"><a href="" id="filters-close"><img src="http://maps.gstatic.com/intl/en_us/mapfiles/iw_close.gif" /></a></p>
-        <p><form><input type="button" id="clear-filters" value="Clear filters" /></form></p>
+        <p>
+            <form>
+                <input type="button" id="clear-filters" value="Clear filters" />
+                <input type="button" id="toggle-borders" value="Toggle borders" />
+            </form>
+        </p>
     </div>
 </div>
 HTML;
