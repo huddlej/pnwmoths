@@ -66,7 +66,13 @@ class syntax_plugin_map_display extends DokuWiki_Syntax_Plugin {
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=$api_key&sensor=false" type="text/javascript"></script>
 <script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js" type="text/javascript"></script>
 
-<div id="$id" class="googlemap"><span class="data">$data_source</span></div>
+<div id="$id" class="googlemap">
+    <span class="data">$data_source</span>
+    <div id="filters">
+        <p class="right"><a href="" id="filters-close"><img src="http://maps.gstatic.com/intl/en_us/mapfiles/iw_close.gif" /></a></p>
+        <p><form><input type="button" id="clear-filters" value="Clear filters" /></form></p>
+    </div>
+</div>
 HTML;
                 break;
             default:
