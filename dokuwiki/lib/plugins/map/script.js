@@ -568,48 +568,6 @@ jQuery(document).ready(function () {
         data_name = data_name[0];
     }
     data_id = "#" + data_name;
-    console.log("before initialize");
-    PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
-    console.log("after initialize");
-
-    // TODO: maybe this should go into the fullscreen control.
-    jQuery("#googlemap").bind("fullscreen", function () {
-        jQuery(this).toggleClass("fullscreen");
-        PNWMOTHS.Map.map.checkResize();
-        PNWMOTHS.Map.map.setCenter(
-            PNWMOTHS.Map.mapCenter,
-            PNWMOTHS.Map.map.getBoundsZoomLevel(PNWMOTHS.Map.bounds)
-        );
-    });
-
-    // TODO: rename event to filterData?
-    // Setup custom events "requestData" and "dataIsReady". The latter initiates
-    // a request to the data service passing any filters that have been
-    // set. When the data is ready, the "dataIsReady" event is triggered.
-    jQuery(document).bind("requestData", function (event) {
-        // Fade out temporarily to let the user see the effects of their
-        // filters.
-        // TODO: use is_hidden() method instead of testing for display != none
-        if (jQuery("#filters").css("display") != "none") {
-            jQuery("#filters").fadeTo(10, 0.3).fadeTo(5000, 1);
-        }
-
-        // Filter data locally and let all listeners know the data is ready.
-        jQuery(data_id).trigger(
-            "dataIsReady",
-            [PNWMOTHS.Filters.filterData(
-                PNWMOTHS.Data.data[data_name],
-                PNWMOTHS.Filters.filters
-            )]
-        );
-    });
-
-    jQuery(data_id).bind(
-        "dataIsReady",
-        function (event, data) {
-            PNWMOTHS.Map.createMarkers(data);
-        }
-    );
 
     //
     // Setup filters.
@@ -662,4 +620,45 @@ jQuery(document).ready(function () {
             jQuery("#" + filterConfig.name + "-data").bind("dataIsReady", filter.populate);
         }
     });
+
+    PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
+
+    // TODO: maybe this should go into the fullscreen control.
+    jQuery("#googlemap").bind("fullscreen", function () {
+        jQuery(this).toggleClass("fullscreen");
+        PNWMOTHS.Map.map.checkResize();
+        PNWMOTHS.Map.map.setCenter(
+            PNWMOTHS.Map.mapCenter,
+            PNWMOTHS.Map.map.getBoundsZoomLevel(PNWMOTHS.Map.bounds)
+        );
+    });
+
+    // TODO: rename event to filterData?
+    // Setup custom events "requestData" and "dataIsReady". The latter initiates
+    // a request to the data service passing any filters that have been
+    // set. When the data is ready, the "dataIsReady" event is triggered.
+    jQuery(document).bind("requestData", function (event) {
+        // Fade out temporarily to let the user see the effects of their
+        // filters.
+        // TODO: use is_hidden() method instead of testing for display != none
+        if (PNWMOTHS.Filters.getFilterElement().css("display") != "none") {
+            PNWMOTHS.Filters.getFilterElement().fadeTo(10, 0.3).fadeTo(5000, 1);
+        }
+
+        // Filter data locally and let all listeners know the data is ready.
+        jQuery(data_id).trigger(
+            "dataIsReady",
+            [PNWMOTHS.Filters.filterData(
+                PNWMOTHS.Data.data[data_name],
+                PNWMOTHS.Filters.filters
+            )]
+        );
+    });
+
+    jQuery(data_id).bind(
+        "dataIsReady",
+        function (event, data) {
+            PNWMOTHS.Map.createMarkers(data);
+        }
+    );
 });
