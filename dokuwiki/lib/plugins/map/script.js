@@ -2,8 +2,7 @@
  * The PNWMOTHS namespace includes the following sections:
  *
  * - Map: methods for displaying a Google Map of species data
- * - Chart: methods for displaying a chart of seasonality data
- * - Filters: methods and classes for filtering data used by Map and Chart methods
+ * - Filters: methods and classes for filtering data used by Map methods
  */
 
 var PNWMOTHS = PNWMOTHS || {};
