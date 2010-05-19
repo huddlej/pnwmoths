@@ -20,7 +20,6 @@ PNWMOTHS.Map = function () {
         ],
         initialize: function () {
             var mapDiv, map, geo_xml;
-            console.log("initialize!");
             if (typeof(GBrowserIsCompatible) == "undefined" || !GBrowserIsCompatible()) {
                 jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
                 return;
@@ -47,13 +46,9 @@ PNWMOTHS.Map = function () {
                 map.addOverlay(geo_xml);
             });
 
-            console.log("bounds?");
             PNWMOTHS.Map.bounds = PNWMOTHS.Map.addTerritoryBoundaries(map);
-            console.log("map icons!");
             PNWMOTHS.Map.icons = PNWMOTHS.Map.buildMapIcons();
-            console.log("marker manager!");
             PNWMOTHS.Map.mgr = new MarkerManager(map);
-            console.log("filters to map");
 
             // Add filters to map container.
             map.getContainer().appendChild(jQuery("#filters").get(0));
