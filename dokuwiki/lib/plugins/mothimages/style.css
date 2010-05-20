@@ -10,6 +10,49 @@
     width: 375px!important;
 }
 
+/* Styles for users without javascript. */
+
+.all-images-nojs {
+    width: 100%!important;
+}
+
+.all-images-nojs #images {
+    width: 100%;
+}
+
+.all-images-nojs #current-image {
+    float: left;
+}
+
+.all-images-nojs #other-images {
+    float: left;
+    height: 250px;
+    margin-left: 2em;
+    margin-top: 2em;
+    overflow: auto;
+    text-align: left;
+    width: 300px!important;
+}
+
+.all-images-nojs #similar {
+    clear: both;
+}
+.all-images-nojs #similar ul.similar-species li {
+}
+.all-images-nojs #similar ul.similar-species li {
+    display: block;
+    float: left;
+    margin-bottom: 2em;
+    margin-left: 2em;
+    margin-top: 1em;
+    width: 140px;
+}
+
+.all-images-nojs li {
+    display: inline;
+    list-style-type: none;
+}
+
 /**
  * This <div> element is wrapped by jCarousel around the list
  * and has the classname "jcarousel-container".
