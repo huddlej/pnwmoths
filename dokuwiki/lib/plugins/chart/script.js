@@ -8,7 +8,7 @@ var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Chart = function () {
     return {
         charts: {},
-        initialize: function (chart_element, data) {
+        initialize: function (chart_element, data, custom_options) {
             var phenologyData = [],
                 flatPhenologyData = [],
                 startInterval = 0,
@@ -36,7 +36,7 @@ PNWMOTHS.Chart = function () {
             }
 
             if (data.length == 0) {
-                return PNWMOTHS.Chart.render(chart_element, [flatPhenologyData], dataLabels);
+                return PNWMOTHS.Chart.render(chart_element, [flatPhenologyData], dataLabels, custom_options);
             }
 
             // Pre-populate samples by interval with zeros.
@@ -83,10 +83,12 @@ PNWMOTHS.Chart = function () {
 
             // Prepare data for jqPlot by nesting our single data set in a list
             // of data sets.
-            return PNWMOTHS.Chart.render(chart_element, [flatPhenologyData], dataLabels);
+            return PNWMOTHS.Chart.render(chart_element, [flatPhenologyData], dataLabels, custom_options);
         },
-        render: function (chart_element, data, dataLabels) {
-            var y_max, min_data_value = 3;
+        render: function (chart_element, data, dataLabels, custom_options) {
+            var y_max, min_data_value = 3,
+                default_options,
+                options;
 
             // jqPlot requires the placeholder div to be visible in the DOM when
             // the plot is created. Each time a new plot is generated the div
@@ -112,35 +114,37 @@ PNWMOTHS.Chart = function () {
                 y_max = y_max + 1;
             }
 
+            default_options = {
+                seriesDefaults: {
+                    renderer: jQuery.jqplot.BarRenderer,
+                    rendererOptions: {shadowAlpha: 0, barWidth: 5}
+                },
+                grid: {drawGridlines: false},
+                axes: {
+                    xaxis: {
+                        label: 'Month',
+                        renderer: jQuery.jqplot.CategoryAxisRenderer,
+                        labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
+                        ticks: dataLabels
+                    },
+                    yaxis: {
+                        min: 0,
+                        max: y_max,
+                        label: 'Number of Records',
+                        labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
+                        tickOptions: {formatString: '%i'},
+                        showTickMarks: false
+                    }
+                }
+            };
+            options = jQuery.extend(true, {}, default_options, custom_options);
+
             // Return a new jqPlot. This mostly consists of a lot of jqPlot
             // options.
             return jQuery.jqplot(
                 chart_element,
                 data,
-                {
-                    seriesDefaults: {
-                        renderer: jQuery.jqplot.BarRenderer,
-                        rendererOptions: {shadowAlpha: 0, barWidth: 5}
-                    },
-                    grid: {drawGridlines: false},
-                    title: "Flight Season",
-                    axes: {
-                        xaxis: {
-                            label: 'Month',
-                            renderer: jQuery.jqplot.CategoryAxisRenderer,
-                            labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
-                            ticks: dataLabels
-                        },
-                        yaxis: {
-                            min: 0,
-                            max: y_max,
-                            label: 'Number of Records',
-                            labelRenderer: jQuery.jqplot.CanvasAxisLabelRenderer,
-                            tickOptions: {formatString: '%i'},
-                            showTickMarks: false
-                        }
-                    }
-                }
+                options
             );
         }
     };
@@ -151,7 +155,7 @@ jQuery(document).ready(function () {
     // source to listen to and initialize a chart with the data found at that
     // source.
     jQuery.each(jQuery(".chart"), function (index, chart) {
-        var data_id, data_name;
+        var data_id, data_name, options;
 
         // A class specifying the data source is required. Don't continue if it
         // doesn't exist.
@@ -159,12 +163,19 @@ jQuery(document).ready(function () {
             data_name = jQuery(chart).children(".data").text();
             data_id = "#" + data_name;
 
+            // If no options were specified, just use an empty object.
+            options = jQuery.parseJSON(jQuery(chart).children(".options").text());
+            if (options == "") {
+                options = {};
+            }
+
             jQuery(data_id).bind(
                 "dataIsReady",
                 function (event, data) {
                     var chart_instance = PNWMOTHS.Chart.initialize(
                         jQuery(chart).attr("id"),
-                        data
+                        data,
+                        options
                     );
                     PNWMOTHS.Chart.charts[jQuery(chart).attr("id")] = chart_instance;
                 }

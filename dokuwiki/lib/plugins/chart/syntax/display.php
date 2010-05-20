@@ -61,9 +61,20 @@ class syntax_plugin_chart_display extends DokuWiki_Syntax_Plugin {
             case DOKU_LEXER_UNMATCHED:
                 $id = $data["id"];
                 $data_source = $data["data_source"];
+
+                // Any chart options should be output as JSON for use by the
+                // chart javascript.
+                if (array_key_exists("options", $data)) {
+                    $options = Zend_Json::encode($data["options"]);
+                }
+                else {
+                    $options = "";
+                }
+
                 $renderer->doc .= <<<HTML
 <div id="$id" class="chart tab">
     <span class="data">$data_source</span>
+    <span class="options">$options</span>
 </div>
 HTML;
                 break;
