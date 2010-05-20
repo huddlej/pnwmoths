@@ -24,7 +24,7 @@ optionally specify jqPlot options that override the default options.
     <dt><em>data_source</em></dt>
     <dd>(String) Name of the predefined data source to use for chart data.</dd>
     <dt>options</dt>
-    <dd>([JSON](http://www.json.org) Object) Options for jqPlot. This options object will be merged with the default jqPlot options object.</dd>
+    <dd>(<a href="http://www.json.org">JSON</a> Object) Options for jqPlot. This options object will be merged with the default jqPlot options object.</dd>
 </dl>
 
 ## Examples
