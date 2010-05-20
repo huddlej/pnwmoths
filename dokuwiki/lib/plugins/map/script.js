@@ -652,7 +652,6 @@ jQuery(document).ready(function () {
     jQuery("#toggle-borders").click(
         function (event) {
             event.preventDefault();
-            console.log("toggle xml!");
             PNWMOTHS.Map.toggleXml();
         }
     );
