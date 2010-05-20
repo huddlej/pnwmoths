@@ -50,6 +50,7 @@ PNWMOTHS.Map = function () {
 
             return map;
         },
+        // TODO: rename to toggle borders
         toggleXml: function () {
             var geo_xml;
 

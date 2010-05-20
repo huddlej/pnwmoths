@@ -2,7 +2,7 @@
 // TODO: merge state into county name when storing in the database.
 // TODO: calculate latitude/longitude precision and store it in a field
 // TODO: calculate sortable date and store it
-// TODO: mark Royal British Columbia (RBC) data as sensitive
+// TODO: mark Royal British Columbia (RBC) data as protected (use is_protected attribute)
 include("Tillikum/CouchDB.php");
 include("Zend/Json.php");
 
