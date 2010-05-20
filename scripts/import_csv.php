@@ -3,6 +3,7 @@
 // TODO: calculate latitude/longitude precision and store it in a field
 // TODO: calculate sortable date and store it
 // TODO: mark Royal British Columbia (RBC) data as protected (use is_protected attribute)
+// TODO: mark items as questionable depending on a specific column in the imported csv
 include("Tillikum/CouchDB.php");
 include("Zend/Json.php");
 
