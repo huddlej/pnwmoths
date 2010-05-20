@@ -73,9 +73,6 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
             $renderer->doc .= "</ul>";
             $renderer->doc .= "</div>";
         }
-        else {
-            $renderer->doc .= "None.";
-        }
 
         return true;
     }
