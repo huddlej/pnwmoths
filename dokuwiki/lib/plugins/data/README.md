@@ -9,9 +9,10 @@ javascript for other plugins such as Google Maps.
 ## How It Works
 
 The user defines a data set by entering a JSON string containing at least a
-"_name" and a "method" property.  The plugin replaces the data set declaration
-with a hidden span tag containing the JSON string.  The span tag has a class
-attribute identifying it as a dokuwiki data set.
+"_name" property and some arguments to be passed to the data service url.  The
+plugin replaces the data set declaration with a hidden span tag containing the
+JSON string.  The span tag has a class attribute identifying it as a dokuwiki
+data set.
 
 When the dokuwiki page loads, the plugin's javascript looks for all DOM elements
 with the dokuwiki data set class.  The contents of each element are parsed as
