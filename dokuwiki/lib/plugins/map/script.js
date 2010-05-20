@@ -325,7 +325,9 @@ PNWMOTHS.Map = function () {
             // Render all collection related information for a given record.
             // Set the date for this marker.
             var date = PNWMOTHS.Map.renderDate(record);
-            if (date != "") {
+
+            // Only render collections that have a date and aren't protected.
+            if (date != "" && !record.is_protected) {
                 return [date, record.collector, record.collection];
             }
 
