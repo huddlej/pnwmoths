@@ -236,3 +236,11 @@ table.inline td {
 
 .toc, .footerinc, .header, .bar, .user { display: none; }
 
+#googlemap {
+    height: 700px!important;
+    left: 20px;
+    position: absolute!important;
+    top: 20px;
+    width: 80%;
+    z-index: 100;
+}
