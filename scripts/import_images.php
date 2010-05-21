@@ -12,7 +12,7 @@ $headers = array(
 );
 
 $couchdb = new Tillikum_CouchDb("http://localhost:5984");
-$db = new Tillikum_CouchDb_Database($couchdb, "pnwmoths-images");
+$db = new Tillikum_CouchDb_Database($couchdb, "pnwmoths");
 
 // Get all files after the current and parent directories (i.e., "." and "..").
 $files = array_slice(scandir($image_dir), 2);
