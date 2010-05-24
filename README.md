@@ -12,6 +12,7 @@
 ### Dokuwiki Plugins
 
  * [templater](http://www.dokuwiki.org/plugin:templater)
+ * [alphaindex](http://www.dokuwiki.org/plugin:alphaindex)
 
 ## CouchDB
 
