@@ -1,7 +1,8 @@
 <?php
 require_once '../www/bootstrap.php';
 
-$image_dir = "/home/huddlej/Desktop/moth-images";
+$max_image_width = 800;
+$image_dir = "/home/huddlej/Desktop/moth-images-processed";
 $image_doc_template = array(
     "type" => "image",
     "author" => "John Huddleston",
