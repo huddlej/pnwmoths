@@ -18,6 +18,15 @@ $db = new Tillikum_CouchDb_Database($couchdb, $db_name);
 // Get all files after the current and parent directories (i.e., "." and "..").
 $files = array_slice(scandir($image_dir), 2);
 foreach ($files as $file) {
+    // Resize image if necessary.
+    $image = new Imagick($file);
+    if ($image->getImageWidth() > $max_image_width) {
+        $image->resizeImage($max_image_width);
+        $image->writeImage($file);
+        $image->destroy();
+        print "Resized image $file\n";
+    }
+
     // Get species name from the file name.
     list($species, $rest) = explode("-", $file);
 
