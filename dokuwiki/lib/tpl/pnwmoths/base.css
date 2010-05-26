@@ -1,40 +1,59 @@
-p, h1, h2, h3, h4, h5, li {
+body {
+    font-family: Helvetica;
+}
+
+h1, h2, h3, h4, h5 {
     font-family: Georgia, Verdana;
 }
-
-p {
-    font-size: 1.25em;
-    line-height: 1.5em;
+h1 {
+    font-size: 3em;
+    line-height: 0.5;
     margin: 0.5em 0;
 }
-
-ol li {
-    font-size: 1.25em;
-    line-height: 1.5em;
-    list-style-type: decimal;
-    margin-bottom: 0.5em;
-}
-ul li {
-    list-style-type: disc;
-}
-
-h1 {
-    font-size: 220%;
-    margin-bottom: 0.1em;
-}
 h2 {
-    font-size: 180%;
-    margin-bottom: 0.2em;
-    margin-top: 0.5em;
+    font-size: 2.25em;
+    line-height: 0.67;
+    margin: 0.67em 0;
 }
 h3 {
-    font-size: 150%;
-    margin-top: 0.5em;
+    font-size: 1.875em;
+    line-height: 0.8;
+    margin: 0.8em 0;
 }
 h4 {
-    font-size: 120%;
+    font-size: 1.5em;
     font-weight: bold;
-    margin-top: 0.75em;
+    line-height: 1;
+    margin: 1em 0;
+}
+h5 {
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1.5;
+    margin: 1.5em 0;
+}
+
+p, li {
+    line-height: 1.5;
+}
+p {
+    margin: 1.5em 0;
+}
+li {
+    margin: 0.75em 0;
+}
+ol li {
+    list-style-type: decimal;
+}
+ul li {
+    list-style-type: none;
+}
+li li {
+    margin-left: 1em;
+}
+
+#alphaindex li a {
+    text-decoration: none;
 }
 
 #hd {
@@ -48,6 +67,7 @@ h4 {
     font-size: 1.5em;
     font-weight: bold;
     font-variant: small-caps;
+    line-height: 1;
     margin-left: 1em;
     margin-top: 0.4em;
 }
@@ -60,6 +80,7 @@ ol#navigation li {
     font-size: 1em;
     line-height: 1em;
     list-style-type: none;
+    margin: 0;
     margin-right: 1em;
 }
 ol#navigation li, ol#navigation a, ol#ft-navigation li, ol#ft-navigation a {
@@ -106,6 +127,7 @@ ol#other-images img {
 }
 .jcarousel-skin-tango .jcarousel-item {
     height: 93px;
+    margin: 0;
     width: 140px;
 }
 .jcarousel-skin-tango .jcarousel-item-horizontal {
