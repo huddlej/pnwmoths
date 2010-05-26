@@ -145,8 +145,8 @@ if (!defined('DOKU_INC')) die();
 
   <div id="ft" class="stylefoot" role="contentinfo">
     <ol id="ft-navigation">
-      <li><a href="">About the Project</a>
-      <li><a href="">Contact Us</a>
+      <li><?php tpl_pagelink("about:", "About the Project"); ?></li>
+      <li><?php tpl_pagelink("contact:", "Contact Us"); ?></li>
     </ol>
     <p id="copyright">Copyright 2010</p>
   </div>
