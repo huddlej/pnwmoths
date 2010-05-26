@@ -52,6 +52,13 @@ li li {
     margin-left: 1em;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
+#alphaindex hr {
+    display: none;
+}
 #alphaindex li a {
     text-decoration: none;
 }
@@ -84,7 +91,7 @@ ol#navigation li {
     margin-right: 1em;
 }
 ol#navigation li, ol#navigation a, ol#ft-navigation li, ol#ft-navigation a {
-    color: #FFFFFF;
+    color: #FFFFFF !important;
 }
 ol#navigation li#search {
     margin-top: -0.3em;
