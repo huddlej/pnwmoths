@@ -178,6 +178,7 @@ jQuery(document).ready(function () {
 
             jQuery(data_id).bind(
                 "dataIsReady",
+                // TODO: move this function into Charts class for testing.
                 function (event, data) {
                     var chart_instance = PNWMOTHS.Chart.initialize(
                         jQuery(chart).attr("id"),
