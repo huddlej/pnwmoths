@@ -6,7 +6,11 @@ test("Namespace",
          ok(PNWMOTHS.Chart instanceof Object, "PNWMOTHS.Chart is an Object");
      });
 
-test("Charts",
+test("Chart",
      function () {
-         ok(PNWMOTHS.Chart.charts instanceof Object, "charts attribute is an object");
+         ok(jQuery.isEmptyObject(PNWMOTHS.Chart.charts), "charts attribute is an empty object");
+         ok(PNWMOTHS.Chart.initialize("chart-id", [], {}) instanceof Object, "initialize returns a jqPlot instance");
+         ok(PNWMOTHS.Chart.render("chart-id", [[]], [], {}) instanceof Object, "render returns a jqPlot instance");
+         equals(PNWMOTHS.Chart.prepareDataLabels(["J", "F"], 1).toString(), ["J", " ", "F", " "].toString(), "prepareDataLabels returns padded labels");
+         equals(PNWMOTHS.Chart.prepareDataLabels(["J", "F"], 1, "-").toString(), ["J", "-", "F", "-"].toString(), "prepareDataLabels returns padded labels with custom padding value");
      });
