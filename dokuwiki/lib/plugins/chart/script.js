@@ -43,7 +43,7 @@ PNWMOTHS.Chart = function () {
             dataLabels = this.prepareDataLabels(ticks, maxSegments);
 
             if (data.length == 0) {
-                return PNWMOTHS.Chart.render(chart_element, [flatPhenologyData], dataLabels, custom_options);
+                return this.render(chart_element, [flatPhenologyData], dataLabels, custom_options);
             }
 
             // Pre-populate samples by interval with zeros.
@@ -90,7 +90,7 @@ PNWMOTHS.Chart = function () {
 
             // Prepare data for jqPlot by nesting our single data set in a list
             // of data sets.
-            return PNWMOTHS.Chart.render(chart_element, [flatPhenologyData], dataLabels, custom_options);
+            return this.render(chart_element, [flatPhenologyData], dataLabels, custom_options);
         },
         render: function (chart_element, data, dataLabels, custom_options) {
             var y_max, min_data_value = 3,
