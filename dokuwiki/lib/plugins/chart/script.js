@@ -14,17 +14,17 @@ PNWMOTHS.Chart = function () {
             //
             // For example: ["J", " ", " ", "F", " ", " ",...] for n=3.
             //
-            var dataLabels = [],
+            var data_labels = [],
                 padding_value = padding_value || " ";
 
             for (label in labels) {
-                dataLabels.push(labels[label]);
+                data_labels.push(labels[label]);
                 for (i = 0; i < padding_amount; i++) {
-                    dataLabels.push(padding_value);
+                    data_labels.push(padding_value);
                 }
             }
 
-            return dataLabels;
+            return data_labels;
         },
         initialize: function (chart_element, data, custom_options) {
             var phenologyData = [],
