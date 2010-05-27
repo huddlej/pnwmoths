@@ -26,6 +26,18 @@ PNWMOTHS.Chart = function () {
 
             return data_labels;
         },
+        flattenData: function (data) {
+            // Flatten nested phenology data into a single list.
+            var flat_data = [];
+
+            for (i in data) {
+                for (j in data[i]) {
+                    flat_data.push(data[i][j]);
+                }
+            }
+
+            return flat_data;
+        },
         initialize: function (chart_element, data, custom_options) {
             var phenologyData = [],
                 flatPhenologyData = [],
@@ -75,12 +87,7 @@ PNWMOTHS.Chart = function () {
                     }
                 }
 
-                // Flatten nested phenology data into a single list.
-                for (i in phenologyData) {
-                    for (j in phenologyData[i]) {
-                        flatPhenologyData.push(phenologyData[i][j]);
-                    }
-                }
+                flatPhenologyData = this.flattenData(phenologyData);
             }
 
             // Prepare data for jqPlot by nesting our single data set in a list
