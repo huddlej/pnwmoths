@@ -8,6 +8,24 @@ var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Chart = function () {
     return {
         charts: {},
+        prepareDataLabels: function (labels, padding_amount, padding_value) {
+            // Pads each of the given labels by the given amount of the given
+            // padding value.
+            //
+            // For example: ["J", " ", " ", "F", " ", " ",...] for n=3.
+            //
+            var dataLabels = [],
+                padding_value = padding_value || " ";
+
+            for (label in labels) {
+                dataLabels.push(labels[label]);
+                for (i = 0; i < padding_amount; i++) {
+                    dataLabels.push(padding_value);
+                }
+            }
+
+            return dataLabels;
+        },
         initialize: function (chart_element, data, custom_options) {
             var phenologyData = [],
                 flatPhenologyData = [],
@@ -22,18 +40,7 @@ PNWMOTHS.Chart = function () {
                 dataLabels = [],
                 tick;
 
-            // Prepare data labels.
-
-            // Build a sequence of tick values consisting of one month letter and n
-            // empty values for all months where n is the number of segments per month
-            // in the phenology minus 1. For example: ["J", "", "", "F", "", "",...] for
-            // n=3.
-            for (tick in ticks) {
-                dataLabels.push(ticks[tick]);
-                for (i = 0; i <= maxSegments - 1; i++) {
-                    dataLabels.push(" ");
-                }
-            }
+            dataLabels = this.prepareDataLabels(ticks, maxSegments);
 
             if (data.length == 0) {
                 return PNWMOTHS.Chart.render(chart_element, [flatPhenologyData], dataLabels, custom_options);
