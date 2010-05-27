@@ -37,10 +37,7 @@ PNWMOTHS.Chart = function () {
                 plot,
                 month, segment,
                 ticks = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
-                dataLabels,
                 tick;
-
-            dataLabels = this.prepareDataLabels(ticks, maxSegments);
 
             if (data.length > 0) {
                 // Pre-populate samples by interval with zeros.
@@ -88,7 +85,12 @@ PNWMOTHS.Chart = function () {
 
             // Prepare data for jqPlot by nesting our single data set in a list
             // of data sets.
-            return this.render(chart_element, [flatPhenologyData], dataLabels, custom_options);
+            return this.render(
+                chart_element,
+                [flatPhenologyData],
+                this.prepareDataLabels(ticks, maxSegments),
+                custom_options
+            );
         },
         render: function (chart_element, data, dataLabels, custom_options) {
             var y_max, min_data_value = 3,
