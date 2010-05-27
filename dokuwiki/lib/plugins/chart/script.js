@@ -37,7 +37,7 @@ PNWMOTHS.Chart = function () {
                 plot,
                 month, segment,
                 ticks = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
-                dataLabels = [],
+                dataLabels,
                 tick;
 
             dataLabels = this.prepareDataLabels(ticks, maxSegments);
