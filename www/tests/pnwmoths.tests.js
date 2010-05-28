@@ -162,7 +162,38 @@ test("getFilterElement",
 test("getFilterFunction",
      function () {
          var single_filter_function = PNWMOTHS.Filters.getFilterFunction("county", "Whatcom"),
-             range_filter_function = PNWMOTHS.Filters.getFilterFunction("elevation", ["1000", "2000"]);
+             range_filter_function = PNWMOTHS.Filters.getFilterFunction("elevation", [1000, 2000]);
          ok(single_filter_function instanceof Function, "single filter function is a function");
          ok(range_filter_function instanceof Function, "range filter function is a function");
+         equals(single_filter_function({"county": "Skagit"}), null, "county filter omits non-matching record");
+         equals(single_filter_function({"county": "Whatcom"}).county, "Whatcom", "county filter matches record");
+         equals(range_filter_function({"elevation": 900}), null, "elevation filter omits non-matching record");
+         equals(range_filter_function({"elevation": 1000}).elevation, 1000, "elevation filter matches lower edge case record");
+         equals(range_filter_function({"elevation": 2000}).elevation, 2000, "elevation filter matches upper edge case record");
+         equals(range_filter_function({"elevation": 1500}).elevation, 1500, "elevation filter matches middle range record");
+     });
+
+test("filterData",
+     function () {
+         var data = [{"county": "Skagit", "elevation": 1000},
+                     {"county": "Whatcom", "elevation": 2000},
+                     {"county": "Pierce", "elevation": 3000}];
+         equals(PNWMOTHS.Filters.filterData(data, {}).length, data.length, "all data passes without filters");
+         equals(PNWMOTHS.Filters.filterData(data, {"county": "Polk"}).length, 0, "filters don't match any county records");
+         equals(PNWMOTHS.Filters.filterData(data, {"county": "Whatcom"}).length, 1, "filters match one county record");
+         equals(PNWMOTHS.Filters.filterData(data, {"elevation": [4000, 5000]}).length, 0, "filters don't match any elevation records");
+         equals(PNWMOTHS.Filters.filterData(data, {"elevation": [2000, 4000]}).length, 2, "filters match two elevation records");
+         equals(PNWMOTHS.Filters.filterData(data, {"county": "Pierce", "elevation": [2000, 4000]}).length, 1, "filters match one elevation record");
+     });
+
+test("TextFilter",
+     function () {
+     });
+
+test("OptionFilter",
+     function () {
+     });
+
+test("getFiltersControl",
+     function () {
      });
