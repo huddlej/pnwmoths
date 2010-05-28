@@ -79,6 +79,8 @@ PNWMOTHS.Map = function () {
                     }
                 });
             }
+
+            return this.xml;
         },
         groupMarkerData: function (data) {
             // Group marker data by latitude and longitude values.

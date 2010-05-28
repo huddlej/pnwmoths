@@ -35,5 +35,9 @@ test("Namespace",
 
 test("Map",
      function () {
-         ok(PNWMOTHS.Map.initialize() instanceof GMap2, "Map initialize returns a Google map instance");
+         PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
+         ok(PNWMOTHS.Map.map instanceof GMap2, "Map initialize returns a Google map instance");
+         ok(PNWMOTHS.Map.toggleBorders().length > 0, "borders loaded successfully and shown");
+         ok(PNWMOTHS.Map.toggleBorders()[0].isHidden(), "borders hidden");
+         ok(PNWMOTHS.Map.toggleBorders()[0].isHidden() == false, "borders shown again");
      });
