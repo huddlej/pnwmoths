@@ -369,6 +369,7 @@ PNWMOTHS.Filters = function () {
         },
         "initialize": function (element) {
             filter_element = jQuery(element);
+            return filter_element
         },
         "getFilterFunction": function (name, values) {
             return function (record) {
