@@ -148,3 +148,21 @@ test("renderDate",
          equals(PNWMOTHS.Map.renderDate({"year": "2010", "month": "12"}), "Dec 2010", "month and year is returned");
          equals(PNWMOTHS.Map.renderDate({"year": "2010", "month": "12", "day": "1"}), "Dec 1 2010", "month, day, and year is returned");
      });
+
+module("Filters");
+
+test("getFilterElement",
+     function () {
+         var filter_element = "filters";
+         equals(typeof(PNWMOTHS.Filters.getFilterElement()), "undefined", "filter element is undefined before initialization");
+         ok(PNWMOTHS.Filters.initialize("#" + filter_element) instanceof jQuery, "initialize returns jQuery instance");
+         equals(PNWMOTHS.Filters.getFilterElement().attr("id"), filter_element, "filter element is set");
+     });
+
+test("getFilterFunction",
+     function () {
+         var single_filter_function = PNWMOTHS.Filters.getFilterFunction("county", "Whatcom"),
+             range_filter_function = PNWMOTHS.Filters.getFilterFunction("elevation", ["1000", "2000"]);
+         ok(single_filter_function instanceof Function, "single filter function is a function");
+         ok(range_filter_function instanceof Function, "range filter function is a function");
+     });
