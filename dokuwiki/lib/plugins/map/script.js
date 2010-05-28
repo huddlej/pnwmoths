@@ -193,7 +193,7 @@ PNWMOTHS.Map = function () {
                 collectionHtml = "<div class='infowindow collections'>";
                 collectionHtml += "<table>";
                 collectionHtml += "<tr><th>Date</th><th>Collector</th>";
-                collectionHtml += "<th><a href='/dokuwiki/doku.php?id=factsheets:collection_glossary' target='_new'>Collection</a></th>";
+                collectionHtml += "<th><a href='/dokuwiki/factsheets/collection_glossary' target='_new'>Collection</a></th>";
                 for (i in record.collections) {
                     if (record.collections.hasOwnProperty(i)) {
                         collectionHtml += "<tr>";
