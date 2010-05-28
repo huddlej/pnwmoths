@@ -115,15 +115,16 @@ PNWMOTHS.Chart = function () {
         render: function (chart_element, data, dataLabels, custom_options) {
             var y_max, min_data_value = 3,
                 default_options,
-                options;
+                options,
+                plot_div;
 
             // jqPlot requires the placeholder div to be visible in the DOM when
             // the plot is created. Each time a new plot is generated the div
             // needs to be emptied and shown. After the plot is generated, the
             // div can be hidden again.
-            plotDiv = jQuery("#" + chart_element);
-            plotDiv.empty();
-            plotDiv.show();
+            plot_div = jQuery("#" + chart_element);
+            plot_div.empty();
+            plot_div.show();
 
             // Set a maximum value for the y-axis based on the maximum value of
             // the current data set plus a buffer.
