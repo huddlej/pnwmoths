@@ -25,6 +25,7 @@ PNWMOTHS.Map = function () {
                 return;
             }
 
+            // TODO: remove dependence on hardcoded map id.
             mapDiv = jQuery("#googlemap");
             mapDiv.show();
             map = new GMap2(mapDiv.get(0));
