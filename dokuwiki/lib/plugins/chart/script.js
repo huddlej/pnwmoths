@@ -87,22 +87,22 @@ PNWMOTHS.Chart = function () {
             return phenology_data;
         },
         initialize: function (chart_element, data, custom_options) {
-            var phenologyData = [],
-                daysPerSegment = 10,
-                maxSegments = 2,
+            var phenology_data = [],
+                days_per_segment = 10,
+                max_segments = 2,
                 ticks = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
 
             if (data.length > 0) {
-                phenologyData = this.sumDataByMonthAndSegment(data, daysPerSegment, maxSegments);
-                phenologyData = this.flattenData(phenologyData);
+                phenology_data = this.sumDataByMonthAndSegment(data, days_per_segment, max_segments);
+                phenology_data = this.flattenData(phenology_data);
             }
 
             // Prepare data for jqPlot by nesting our single data set in a list
             // of data sets.
             return this.render(
                 chart_element,
-                [phenologyData],
-                this.prepareDataLabels(ticks, maxSegments),
+                [phenology_data],
+                this.prepareDataLabels(ticks, max_segments),
                 custom_options
             );
         },
