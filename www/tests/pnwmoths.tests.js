@@ -73,4 +73,37 @@ test("Map",
          ok(renderedMarker[0].search(/Test Site 1/) > 0, "site name is in first marker tab html");
          ok(renderedMarker[0].search(/Whatcom/) > 0, "county name is in first marker tab html");
          ok(renderedMarker[1].search(/Lars Crabo/) > 0, "collector name is in second marker tab html");
+
+         ok(
+             PNWMOTHS.Map.addTerritoryBoundaries(PNWMOTHS.Map.map) instanceof GLatLngBounds,
+             "add territory boundaries returns a Google bounds instance"
+         );
+
+         equals(
+             PNWMOTHS.Map.renderCollection({
+                 "is_protected": true,
+                 "year": "2010"
+             }),
+             null,
+             "protected collection record is omitted"
+         );
+         equals(
+             PNWMOTHS.Map.renderCollection({}),
+             null,
+             "dateless collection record is omitted"
+         );
+         equals(
+             PNWMOTHS.Map.renderCollection({
+                 "collector": "Lars Crabo",
+                 "collection": "LC",
+                 "year": "2010"
+             }).length,
+             3,
+             "collection record is valid"
+         );
+
+         equals(PNWMOTHS.Map.renderDate({}), "", "nothing is returned");
+         equals(PNWMOTHS.Map.renderDate({"year": "2010"}), "2010", "year is returned");
+         equals(PNWMOTHS.Map.renderDate({"year": "2010", "month": "12"}), "Dec 2010", "month and year is returned");
+         equals(PNWMOTHS.Map.renderDate({"year": "2010", "month": "12", "day": "1"}), "Dec 1 2010", "month, day, and year is returned");
      });
