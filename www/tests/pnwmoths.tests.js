@@ -81,7 +81,7 @@ test("Map",
              PNWMOTHS.Map.addTerritoryBoundaries(PNWMOTHS.Map.map) instanceof GLatLngBounds,
              "add territory boundaries returns a Google bounds instance"
          );
-         ok(PNWMOTHS.Map.setButtonStyles({"style": {}}) == true, "set styles on button");
+         ok(PNWMOTHS.Map.setButtonStyles({"style": {}}).style.hasOwnProperty("font"), "set styles on button");
 
          equals(
              PNWMOTHS.Map.renderCollection({

@@ -325,6 +325,7 @@ PNWMOTHS.Map = function () {
             button.style.textAlign = "center";
             button.style.width = "5em";
             button.style.cursor = "pointer";
+            return button
         },
         renderCollection: function (record) {
             // Render all collection related information for a given record.
