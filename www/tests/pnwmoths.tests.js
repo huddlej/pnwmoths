@@ -74,10 +74,14 @@ test("Map",
          ok(renderedMarker[0].search(/Whatcom/) > 0, "county name is in first marker tab html");
          ok(renderedMarker[1].search(/Lars Crabo/) > 0, "collector name is in second marker tab html");
 
+         ok(PNWMOTHS.Map.createMarkers([]) == true, "create markers returns markers");
+         ok(PNWMOTHS.Map.createMarker(new GLatLng(48.0, 100.0), 1, "") == true, "create marker returns Google marker instance");
+         ok(PNWMOTHS.Map.buildMapIcons() == [], "build map icons returns map icons");
          ok(
              PNWMOTHS.Map.addTerritoryBoundaries(PNWMOTHS.Map.map) instanceof GLatLngBounds,
              "add territory boundaries returns a Google bounds instance"
          );
+         ok(PNWMOTHS.Map.setButtonStyles({"style": {}}) == true, "set styles on button");
 
          equals(
              PNWMOTHS.Map.renderCollection({
