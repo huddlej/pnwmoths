@@ -18,7 +18,7 @@ test("Chart",
                      {"month": 1, "day": 15},
                      {"month": 1, "day": 16},
                      {"month": 2, "day": 1}],
-             grouped_data = PNWMOTHS.Chart.groupDataByMonthAndDay(data);
+             grouped_data = PNWMOTHS.Chart.sumDataByMonthAndSegment(data);
          equals(grouped_data[0][0], 1, "found one record for the first month and segment");
          equals(grouped_data[0][1], 2, "found two records for the first month and second segment");
          equals(grouped_data[1][0], 1, "found one record for the second month and first segment");

@@ -39,7 +39,7 @@ PNWMOTHS.Chart = function () {
 
             return flat_data;
         },
-        groupDataByMonthAndDay: function (data, days_per_segment, max_segments) {
+        sumDataByMonthAndSegment: function (data, days_per_segment, max_segments) {
             var phenology_data = [],
                 start_interval = 0,
                 end_interval = 12,
@@ -93,7 +93,7 @@ PNWMOTHS.Chart = function () {
                 ticks = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
 
             if (data.length > 0) {
-                phenologyData = this.groupDataByMonthAndDay(data, daysPerSegment, maxSegments);
+                phenologyData = this.sumDataByMonthAndSegment(data, daysPerSegment, maxSegments);
                 phenologyData = this.flattenData(phenologyData);
             }
 
