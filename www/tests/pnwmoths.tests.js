@@ -33,15 +33,27 @@ test("Namespace",
          ok(PNWMOTHS.Map instanceof Object, "PNWMOTHS.Map is an Object");
      });
 
-test("Map",
+test("initialize",
      function () {
          PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
          ok(PNWMOTHS.Map.map instanceof GMap2, "Map initialize returns a Google map instance");
+     });
+
+test("toggleBorders",
+     function () {
          ok(PNWMOTHS.Map.toggleBorders().length > 0, "borders loaded successfully and shown");
          ok(PNWMOTHS.Map.toggleBorders()[0].isHidden(), "borders hidden");
          ok(PNWMOTHS.Map.toggleBorders()[0].isHidden() == false, "borders shown again");
-         ok(PNWMOTHS.Map.getFullscreenControl() instanceof GControl, "fullscreen control is a Google maps control");
+     });
 
+test("getFullscreenControl",
+     function () {
+         ok(PNWMOTHS.Map.getFullscreenControl() instanceof GControl, "fullscreen control is a Google maps control");
+         ok(PNWMOTHS.Map.setButtonStyles({"style": {}}).style.hasOwnProperty("font"), "set styles on button");
+     });
+
+test("groupMarkerData",
+     function () {
          var data = [
                  {"latitude": 48.0, "longitude": 100.0, "site_name": "Test Site 1"},
                  {"latitude": 49.0, "longitude": 100.0, "site_name": "Test Site 2"}
@@ -62,7 +74,10 @@ test("Map",
              0,
              "collections for first data point is empty"
          );
+     });
 
+test("renderMarkerRecord",
+     function () {
          var renderedMarker = PNWMOTHS.Map.renderMarkerRecord({
              "site_name": "Test Site 1",
              "county": "Whatcom",
@@ -73,16 +88,35 @@ test("Map",
          ok(renderedMarker[0].search(/Test Site 1/) > 0, "site name is in first marker tab html");
          ok(renderedMarker[0].search(/Whatcom/) > 0, "county name is in first marker tab html");
          ok(renderedMarker[1].search(/Lars Crabo/) > 0, "collector name is in second marker tab html");
+     });
 
-         ok(PNWMOTHS.Map.createMarkers([]) == true, "create markers returns markers");
-         ok(PNWMOTHS.Map.createMarker(new GLatLng(48.0, 100.0), 1, "") == true, "create marker returns Google marker instance");
-         ok(PNWMOTHS.Map.buildMapIcons() == [], "build map icons returns map icons");
+test("createMarkers",
+     function () {
+         var data = [{"latitude": 48.0, "longitude": 100.0},
+                     {"latitude": 48.0, "longitude": 100.0},
+                     {"latitude": 50.0, "longitude": 100.0}];
+         equals(PNWMOTHS.Map.createMarkers([]).length, 0, "create markers returns empty markers set");
+         equals(PNWMOTHS.Map.createMarkers(data).length, 2, "create markers returns two unique values");
+         ok(PNWMOTHS.Map.createMarkers(data)[0] instanceof GMarker, "create markers returns Google marker instances");
+         ok(PNWMOTHS.Map.createMarker(new GLatLng(48.0, 100.0), 1, "") instanceof GMarker, "create marker returns Google marker instance");
+     });
+
+test("buildMapIcons",
+     function () {
+         ok(PNWMOTHS.Map.buildMapIcons().length > 0, "build map icons returns a non-empty array");
+         ok(PNWMOTHS.Map.buildMapIcons()[0] instanceof GIcon, "build map icons returns Google icons");
+     });
+
+test("addTerritoryBoundaries",
+     function () {
          ok(
              PNWMOTHS.Map.addTerritoryBoundaries(PNWMOTHS.Map.map) instanceof GLatLngBounds,
              "add territory boundaries returns a Google bounds instance"
          );
-         ok(PNWMOTHS.Map.setButtonStyles({"style": {}}).style.hasOwnProperty("font"), "set styles on button");
+     });
 
+test("renderCollection",
+     function () {
          equals(
              PNWMOTHS.Map.renderCollection({
                  "is_protected": true,
@@ -105,7 +139,10 @@ test("Map",
              3,
              "collection record is valid"
          );
+     });
 
+test("renderDate",
+     function () {
          equals(PNWMOTHS.Map.renderDate({}), "", "nothing is returned");
          equals(PNWMOTHS.Map.renderDate({"year": "2010"}), "2010", "year is returned");
          equals(PNWMOTHS.Map.renderDate({"year": "2010", "month": "12"}), "Dec 2010", "month and year is returned");
