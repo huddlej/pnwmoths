@@ -1,0 +1,1 @@
+../../../dokuwiki/lib/plugins/map/script.js
