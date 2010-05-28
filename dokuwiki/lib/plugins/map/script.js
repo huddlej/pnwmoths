@@ -220,9 +220,6 @@ PNWMOTHS.Map = function () {
             // First group marker data.
             data = PNWMOTHS.Map.groupMarkerData(data);
 
-            // Always clear the current marker set before adding new markers.
-            PNWMOTHS.Map.mgr.clearMarkers();
-
             // Build a list of markers for the given data. Data is indexed by a
             // latitude/longitude tuple so i[0] is latitude and i[1] is
             // longitude.
@@ -240,11 +237,7 @@ PNWMOTHS.Map = function () {
                 }
             }
 
-            // Use the marker manager to add multiple markers simulataneously
-            // and set the maximum and minimum zoom levels at which the markers
-            // should be displayed.
-            PNWMOTHS.Map.mgr.addMarkers(markers, 3, 10);
-            PNWMOTHS.Map.mgr.refresh();
+            return markers;
         },
         createMarker: function (point, number, html, marker_options) {
             // Creates a map marker for a given Google map Point instance. The
@@ -696,7 +689,17 @@ jQuery(document).ready(function () {
     jQuery(data_id).bind(
         "dataIsReady",
         function (event, data) {
-            PNWMOTHS.Map.createMarkers(data);
+            var markers;
+
+            // Always clear the current marker set before adding new markers.
+            PNWMOTHS.Map.mgr.clearMarkers();
+
+            // Use the marker manager to add multiple markers simulataneously
+            // and set the maximum and minimum zoom levels at which the markers
+            // should be displayed.
+            markers = PNWMOTHS.Map.createMarkers(data);
+            PNWMOTHS.Map.mgr.addMarkers(markers, 3, 10);
+            PNWMOTHS.Map.mgr.refresh();
         }
     );
 });
