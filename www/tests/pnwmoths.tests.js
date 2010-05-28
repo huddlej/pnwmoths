@@ -24,3 +24,16 @@ test("Chart",
          equals(grouped_data[1][0], 1, "found one record for the second month and first segment");
          equals(grouped_data[2][0], 0, "no records set for the third month and first segment");
      });
+
+module("Maps");
+
+test("Namespace",
+     function () {
+         ok(PNWMOTHS instanceof Object, "PNWMOTHS is an Object");
+         ok(PNWMOTHS.Map instanceof Object, "PNWMOTHS.Map is an Object");
+     });
+
+test("Map",
+     function () {
+         ok(PNWMOTHS.Map.initialize() instanceof GMap2, "Map initialize returns a Google map instance");
+     });
