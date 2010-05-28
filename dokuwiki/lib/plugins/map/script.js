@@ -326,7 +326,7 @@ PNWMOTHS.Map = function () {
             button.style.width = "5em";
             button.style.cursor = "pointer";
         },
-        "renderCollection": function (record) {
+        renderCollection: function (record) {
             // Render all collection related information for a given record.
             // Set the date for this marker.
             var date = PNWMOTHS.Map.renderDate(record);
@@ -338,7 +338,7 @@ PNWMOTHS.Map = function () {
 
             return null;
         },
-        "renderDate": function (record) {
+        renderDate: function (record) {
             // Render a date string for a given record.
             var month_choices = ["Jan", "Feb", "Mar", "Apr",
                                  "May", "Jun", "Jul", "Aug",
