@@ -53,8 +53,7 @@ PNWMOTHS.Map = function () {
 
             return map;
         },
-        // TODO: rename to toggle borders
-        toggleXml: function () {
+        toggleBorders: function () {
             var geo_xml;
 
             // If the XML attribute is empty but the states attribute isn't, the
@@ -655,7 +654,7 @@ jQuery(document).ready(function () {
     jQuery("#toggle-borders").click(
         function (event) {
             event.preventDefault();
-            PNWMOTHS.Map.toggleXml();
+            PNWMOTHS.Map.toggleBorders();
         }
     );
 
