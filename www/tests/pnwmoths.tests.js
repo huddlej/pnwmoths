@@ -40,4 +40,37 @@ test("Map",
          ok(PNWMOTHS.Map.toggleBorders().length > 0, "borders loaded successfully and shown");
          ok(PNWMOTHS.Map.toggleBorders()[0].isHidden(), "borders hidden");
          ok(PNWMOTHS.Map.toggleBorders()[0].isHidden() == false, "borders shown again");
+         ok(PNWMOTHS.Map.getFullscreenControl() instanceof GControl, "fullscreen control is a Google maps control");
+
+         var data = [
+                 {"latitude": 48.0, "longitude": 100.0, "site_name": "Test Site 1"},
+                 {"latitude": 49.0, "longitude": 100.0, "site_name": "Test Site 2"}
+             ],
+             grouped_data = PNWMOTHS.Map.groupMarkerData(data);
+         equals(
+             grouped_data[[data[0].latitude, data[0].longitude]].site_name,
+             data[0].site_name,
+             "site name for first data point is set"
+         );
+         equals(
+             grouped_data[[data[1].latitude, data[1].longitude]].site_name,
+             data[1].site_name,
+             "site name for second data point is set"
+         );
+         equals(
+             grouped_data[[data[0].latitude, data[0].longitude]].collections.length,
+             0,
+             "collections for first data point is empty"
+         );
+
+         var renderedMarker = PNWMOTHS.Map.renderMarkerRecord({
+             "site_name": "Test Site 1",
+             "county": "Whatcom",
+             "collections": [["1/15/2010", "Lars Crabo", "LC"],
+                             ["2/15/2010", "Merrill Peterson", "MP"]]
+         });
+         equals(renderedMarker.length, 2, "rendered marker record has one value for both tabs");
+         ok(renderedMarker[0].search(/Test Site 1/) > 0, "site name is in first marker tab html");
+         ok(renderedMarker[0].search(/Whatcom/) > 0, "county name is in first marker tab html");
+         ok(renderedMarker[1].search(/Lars Crabo/) > 0, "collector name is in second marker tab html");
      });
