@@ -34,7 +34,6 @@ PNWMOTHS.Map = function () {
             map.setCenter(PNWMOTHS.Map.mapCenter, 5);
             map.addControl(new GSmallMapControl());
             map.addControl(new GMapTypeControl());
-            map.addControl(PNWMOTHS.Filters.getFiltersControl());
             map.addControl(PNWMOTHS.Map.getFullscreenControl());
             map.addMapType(G_PHYSICAL_MAP);
             map.removeMapType(G_NORMAL_MAP);
@@ -46,7 +45,10 @@ PNWMOTHS.Map = function () {
             PNWMOTHS.Map.mgr = new MarkerManager(map);
 
             // Add filters to map container.
-            map.getContainer().appendChild(PNWMOTHS.Filters.getFilterElement().get(0));
+            if (typeof(PNWMOTHS.Filters.getFilterElement()) !== "undefined") {
+                map.addControl(PNWMOTHS.Filters.getFiltersControl());
+                map.getContainer().appendChild(PNWMOTHS.Filters.getFilterElement().get(0));
+            }
 
             return map;
         },
