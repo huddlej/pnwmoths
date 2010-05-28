@@ -15,6 +15,7 @@ PNWMOTHS.Chart = function () {
             // For example: ["J", " ", " ", "F", " ", " ",...] for n=3.
             //
             var data_labels = [],
+                label,
                 padding_value = padding_value || " ";
 
             for (label in labels) {
@@ -38,63 +39,69 @@ PNWMOTHS.Chart = function () {
 
             return flat_data;
         },
+        groupDataByMonthAndDay: function (data, days_per_segment, max_segments) {
+            var phenology_data = [],
+                start_interval = 0,
+                end_interval = 12,
+                days_per_segment = days_per_segment || 10,
+                max_segments = max_segments || 2,
+                i, j,
+                segment,
+                month;
+
+            // Pre-populate samples by interval with zeros.
+            for (i = start_interval; i < end_interval; i++) {
+                phenology_data[i] = [];
+                // One value per segment per month in the phenology.
+                for (j = 0; j <= max_segments; j++) {
+                    phenology_data[i][j] = 0;
+                }
+            }
+
+            // Map sample data to the given interval by counting each sample
+            // that matches an interval marker.
+            for (i in data) {
+                if (data.hasOwnProperty(i) && data[i].month) {
+                    // If a record doesn't have a "day" value, don't use it. It is
+                    // better to omit a record than mislead users by defaulting the
+                    // record to the beginning of the month or some other similar
+                    // strategy.
+                    if (data[i].day) {
+                        // Records are indexed starting with 0 so all months are shifted
+                        // by 1.
+                        month = parseInt(data[i].month) - 1;
+
+                        // If a record has a day value, place it in the right segment.
+                        segment = Math.floor(parseInt(data[i].day) / days_per_segment);
+
+                        // The graph will never display more than the max number of
+                        // segments, so days 30 and 31 get placed into the last segment.
+                        segment = Math.min(segment, max_segments);
+
+                        // Count the number of records for this month and this segment.
+                        phenology_data[month][segment] += 1;
+                    }
+                }
+            }
+
+            return phenology_data;
+        },
         initialize: function (chart_element, data, custom_options) {
             var phenologyData = [],
-                flatPhenologyData = [],
-                startInterval = 0,
-                endInterval = 12,
                 daysPerSegment = 10,
                 maxSegments = 2,
-                i, j,
-                plot,
-                month, segment,
-                ticks = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
-                tick;
+                ticks = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
 
             if (data.length > 0) {
-                // Pre-populate samples by interval with zeros.
-                for (i = startInterval; i < endInterval; i++) {
-                        phenologyData[i] = [];
-                    // One value per segment per month in the phenology.
-                    for (j = 0; j <= maxSegments; j++) {
-                        phenologyData[i][j] = 0;
-                    }
-                }
-
-                // Map sample data to the given interval by counting each sample
-                // that matches an interval marker.
-                for (i in data) {
-                    if (data.hasOwnProperty(i) && data[i].month) {
-                        // If a record doesn't have a "day" value, don't use it. It is
-                        // better to omit a record than mislead users by defaulting the
-                        // record to the beginning of the month or some other similar
-                        // strategy.
-                        if (data[i].day) {
-                            // Records are indexed starting with 0 so all months are shifted
-                            // by 1.
-                            month = parseInt(data[i].month) - 1;
-
-                            // If a record has a day value, place it in the right segment.
-                            segment = Math.floor(parseInt(data[i].day) / daysPerSegment);
-
-                            // The graph will never display more than the max number of
-                            // segments, so days 30 and 31 get placed into the last segment.
-                            segment = Math.min(segment, maxSegments);
-
-                            // Count the number of records for this month and this segment.
-                            phenologyData[month][segment] += 1;
-                        }
-                    }
-                }
-
-                flatPhenologyData = this.flattenData(phenologyData);
+                phenologyData = this.groupDataByMonthAndDay(data, daysPerSegment, maxSegments);
+                phenologyData = this.flattenData(phenologyData);
             }
 
             // Prepare data for jqPlot by nesting our single data set in a list
             // of data sets.
             return this.render(
                 chart_element,
-                [flatPhenologyData],
+                [phenologyData],
                 this.prepareDataLabels(ticks, maxSegments),
                 custom_options
             );
