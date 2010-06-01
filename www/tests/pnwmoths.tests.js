@@ -188,12 +188,40 @@ test("filterData",
 
 test("TextFilter",
      function () {
+         var name = "text-filter",
+             filter_config = {"name": name},
+             filter = PNWMOTHS.Filters.TextFilter(filter_config),
+             form_parent = filter.render(),
+             form = filter.initialize();
+         ok(form_parent instanceof jQuery, "render returns jQuery instance");
+         ok(form instanceof jQuery, "initialize returns jQuery instance");
+
+         ok(PNWMOTHS.Filters.filters.hasOwnProperty(name) == false, "filters aren't set yet");
+         jQuery(document).bind("requestData", function () { ok(true, "form submit triggers requestData"); });
+         form.submit();
+         jQuery(document).unbind("requestData");
+         ok(PNWMOTHS.Filters.filters[name].length > 0, "form submit sets filters");
      });
 
 test("OptionFilter",
      function () {
+         var name = "option-filter",
+             filter_config = {"name": name},
+             filter = PNWMOTHS.Filters.OptionFilter(filter_config),
+             form_parent = filter.render(),
+             form = filter.initialize();
+         ok(form_parent instanceof jQuery, "render returns jQuery instance");
+         ok(form instanceof jQuery, "initialize returns jQuery instance");
+
+         ok(PNWMOTHS.Filters.filters.hasOwnProperty(name) == false, "filters aren't set yet");
+         jQuery(document).bind("requestData", function () { ok(true, "form submit triggers requestData"); });
+         form.submit();
+         jQuery(document).unbind("requestData");
+         ok(PNWMOTHS.Filters.filters[name].length > 0, "form submit sets filters");
+         ok(filter.populate(jQuery.Event(), ["WA", "ID"]) instanceof jQuery, "populate returns select instance");
      });
 
 test("getFiltersControl",
      function () {
+         ok(PNWMOTHS.Filters.getFiltersControl() instanceof GControl, "getFiltersControl returns GControl");
      });
