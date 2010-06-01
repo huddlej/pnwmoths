@@ -74,5 +74,9 @@ class PNWMoths_Model_Image extends PNWMoths_Model {
             return "";
         }
     }
+
+    public function setImageUrl($image_url) {
+        $this->baseUrl = $image_url;
+    }
 }
 ?>
