@@ -63,6 +63,7 @@ class syntax_plugin_similarspecies_display extends DokuWiki_Syntax_Plugin {
             foreach($data["data"] as $row) {
                 if (count($row["images"]) > 0) {
                     foreach($row["images"] as $image) {
+                        $image->setImageUrl($this->getConf("image_url"));
                         $renderer->doc .= "<li>";
                         $renderer->doc .= (string)$image;
                         $renderer->internalLink($row["species"], $row["species"]);
