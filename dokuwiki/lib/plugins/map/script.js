@@ -416,12 +416,14 @@ PNWMOTHS.Filters = function () {
 
             return {
                 initialize: function () {
+                    // TODO: add attribute for form instance and clear filter button instance.
                     jQuery("#form-" + name).submit(this.submit);
                     jQuery("#clear-filter-" + name).click(this.clear);
                     jQuery("#form-" + name).bind("clear", this.clear);
                 },
                 submit: function (event) {
                     event.preventDefault();
+                    // TODO: add attributes for start and end jQuery instances
                     var start = jQuery("#start" + name).val(),
                         end = jQuery("#end" + name).val();
 
