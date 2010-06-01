@@ -1,9 +1,11 @@
 function (head, req) {
+    // !json templates.lists
+    // !code vendor/mustache.js
     provides("html", function () {
         var row,
             image_url,
             attachment,
-            image_src;
+            view;
 
         // The image url provided in the GET query tells the list where to find
         // the attached images from a web-accessible path.
@@ -12,15 +14,11 @@ function (head, req) {
             while (row = getRow()) {
                 if (row.doc) {
                     for (attachment in row.doc._attachments) {
-                        image_src = image_url + "?id=" + row.id + "/" + attachment;
-                        send("<li>");
-                        send("<a href='" + image_src + "'>");
-                        send("<img src='" + image_src + "' title='" + (row.doc.caption || "") + "' />");
-                        if (req.query.show_title) {
-                            send("<br />" + row.doc.species);
-                        }
-                        send("</a>");
-                        send("</li>\n");
+                        view = {"image_url": image_url + "?id=" + row.id + "/" + attachment,
+                                "species": row.doc.species,
+                                "show_title": req.query.show_title,
+                                "title": row.doc.caption || ""};
+                        send(Mustache.to_html(templates.lists.images, view));
                      }
                 }
             }
