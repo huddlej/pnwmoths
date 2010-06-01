@@ -5,4 +5,4 @@
  * @author John Huddleston <huddlej@gmail.com>
  */
 
-//$conf['fixme']    = 'FIXME';
+$conf['image_url'] = 'http://localhost/services/getFile.php';
