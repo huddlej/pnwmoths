@@ -420,6 +420,7 @@ PNWMOTHS.Filters = function () {
                     jQuery("#form-" + name).submit(this.submit);
                     jQuery("#clear-filter-" + name).click(this.clear);
                     jQuery("#form-" + name).bind("clear", this.clear);
+                    return jQuery("#form-" + name);
                 },
                 submit: function (event) {
                     event.preventDefault();
@@ -462,6 +463,7 @@ PNWMOTHS.Filters = function () {
                     }
                     parent.append(p);
                     parent.append(form);
+                    return parent;
                 }
             };
         },
@@ -485,6 +487,7 @@ PNWMOTHS.Filters = function () {
                     jQuery("#form-" + name).submit(this.submit);
                     jQuery("#clear-filter-" + name).click(this.clear);
                     jQuery("#form-" + name).bind("clear", this.clear);
+                    return jQuery("#form-" + name);
                 },
                 submit: function (event) {
                     event.preventDefault();
@@ -519,6 +522,8 @@ PNWMOTHS.Filters = function () {
                             select.append(option);
                         }
                     }
+
+                    return select;
                 },
                 render: function () {
                     var p, form, select_input, parent;
@@ -536,6 +541,7 @@ PNWMOTHS.Filters = function () {
                     }
                     parent.append(p);
                     parent.append(form);
+                    return parent;
                 }
             };
         },
