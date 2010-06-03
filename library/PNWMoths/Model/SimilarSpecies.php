@@ -43,5 +43,55 @@ class PNWMoths_Model_SimilarSpecies extends PNWMoths_Model {
 
         return $similar_species;
     }
+
+    public static function getSpecies(array $params = array()) {
+        $db = parent::getDatabase();
+        $species = array();
+
+        if ($db !== false) {
+            try {
+                $viewParams = array("group" => 'true');
+                $results = $db->getView(
+                    self::$designDoc,
+                    self::$viewName,
+                    $viewParams
+                );
+                $species = $results->rows;
+            }
+            catch (Zend_Http_Client_Adapter_Exception $e) {
+                // Return no results when the database isn't available.
+            }
+        }
+
+        return $species;
+    }
+
+    public static function getSimilarSpecies($species) {
+        $db = parent::getDatabase();
+        $similar_species = array();
+
+        if ($db !== false) {
+            try {
+                $species = Zend_Json::encode($species);
+                $viewParams = array("reduce" => 'false',
+                                    "key" => $species);
+                $results = $db->getView(
+                    self::$designDoc,
+                    self::$viewName,
+                    $viewParams
+                );
+
+                foreach ($results->rows as $row) {
+                    $similar_species[] = $row->value;
+                }
+                sort($similar_species);
+            }
+            catch (Zend_Http_Client_Adapter_Exception $e) {
+                // Return no results when the database isn't available.
+            }
+        }
+
+        return $similar_species;
+    }
 }
 ?>
