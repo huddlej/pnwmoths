@@ -158,7 +158,7 @@ PNWMOTHS.Map = function () {
             // Sets the proper CSS for the given button element.
             FullscreenControl.prototype.setButtonStyle_ = PNWMOTHS.Map.setButtonStyles;
             FullscreenControl.prototype.getDefaultPosition = function() {
-                return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(7, 7));
+                return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
             };
 
             return new FullscreenControl();
@@ -572,7 +572,7 @@ PNWMOTHS.Filters = function () {
             // Sets the proper CSS for the given button element.
             FiltersControl.prototype.setButtonStyle_ = PNWMOTHS.Map.setButtonStyles;
             FiltersControl.prototype.getDefaultPosition = function() {
-                return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
+                return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(80, 7));
             };
 
             return new FiltersControl();
