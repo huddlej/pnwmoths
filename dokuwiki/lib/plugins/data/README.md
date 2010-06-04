@@ -68,8 +68,9 @@ Method expecting JSON formatted arguments:
 
     <data>{"_name": "species-data", "_format": "json", "method": "getSamples", "species": "Autographa ampla"}</data>
 
-Method defining a custom service url for a local CouchDB service. The url is not
-accessible through AJAX calls so the "_render" argument must be set to true:
+Method defining a custom service url for a local
+[CouchDB](http://couchdb.apache.org/) service. The url is not accessible through
+AJAX calls so the "_render" argument must be set to true:
 
     <data>
     {"_name": "county-data",
