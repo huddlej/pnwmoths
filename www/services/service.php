@@ -1,14 +1,6 @@
 <?php
 require_once '../bootstrap.php';
 
-function getCounties() {
-    return PNWMoths_Model_County::getData();
-}
-
-function getStates() {
-    return PNWMoths_Model_State::getData();
-}
-
 function getSamples($species, $options) {
     $sampleOptions = array(
         "filters" => array(),
@@ -47,12 +39,6 @@ if (array_key_exists("method", $_GET)) {
             if (isset($species)) {
                 $data = getSamples($species, $options);
             }
-            break;
-        case 'getCounties':
-            $data = getCounties();
-            break;
-        case 'getStates':
-            $data = getStates();
             break;
         default:
             break;
