@@ -67,3 +67,15 @@ Method with one argument and rendering by plugin:
 Method expecting JSON formatted arguments:
 
     <data>{"_name": "species-data", "_format": "json", "method": "getSamples", "species": "Autographa ampla"}</data>
+
+Method defining a custom service url for a local CouchDB service. The url is not
+accessible through AJAX calls so the "_render" argument must be set to true:
+
+    <data>
+    {"_name": "county-data",
+     "_render": true,
+     "_format": "json",
+     "_service_url": "http://localhost:5984/pnwmoths/_design/moths/_list/json_keys/counties",
+     "group": true,
+     "reduce": true}
+    </data>
