@@ -12,19 +12,19 @@
 
 /* Styles for users without javascript. */
 
-.all-images-nojs {
+.all-images-no-js {
     width: 100%!important;
 }
 
-.all-images-nojs #images {
+.all-images-no-js #images {
     width: 100%;
 }
 
-.all-images-nojs #current-image {
+.all-images-no-js #current-image {
     float: left;
 }
 
-.all-images-nojs #other-images {
+.all-images-no-js #other-images {
     float: left;
     height: 250px;
     margin-left: 2em;
@@ -34,12 +34,12 @@
     width: 300px!important;
 }
 
-.all-images-nojs #similar {
+.all-images-no-js #similar {
     clear: both;
 }
-.all-images-nojs #similar ul.similar-species li {
+.all-images-no-js #similar ul.similar-species li {
 }
-.all-images-nojs #similar ul.similar-species li {
+.all-images-no-js #similar ul.similar-species li {
     display: block;
     float: left;
     margin-bottom: 2em;
@@ -48,9 +48,14 @@
     width: 140px;
 }
 
-.all-images-nojs li {
+.all-images-no-js li {
     display: inline;
     list-style-type: none;
+}
+
+.no-js {
+    clear: both;
+    margin-left: 1em;
 }
 
 /**

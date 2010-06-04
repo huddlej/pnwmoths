@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
     // Remove styles for users without javascript.
-    jQuery(".all-images").removeClass("all-images-nojs");
+    jQuery(".all-images").removeClass("all-images-no-js");
 
     if (jQuery("#other-images").length > 0) {
         jQuery("#other-images").jcarousel();
