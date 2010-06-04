@@ -14,7 +14,8 @@ class PNWMoths_Model_SimilarSpecies extends PNWMoths_Model {
         }
 
         $species = Zend_Json::encode($params["species"]);
-        $viewParams = array("include_docs" => 'true',
+        $viewParams = array("reduce" => 'false',
+                            "include_docs" => 'true',
                             "key" => $species);
 
         try {
