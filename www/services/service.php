@@ -1,28 +1,6 @@
 <?php
 require_once '../bootstrap.php';
 
-function getSamples($species, $options) {
-    $sampleOptions = array(
-        "filters" => array(),
-        "species" => $species
-    );
-
-    // TODO: added method to SpeciesSample to register filters from external
-    // code so new filters only need to be added in one place.
-    $allowedFilters = array("elevation", "date", "county", "state");
-
-    foreach ($allowedFilters as $allowedFilter) {
-        if (array_key_exists($allowedFilter, $options)) {
-            $value = $options[$allowedFilter];
-            if ($value != "") {
-                $sampleOptions["filters"][$allowedFilter] = $value;
-            }
-        }
-    }
-
-    return PNWMoths_Model_SpeciesSample::getData($sampleOptions);
-}
-
 if (array_key_exists("method", $_GET)) {
     $method = $_GET["method"];
     unset($_GET["method"]);
@@ -35,11 +13,6 @@ if (array_key_exists("method", $_GET)) {
     $options = $_GET;
 
     switch ($method) {
-        case 'getSamples':
-            if (isset($species)) {
-                $data = getSamples($species, $options);
-            }
-            break;
         default:
             break;
     }
