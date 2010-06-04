@@ -5,9 +5,11 @@ jQuery(document).ready(function() {
     if (jQuery("#other-images").length > 0) {
         jQuery("#other-images").jcarousel();
 
-        jQuery("#other-images a img").click(function (event) {
+        jQuery("#other-images a").click(function (event) {
             event.preventDefault();
-            jQuery("#current-image img").replaceWith(jQuery(this).clone());
+            jQuery("#current-image a").replaceWith(jQuery(this).clone());
+            jQuery("#current-image a").colorbox();
         });
+        jQuery("#current-image a").colorbox();
     }
 });
