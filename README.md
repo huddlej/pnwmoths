@@ -29,3 +29,26 @@ The first argument to the push command is the name of the design document that
 should be created in the database. The second argument is local directory
 containing the design document.  The final argument is the complete URL of the
 database the document is being pushed to.
+
+### Collection Documents
+
+    id,
+    family,
+    genus,
+    species,
+    subspecies,
+    longitude,
+    latitude,
+    state,
+    county,
+    city,
+    elevation,
+    elevation_units,
+    year,
+    month,
+    day,
+    collector,
+    collection,
+    males,
+    females,
+    notes
