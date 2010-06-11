@@ -34,9 +34,9 @@ def get_feature(data, feature, feature_type=None):
 
     for row in column_data:
         name = "%s %s" % (row["Genus"], row["Species"])
-        value = row[feature]
+        values = row[feature].split(",")
 
-        if value == "y":
-            feature_data.append((name, "1"))
+        for value in values:
+            feature_data.append((name, value))
 
     return feature_data
