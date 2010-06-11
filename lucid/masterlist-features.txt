@@ -1,0 +1,81 @@
+Size
+	Huge
+	Large
+	Medium
+	Small
+	Tiny
+Forewing Color
+	Mostly gray/brown
+	Mostly white
+	Mostly black
+	Large areas of orange/yellow
+	Large areas of red/pink
+	Large areas of green
+	Contrasting black & white pattern
+	Large areas that are clear
+Forewing Pattern
+	Orbicular spot strongly present
+		Yes
+		No
+	Reniform spot strongly present
+		Yes
+		No
+	Submarginal line
+		Yes
+		No
+	Outer margin
+		Yes
+		No
+	Postmedian line
+		Yes
+		No
+	Antemedial line
+		Yes
+		No
+	Basal lines
+		Yes
+		No
+Hindwing Color
+	Mostly gray/brown
+	Mostly white
+	Mostly black
+	Large areas of orange/yellow
+	Large areas of red/pink
+	Large areas of green
+	Contrasting black & white pattern
+	Large areas that are clear
+Antennae
+	Feathered
+	Threadlike
+Wingspan
+	Huge
+	Large
+	Medium
+	Small
+	Tiny
+Adult season start
+	January
+	February
+	March
+	April
+	May
+	June
+	July
+	August
+	September
+	October
+	November
+	December
+Adult season end
+	January
+	February
+	March
+	April
+	May
+	June
+	July
+	August
+	September
+	October
+	November
+	December

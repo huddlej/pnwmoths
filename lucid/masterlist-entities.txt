@@ -1,0 +1,1525 @@
+Abagrotis
+	alampeta
+	apposita
+	baueri
+	brunneipennis
+	cupida
+	dickeli
+	discoidalis
+	dodi
+	duanca
+	erratica
+	forbesi
+	glenni
+	hermina
+	mirabilis
+	nanalis
+	nefascia
+	orbis
+	petalama
+	placida
+	pulchrata
+	reedi
+	rubicundis
+	scopeops
+	trigona
+	turbulenta
+	variata
+	vittifrons
+Abrostola
+	urentis
+Acerra
+	normalis
+Acopa
+	perpallida
+Acronicta
+	americana
+	cyanescens
+	dactylina
+	falcula
+	fragilis
+	funeralis
+	grisea
+	hasta
+	impleta
+	impressa
+	innotata
+	lanceolaria
+	lepusculina
+	lupini
+	marmorata
+	oblinita
+	perdita
+	quadrata
+	radcliffei
+	thoracica
+	vulpina
+Actebia
+	fennica
+Adelphagrotis
+	indeterminata
+	stellaris
+Admetovis
+	oxymorus
+	similaris
+Agnorisma
+	bugrai
+Agrius
+	cingulata
+Agrochola
+	bicolorago
+	decipiens
+	pulchella
+	purpurea
+	verberata
+Agrotis
+	antica
+	gravis
+	ipsilon
+	longicornis
+	obliqua
+	orthogonia
+	ruta
+	vancouverensis
+	venerabilis
+	vetusta
+Alastria
+	chico
+Alypia
+	langtoni
+	ridingsii
+Amphipoea
+	americana
+	keiferi
+	lunata
+	pacifica
+	senilis
+Amphipyra
+	brunneoatra
+	glabella
+	pyramidoides
+	tragopoginis
+Anagrapha
+	falcifera
+Anaplectoides
+	prasina
+	pressus
+Anarta
+	antica
+	columbica
+	crotchii
+	decepta
+	edwardsii
+	farnhami
+	fervida
+	fulgora
+	fusculenta
+	hadeniformis
+	hamata
+	montanica
+	mutata
+	nigrolunata
+	nova
+	oregonica
+	ptilodonta
+	trifolii
+Anathix
+	immaculata
+	puta
+Androloma
+	maccullochii
+Andropolia
+	aedon
+	contacta
+	diversilineata
+	olga
+	theodori
+Anhimella
+	contrahens
+	pacifica
+	perbrunnea
+Annaphila
+	arvalis
+	casta
+	danistica
+	decia
+	depicta
+	diva
+	macfarlandi
+	mera
+Antheraea
+	polyphemus
+Apamea
+	acera
+	albina
+	alia
+	amputatrix
+	antennata
+	atriclava
+	atrosuffusa
+	aurianticolor
+	burgessi
+	centralis
+	cinefacta
+	cogitata
+	commoda
+	contradicta
+	cuculliformis
+	devastator
+	digitula
+	finitima
+	impulsa
+	indocilis
+	inficita
+	inordinata
+	leucoptera
+	lignicolora
+	longula
+	lutosa
+	maxima
+	nichollae
+	niveivenosa
+	obscuroides
+	occidens
+	parcata
+	plutonia
+	scoparia
+	siskiyou
+	sora
+	sordens
+	spaldingi
+	tahoensis
+	unita
+	vultuosa
+	zeta
+Aplectoides
+	condita
+Arctia
+	caja
+	opulenta
+Arctonotus
+	lucidus
+Ascalapha
+	odorata
+Aseptis
+	adnixa
+	binotata
+	characta
+	ethnica
+	fannatica
+	fumosa
+	marina
+Autographa
+	ampla
+	bimaculata
+	buraetica
+	californica
+	corusca
+	flagellum
+	mappa
+	metallica
+	pasiphaeia
+	pseudogamma
+	rubidus
+	sansoni
+	speciosa
+	v-alba
+Axenus
+	amplus
+Behrensia
+	conchiformis
+Bellura
+	gortynoides
+	obliqua
+Benjaminiola
+	colorada
+Bleptina
+	caradrinalis
+Brachylomia
+	algens
+	cascadia
+	discinigra
+	discolor
+	elda
+	obscurifascia
+	populi
+	rectifascia
+	sierra
+	thula
+Bruceia
+	pulverina
+Bulia
+	deducta
+Caenurgina
+	annexa
+	caerulea
+	crassiuscula
+	erechtea
+Callizzia
+	amorata
+Calophasia
+	lunula
+Capsula
+	alameda
+	oblonga
+	subflava
+Caradrina
+	camina
+	meralis
+	montana
+	morpheus
+	multifera
+Catabena
+	lineolata
+Catocala
+	aholibah
+	allusa
+	amatrix
+	briseis
+	californica
+	chelidonia
+	faustina
+	grotiana
+	ilia
+	irene
+	junctura
+	neogama
+	ophelia
+	relicta
+	semirelicta
+	ultronia
+	unijuga
+	verilliana
+Ceranemota
+	albertae
+	crumbi
+	fasciata
+	improvisa
+	tearlei
+Cerastis
+	enigmatica
+	gloriosa
+	salicarum
+Ceratomia
+	amyntor
+	undulosa
+Charadra
+	deridens
+Chersotis
+	juncta
+Chrysodeixis
+	eriosoma
+Chytolita
+	morbidalis
+	petrealis
+Chytonix
+	palliatricula
+Cisseps
+	fulvicollis
+Cissusa
+	indiscreta
+Clemensia
+	albata
+Clostera
+	albosigma
+	apicalis
+	brucei
+	strigosa
+Coenophila
+	opacifrons
+Colocasia
+	flavicornis
+	propinquilinea
+Coloradia
+	pandora
+Condica
+	albolabes
+	discistriga
+	lunata
+Copablepharon
+	absidum
+	atrinotum
+	canariana
+	columbia
+	fuscum
+	gilvum
+	grandis
+	hopfingeri
+	mutans
+	ravum
+	spiritum
+	viridisparsa
+Coranarta
+	luteola
+	macrostigma
+Cosmia
+	calami
+	elisae
+	praeacuta
+Crambidia
+	casta
+	impura
+Cryphia
+	cuerva
+	olivacea
+Cryptocala
+	acadiensis
+Ctenucha
+	multifaria
+	rubroscapus
+	virginica
+Cucullia
+	antipoda
+	basipuncta
+	dorsalis
+	eulepis
+	eurekae
+	florea
+	intermedia
+	mcdunnoughi
+	montanae
+	omissa
+	postera
+	pulla
+	serraticornis
+	similaris
+	speyeri
+	strigata
+Cycnia
+	oregonensis
+Darapsa
+	choerilus
+Dargida
+	diffusa
+	procinctus
+	terrapictalis
+Dasychira
+	grisefacta
+	plagiata
+	vagans
+Datana
+	ministra
+Deilephila
+	elpenor
+Deltote
+	bellicula
+Diachrysia
+	aeroides
+Diarsia
+	calgary
+	dislocata
+	esurialis
+	rosaria
+	rubifera
+Dichagyris
+	variabilis
+Dodia
+	albertae
+Dolocucullia
+	dentilinea
+Drasteria
+	adumbrata
+	aff. divergens 2
+	convergens
+	divergens
+	edwardsii
+	hastingsii
+	howlandii
+	hudsonica
+	nubicola
+	ochracea
+	pallescens
+	perplexa
+	petricola
+	sabulosa
+	scrupulosa
+	socia
+	stretchii
+Drepana
+	arcuata
+	bilineata
+Dryotype
+	opina
+Ectypia
+	clio
+Egira
+	cognata
+	crucialis
+	curialis
+	dolosa
+	februalis
+	hiemalis
+	perlubens
+	rubrica
+	simplex
+	variabilis
+Eilema
+	bicolor
+Elaphria
+	alapallida
+Enargia
+	decolor
+	fausta
+	paleacea
+Eosphoropteryx
+	thyatyroides
+Epidemas
+	cinera
+	obscurus
+Epiglaea
+	apiata
+Eremobina
+	claudens
+	hanhami
+	unicincta
+Erinnyis
+	ello
+Escaria
+	clauda
+	cylindrica
+	pergentilis
+Estigmene
+	acrea
+Euagrotis
+	exuberans
+	tepperi
+Euchalcia
+	albavitta
+	borealis
+Eucirroedia
+	pampina
+Euclidia
+	ardita
+	cuspidea
+Eucoptocnemis
+	canescens
+Eudeilinia
+	herminiata
+Eudryas
+	brevipennis
+Eueretagrotis
+	perattentus
+Eumicremma
+	minima
+Eumorpha
+	achemon
+Euplexia
+	benesimilis
+Eupsilia
+	devia
+	fringata
+	tristigmata
+	vinulenta
+Eurois
+	astricta
+	nigra
+	occulta
+Euros
+	cervina
+	osticollis
+Euthyatira
+	lorata
+	pudens
+	semicircularis
+Eutricopis
+	nexilis
+Euxoa
+	aberrans
+	adumbrata
+	aequalis
+	aff. lewisi
+	aff. simulata
+	aff. tocoyae
+	agema
+	albipennis
+	altens
+	annulipes
+	apopsis
+	atomaris
+	atristrigata
+	auripennis
+	aurulenta
+	auxiliaris
+	basalis
+	bicollaris
+	bifasciata
+	biformata
+	bochus
+	brevipennis
+	brunneigera
+	campestris
+	cana
+	castanea
+	catenula
+	choris
+	cicatricosa
+	cinereopallidus
+	citricolor
+	comosa
+	cona
+	costata
+	dargo
+	declarata
+	difformis
+	divergens
+	dodi
+	edictalis
+	emma
+	excogita
+	extranea
+	faulkneri
+	flavicollis
+	foeminalis
+	furtivus
+	hardwicki
+	henrietta
+	hollemani
+	idahoensis
+	incognita
+	infausta
+	infracta
+	intermontana
+	intrita
+	laetificans
+	latro
+	lewisi
+	lillooet
+	lineifrons
+	macleani
+	maimes
+	manitobana
+	medialis
+	melura
+	messoria
+	mimallonis
+	misturata
+	mitis
+	moerens
+	munis
+	murdocki
+	nevada
+	nomas
+	nostra
+	obeliscoides
+	oblongistigma
+	occidentalis
+	ochrogaster
+	olivalis
+	olivia
+	pallidimacula
+	pallipennis
+	perexcellens
+	permixta
+	perolivalis
+	perpolita
+	plagigera
+	pleuritica
+	pluralis
+	punctigera
+	quadridentata
+	quebecensis
+	recula
+	ridingsiana
+	rockburnei
+	rufula
+	satiens
+	scotogrammoides
+	septentrionalis
+	servitus
+	setonia
+	shasta
+	silens
+	simona
+	simulata
+	subandera
+	taura
+	terrenus
+	tesselata
+	tocoyae
+	trifasciata
+	tristicula
+	tronellus
+	ustulata
+	vallus
+	vetusta
+	westermanni
+	wilsoni
+	y
+Feltia
+	herilis
+	jaculifera
+	mollis
+	nigrita
+	subgothica
+Feralia
+	comstocki
+	deceptiva
+	februalis
+	jocosa
+Fishia
+	connecta
+	discors
+	illocata
+	species
+	yosemitae
+Furcula
+	cinerea
+	modesta
+	occidentalis
+	scolopendrina
+Galgula
+	partita
+Genus
+	Species
+Gluphisia
+	septentrionis
+	severa
+Gnophaela
+	latipennis
+	vermiculata
+Grammia
+	behrii
+	complicata
+	doris
+	edwardsii
+	elongata
+	eureka
+	franconia
+	margo
+	nevadensis
+	ornata
+	parthenice
+	quenseli
+	speciosa
+	superba
+	virgo
+	virguncula
+	williamsii
+Graphiphora
+	augur
+	haruspica
+Gynaephora
+	rossii
+Habrosyne
+	scripta
+Hada
+	sutrina
+Hadena
+	caelestis
+	capsularis
+	dealbata
+	ectrapela
+	siskiyou
+	variolata
+Hecatera
+	dysodea
+Helicoverpa
+	zea
+Heliocheilus
+	paradoxus
+Heliolonche
+	modicella
+Heliothis
+	acesias
+	belladonna
+	ononis
+	oregonica
+	phloxiphaga
+	proruptus
+	virescens
+Heliothodes
+	diminutiva
+Helotropha
+	reniformis
+Hemaris
+	thetis
+	thysbe
+Hemeroplanis
+	finitima
+Hemihyalea
+	edwardsii
+Hemileuca
+	eglanterina
+	hera
+	nevadensis
+	nuttalli
+Hillia
+	iris
+	maida
+Holarctia
+	obliterata
+Holoarctia
+	sordida
+Homoglaea
+	californica
+	carbonaria
+	dives
+Homorthodes
+	carneola
+	communis
+	discreta
+	fractura
+	furfurata
+	hanhami
+Hyalophora
+	columbia
+	columbia gloveri
+	euryalus
+	gloveri
+Hydraecia
+	obliqua
+	pallescens
+	perobliqua
+Hyles
+	gallii
+	lineata
+Hypena
+	abalienalis
+	atomaria
+	bijugalis
+	californica
+	decorata
+	edictalis
+	humuli
+	modestoides
+	palparia
+Hypercompe
+	permaculata
+Hyphantria
+	cunea
+Hypocoena
+	basistriga
+	rufostrigata
+Hypoprepia
+	miniata
+Hyppa
+	brunneicrista
+	contrasta
+	indistincta
+Idia
+	aemula
+	aff. occidentalis
+	americalis
+	immaculalis
+	lubricalis
+	occidentalis
+	suffusalis
+	concisa
+Ipimorpha
+	nanaimo
+	pleonectusa
+	viridipallida
+Lacanobia
+	atlantica
+	grandis
+	nevadae
+	radix
+	subjuncta
+Lacinipolia
+	anguina
+	bucketti
+	comis
+	cuneata
+	davena
+	longiclava
+	lorea
+	lustralis
+	meditata
+	olivacea
+	patalis
+	pensilis
+	quadrilineata
+	rectilinea
+	renigera
+	stricta
+	strigicollis
+	vicina
+	vittula
+Lasionycta
+	albertensis
+	brunnea
+	caesia
+	fergusoni
+	gelida
+	haida
+	illima
+	impingens
+	lagganata
+	leucocycla
+	luteola
+	macleani
+	mutilata
+	perplexa
+	perplexella
+	poca
+	promulsa
+	sasquatch
+	secedens
+	silacea
+	subfuscula
+	taigata
+	uniformis
+Lateroligia
+	ophiogramma
+Leptarctia
+	californiae
+Leucania
+	anteoclara
+	commoides
+	dia
+	farcta
+	insueta
+	multilinea
+	oregona
+Leucoma
+	salicis
+Litholomia
+	napaea
+Lithomoia
+	germana
+Lithophane
+	amanda
+	atara
+	baileyi
+	boogeri
+	contenta
+	dilatocula
+	disposita
+	fagina
+	gausapata
+	georgii
+	innominata
+	itata
+	jefferyi
+	pertorrida
+	petulca
+	pexata
+	ponderosa
+	thaxteri
+	vanduzeei
+	vivida
+Litocala
+	sexsignata
+Lophocampa
+	argentata
+	maculata
+	roseata
+Lycophotia
+	phyllophora
+Lygephila
+	victoria
+Lymantria
+	dispar
+Macronoctua
+	onusta
+Malacosoma
+	californicum
+	constrictum
+	disstria
+Mamestra
+	configurata
+Manduca
+	quinquemaculata
+	sexta
+Marathyssa
+	inficita
+Megalographa
+	biloba
+Meganola
+	minuscula
+Melanapamea
+	mixta
+Melanchra
+	adjuncta
+	aff. assimilis
+	picta
+	pulverulenta
+Melipotis
+	indomita
+	jucunda
+Mesogona
+	olivata
+	rubra
+	subcuprea
+Metalectra
+	bigallis
+Microhelia
+	angelica
+Mniotype
+	ducta
+	tenera
+Mycterophora
+	inexplicata
+	longipalpata
+	monticola
+	rubricans
+Mythimna
+	oxygala
+	unipuncta
+	yukonensis
+Nadata
+	gibbosa
+	oregonensis
+Nedra
+	dora
+	hoeffleri
+	stewarti
+Neoarctia
+	beanii
+	brucei
+Neogrotella
+	spaldingi
+Neoligia
+	albirena
+	invenusta
+	lancea
+	lillooet
+	subjuncta
+	tonsa
+Nephelodes
+	demaculata
+	minians
+Noctua
+	comes
+	pronuba
+Nola
+	cilicoides
+	clethrae
+	minna
+Notarctia
+	arizonensis
+Notodonta
+	pacifica
+	scitipennis
+	torva
+Nycteola
+	cinereana
+	columbiana
+	frigidana
+Ochropleura
+	implecta
+Odontosia
+	elegans
+Ogdoconta
+	cinereola
+Oligia
+	divesta
+	fractilinea
+	obtusa
+	rampartensis
+	tusa
+	violacea
+Oligocentria
+	pallida
+	semirufescens
+Oreta
+	rosea
+Orgyia
+	antiqua
+	cana
+	pseudotsugata
+Orthodes
+	delecta
+	detracta
+	goodelli
+	obscura
+Orthosia
+	behrensiana
+	erythrolita
+	ferrigera
+	hibisci
+	mys
+	pacifica
+	praeses
+	pulchella
+	revicta
+	segregata
+	terminata
+	transparens
+Pachysphinx
+	modesta
+	occidentalis
+Palthis
+	angulalis
+Panthea
+	acronyctoides
+	furcilla
+	gigantea
+	virginarius
+Paonias
+	excaecatus
+	myops
+Papaipema
+	insulidens
+	limata
+	pertincta
+	sauzalitae
+Papestra
+	biren
+	brenda
+	cristifera
+	invalida
+	quadrata
+Parabagrotis
+	cupidissima
+	exsertistigma
+	formalis
+	insularis
+	sulinaris
+Paradiarsia
+	littoralis
+Pararctia
+	yarrowii
+Parasemia
+	plantaginis
+Parastichtis
+	suspecta
+Peridroma
+	saucia
+Perigonica
+	angulata
+	pectinata
+	tertia
+Phalaenostola
+	metonalis
+Pheosia
+	portlandia
+	rimosa
+Phlogophora
+	periculosa
+Phobolosia
+	anfracta
+Photedes
+	defecta
+	didonea
+	inquinata
+Phragmatobia
+	assimilans
+	fuliginosa
+Phryganidia
+	californica
+Phyllodesma
+	americana
+Plagiomimicus
+	expallidus
+	spumosum
+	tepperi
+Platarctia
+	parthenos
+Platypolia
+	anceps
+	contadina
+	ioda
+	mactata
+Platyprepia
+	virginalis
+Pleromella
+	opter
+Pleromelloida
+	bonuscula
+	cinerea
+	conserta
+	obliquata
+Plusia
+	nichollae
+	putnami
+	venusta
+Polia
+	discalis
+	imbrifera
+	nimbosa
+	nugatis
+	piniae
+	propodea
+	purpurissata
+	richardsoni
+	rogenhoferi
+Polychrysia
+	esmeralda
+	morigera
+Ponometia
+	binocula
+	candefacta
+	elegantula
+	nigra
+	semiflava
+	sutrix
+	tortricina
+Prognorisma
+	substrigata
+Pronoctua
+	craboi
+	peabodyae
+	pyrophiloides
+	typica
+Properigea
+	albimacula
+	niveirena
+Proserpinus
+	clarkiae
+	flavofasciata
+Protexarnis
+	balanitis
+Protodeltote
+	albidula
+Protogygia
+	album
+	arena
+	comstocki
+	enalaga
+	lagena
+	milleri
+	postera
+Protolampra
+	rufipectus
+Protoperigea
+	anotha
+	posticata
+	umbricata
+Protorthodes
+	aff. rufula 1
+	alfkenii
+	curtica
+	incincta
+	oviduca
+	perforata
+	rufula
+	texana
+Proxenus
+	mendosa
+	mindara
+	miranda
+Psammopolia
+	arietis
+	wyatti
+Pseudanarta
+	caeca
+	crocea
+	flava
+	singula
+Pseudeva
+	palligera
+Pseudobryomima
+	muscosa
+Pseudocopivaleria
+	sonoma
+Pseudohermonassa
+	flavotincta
+	tenuicula
+Pseudorthodes
+	irrorata
+	puerilis
+Pseudothyatira
+	cymatophoroides
+Pyrrharctia
+	isabella
+Pyrrhia
+	exprimens
+Rachiplusia
+	ou
+Raphia
+	coloradensis
+	frater
+	pallula
+Resapamea
+	aff. passer
+	enargia
+	innota
+	passer
+	venosa
+Rhizagrotis
+	albalis
+	cloanthoides
+	modesta
+	stylata
+Rhyacia
+	clemens
+Richia
+	parentalis
+Rivula
+	propinqualis
+Saturnia
+	mendocino
+Schinia
+	acutilinea
+	aff. verna
+	arcigera
+	biundulata
+	cumatilis
+	cupes
+	deserticola
+	edwardsii
+	florida
+	gaurae
+	honesta
+	intermontana
+	luxa
+	lynda
+	meadi
+	mortua
+	nuchalis
+	oleagina
+	perminuta
+	persimilis
+	rivulosa
+	sexplagiata
+	subatra
+	suetus
+	tertia
+	tobia
+	trifascia
+	unimacula
+	vacciniae
+	villosa
+	walsinghami
+Schizura
+	concinna
+	conspecta
+	ipomaeae
+	unicornis
+Scoliopteryx
+	libatrix
+Scotogramma
+	orida
+	stretchii
+	submarina
+	yakima
+Setagrotis
+	pallidicollis
+	radiola
+Sideridis
+	fuscolutea
+	maryx
+	rosea
+	uscripta
+Simyra
+	insularis
+Smerinthus
+	cerisyi
+	jamaicensis
+Spaelotis
+	bicava
+	clandestina
+	havilae
+	unicava
+Spargaloma
+	sexpunctata
+Sphinx
+	chersis
+	drupiferarum
+	perelegans
+	poecila
+	sequoiae
+	vashti
+Spilosoma
+	congrua
+	danbyi
+	pteridis
+	vagans
+	vestalis
+	virginica
+Spiramater
+	lutra
+Spodoptera
+	exigua
+	praefica
+Stiria
+	rugifrons
+Stretchia
+	muricina
+	pictipennis
+	plusiaeformis
+	prima
+Striacosta
+	albicosta
+Sutyna
+	privata
+Sympistis
+	acheron
+	albifasciata
+	amenthes
+	amun
+	anweileri
+	apep
+	aterrima
+	augustus
+	badistriga
+	barnesii
+	californiae
+	chalybdis
+	cherti
+	chionanti
+	chorda
+	cibalis
+	columbia
+	coprocolor
+	corusca
+	definita
+	dentata
+	dinalda
+	dunbari
+	extremis
+	fifia
+	figurata
+	fortis
+	funebris
+	glennyi
+	goedeni
+	greyi
+	hathor
+	hayesi
+	incubus
+	iricolor
+	lacticollis
+	major
+	meadiana
+	melantho
+	mirificalis
+	nigrita
+	occata
+	orbicularis
+	pallidior
+	parvacana
+	parvanigra
+	perscripta
+	poliochroa
+	pudorata
+	punctilinea
+	ragani
+	sagittata
+	sandaraca
+	satanella
+	saundersiana
+	saxatilis
+	semicollaris
+	sesmu
+	seth
+	shirleyae
+	simplex
+	sobek
+	stabilis
+	tartarea
+	tenuifascia
+	umbrifascia
+	viriditincta
+	wilsoni
+	youngi
+	zetterstedtii
+Syngrapha
+	abstrusa
+	alias
+	alticola
+	angulidens
+	borea
+	celsa
+	diasema
+	epigaea
+	ignea
+	interrogationis
+	microgamma
+	octoscripta
+	orophila
+	parilis
+	rectangula
+	viridisigma
+Tarache
+	areli
+	arida
+	augustipennis
+	augustipennis/lanceolata
+	coquillettii
+	flavipennis
+	knowltoni
+	major
+	toddi
+Tesagrotis
+	amia
+	atrifrons
+	corrodera
+	piscipellis
+Tetanolita
+	palligera
+Tholera
+	americana
+Tolype
+	dayi
+	distincta
+	laricis
+Trichocerapoda
+	oblita
+	strigata
+Trichoplusia
+	ni
+Trichordestra
+	dodii
+	legitima
+	lilacina
+	liquida
+	tacoma
+Triocnemis
+	saporis
+Tristyla
+	alboplagiata
+Tyria
+	jacobaeae
+Ufeus
+	electra
+	plicatus
+	satyricus
+Ulolonche
+	dilecta
+Virbia
+	ferruginosa
+	lamae
+Xanthia
+	tatago
+Xestia
+	atrata
+	bryanti
+	c-nigrum
+	cinerascens
+	conditoides
+	fabulosa
+	finatimis
+	homogena
+	imperita
+	infimatis
+	lupa
+	maculata
+	mixta
+	mustelina
+	oblata
+	okakensis
+	perquiritata
+	plebeia
+	praevia
+	smithii
+	speciosa
+	tecta
+	ursae
+	vernilis
+	verniloides
+	xanthographa
+Xylena
+	brucei
+	cineritia
+	curvimacula
+	nupera
+	thoracica
+Xylomoia
+	indirecta
+Xylotype
+	arcadia
+Zale
+	duplicata
+	lunata
+	minerea
+	rubi
+	termina
+Zanclognatha
+	bryanti
+	lutalba
+Zosteropoda
+	hirtipes
+Zotheca
+	tranquilla
