@@ -136,26 +136,38 @@ class LucidKey(object):
 
         return self._entities_by_name
 
-    def score_feature_state_from_data(self, feature_name, state_name, data):
+    def score_feature_state_from_data(self, feature_name, data):
         if self.scores_container is not None:
-            feature_data = get_feature(data, state_name)
+            state_elements_by_id = {}
+            feature_data = get_feature(data, feature_name)
             if len(feature_data) > 0:
                 feature = self.features_by_name[feature_name.lower()]
-                state = feature.states_by_name[state_name.lower()]
 
-                scoring_item = ET.SubElement(
-                    self.scores_container,
-                    "scoring_item",
-                    {"item_id": state.item_id}
-                )
-
+                print "Scoring %s" % feature
                 for entity_name, value in feature_data:
+                    if value == "y":
+                        state = feature.states_by_name["yes"]
+                    else:
+                        state = feature.states_by_name["no"]
+
+                    print "Scoring %s for %s" % (entity_name, state)
+
+                    if state.item_id in state_elements_by_id:
+                        scoring_item = state_elements_by_id[state.item_id]
+                    else:
+                        scoring_item = ET.SubElement(
+                            self.scores_container,
+                            "scoring_item",
+                            {"item_id": state.item_id}
+                        )
+                        state_elements_by_id[state.item_id] = scoring_item
+
                     entity = self.entities_by_name[entity_name.lower()]
                     scored_item = ET.SubElement(
                         scoring_item,
                         "scored_item",
                         {"item_id": entity.item_id,
-                         "value": value}
+                         "value": "1"}
                     )
 
     def save(self, filename):
