@@ -12,7 +12,7 @@ import elementtree.ElementTree as ET
 from pprint import pprint
 import sys
 
-from masterlist import get_feature
+from masterlist import get_data, get_feature
 
 
 class Item(object):
@@ -180,7 +180,7 @@ class LucidKey(object):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print "Usage: ./lucid.py <filename>"
+        print "Usage: ./lucid.py <input_filename> [output_filename]"
         sys.exit(1)
 
     filename = sys.argv[1]
@@ -192,3 +192,30 @@ if __name__ == "__main__":
 
     print "Found %s features" % len(key.features)
     pprint(key.features[:10])
+
+    # Load data.
+    data = get_data("/home/huddlej/Desktop/work/moths/masterlists/masterlist-2010-06-09.csv")
+
+    features = (
+        "Orbicular Spot Strongly Present",
+        "Reniform Spot Strongly Present",
+        "Submarginal Line",
+        "Outer Margin",
+        "Postmedian Line",
+        "Antemedial Line",
+        "Basal lines"
+    )
+
+    print "Before scores:"
+    pprint(key.scores)
+
+    for feature in features:
+        key.score_feature_state_from_data(feature, data)
+
+    print "After scores (%s):" % len(key.scores)
+    pprint(key.scores)
+
+    if len(sys.argv) > 2:
+        output_filename = sys.argv[2]
+        key.save(output_filename)
+        print "Saved new key to %s" % output_filename
