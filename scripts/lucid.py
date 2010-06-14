@@ -137,7 +137,13 @@ class LucidKey(object):
     def score_feature_state_from_data(self, feature_name, data):
         if self.scores_container is not None:
             state_elements_by_id = {}
-            feature_data = get_feature(data, feature_name)
+
+            try:
+                feature_data = get_feature(data, feature_name)
+            except ValueError:
+                print "Couldn't score feature: %s" % feature_name
+                feature_data = []
+
             if len(feature_data) > 0:
                 feature = self.features_by_name[feature_name.lower()]
 
