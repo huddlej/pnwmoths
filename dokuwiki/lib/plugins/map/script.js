@@ -707,7 +707,12 @@ jQuery(document).ready(function () {
             // and set the maximum and minimum zoom levels at which the markers
             // should be displayed.
             markers = PNWMOTHS.Map.createMarkers(data);
-            PNWMOTHS.Map.mgr.addMarkers(markers, 3, 10);
+
+            PNWMOTHS.Map.mgr.addMarkers(
+                markers,
+                PNWMOTHS.Map.map.getCurrentMapType().getMinimumResolution(),
+                PNWMOTHS.Map.map.getCurrentMapType().getMaximumResolution()
+            );
             PNWMOTHS.Map.mgr.refresh();
         }
     );
