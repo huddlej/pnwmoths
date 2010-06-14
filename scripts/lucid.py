@@ -146,32 +146,33 @@ class LucidKey(object):
             if len(feature_data) > 0:
                 feature = self.features_by_name[feature_name.lower()]
 
-                print "Scoring %s" % feature
+                print "Scoring %s with mapping %s" % (feature, value_to_state_mapping)
                 for entity_name, value in feature_data:
-                    if value == "y":
-                        state = feature.states_by_name["yes"]
-                    else:
-                        state = feature.states_by_name["no"]
-
-                    #print "Scoring %s for %s" % (entity_name, state)
-
-                    if state.item_id in state_elements_by_id:
-                        scoring_item = state_elements_by_id[state.item_id]
-                    else:
-                        scoring_item = ET.SubElement(
-                            self.scores_container,
-                            "scoring_item",
-                            {"item_id": state.item_id}
-                        )
-                        state_elements_by_id[state.item_id] = scoring_item
-
-                    entity = self.entities_by_name[entity_name.lower()]
-                    scored_item = ET.SubElement(
-                        scoring_item,
-                        "scored_item",
-                        {"item_id": entity.item_id,
-                         "value": "1"}
+                    state_name = value_to_state_mapping.get(
+                        value,
+                        value_to_state_mapping.get("_default")
                     )
+                    if state_name is not None:
+                        state_name = state_name.lower()
+                        state = feature.states_by_name[state_name]
+
+                        if state.item_id in state_elements_by_id:
+                            scoring_item = state_elements_by_id[state.item_id]
+                        else:
+                            scoring_item = ET.SubElement(
+                                self.scores_container,
+                                "scoring_item",
+                                {"item_id": state.item_id}
+                            )
+                            state_elements_by_id[state.item_id] = scoring_item
+
+                        entity = self.entities_by_name[entity_name.lower()]
+                        scored_item = ET.SubElement(
+                            scoring_item,
+                            "scored_item",
+                            {"item_id": entity.item_id,
+                             "value": "1"}
+                        )
 
     def save(self, filename):
         self.tree.write(filename)
@@ -195,14 +196,33 @@ if __name__ == "__main__":
     # Load data.
     data = get_data("/home/huddlej/Desktop/work/moths/masterlists/masterlist-2010-06-09.csv")
 
+    boolean_mapping = {"y": "yes", "n": "no", "_default": "no"}
+    color_mapping = {
+        "a": "Mostly gray/brown",
+        "b": "Mostly white",
+        "c": "Mostly black",
+        "d": "Large areas of orange/yellow",
+        "e": "Large areas of red/pink",
+        "f": "Large areas of green",
+        "g": "Contrasting black & white pattern",
+        "h": "Large areas that are clear",
+        "_default": "Mostly black"
+    }
+    antennae_mapping = {
+        "t": "Threadlike",
+        "f": "Feathered"
+    }
     features = (
-        "Orbicular Spot Strongly Present",
-        "Reniform Spot Strongly Present",
-        "Submarginal Line",
-        "Outer Margin",
-        "Postmedian Line",
-        "Antemedial Line",
-        "Basal lines"
+        ("Forewing Color", color_mapping),
+        ("Hindwing Color", color_mapping),
+        ("Antennae", antennae_mapping),
+        ("Orbicular Spot Strongly Present", boolean_mapping),
+        ("Reniform Spot Strongly Present", boolean_mapping),
+        ("Submarginal Line", boolean_mapping),
+        ("Outer Margin", boolean_mapping),
+        ("Postmedian Line", boolean_mapping),
+        ("Antemedial Line", boolean_mapping),
+        ("Basal lines", boolean_mapping)
     )
 
     print "Before scores:"
