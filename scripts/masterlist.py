@@ -2,6 +2,8 @@
 Parsers for masterlist data.
 """
 import csv
+import itertools
+import re
 
 
 def get_data(filename):
@@ -18,6 +20,22 @@ def get_data(filename):
 def get_data_by_columns(data, column_names):
     columns = data[0]
     data = data[1:]
+
+    # Build a list of column names by expanding any column name with a "%" into
+    # all column names that match that general pattern. All columns without that
+    # notation are listed as is. The list comprehension below takes advantage of
+    # the Python "and/or" syntax where the last value of the first true
+    # expression is returned.
+    #
+    # For example:
+    # get_data_by_columns(data, ["Species", "FW Color%"]) ->
+    # ["Species", "FW color (Bob)", "FW color (Joe)", "FW color (Sammy)"]
+    column_names = ["%" in column and
+                    filter(lambda x: bool(re.match(column.replace("%", ""), x)), columns) or
+                    [column]
+                    for column in column_names]
+    column_names = itertools.chain(*column_names)
+
     columns_by_index = dict([(columns.index(column_name), column_name)
                              for column_name in column_names])
 
