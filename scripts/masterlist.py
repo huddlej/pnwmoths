@@ -5,6 +5,9 @@ import csv
 
 
 def get_data(filename):
+    """
+    Get a list of CSV data from a filename.
+    """
     fh = open(filename, "r")
     reader = csv.reader(fh)
     rows = list(reader)
@@ -29,6 +32,10 @@ def get_data_by_columns(data, column_names):
 
 
 def get_feature(data, feature, feature_type=None):
+    """
+    Given a list of data rows return the data associated with the given
+    ``feature`` which is also a column name.
+    """
     column_data = get_data_by_columns(data, ["Genus", "Species", feature])
     feature_data = []
 
