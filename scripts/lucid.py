@@ -99,14 +99,12 @@ class LucidKey(object):
             for e in list(root):
                 if e.tag == "descriptions":
                     descriptions = e
-                    print "Found descriptions"
                     break
 
             if descriptions is not None:
                 for e in list(descriptions):
                     if e.attrib["type"] == "normal":
                         container = e
-                        print "Found container"
                         break
 
             self._scores_container = container
@@ -150,7 +148,7 @@ class LucidKey(object):
                     else:
                         state = feature.states_by_name["no"]
 
-                    print "Scoring %s for %s" % (entity_name, state)
+                    #print "Scoring %s for %s" % (entity_name, state)
 
                     if state.item_id in state_elements_by_id:
                         scoring_item = state_elements_by_id[state.item_id]
