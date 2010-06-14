@@ -129,7 +129,11 @@ class LucidKey(object):
 
         return self._entities_by_name
 
-    def score_feature_state_from_data(self, feature_name, data):
+    def score_feature_state(self, data, feature_name, value_to_state_mapping):
+        """
+        Creates scoring_item sections for the given feature with scored_item
+        entries for each entity.
+        """
         if self.scores_container is not None:
             state_elements_by_id = {}
 
@@ -204,8 +208,8 @@ if __name__ == "__main__":
     print "Before scores:"
     pprint(key.scores)
 
-    for feature in features:
-        key.score_feature_state_from_data(feature, data)
+    for feature, mapping in features:
+        key.score_feature_state(data, feature, mapping)
 
     print "After scores (%s):" % len(key.scores)
     pprint(key.scores)
