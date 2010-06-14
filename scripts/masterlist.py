@@ -49,17 +49,27 @@ def get_data_by_columns(data, column_names):
     return column_data
 
 
-def get_feature(data, feature, feature_type=None):
+def get_feature(data, feature):
     """
     Given a list of data rows return the data associated with the given
     ``feature`` which is also a column name.
+
+    If more than one column is returned for the given feature, all values from
+    all columns other than the "Genus" and "Species" will be merged into one
+    column of unique values.
     """
+    # Create a string of "myfeature%" to enable fuzzy matching of columns.
+    feature = "%s%%" % feature
+
     column_data = get_data_by_columns(data, ["Genus", "Species", feature])
     feature_data = []
 
     for row in column_data:
         name = "%s %s" % (row["Genus"], row["Species"])
-        values = row[feature].split(",")
+        values = set()
+        for key, value in row.items():
+            if key not in ("Genus", "Species"):
+                values.update(value.split(","))
 
         for value in values:
             feature_data.append((name, value))
