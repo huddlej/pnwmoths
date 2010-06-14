@@ -1,12 +1,5 @@
 """
-Utilities for updating Lucid Builder keys for import into Lucid.
-
-Process based on Lucid key XML:
-
- [x] create reciprocal mappings of entity ids to entity names
- [x] create reciprocal mappings of feature/state ids to feature/state names
- [ ] for each feature write a function to get the feature data from the masterlist for each species
- [x] create scoring_item sections for each feature with scored_item entries for each entity
+Parses Lucid Key XML exports (e.g., *.lif3), handles programmatic feature scoring based on CSV data, and saving into a new file.
 """
 import elementtree.ElementTree as ET
 from pprint import pprint
@@ -62,6 +55,8 @@ class LucidKey(object):
         self.states_by_id = {}
         self.feature_states = {}
 
+        # Create reciprocal mappings of entity ids to entity names and of
+        # feature/state ids to feature/state names.
         for i in items:
             if i.attrib["item_type"] == "feature":
                 feature = Feature(states=[], **i.attrib)
