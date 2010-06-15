@@ -188,34 +188,36 @@ if __name__ == "__main__":
     key = LucidKey(filename)
 
     print "Found %s entities" % len(key.entities)
-    pprint(key.entities[:10])
-
     print "Found %s features" % len(key.features)
-    pprint(key.features[:10])
 
     # Load data.
     data = get_data("/home/huddlej/Desktop/work/moths/masterlists/masterlist-2010-06-09.csv")
 
     boolean_mapping = {"y": "yes", "n": "no", "_default": "no"}
     color_mapping = {
-        "a": "Mostly gray/brown",
-        "b": "Mostly white",
-        "c": "Mostly black",
-        "d": "Large areas of orange/yellow",
-        "e": "Large areas of red/pink",
-        "f": "Large areas of green",
-        "g": "Contrasting black & white pattern",
-        "h": "Large areas that are clear",
-        "_default": "Mostly black"
+        "a": "Mostly gray",
+        "b": "Mostly brown or tan",
+        "c": "Mostly white",
+        "d": "Mostly black",
+        "e": "Large areas of orange/yellow",
+        "f": "Large areas of red/pink",
+        "g": "Large areas of green",
+        "h": "Contrasting black and white pattern",
+        "i": "Large areas that are clear"
     }
     antennae_mapping = {
         "t": "Threadlike",
-        "f": "Feathered"
+        "f": "Distinctly feathery"
+    }
+    pattern_mapping = {
+        "a": "Mottled",
+        "b": "Generally uniform color"
     }
     features = (
         ("Forewing Color", color_mapping),
         ("Hindwing Color", color_mapping),
         ("Antennae", antennae_mapping),
+        ("General Forewing Pattern", pattern_mapping),
         ("Orbicular Spot Strongly Present", boolean_mapping),
         ("Reniform Spot Strongly Present", boolean_mapping),
         ("Submarginal Line", boolean_mapping),
