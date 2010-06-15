@@ -1,19 +1,21 @@
 Size
-	Huge
 	Large
 	Medium
 	Small
-	Tiny
 Forewing Color
-	Mostly gray/brown
+	Mostly gray
+	Mostly brown or tan
 	Mostly white
 	Mostly black
 	Large areas of orange/yellow
 	Large areas of red/pink
 	Large areas of green
-	Contrasting black & white pattern
+	Contrasting black and white pattern
 	Large areas that are clear
 Forewing Pattern
+	General Forewing Pattern
+		Mottled
+		Generally uniform color
 	Orbicular spot strongly present
 		Yes
 		No
@@ -36,37 +38,23 @@ Forewing Pattern
 		Yes
 		No
 Hindwing Color
-	Mostly gray/brown
+	Mostly gray
+	Mostly brown or tan
 	Mostly white
 	Mostly black
 	Large areas of orange/yellow
 	Large areas of red/pink
 	Large areas of green
-	Contrasting black & white pattern
+	Contrasting black and white pattern
 	Large areas that are clear
 Antennae
-	Feathered
+	Distinctly feathery
 	Threadlike
 Wingspan
-	Huge
 	Large
 	Medium
 	Small
-	Tiny
-Adult season start
-	January
-	February
-	March
-	April
-	May
-	June
-	July
-	August
-	September
-	October
-	November
-	December
-Adult season end
+Adult season
 	January
 	February
 	March
