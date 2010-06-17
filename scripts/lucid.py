@@ -227,6 +227,26 @@ if __name__ == "__main__":
         "Nov": "November",
         "Dec": "December"
     }
+
+    class SizeMapping(object):
+        def get(self, key, default=None):
+            value = None
+
+            try:
+                value = float(key)
+                if value <= 14:
+                    value = "Small (<= 14mm)"
+                elif 14 < value <= 20:
+                    value = "Medium (14-20mm)"
+                elif 20 < value < 35:
+                    value = "Large (20-35mm)"
+                elif value >= 35:
+                    value = "Huge (>= 35mm)"
+            except Exception:
+                pass
+
+            return value
+
     features = (
         ("Forewing Color", color_mapping),
         ("Hindwing Color", color_mapping),
@@ -239,7 +259,8 @@ if __name__ == "__main__":
         ("Postmedian Line", boolean_mapping),
         ("Antemedial Line", boolean_mapping),
         ("Basal lines", boolean_mapping),
-        ("Adult Season", season_mapping)
+        ("Adult Season", season_mapping),
+        ("Size", SizeMapping())
     )
 
     print "Before scores:"
