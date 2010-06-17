@@ -72,7 +72,12 @@ def get_feature(data, feature):
         for key, value in row.items():
             if key not in ("Genus", "Species"):
                 keys.add(key)
-                values.update(value.split(","))
+                if "," in value:
+                    values.update(value.split(","))
+                elif "-" in value:
+                    values.update(value.split("-"))
+                else:
+                    values.add(value)
 
         for value in values:
             feature_data.append((name, value))
