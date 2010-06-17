@@ -1,7 +1,8 @@
 Size
-	Large
-	Medium
-	Small
+	Small (<= 14mm)
+	Medium (14-20mm)
+	Large (20-35mm)
+	Huge (>= 35mm)
 Forewing Color
 	Mostly gray
 	Mostly brown or tan
