@@ -64,14 +64,40 @@ def get_feature(data, feature):
     column_data = get_data_by_columns(data, ["Genus", "Species", feature])
     feature_data = []
 
+    keys = set()
+
     for row in column_data:
         name = "%s %s" % (row["Genus"], row["Species"])
         values = set()
         for key, value in row.items():
             if key not in ("Genus", "Species"):
+                keys.add(key)
                 values.update(value.split(","))
 
         for value in values:
             feature_data.append((name, value))
 
+    print "Added values for keys:"
+    print keys
+
     return feature_data
+
+
+def get_sizes(data):
+    """
+    Gets average size values for all rows in given data set.
+    """
+    column_data = get_data_by_columns(data, ["Size%"])
+
+    all_sizes = []
+    for row in column_data:
+        sizes = []
+        for key, val in row.items():
+            if val:
+                pieces = map(float, val.split("-"))
+                sizes.append(sum(pieces) / len(pieces))
+
+        if sizes:
+            all_sizes.append(sum(sizes) / len(sizes))
+
+    return all_sizes
