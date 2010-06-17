@@ -213,6 +213,20 @@ if __name__ == "__main__":
         "a": "Mottled",
         "b": "Generally uniform color"
     }
+    season_mapping = {
+        "Jan": "January",
+        "Feb": "February",
+        "Mar": "March",
+        "Apr": "April",
+        "May": "May",
+        "Jun": "June",
+        "Jul": "July",
+        "Aug": "August",
+        "Sep": "September",
+        "Oct": "October",
+        "Nov": "November",
+        "Dec": "December"
+    }
     features = (
         ("Forewing Color", color_mapping),
         ("Hindwing Color", color_mapping),
@@ -224,7 +238,8 @@ if __name__ == "__main__":
         ("Outer Margin", boolean_mapping),
         ("Postmedian Line", boolean_mapping),
         ("Antemedial Line", boolean_mapping),
-        ("Basal lines", boolean_mapping)
+        ("Basal lines", boolean_mapping),
+        ("Adult Season", season_mapping)
     )
 
     print "Before scores:"
