@@ -18,8 +18,22 @@ class Importer {
         if (count($docs) > 0)
         {
             print "Sending " . count($docs) . " docs to database.\n";
-            $response = $this->db->saveBulk($docs);
-            print "Saved " . count($response) . " docs.\n\n";
+            $response = $this->db->saveBulk(array_values($docs));
+
+            $successes = array();
+            $errors = array();
+            foreach ($response as $document) {
+                if (property_exists($document, "error")) {
+                    $errors[] = $docs[$document->id];
+                }
+                else {
+                    $successes[] = $document->id;
+                }
+            }
+
+            print "Saved " . count($successes) . " docs.\n";
+            print "Failed to save " . count($errors) . " docs. The first 10 failures follow:\n";
+            print_r(array_slice($errors, 0, 10));
         }
     }
 
