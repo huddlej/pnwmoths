@@ -150,9 +150,41 @@ class Importer {
                 $document["is_protected"] = true;
             }
 
+            // Create a unique document id for this document based on these
+            // unique fields. This will catch attempts to upload duplicate
+            // records from overlapping datasets.
+            $unique_fields = array(
+                "genus",
+                "species",
+                "latitude",
+                "longitude",
+                "year",
+                "month",
+                "day",
+                "collector",
+                "collection"
+            );
+            $id_inputs = array();
+            foreach ($unique_fields as $unique_field) {
+                if (array_key_exists($unique_field, $document)) {
+                    $id_inputs[] = $document[$unique_field];
+                }
+            }
+
+            // If no values exist for any of the unique fields, let the database
+            // assign an id for this document.
+            if (count($id_inputs) > 0) {
+                // Create the unique id by calculating the SHA-1 hash for the
+                // concatenated values for each unique field.
+                $document["_id"] = sha1(implode("", $id_inputs));
+            }
+            else {
+                print "Couldn't create an id for " . print_r($document, true);
+            }
+
             if (count($document) > 0)
             {
-                $documents[] = new Tillikum_CouchDb_Document($document);
+                $documents[$document["_id"]] = new Tillikum_CouchDb_Document($document);
             }
 
             $i++;
