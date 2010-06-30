@@ -2,7 +2,7 @@ function(doc) {
     var longitude_precision = 0,
         latitude_precision = 0;
 
-    if (doc.type) {
+    if (doc.type || !doc.latitude || !doc.longitude) {
         return;
     }
 
