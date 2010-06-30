@@ -8,11 +8,11 @@ function (head, req) {
                     row.doc.county = row.doc.county + " (" + row.doc.state + ")";
                 }
 
-                row.doc.latitude = Number(row.doc.latitude);
-                row.doc.longitude = Number(row.doc.longitude);
-                row.doc.site_name = row.value.site_name;
-                row.doc.precision = row.value.precision;
-                row.doc.date = getSortableDate(row.doc);
+                row.doc.latitude = Number(row.value.latitude);
+                row.doc.longitude = Number(row.value.longitude);
+                row.doc.site_name = row.value.site_name || "";
+                row.doc.precision = row.value.precision || "";
+                row.doc.date = getSortableDate(row.doc) || "";
                 rows.push(row.doc);
             }
         }
