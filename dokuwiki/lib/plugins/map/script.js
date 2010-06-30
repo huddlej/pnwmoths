@@ -169,7 +169,9 @@ PNWMOTHS.Map = function () {
             var attributes = {"site_name": "Site Name",
                               "county": "County",
                               "state": "State",
-                              "elevation": "Elevation (ft.)"},
+                              "elevation": "Elevation (ft.)",
+                              "latitude": "Latitude",
+                              "longitude": "Longitude"},
                 pointHtml = "<div class='infowindow'>",
                 collectionHtml = "",
                 attribute, attribute_name, attribute_value, i, j;
