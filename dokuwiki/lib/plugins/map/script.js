@@ -298,11 +298,11 @@ PNWMOTHS.Map = function () {
         addTerritoryBoundaries: function (map) {
             // Place a polygon around the area we're most interested in.
             var polygon = new GPolygon([
-                  new GLatLng(40, -109.5),
-                  new GLatLng(53, -109.5),
-                  new GLatLng(53, -126),
+                  new GLatLng(40, -111.0),
+                  new GLatLng(52.3, -111.0),
+                  new GLatLng(52.3, -126),
                   new GLatLng(40, -126),
-                  new GLatLng(40, -109.5)
+                  new GLatLng(40, -111.0)
             ], "#000000", 2, 1, "#ffffff", 0);
             map.addOverlay(polygon);
 
