@@ -177,6 +177,9 @@ class Importer {
                 // Create the unique id by calculating the SHA-1 hash for the
                 // concatenated values for each unique field.
                 $document["_id"] = sha1(implode("", $id_inputs));
+
+                // Set the modification timestamp.
+                $document["date_modified"] = date("c");
             }
             else {
                 print "Couldn't create an id for " . print_r($document, true);
