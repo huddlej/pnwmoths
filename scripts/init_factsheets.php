@@ -8,10 +8,10 @@
  */
 require_once '../www/bootstrap.php';
 
-//$output_dir = "/home/huddlej/dokuwiki";
 $content_user = "www-data";
 $dokuwiki_dir = "/var/www/dokuwiki/data/pages/factsheets";
 $output_dir = $dokuwiki_dir;
+//$output_dir = "/home/huddlej/dokuwiki";
 $template_file = "_template.txt";
 
 // Get a unique list of all species with images in the database.
