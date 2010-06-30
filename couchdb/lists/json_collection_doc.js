@@ -11,7 +11,7 @@ function (head, req) {
                 row.doc.latitude = Number(row.value.latitude);
                 row.doc.longitude = Number(row.value.longitude);
                 row.doc.site_name = row.value.site_name || "";
-                row.doc.precision = row.value.precision || "";
+                row.doc.precision = row.value.precision || 0;
                 row.doc.date = getSortableDate(row.doc) || "";
                 rows.push(row.doc);
             }
