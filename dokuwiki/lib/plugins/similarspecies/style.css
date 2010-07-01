@@ -210,7 +210,8 @@
 
 #similar h2 {
     font-size: 150%;
-    margin: 0.25em 0.5em 0;
+    margin-bottom: 0.25em;
+    margin-left: 0.5em;
 }
 #similar li {
     text-align: center;
