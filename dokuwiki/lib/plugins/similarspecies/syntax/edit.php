@@ -50,8 +50,6 @@ class syntax_plugin_similarspecies_edit extends DokuWiki_Syntax_Plugin {
             return empty($value) == false ? true : false;
         }
 
-        $renderer->doc .= "<h2>Similar Species</h2>";
-
         if (array_key_exists("species", $_POST) &&
             array_key_exists("similar_species", $_POST)) {
             $species = $_POST["species"];
