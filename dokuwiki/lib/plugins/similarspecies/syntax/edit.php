@@ -69,7 +69,7 @@ class syntax_plugin_similarspecies_edit extends DokuWiki_Syntax_Plugin {
             $renderer->doc .= <<<HTML
 <p><a href="?">Back to Similar Species</a></p>
 <form method="post" action="">
-<fieldset>
+<fieldset id="similar">
     <legend>Species similar to {$species}</legend>
     <p>
         <textarea name="similar_species">{$similar_species}</textarea>

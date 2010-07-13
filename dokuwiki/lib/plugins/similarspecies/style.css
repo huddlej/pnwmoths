@@ -220,6 +220,10 @@
     height: 93px;
     width: 140px;
 }
+#similar textarea {
+    height: 100px;
+    width: 200px;
+}
 
 #similar .jcarousel-skin-tango {
     width: 375px;
