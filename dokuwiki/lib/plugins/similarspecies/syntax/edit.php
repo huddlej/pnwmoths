@@ -46,10 +46,25 @@ class syntax_plugin_similarspecies_edit extends DokuWiki_Syntax_Plugin {
     function render($mode, &$renderer, $data) {
         if($mode != 'xhtml') return false;
 
+        function not_empty($value) {
+            return empty($value) == false ? true : false;
+        }
+
         $renderer->doc .= "<h2>Similar Species</h2>";
 
-        // Display form to edit similar species if a species is specified.
+        if (array_key_exists("species", $_POST) &&
+            array_key_exists("similar_species", $_POST)) {
+            $species = $_POST["species"];
+            $similar_species = array_map("trim", explode("\n", $_POST["similar_species"]));
+            $similar_species = array_filter($similar_species, "not_empty");
+
+            PNWMoths_Model_SimilarSpecies::setSimilarSpecies($species, $similar_species);
+
+            $renderer->doc .= "<p><em>Your changes have been saved.</em></p>";
+        }
+
         if (array_key_exists("species", $_GET)) {
+            // Display form to edit similar species if a species is specified.
             $species = $_GET["species"];
             $similar_species = PNWMoths_Model_SimilarSpecies::getSimilarSpecies($species);
             $similar_species = implode("\n", $similar_species);
@@ -58,7 +73,10 @@ class syntax_plugin_similarspecies_edit extends DokuWiki_Syntax_Plugin {
 <form method="post" action="">
 <fieldset>
     <legend>Species similar to {$species}</legend>
-    <p><textarea>{$similar_species}</textarea></p>
+    <p>
+        <textarea name="similar_species">{$similar_species}</textarea>
+        <input type="hidden" name="species" value="{$species}" />
+    </p>
     <p><input type="submit" value="Save" /></p>
 </form>
 HTML;
