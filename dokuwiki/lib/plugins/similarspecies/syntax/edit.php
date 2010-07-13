@@ -76,6 +76,7 @@ class syntax_plugin_similarspecies_edit extends DokuWiki_Syntax_Plugin {
         <input type="hidden" name="species" value="{$species}" />
     </p>
     <p><input type="submit" value="Save" /></p>
+</fieldset>
 </form>
 HTML;
         }
