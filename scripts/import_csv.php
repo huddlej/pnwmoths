@@ -178,8 +178,9 @@ class Importer {
                 // concatenated values for each unique field.
                 $document["_id"] = sha1(implode("", $id_inputs));
 
-                // Set the modification timestamp.
+                // Set the modification timestamp and document type.
                 $document["date_modified"] = date("c");
+                $document["type"] = "specimen";
             }
             else {
                 print "Couldn't create an id for " . print_r($document, true);
