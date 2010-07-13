@@ -81,8 +81,20 @@ class syntax_plugin_similarspecies_edit extends DokuWiki_Syntax_Plugin {
 HTML;
         }
         else {
+            $renderer->doc .= <<<HTML
+<h2>Add New Similar Species</h2>
+<form method="post" action="">
+<fieldset id="similar">
+    <p><label for="species-field">Species</label>: <input type="text" id="species-field" name="species" /></p>
+    <p><label for="similar-species-field">Similar Species</label>:<br /><textarea id="similar-species-field" name="similar_species"></textarea></p>
+    <p><input type="submit" value="Save" /></p>
+</fieldset>
+</form>
+HTML;
+
             // Get list of similar species from the database.
             $species = PNWMoths_Model_SimilarSpecies::getSpecies();
+            $renderer->doc .= "<h2>Current Similar Species</h2>";
 
             // Display list of species.
             if (count($species) > 0) {
