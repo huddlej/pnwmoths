@@ -36,7 +36,9 @@ class PNWMoths_Model_SimilarSpecies extends PNWMoths_Model {
                 );
             }
             else {
-                $images = array("<img src='http://www.sheppardsoftware.com/content/animals/images/invertebrates/moth_45_45.gif' />");
+                $images = array(
+                    new PNWMoths_Model_Image("placeholder-image", "moth_45_45.gif")
+                );
             }
             $similar_species[] = array("species" => $row->doc->similar_species,
                                        "images" => $images);
