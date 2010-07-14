@@ -43,7 +43,12 @@ class syntax_plugin_couchdb extends DokuWiki_Syntax_Plugin {
                 $url = sprintf("%s%s", $this->getConf("couchdb_url"), $json["url"]);
                 $client = new Zend_Http_Client();
                 $client->setUri($url)->setParameterGet($json["params"]);
-                $data = $client->request()->getBody();
+                try {
+                    $data = $client->request()->getBody();
+                }
+                catch (Zend_Http_Client_Adapter_Exception $e) {
+                    $data = "The database is not running. Please contact the system administrator.";
+                }
                 return array($state, $data);
             default:
                 return array($state);

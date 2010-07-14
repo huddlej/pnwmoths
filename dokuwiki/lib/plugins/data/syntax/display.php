@@ -97,8 +97,16 @@ class syntax_plugin_data_display extends DokuWiki_Syntax_Plugin {
                             }
 
                             $client->setParameterGet($clean_options);
-                            $response = $client->request();
-                            $renderer->doc .= $response->getBody();
+
+                            try {
+                                $response = $client->request();
+                                $data = $response->getBody();
+                            }
+                            catch (Zend_Http_Client_Adapter_Exception $e) {
+                                $data = "Request failed: {$e->getMessage()}.";
+                            }
+
+                            $renderer->doc .= $data;
                         }
                         else {
                             // If letting javascript handle data fetching, just output
