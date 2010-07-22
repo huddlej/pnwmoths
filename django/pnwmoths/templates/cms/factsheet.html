@@ -1,5 +1,5 @@
 {% extends "cms/base.html" %}
-{% load cms_tags %}
+{% load cms_tags couchdb %}
 
 {% block content %}
 <!-- wikipage start -->
@@ -7,7 +7,7 @@
 
 <div class="factsheet yui-g">
     <div class="yui-u first all-images all-images-no-js">
-    {% placeholder "top-left" %}
+    {% couchdb /pnwmoths/_design/moths/_list/full_images/by_species_image include_docs="true" key=current_page.get_title|jsonify image_url="http://pnwmoths.biol.wwu.edu/services/getFile.php" %}
     </div>
     <div class="yui-u">
     {% placeholder "top-right" %}
