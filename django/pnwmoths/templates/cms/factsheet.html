@@ -35,7 +35,19 @@
     {% couchdb /pnwmoths/_design/moths/_list/full_images/by_species_image include_docs="true" key=current_page.get_title|jsonify image_url="http://pnwmoths.biol.wwu.edu/services/getFile.php" %}
     </div>
     <div class="yui-u">
-    {% placeholder "top-right" %}
+        <div id="googlemap" class="googlemap">
+            <span class="data">"species-data"</span>
+            <div id="filters">
+                <p class="right"><a href="" id="filters-close"><img src="http://maps.gstatic.com/intl/en_us/mapfiles/iw_close.gif" /></a></p>
+                <p>
+                    <form>
+                        <input type="button" id="clear-filters" value="Clear filters" />
+                        <input type="button" id="toggle-borders" value="Toggle borders" />
+                    </form>
+                </p>
+            </div>
+        </div>
+        {% placeholder "top-right" %}
     </div>
 </div>
 
