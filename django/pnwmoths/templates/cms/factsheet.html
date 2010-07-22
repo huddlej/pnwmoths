@@ -1,0 +1,20 @@
+{% extends "cms/base.html" %}
+{% load cms_tags %}
+
+{% block content %}
+<!-- wikipage start -->
+<h1>{% page_attribute page_title %}</h1>
+
+<div class="factsheet yui-g">
+    <div class="yui-u first all-images all-images-no-js">
+    {% placeholder "top-left" %}
+    </div>
+    <div class="yui-u">
+    {% placeholder "top-right" %}
+    </div>
+</div>
+
+{% placeholder "content" %}
+
+<!-- wikipage stop -->
+{% endblock %}

@@ -1,0 +1,85 @@
+{% load cms_tags menu_tags %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang=""
+ lang="" dir="">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>{% page_attribute page_title %}</title>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+          type="text/javascript"></script>
+  <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jcarousel.min.js"></script>
+  <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jqplot.min.js"></script>
+  <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.barRenderer.min.js"></script>
+  <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.canvasTextRenderer.min.js"></script>
+  <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.canvasAxisLabelRenderer.min.js"></script>
+  <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.categoryAxisRenderer.min.js"></script>
+  <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.colorbox-min.js"></script>
+
+  <link rel="stylesheet" href="{{ MEDIA_URL }}reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="{{ MEDIA_URL }}base.css" type="text/css">
+  <link rel="stylesheet" href="{{ MEDIA_URL }}images.css" type="text/css">
+  {{ meta_headers }}
+</head>
+
+<body>
+<div id="doc" class="yui-t7 dokuwiki">
+  <div class="stylehead">
+
+    <div id="hd" class="header" role="banner">
+      <!-- start site nav -->
+      <h1 id="site-id">PNW Moths</h1>
+      <ol id="navigation">
+          <li><a href="{% page_id_url "index" %}">Home</a></li>
+          <li><a href="{% page_id_url "identify" %}">Identify</a></li>
+          <li><a href="{% page_id_url "browse" %}">Browse</a></li>
+          <li id="search">
+          <input type="text" size="20" />
+          <input type="submit" value="Search" />
+          </li>
+      </ol>
+      <!-- end site nav -->
+
+      <div class="pagename">
+      </div>
+      <div class="logo">
+      </div>
+
+      <div class="clearer"></div>
+    </div>
+
+    <div class="bar" id="bar__top">
+      <div class="bar-left" id="bar__topleft">
+      </div>
+
+      <div class="bar-right" id="bar__topright">
+      </div>
+
+      <div class="clearer"></div>
+    </div>
+
+    <div class="breadcrumbs">
+    {% show_breadcrumb %}
+    </div>
+  </div>
+
+  <div id="bd" class="page" role="main">
+      {% block content %}
+      <!-- wikipage start -->
+      {% placeholder "content" %}
+      <!-- wikipage stop -->
+      {% endblock %}
+  </div>
+
+  <div id="ft" class="stylefoot" role="contentinfo">
+    <ol id="ft-navigation">
+      <li><a href="{% page_id_url "about-project" %}">About the Project</a></li>
+      <li><a href="">Contact Us</a></li>
+    </ol>
+    <p id="copyright">Copyright {% now "Y" %}</p>
+  </div>
+
+</div>
+</body>
+</html>
