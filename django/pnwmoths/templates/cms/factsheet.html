@@ -15,6 +15,7 @@
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}slideshow/script.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}map/script.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}chart/script.js"></script>
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}data/script.js"></script>
 
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_cr19ifAS821S0ocdvCL1BT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSzkSklZUfvCZ2DkVLa3pDPglmbAQ&sensor=false" type="text/javascript"></script>
 <script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js" type="text/javascript"></script>
@@ -26,6 +27,7 @@
 <link rel="stylesheet" href="{{ MEDIA_URL }}slideshow/style.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}map/style.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}chart/style.css" type="text/css">
+<link rel="stylesheet" href="{{ MEDIA_URL }}data/style.css" type="text/css">
 {% endblock %}
 
 {% block content %}
@@ -82,4 +84,16 @@
 {% placeholder "literature" %}
 
 <!-- wikipage stop -->
+
+<!-- data start -->
+<span class="dokuwiki-data" id="species-data">
+{% couchdb /pnwmoths/_design/moths/_list/json_collection_doc/by_species include_docs="true" key=current_page.get_title|jsonify %}
+</span>
+<span class="dokuwiki-data" id="state-data">
+{% couchdb /pnwmoths/_design/moths/_list/json_keys/states group="true" reduce="true" %}
+</span>
+<span class="dokuwiki-data" id="county-data">
+{% couchdb /pnwmoths/_design/moths/_list/json_keys/counties group="true" reduce="true" %}
+</span>
+<!-- data stop -->
 {% endblock %}
