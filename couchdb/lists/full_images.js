@@ -16,19 +16,15 @@ function (head, req) {
             send(Mustache.to_html(templates.lists.full_images.head));
 
             while (row = getRow()) {
-                if (row.doc) {
-                    for (attachment in row.doc._attachments) {
-                        view = {"image_src": image_url + "?id=" + row.id + "/" + attachment,
-                                "title": row.doc.caption || "",
-                                "first_row": first_row,
-                                "show_title": req.query.show_title,
-                                "species": row.doc.species};
-                        send(Mustache.to_html(templates.lists.full_images.row, view));
+                view = {"image_src": image_url + "?id=" + row.value.id + "/" + row.value.attachment,
+                        "title": row.value.caption || "",
+                        "first_row": first_row,
+                        "show_title": req.query.show_title,
+                        "species": row.key};
+                send(Mustache.to_html(templates.lists.full_images.row, view));
 
-                        if (first_row) {
-                            first_row = false;
-                        }
-                     }
+                if (first_row) {
+                    first_row = false;
                 }
             }
 
