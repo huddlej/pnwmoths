@@ -36,7 +36,7 @@
 
 <div class="factsheet yui-g">
     <div class="yui-u first all-images all-images-no-js">
-    {% couchdb /pnwmoths/_design/moths/_list/full_images/by_species_image include_docs="true" key=current_page.get_title|jsonify image_url="http://pnwmoths.biol.wwu.edu/services/getFile.php" %}
+    {% couchdb /pnwmoths/_design/moths/_list/full_images/by_species_image reduce="false" key=current_page.get_title|jsonify image_url="http://pnwmoths.biol.wwu.edu/services/getFile.php" %}
     </div>
     <div class="yui-u">
         <div id="googlemap" class="googlemap">
