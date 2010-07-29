@@ -6,11 +6,6 @@ from django import template
 from django.conf import settings
 from django.template import Context, Node, Template, TemplateSyntaxError
 from django.template.loader import get_template
-from django.utils import simplejson
-from django.utils.encoding import smart_str
-from django.utils.safestring import mark_safe
-import re
-import urllib
 
 from pnwmoths.couchdb_templatetags.templatetags.couchdb import get_content
 
@@ -29,7 +24,13 @@ def get_similar_species(species):
         reduce="false",
         key=species
     )
-    return sorted([row["value"] for row in view])
+    similar_species = sorted([row["value"] for row in view])
+
+    return list(db.view(
+        "moths/by_species_image",
+        group="true",
+        keys=similar_species
+    ))
 
 
 class SimilarSpeciesNode(Node):
