@@ -13,8 +13,6 @@ function (head, req) {
         if (req.query.image_url) {
             image_url = req.query.image_url;
 
-            send(Mustache.to_html(templates.lists.full_images.head));
-
             while (row = getRow()) {
                 view = {"image_src": image_url + "?id=" + row.value.id + "/" + row.value.attachment,
                         "title": row.value.caption || "",
