@@ -20,11 +20,11 @@
     width: 100%;
 }
 
-.all-images-no-js #current-image {
+.all-images-no-js #images .current-image {
     float: left;
 }
 
-.all-images-no-js #other-images {
+.all-images-no-js #images .other-images {
     float: left;
     height: 250px;
     margin-left: 2em;
@@ -37,9 +37,7 @@
 .all-images-no-js #similar {
     clear: both;
 }
-.all-images-no-js #similar ul.similar-species li {
-}
-.all-images-no-js #similar ul.similar-species li {
+.all-images-no-js #similar .other-images li {
     display: block;
     float: left;
     margin-bottom: 2em;
@@ -268,14 +266,14 @@
 #images {
     width: 375px;
 }
-#current-image img {
+#images .current-image img {
     height: 250px;
     width: 375px;
 }
-#other-images {
+#images .other-images {
     text-align: center;
 }
-#other-images img {
+#images .other-images img {
     height: 93px;
     width: 140px;
 }
