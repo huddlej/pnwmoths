@@ -4,7 +4,13 @@ CouchDB template tag based on Django's built-in "url" template tag.
 from couchdbkit import Server
 from django import template
 from django.conf import settings
-from django.template import Node, TemplateSyntaxError
+from django.template import Context, Node, Template, TemplateSyntaxError
+from django.template.loader import get_template
+from django.utils import simplejson
+from django.utils.encoding import smart_str
+from django.utils.safestring import mark_safe
+import re
+import urllib
 
 from pnwmoths.couchdb_templatetags.templatetags.couchdb import get_content
 
@@ -31,14 +37,13 @@ class SimilarSpeciesNode(Node):
         self.species = species
 
     def render(self, context):
-        # Get similar species images.
-        return get_content(
-            "pnwmoths/_design/moths/_list/full_images/by_species_image",
-            group="true",
-            image_url="http://pnwmoths.biol.wwu.edu/services/getFile.php",
-            show_title="true",
-            keys=get_similar_species(self.species.resolve(context))
-        )
+        # Get similar species.
+        similar_species = get_similar_species(self.species.resolve(context))
+
+        # Render similar species template and return the result.
+        template = get_template("similar_species/similar_species.html")
+        context = Context({"similar_species": similar_species})
+        return template.render(context)
 
 
 def similar_species(parser, token):

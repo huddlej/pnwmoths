@@ -1,0 +1,8 @@
+<div id="similar">
+<h2>Similar species</h2>
+<ul class="similar-species jcarousel-skin-tango">
+{% for species in similar_species %}
+    <li><a href="../{{ species|slugify }}">{{ species }}</a></li>
+{% endfor %}
+</ul>
+</div>
