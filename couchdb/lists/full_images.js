@@ -13,10 +13,18 @@ function (head, req) {
         if (req.query.image_url) {
             image_url = req.query.image_url;
 
+            if (req.query.first_image) {
+                first_image = true;
+            }
+            else {
+                first_image = false;
+            }
+
             while (row = getRow()) {
                 view = {"image_src": image_url + "?id=" + row.value.id + "/" + row.value.attachment,
                         "title": row.value.caption || "",
                         "first_row": first_row,
+                        "first_image": first_image,
                         "show_title": req.query.show_title,
                         "species": row.key};
                 send(Mustache.to_html(templates.lists.full_images.row, view));
