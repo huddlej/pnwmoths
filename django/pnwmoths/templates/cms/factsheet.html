@@ -1,5 +1,5 @@
 {% extends "cms/base.html" %}
-{% load cms_tags couchdb %}
+{% load cms_tags couchdb similar_species %}
 
 {% block scripts %}
 {{ block.super }}
@@ -38,6 +38,7 @@
 <div class="factsheet yui-g">
     <div class="yui-u first all-images all-images-no-js">
     {% couchdb /pnwmoths/_design/moths/_list/full_images/by_species_image reduce="false" key=current_page.get_title|jsonify image_url="http://pnwmoths.biol.wwu.edu/services/getFile.php" %}
+    {% similar_species current_page.get_title %}
     </div>
     <div class="yui-u">
         <div id="googlemap" class="googlemap">
