@@ -1,10 +1,11 @@
+{% load cms_tags %}
 <div id="similar">
 <h2>Similar Species</h2>
 <ul class="other-images jcarousel-skin-tango">
 {% for species in similar_species %}
     <li>
         <img src="http://pnwmoths.biol.wwu.edu/services/getFile.php?id={{ species.value.id }}/{{ species.value.attachment }}" /><br />
-        <a href="">{{ species.key }}</a>
+        <a href="{% page_id_url species.key %}">{{ species.key }}</a>
     </li>
 {% endfor %}
 </ul>
