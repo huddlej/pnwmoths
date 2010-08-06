@@ -1,5 +1,5 @@
 """
-CouchDB template tag based on Django's built-in "url" template tag.
+Template tag for displaying similar species information.
 """
 from couchdbkit import Server
 from django import template
