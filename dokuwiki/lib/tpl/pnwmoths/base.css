@@ -101,6 +101,14 @@ ol#navigation li#search {
     margin-top: -0.3em;
 }
 
+ol#breadcrumbs {
+    margin-bottom: 2em;
+}
+ol#breadcrumbs li {
+    display: inline;
+    list-style-type: none;
+}
+
 .center {
     margin: 0 auto;
 }
