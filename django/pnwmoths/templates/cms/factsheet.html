@@ -43,7 +43,7 @@
             {% couchdb /pnwmoths/_design/moths/_list/full_images/by_species_image reduce="false" key=current_page.get_title|jsonify image_url="http://pnwmoths.biol.wwu.edu/services/getFile.php" first_image="true" %}
         </div>
 
-        {% similar_species current_page.get_title %}
+        {% similar_species %}
     </div>
     <div class="yui-u">
         <div id="googlemap" class="googlemap">
