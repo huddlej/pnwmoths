@@ -1,0 +1,12 @@
+{% extends "cms/base.html" %}
+{% load cms_tags menu_tags %}
+
+{% block content %}
+{% placeholder "before menu" %}
+
+<ol>
+{% show_sub_menu %}
+</ol>
+
+{% placeholder "after menu" %}
+{% endblock %}
