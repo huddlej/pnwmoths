@@ -213,6 +213,9 @@
     margin-bottom: 0.25em;
     margin-left: 0.5em;
 }
+#similar h2 .edit {
+    font-size: 70%;
+}
 #similar li {
     text-align: center;
 }
