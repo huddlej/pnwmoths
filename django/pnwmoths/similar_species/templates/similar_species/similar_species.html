@@ -1,6 +1,12 @@
 {% load cms_tags %}
 <div id="similar">
-<h2>Similar Species</h2>
+<h2>
+    Similar Species
+{% if request.user.is_superuser %}
+    <span class="edit"><a href="{% url cushion_view "pnwmoths" "moths" "by_similar_species" %}?reduce=false&key={{ species_name }}">edit</a></span>
+{% endif %}
+</h2>
+
 <ul class="other-images jcarousel-skin-tango">
 {% for species in similar_species %}
     <li>

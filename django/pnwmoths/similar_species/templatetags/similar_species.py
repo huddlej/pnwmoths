@@ -39,6 +39,7 @@ def similar_species(context):
     if current_page:
         species_name = current_page.get_title()
         new_context.update({"similar_species": get_similar_species(species_name),
+                            "species_name": species_name,
                             "request": context.get("request")})
     return new_context
 similar_species = register.inclusion_tag("similar_species/similar_species.html", takes_context=True)(similar_species)
