@@ -1,14 +1,12 @@
 from couchdbkit.ext.django.forms import DocumentForm
 from django import forms
 
-from pnwmoths.cushion.forms import form_registry, view_form_registry
 from models import Similar
 
 
 class SimilarForm(DocumentForm):
     class Meta:
         document = Similar
-form_registry.register("SimilarForm", SimilarForm)
 
 
 class BatchSimilarForm(forms.Form):
@@ -61,5 +59,3 @@ class BatchSimilarForm(forms.Form):
 
         self.database.bulk_save(docs)
         return docs
-
-view_form_registry.register("moths/by_similar_species", BatchSimilarForm)
