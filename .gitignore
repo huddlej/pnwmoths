@@ -1,5 +1,5 @@
 *.pyc
 cushion
 cms_plugins_couchdb
-settings.py
+settings_local.py
 pnwmoths.db
