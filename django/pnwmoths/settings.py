@@ -128,6 +128,8 @@ CMS_TEMPLATES = (
     ('cms/browse.html', gettext('browse')),
     ('cms/factsheet.html', gettext('factsheet')),
 )
+CMS_SHOW_END_DATE = True
+CMS_SHOW_START_DATE = True
 
 HAYSTACK_XAPIAN_PATH = "/home/huddlej/pnwmoths/django/pnwmoths/site_index"
 HAYSTACK_SITECONF = "pnwmoths.search_sites"
