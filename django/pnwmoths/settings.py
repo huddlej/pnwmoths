@@ -131,6 +131,9 @@ CMS_TEMPLATES = (
 )
 CMS_SHOW_END_DATE = True
 CMS_SHOW_START_DATE = True
+LANGUAGES = (
+        ('en', gettext('English')),
+)
 
 HAYSTACK_XAPIAN_PATH = "/home/huddlej/pnwmoths/django/pnwmoths/site_index"
 HAYSTACK_SITECONF = "pnwmoths.search_sites"
