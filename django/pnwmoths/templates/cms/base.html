@@ -30,8 +30,10 @@
           <li><a href="{% page_id_url "identify" %}">Identify</a></li>
           <li><a href="{% page_id_url "browse" %}">Browse</a></li>
           <li id="search">
-          <input type="text" size="20" />
-          <input type="submit" value="Search" />
+              <form method="get" action="/django/search/">
+                  <input type="text" name="q" size="20" />
+                  <input type="submit" value="Search" />
+              </form>
           </li>
       </ol>
       <!-- end site nav -->
