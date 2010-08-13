@@ -117,6 +117,7 @@ INSTALLED_APPS = (
     'menus',
     'mptt',
     'publisher',
+    'pnwmoths.cms_search',
     'pnwmoths.cushion',
     'pnwmoths.couchdb_templatetags',
     'pnwmoths.similar_species'

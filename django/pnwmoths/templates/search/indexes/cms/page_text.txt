@@ -1,0 +1,9 @@
+{% for placeholder in object.placeholders.all %}
+
+    {% for plugin in placeholder.get_plugins %}
+
+        {{ plugin.text.body }}
+
+    {% endfor %}
+
+{% endfor %}
