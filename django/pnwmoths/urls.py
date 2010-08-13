@@ -5,7 +5,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', name="login"),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name="logout"),
     (r'^cushion/', include('pnwmoths.cushion.urls')),
     (r'^admin/', include(admin.site.urls)),
     url(r'^search/', include('haystack.urls'), name="search"),
