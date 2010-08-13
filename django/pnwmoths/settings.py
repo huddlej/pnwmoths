@@ -113,6 +113,7 @@ INSTALLED_APPS = (
     'cms.plugins.snippet',
     'cms.plugins.googlemap',
     'couchdbkit.ext.django',
+    'haystack',
     'menus',
     'mptt',
     'publisher',
@@ -126,6 +127,10 @@ CMS_TEMPLATES = (
     ('cms/browse.html', gettext('browse')),
     ('cms/factsheet.html', gettext('factsheet')),
 )
+
+HAYSTACK_XAPIAN_PATH = "/home/huddlej/pnwmoths/django/pnwmoths/site_index"
+HAYSTACK_SITECONF = "pnwmoths.search_sites"
+HAYSTACK_SEARCH_ENGINE = "xapian"
 
 try:
     from settings_local import *
