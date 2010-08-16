@@ -1,4 +1,7 @@
 # Django settings for pnwmoths project.
+import os
+
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 # Define gettext for translation in settings.py.
 gettext = lambda s: s
@@ -15,7 +18,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/huddlej/pnwmoths/django/pnwmoths/pnwmoths.db',
+        'NAME': os.path.join(PROJECT_ROOT, 'pnwmoths.db')
     }
 }
 
@@ -96,7 +99,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/huddlej/pnwmoths/django/pnwmoths/templates'
+    os.path.join(PROJECT_ROOT, 'templates')
 )
 
 INSTALLED_APPS = (
@@ -135,7 +138,7 @@ LANGUAGES = (
         ('en', gettext('English')),
 )
 
-HAYSTACK_XAPIAN_PATH = "/home/huddlej/pnwmoths/django/pnwmoths/site_index"
+HAYSTACK_XAPIAN_PATH = os.path.join(PROJECT_ROOT, "site_index")
 HAYSTACK_SITECONF = "pnwmoths.search_sites"
 HAYSTACK_SEARCH_ENGINE = "xapian"
 
