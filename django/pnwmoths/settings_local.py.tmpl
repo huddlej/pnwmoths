@@ -1,0 +1,8 @@
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = ''
+
+#COUCHDB_SERVER = "http://username:password@localhost:5984"
+COUCHDB_SERVER = "http://localhost:5984"
+COUCHDB_DATABASES = (
+    ("pnwmoths.cushion", "%s/test" % COUCHDB_SERVER),
+)
