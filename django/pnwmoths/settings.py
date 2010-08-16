@@ -89,7 +89,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'pnwmoths.urls'
-LOGIN_URL = "/django/accounts/login/"
+LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/"
 
 TEMPLATE_DIRS = (
