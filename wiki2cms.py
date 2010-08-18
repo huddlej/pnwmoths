@@ -1,5 +1,6 @@
 import pprint
 import os
+import re
 import sys
 
 # Setup Django environment.
@@ -26,26 +27,33 @@ files = os.listdir(BASE_DIR)
 files.sort()
 
 # try:
-#     pprint.pprint(files[:3])
+#     pprint.pprint(files)
 # except IOError:
 #     pass
 # sys.exit()
 
 language = "en"
 site = Site.objects.all()[0]
-parent = Page.objects.get(title_set__title="Browse")
 
-for file in files[:3]:
+for file in files:
+    if "-" in file:
+        print "Rename %s" % file
+        continue
+
     file_pieces = file.split("_")
     if file.startswith("_") or len(file_pieces) < 2:
         continue
 
-    if len(file_pieces) > 2:
-        file_pieces = file_pieces[:2]
-    else:
-        file_pieces = [file_pieces[0], file_pieces[1].split(".")[0]]
-
+    # Convert "ampla.txt" to "ampla".
+    file_pieces[-1] = file_pieces[-1].split(".")[0]
     page_name = " ".join(file_pieces).capitalize()
+
+    # Check for an existing page.
+    try:
+        page = Page.objects.get(reverse_id=page_name)
+        continue
+    except Page.DoesNotExist:
+        pass
 
     fh = open(os.path.join(BASE_DIR, file), "r")
     data = fh.read()
@@ -55,12 +63,21 @@ for file in files[:3]:
 
     # Keep track of first h2.
     h2_found = False
+    content_found = False
 
     for row in data:
-        # Row is a header.
-        row_pieces = row.split(" ")
-        if row_pieces[0].startswith("=") and row_pieces[-1].endswith("="):
-            header = header_map[len(row_pieces[0])]
+        # Row is a header if it looks like "== something something ==" with
+        # optional spaces between text and equal signs.
+        header_re = r"(=+) ?([\s\w]+?) ?=+"
+        match = re.match(header_re, row)
+
+        if match:
+            try:
+                header = header_map[len(match.groups()[0])]
+            except:
+                print "header error"
+                print row
+                sys.exit()
 
             # Start collecting data from the first h2 onward.
             if header == "h2" and not h2_found:
@@ -68,7 +85,7 @@ for file in files[:3]:
 
             if h2_found:
                 new_data.append(
-                    "<%s>%s</%s>" % (header, " ".join(row_pieces[1:-1]), header)
+                    "<%s>%s</%s>" % (header, match.groups()[1], header)
                 )
         # Row is empty; skip it.
         elif row.strip() == "":
@@ -76,16 +93,19 @@ for file in files[:3]:
         # Row is non-empty, non-header (i.e., regular content).
         elif h2_found:
             new_data.append("<p>%s</p>" % row)
+            if not "no economic importance" in row:
+                content_found = True
 
     new_data = "\n".join(new_data)
 
-    # Create new page.
+    # Create new page but only publish the page if it has content.
     page = Page(
         site=site,
         reverse_id=page_name,
         template="cms/factsheet.html",
-        published=True
+        published=content_found
     )
+    parent = Page.objects.get(title_set__title="Browse")
     page.insert_at(parent, position="last-child")
     page.save()
     title = Title.objects.set_or_create(
@@ -114,3 +134,4 @@ for file in files[:3]:
 
     plugin.text = text
     plugin.text.save()
+    print "Added %s (%s)" % (page_name, {True: "published", False: "hidden"}[content_found])
