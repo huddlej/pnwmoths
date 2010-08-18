@@ -84,6 +84,10 @@
       <li><a href="{% page_id_url "about-project" %}">About the Project</a></li>
       <li><a href="">Contact Us</a></li>
       {% if request.user.is_authenticated %}
+          {% if request.user.is_staff %}
+              <li><a href="{% url admin:index %}">Admin</a></li>
+          {% endif %}
+
           <li><a href="{% url logout %}">Logout</a></li>
       {% else %}
           <li><a href="{% url login %}">Login</a></li>
