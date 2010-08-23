@@ -1,6 +1,6 @@
 [submodule "django/pnwmoths/cushion"]
 	path = django/pnwmoths/cushion
-	url = git://github.com/huddlej/cushion.git
+	url = git@github.com:huddlej/cushion.git
 [submodule "django/pnwmoths/couchdb_templatetags"]
 	path = django/pnwmoths/couchdb_templatetags
-	url = git://github.com/huddlej/couchdb_templatetags.git
+	url = git@github.com:huddlej/couchdb_templatetags.git
