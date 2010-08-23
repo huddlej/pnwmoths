@@ -1,6 +1,4 @@
 *.pyc
-cushion
-couchdb_templatetags
 settings_local.py
 pnwmoths.db
 site_index

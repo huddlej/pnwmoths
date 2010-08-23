@@ -1,0 +1,3 @@
+[submodule "django/pnwmoths/cushion"]
+	path = django/pnwmoths/cushion
+	url = git://github.com/huddlej/cushion.git
