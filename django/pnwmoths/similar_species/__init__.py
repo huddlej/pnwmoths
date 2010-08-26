@@ -1,4 +1,4 @@
-from pnwmoths.cushion.forms import form_registry, view_form_registry
+from cushion.forms import form_registry, view_form_registry
 from forms import BatchSimilarForm, SimilarForm
 
 

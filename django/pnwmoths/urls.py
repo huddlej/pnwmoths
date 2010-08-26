@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name="login"),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name="logout"),
-    (r'^cushion/', include('pnwmoths.cushion.urls')),
+    (r'^cushion/', include('cushion.urls')),
     (r'^admin/', include(admin.site.urls)),
     url(r'^search/', include('haystack.urls'), name="search"),
     #url(r"^contact-us/", contact_us, name="contact-us"),

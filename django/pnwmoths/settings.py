@@ -118,12 +118,12 @@ INSTALLED_APPS = (
     'cms.plugins.snippet',
     'cms.plugins.googlemap',
     'couchdbkit.ext.django',
+    'cushion',
     'haystack',
     'menus',
     'mptt',
     'publisher',
     'pnwmoths.cms_search',
-    'pnwmoths.cushion',
     'pnwmoths.couchdb_templatetags',
     'pnwmoths.similar_species'
 )
