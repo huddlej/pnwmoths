@@ -145,6 +145,8 @@ HAYSTACK_XAPIAN_PATH = os.path.join(PROJECT_ROOT, "site_index")
 HAYSTACK_SITECONF = "pnwmoths.search_sites"
 HAYSTACK_SEARCH_ENGINE = "xapian"
 
+CONTENT_ROOT = "/home/huddlej/Desktop/moths/"
+
 try:
     from settings_local import *
 except ImportError:
