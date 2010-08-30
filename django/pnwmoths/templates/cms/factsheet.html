@@ -79,5 +79,8 @@
 <span class="dokuwiki-data" id="county-data">
 {% couchdb /pnwmoths/_design/moths/_list/json_keys/counties group="true" reduce="true" %}
 </span>
+<span class="dokuwiki-data" id="collection-data">
+{% couchdb /pnwmoths/_design/moths/_list/json_keys/by_collection group="true" reduce="true" %}
+</span>
 <!-- data stop -->
 {% endblock %}

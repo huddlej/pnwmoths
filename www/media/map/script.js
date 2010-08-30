@@ -638,7 +638,8 @@ jQuery(document).ready(function () {
         {"name": "elevation", "type": PNWMOTHS.Filters.TextFilter, "help_text": "(e.g., 2000 - 10000)"},
         {"name": "date", "type": PNWMOTHS.Filters.TextFilter, "callback": getSortableDate, "help_text": "(e.g., 1/1/1999 - 12/1/2000)"},
         {"name": "county", "type": PNWMOTHS.Filters.OptionFilter},
-        {"name": "state", "type": PNWMOTHS.Filters.OptionFilter}
+        {"name": "state", "type": PNWMOTHS.Filters.OptionFilter},
+        {"name": "collection", "type": PNWMOTHS.Filters.OptionFilter}
     ];
 
     // Initialize each filter based on its type.
