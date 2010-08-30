@@ -136,10 +136,9 @@ def _create_dir(file):
 
 def _delete_file(filename):
     # Look into os.removedirs to remove empty directories
-    logging.debug("Removing file: %s", filename)
     if os.path.isfile(filename):
-        #os.remove(filename)
-        pass
+        logging.debug("Removing file: %s", filename)
+        os.remove(filename)
 
 
 if __name__ == "__main__":
