@@ -66,7 +66,8 @@ def sync_media():
     for file in relative_files:
         doc = {
             "_id": file,
-            "type": "image"
+            "type": "image",
+            "species": _get_species_for_file(file)
         }
         bulk_docs.append(doc)
 
@@ -76,6 +77,10 @@ def sync_media():
                           size=size)
 
     logging.debug("Saving %i bulk docs.", len(bulk_docs))
+
+
+def _get_species_for_file(file):
+    return file.split("-")[0]
 
 
 def _get_files(path=None):
