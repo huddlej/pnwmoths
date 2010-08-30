@@ -88,24 +88,22 @@ def _get_species_for_file(file):
 def _get_files(path=None):
     if not path:
         path = settings.CONTENT_ROOT
-    if not path[-1:] == "/":
-        path = "%s/" % path
 
     files = []
-
     dirlist = os.listdir(path)
+
     # Don't process files in these directories
-    if "_thumbnail" in dirlist:
-        dirlist.remove("_thumbnail")
-    if "_resize" in dirlist:
-        dirlist.remove("_resize")
+    for size_name in SIZES:
+        if size_name in dirlist:
+            dirlist.remove(size_name)
 
     for item in dirlist:
-        file = "%s%s" % (path, item)
+        file = os.path.join(path, item)
         if os.path.isdir(file):
             files = files + _get_files(file)
         elif os.path.isfile(file):
             files.append(file)
+
     return files
 
 
