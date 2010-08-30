@@ -15,14 +15,12 @@ import Image
 from django.conf import settings
 
 logger = logging.getLogger("sync_media")
-
+SIZES = {
+    "thumbnail": 140,
+    "medium": 375
+}
 
 def sync_media():
-    SIZES = {
-        "thumbnail": 140,
-        "medium": 375
-    }
-
     server = Server(settings.COUCHDB_SERVER)
     db = server.get_or_create_db("pnwmoths-images")
     view = db.view("moths/by_species_image",
