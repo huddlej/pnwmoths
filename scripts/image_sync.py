@@ -77,6 +77,8 @@ def sync_media():
                           size=size)
 
     logging.debug("Saving %i bulk docs.", len(bulk_docs))
+    if len(bulk_docs) > 0:
+        db.bulk_save(bulk_docs)
 
 
 def _get_species_for_file(file):
