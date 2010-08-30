@@ -58,7 +58,8 @@ def sync_media():
             for size_name in SIZES.keys():
                 _delete_file(os.path.join(settings.CONTENT_ROOT, size_name, doc["_id"]))
 
-            doc["_deleted"] = "true"
+            logging.debug("Deleting file from database: %s", doc["_id"])
+            doc["_deleted"] = True
             bulk_docs.append(doc)
 
     # Process files not already in the database.
