@@ -42,7 +42,16 @@ def sync_media():
         if doc["_id"] in relative_files:
             # Don't process files already in the database.
             relative_files.remove(doc["_id"])
-            logging.debug("Skipping file already in database: %s", doc["_id"])
+
+            if not "type" in doc or not "species" in doc:
+                doc.update({
+                    "type": "image",
+                    "species": _get_species_for_file(doc["_id"])
+                })
+                bulk_docs.append(doc)
+                logging.debug("Updating file already in database: %s", doc["_id"])
+            else:
+                logging.debug("Skipping file already in database: %s", doc["_id"])
         else:
             # If the file is in the database and not in the filesystem, it needs
             # to be deleted.
