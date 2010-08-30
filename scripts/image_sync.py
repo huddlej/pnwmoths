@@ -111,21 +111,19 @@ def _create_image(input, output, size):
     logging.debug("Creating %ipx image from %s to %s", size, input, output)
     input_file = os.path.join(settings.CONTENT_ROOT, input)
     output_file = os.path.join(settings.CONTENT_ROOT, output)
-    if not os.path.isfile(input_file):
-        return False
 
-#     image = Image.open(input_file)
-#     image_ratio = image.size[0].__truediv__(image.size[1])
+    if os.path.isfile(input_file) and not os.path.isfile(output_file):
+        image = Image.open(input_file)
+        image_ratio = image.size[0].__truediv__(image.size[1])
 
-#     if not os.path.isfile(output_file):
-#         if image_ratio >= 1:
-#             dimensions = (size, image.size[1].__truediv__(image.size[0]) * size)
-#         else:
-#             dimensions = (image.size[0].__truediv__(image.size[1]) * size, size)
-#         image.thumbnail(dimensions, Image.ANTIALIAS)
-        #_create_dir(output)
-        #image.save(output_file, "JPEG")
+        if image_ratio >= 1:
+            dimensions = (size, image.size[1].__truediv__(image.size[0]) * size)
+        else:
+            dimensions = (image.size[0].__truediv__(image.size[1]) * size, size)
 
+        image.thumbnail(dimensions, Image.ANTIALIAS)
+        _create_dir(output)
+        image.save(output_file, "JPEG")
 
 def _create_dir(file):
     # Use os.makedirs() instead
