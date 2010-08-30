@@ -1,4 +1,10 @@
-from django.conf.urls.defaults import handler500, include, patterns, url
+from django.conf.urls.defaults import (
+    handler404,
+    handler500,
+    include,
+    patterns,
+    url
+)
 from django.contrib import admin
 
 
