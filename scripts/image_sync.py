@@ -125,15 +125,13 @@ def _create_image(input, output, size):
         _create_dir(output)
         image.save(output_file, "JPEG")
 
-def _create_dir(file):
-    # Use os.makedirs() instead
-    pieces = file.split("/")[:-1]
-    path = settings.CONTENT_ROOT
 
-    for piece in pieces:
-        path = "%s%s/" % (path, piece)
-        if not os.path.isdir(path):
-            os.mkdir(path)
+def _create_dir(file):
+    path, filename = os.path.split(file)
+    path = os.path.join(settings.CONTENT_ROOT, path)
+    if not os.path.isdir(path):
+        logging.debug("Creating directory: %s", path)
+        os.makedirs(path)
 
 
 def _delete_file(filename):
