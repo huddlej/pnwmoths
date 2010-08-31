@@ -34,8 +34,6 @@ def sync_media():
     files = _get_files()
     relative_files = [file.replace(settings.CONTENT_ROOT, "") for file in files]
     relative_files.sort()
-    logging.debug("Relative files:")
-    logging.debug(relative_files)
 
     bulk_docs = []
     for doc in docs:
@@ -58,7 +56,7 @@ def sync_media():
             for size_name in SIZES.keys():
                 _delete_file(os.path.join(settings.CONTENT_ROOT, size_name, doc["_id"]))
 
-            logging.debug("Deleting file from database: %s", doc["_id"])
+            logging.info("Deleting file from database: %s", doc["_id"])
             doc["_deleted"] = True
             bulk_docs.append(doc)
 
@@ -76,8 +74,8 @@ def sync_media():
                           output=os.path.join(size_name, file),
                           size=size)
 
-    logging.debug("Saving %i bulk docs.", len(bulk_docs))
     if len(bulk_docs) > 0:
+        logging.info("Saving %i bulk docs.", len(bulk_docs))
         db.bulk_save(bulk_docs)
 
 
