@@ -1,0 +1,21 @@
+{% extends "cms/base.html" %}
+{% load cms_tags %}
+
+{% block title %}This page doesn't exist{% endblock %}
+
+{% block content %}
+<h1>This page doesn't exist</h1>
+
+<p>The page you requested ({{ request_path }}) doesn't exist.</p>
+
+<ul>
+    <li>
+        Try searching for what you want:
+        <form method="get" action="/search/">
+            <input type="text" name="q" size="20" />
+            <input type="submit" value="Search" />
+        </form>
+    </li>
+    <li>Or try <a href="{% page_id_url "browse" %}">browsing our moths</a></li>
+</p>
+{% endblock %}
