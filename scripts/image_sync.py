@@ -4,7 +4,7 @@ import os
 import sys
 
 # Setup Django environment.
-path = "/home/huddlej/pnwmoths/django"
+path = "/usr/local/www/pnwmoths/django"
 sys.path.append(path)
 os.environ['DJANGO_SETTINGS_MODULE'] = "pnwmoths.settings"
 
