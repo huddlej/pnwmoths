@@ -5,7 +5,7 @@
  lang="" dir="">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>{% page_attribute page_title %}</title>
+  <title>{% block title %}{% page_attribute page_title %}{% endblock %}</title>
 
   {% block scripts %}
   {% endblock %}
