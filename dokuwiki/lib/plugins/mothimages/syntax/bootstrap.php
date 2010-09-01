@@ -1,1 +1,1 @@
-/home/huddlej/pnwmoths/www/bootstrap.php
+../../../../../www/bootstrap.php
