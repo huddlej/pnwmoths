@@ -46,7 +46,7 @@ ol li {
     list-style-type: decimal;
 }
 ul li {
-    list-style-type: none;
+    list-style-type: inherit;
 }
 li li {
     margin-left: 1em;
