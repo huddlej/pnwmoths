@@ -146,7 +146,7 @@ HAYSTACK_XAPIAN_PATH = os.path.join(PROJECT_ROOT, "site_index")
 HAYSTACK_SITECONF = "pnwmoths.search_sites"
 HAYSTACK_SEARCH_ENGINE = "xapian"
 
-CONTENT_ROOT = "/var/www/images/"
+CONTENT_ROOT = "/usr/local/www/images/"
 
 try:
     from settings_local import *
