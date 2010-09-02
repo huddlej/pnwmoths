@@ -1,4 +1,4 @@
 *.pyc
-settings_local.py
+settings.py
 pnwmoths.db
 site_index
