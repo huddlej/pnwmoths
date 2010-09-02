@@ -23,7 +23,10 @@ SIZES = {
 
 def sync_media():
     server = Server(settings.COUCHDB_SERVER)
+    logging.debug("Connecting to CouchDB server: %s", settings.COUCHDB_SERVER)
     db = server.get_or_create_db(DATABASE)
+    logging.debug("Found database: %s", db)
+
     view = db.view("moths/by_species_image",
                    reduce=False,
                    include_docs=True)
