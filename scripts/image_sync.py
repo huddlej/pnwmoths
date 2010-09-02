@@ -61,6 +61,7 @@ def sync_media(database):
     files = _get_files()
     relative_files = [os.path.split(file)[1] for file in files]
     relative_files.sort()
+    logging.debug(relative_files)
 
     bulk_docs = []
     for doc in docs:
