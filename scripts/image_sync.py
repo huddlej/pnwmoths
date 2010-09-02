@@ -168,4 +168,4 @@ def _delete_file(filename):
 
 
 if __name__ == "__main__":
-    sync_media("pnwmoths-images")
+    sync_media("pnwmoths")
