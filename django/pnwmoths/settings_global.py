@@ -8,7 +8,7 @@ logging.config.fileConfig(os.path.join(PROJECT_ROOT, "logging.conf"))
 # Define gettext for translation in settings.py.
 gettext = lambda s: s
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -147,8 +147,3 @@ HAYSTACK_SITECONF = "pnwmoths.search_sites"
 HAYSTACK_SEARCH_ENGINE = "xapian"
 
 CONTENT_ROOT = "/usr/local/www/images/"
-
-try:
-    from settings_local import *
-except ImportError:
-    pass
