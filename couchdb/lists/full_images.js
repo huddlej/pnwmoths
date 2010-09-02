@@ -3,38 +3,34 @@ function (head, req) {
     // !code vendor/mustache.js
     provides("html", function () {
         var row,
-            image_src,
             attachment,
             first_row = true,
             view;
 
-        // The image url provided in the GET query tells the list where to find
-        // the attached images from a web-accessible path.
-        if (req.query.image_url) {
-            image_url = req.query.image_url;
+        if (req.query.first_image) {
+            first_image = true;
+        }
+        else {
+            first_image = false;
+        }
 
-            if (req.query.first_image) {
-                first_image = true;
+        while (row = getRow()) {
+            view = {"image_src": req.query.image_url,
+                    "image_name": row.value.id,
+                    "title": row.value.caption || "",
+                    "first_row": first_row,
+                    "first_image": first_image,
+                    "show_title": req.query.show_title,
+                    "species": row.key};
+            send(Mustache.to_html(templates.lists.full_images.row, view));
+
+            if (first_row) {
+                first_row = false;
             }
-            else {
-                first_image = false;
-            }
+        }
 
-            while (row = getRow()) {
-                view = {"image_src": image_url + "?id=" + row.value.id + "/" + row.value.attachment,
-                        "title": row.value.caption || "",
-                        "first_row": first_row,
-                        "first_image": first_image,
-                        "show_title": req.query.show_title,
-                        "species": row.key};
-                send(Mustache.to_html(templates.lists.full_images.row, view));
-
-                if (first_row) {
-                    first_row = false;
-                }
-            }
-
-            send(Mustache.to_html(templates.lists.full_images.foot));
+        if (first_row == false) {
+            send(Mustache.to_html(templates.lists.full_images.foot));            
         }
     });
 }
