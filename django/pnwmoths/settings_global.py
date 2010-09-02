@@ -147,12 +147,3 @@ HAYSTACK_SITECONF = "pnwmoths.search_sites"
 HAYSTACK_SEARCH_ENGINE = "xapian"
 
 CONTENT_ROOT = "/usr/local/www/images/"
-# COUCHDB_SERVER = "http://huddlej:Heyjude@pnwmoths.biol.wwu.edu:5984"
-# COUCHDB_DATABASES = (
-#     ("cushion", "%s/test" % COUCHDB_SERVER),
-# )
-
-try:
-    from settings_local import *
-except ImportError, e:
-    pass
