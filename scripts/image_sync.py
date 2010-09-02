@@ -15,16 +15,39 @@ import Image
 from django.conf import settings
 
 logger = logging.getLogger("sync_media")
-DATABASE = "pnwmoths-images"
 SIZES = {
     "thumbnail": 140,
     "medium": 375
 }
 
-def sync_media():
+
+def cleanup_db(database):
     server = Server(settings.COUCHDB_SERVER)
     logging.debug("Connecting to CouchDB server: %s", settings.COUCHDB_SERVER)
-    db = server.get_or_create_db(DATABASE)
+    db = server.get_or_create_db(database)
+    logging.debug("Found database: %s", db)
+
+    view = db.view("moths/by_species_image",
+                   reduce=False,
+                   include_docs=True)
+    logging.debug("Found %i results in by_species_image view.", view.total_rows)
+
+    bulk_docs = []
+    for row in view:
+        doc = row["doc"]
+        doc["_deleted"] = True
+        bulk_docs.append(doc)
+
+    if len(bulk_docs) > 0:
+        logging.info("Saving %i bulk docs.", len(bulk_docs))
+        db.bulk_save(bulk_docs)
+        db.compact()
+
+
+def sync_media(database):
+    server = Server(settings.COUCHDB_SERVER)
+    logging.debug("Connecting to CouchDB server: %s", settings.COUCHDB_SERVER)
+    db = server.get_or_create_db(database)
     logging.debug("Found database: %s", db)
 
     view = db.view("moths/by_species_image",
@@ -144,4 +167,4 @@ def _delete_file(filename):
 
 
 if __name__ == "__main__":
-    sync_media()
+    sync_media("pnwmoths-images")
