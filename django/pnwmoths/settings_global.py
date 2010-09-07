@@ -3,7 +3,6 @@ import logging.config
 import os
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
-logging.config.fileConfig(os.path.join(PROJECT_ROOT, "logging.conf"))
 
 # Define gettext for translation in settings.py.
 gettext = lambda s: s
