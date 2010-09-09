@@ -20,7 +20,7 @@ def get_similar_species(species):
         reduce="false",
         key=species
     )
-    similar_species = sorted([row["value"] for row in view])
+    similar_species = sorted(list(set([row["value"] for row in view])))
 
     return list(db.view(
         "moths/by_species_image",
