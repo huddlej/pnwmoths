@@ -10,7 +10,7 @@
 <ul class="other-images jcarousel-skin-tango">
 {% for species in similar_species %}
     <li>
-        <img src="http://pnwmoths.biol.wwu.edu/services/getFile.php?id={{ species.value.id }}/{{ species.value.attachment }}" /><br />
+        <img src="/images/thumbnail/{{ species.value.id }}" /><br />
         <a href="{% page_id_url species.key %}">{{ species.key }}</a>
     </li>
 {% endfor %}
