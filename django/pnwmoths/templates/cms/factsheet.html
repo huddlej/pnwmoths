@@ -40,7 +40,7 @@
 <div class="factsheet yui-g">
     <div class="yui-u first all-images all-images-no-js">
         <div id="images">
-            {% couchdb /pnwmoths/_design/moths/_list/full_images/by_species_image reduce="false" key=current_page.get_title|jsonify image_url="http://pnwmoths.biol.wwu.edu" first_image="true" %}
+            {% couchdb /pnwmoths/_design/moths/_list/full_images/by_labelled_species_image?image_url=http://pnwmoths.biol.wwu.edu&first_image=true&startkey=["%(key)s","A"]&endkey=["%(key)s","Z"] key=current_page.get_title %}
         </div>
 
         {% similar_species %}
