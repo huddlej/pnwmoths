@@ -85,7 +85,8 @@
       <li><a href="">Contact Us</a></li>
       {% if request.user.is_authenticated %}
           {% if request.user.is_staff %}
-              <li><a href="{% url admin:index %}">Admin</a></li>
+              <li><a href="{% url admin:index %}">Site Admin</a></li>
+              <li><a href="{% url cushion_index %}">Database Admin</a></li>
           {% endif %}
 
           <li><a href="{% url logout %}">Logout</a></li>
