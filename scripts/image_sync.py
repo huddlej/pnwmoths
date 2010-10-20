@@ -139,7 +139,12 @@ def _create_image(input, output, size):
     output_file = os.path.join(settings.CONTENT_ROOT, output)
 
     if os.path.isfile(input_file) and not os.path.isfile(output_file):
-        image = Image.open(input_file)
+        try:
+            image = Image.open(input_file)
+        except IOError, e:
+            logging.error("Couldn't open file '%s': %s", input_file, e)
+            return None
+
         image_ratio = image.size[0].__truediv__(image.size[1])
 
         if image_ratio >= 1:
