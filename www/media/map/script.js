@@ -320,7 +320,7 @@ PNWMOTHS.Map = function () {
             button.style.textAlign = "center";
             button.style.width = "5em";
             button.style.cursor = "pointer";
-            return button
+            return button;
         },
         renderCollection: function (record) {
             // Render all collection related information for a given record.
@@ -590,7 +590,7 @@ jQuery(document).unload(function () {
 
 jQuery(document).ready(function () {
     // TODO: replace hardcoded "googlemap" id with custom id based on plugin arguments.
-    var data_id, data_name;
+    var data_id, data_name, filters;
 
     if (jQuery("#googlemap .data").length == 0) {
         return;
