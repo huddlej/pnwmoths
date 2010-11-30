@@ -2,7 +2,7 @@
 <div id="similar">
 <h2>
     Similar Species
-{% if request.user.is_superuser %}
+{% if request.user.is_staff %}
     <span class="edit"><a href="{% url cushion_view "pnwmoths" "moths" "by_similar_species" %}?reduce=false&key={{ species_name }}" target="_new">edit</a></span>
 {% endif %}
 </h2>
