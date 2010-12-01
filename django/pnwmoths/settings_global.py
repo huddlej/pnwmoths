@@ -144,3 +144,6 @@ LANGUAGES = (
 HAYSTACK_XAPIAN_PATH = os.path.join(PROJECT_ROOT, "site_index")
 HAYSTACK_SITECONF = "pnwmoths.search_sites"
 HAYSTACK_SEARCH_ENGINE = "xapian"
+
+FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHandler",
+                        "django.core.files.uploadhandler.MemoryFileUploadHandler")
