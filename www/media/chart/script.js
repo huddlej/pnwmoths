@@ -167,6 +167,15 @@ PNWMOTHS.Chart = function () {
             };
             options = jQuery.extend(true, {}, default_options, custom_options);
 
+            if (data.length > 0) {
+                for (var i = 0; i < data[0].length; i++) {
+                    if (isNaN(data[0][i])) {
+                        alert("Phenology data for this species is invalid.");
+                        return null;
+                    }
+                }                
+            }
+
             // Return a new jqPlot. This mostly consists of a lot of jqPlot
             // options.
             return jQuery.jqplot(
