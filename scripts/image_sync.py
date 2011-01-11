@@ -81,12 +81,16 @@ def sync_media(database):
         else:
             # If the file is in the database and not in the filesystem, it needs
             # to be deleted.
-            for size_name in SIZES.keys():
-                _delete_file(os.path.join(settings.CONTENT_ROOT, size_name, doc["_id"]))
+            try:
+                for size_name in SIZES.keys():
+                    filename = os.path.join(settings.CONTENT_ROOT, size_name, doc["_id"])
+                    _delete_file(filename)
 
-            logging.info("Deleting file from database: %s", doc["_id"])
-            doc["_deleted"] = True
-            bulk_docs.append(doc)
+                logging.info("Deleting file from database: %s", doc["_id"])
+                doc["_deleted"] = True
+                bulk_docs.append(doc)
+            except UnicodeEncodeError, e:
+                logging.error("Couldn't delete file '%s': %s", filename, e)
 
     # Process files not already in the database.
     for file in relative_files:
