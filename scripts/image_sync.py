@@ -78,6 +78,11 @@ def sync_media(database):
                 logging.debug("Updating file already in database: %s", doc["_id"])
             else:
                 logging.debug("Skipping file already in database: %s", doc["_id"])
+
+            # Update alternate sized files if they are out of date compared to
+            # the original image.
+            if _sizes_outdated(doc["_id"]):
+                _create_or_update_sizes(doc["_id"])
         else:
             # If the file is in the database and not in the filesystem, it needs
             # to be deleted.
