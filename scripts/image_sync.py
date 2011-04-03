@@ -143,7 +143,7 @@ def _sizes_outdated(filename):
     if len(SIZES) > 0:
         # If the current file is newer than one of its modified versions, all
         # versions should be updated.
-        return os.path.getmtime(os.path.join(SIZES[0], file)) < os.path.getmtime(filename)
+        return os.path.getmtime(os.path.join(SIZES.keys()[0], filename)) < os.path.getmtime(filename)
     else:
         return False
 
