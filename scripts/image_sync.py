@@ -101,11 +101,7 @@ def sync_media(database):
             "species": _get_species_for_file(file)
         }
         bulk_docs.append(doc)
-
-        for size_name, size in SIZES.items():
-            _create_image(input=file,
-                          output=os.path.join(size_name, file),
-                          size=size)
+        _create_or_update_sizes(file)
 
     if len(bulk_docs) > 0:
         logging.info("Saving %i bulk docs.", len(bulk_docs))
