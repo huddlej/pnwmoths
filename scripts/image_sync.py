@@ -82,6 +82,7 @@ def sync_media(database):
             # If the file is in the database and not in the filesystem, it needs
             # to be deleted.
             try:
+                # Make sure all other sizes for this image are deleted.
                 for size_name in SIZES.keys():
                     filename = os.path.join(settings.CONTENT_ROOT, size_name, doc["_id"])
                     _delete_file(filename)
