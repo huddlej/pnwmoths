@@ -155,7 +155,10 @@ def _create_image(input, output, size):
     input_file = os.path.join(settings.CONTENT_ROOT, input)
     output_file = os.path.join(settings.CONTENT_ROOT, output)
 
-    if os.path.isfile(input_file) and not os.path.isfile(output_file):
+    if os.path.isfile(input_file):
+        # Delete the new file if it already exists (i.e., update it).
+        _delete_file(output_file)
+
         try:
             image = Image.open(input_file)
         except IOError, e:
