@@ -138,6 +138,22 @@ def _get_files(path=None):
     return files
 
 
+def _sizes_outdated(filename):
+    if len(SIZES) > 0:
+        # If the current file is newer than one of its modified versions, all
+        # versions should be updated.
+        return os.path.getmtime(os.path.join(SIZES[0], file)) < os.path.getmtime(filename)
+    else:
+        return False
+
+
+def _create_or_update_sizes(filename):
+    for size_name, size in SIZES.items():
+        _create_image(input=filename,
+                      output=os.path.join(size_name, filename),
+                      size=size)
+
+
 def _create_image(input, output, size):
     logging.debug("Creating %ipx image from %s to %s", size, input, output)
     input_file = os.path.join(settings.CONTENT_ROOT, input)
