@@ -11,8 +11,8 @@
   {% endblock %}
 
   {% block stylesheets %}
-  <link rel="stylesheet" href="{{ MEDIA_URL }}css/reset-fonts-grids.css" type="text/css">
-  <link rel="stylesheet" href="{{ MEDIA_URL }}css/base.css" type="text/css">
+  <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/base.css" type="text/css">
   {% endblock %}
 
   {{ meta_headers }}
