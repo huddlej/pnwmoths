@@ -90,7 +90,8 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.media.PlaceholderMediaMiddleware',
-    'cms.middleware.toolbar.ToolbarMiddleware'
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'pnwmoths.middleware.LoginRequiredMiddleware',
 )
 
 ROOT_URLCONF = 'pnwmoths.urls'
