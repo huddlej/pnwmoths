@@ -11,8 +11,7 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('John Huddleston', 'john.l.huddleston@gmail.com'),
-#    ('Dan VanPelt', 'Dan.VanPelt@wwu.edu')
+    ('John Huddleston', 'john.l.huddleston@gmail.com')
 )
 
 MANAGERS = ADMINS
@@ -68,7 +67,6 @@ SESSION_ENGINE = "django.contrib.sessions.backends.file"
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
