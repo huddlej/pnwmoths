@@ -14,11 +14,11 @@ class County(models.Model):
     name = models.CharField(max_length=100)
 
 
-class Collector(model.Model):
+class Collector(models.Model):
     name = models.CharField(max_length=100)
 
 
-class Collection(model.Model):
+class Collection(models.Model):
     """
     Represents a location where a species record may be kept in storage.
     """
@@ -48,10 +48,9 @@ class SpeciesRecord(models.Model):
     state = models.ForeignKey(State, null=True, blank=True)
     elevation = models.IntegerField(help_text="measured in feet", null=True,
                                     blank=True)
-    year = models.IntegerField(null=True, blank=True, min_value=0)
-    month = models.IntegerField(null=True, blank=True, min_value=1,
-                                max_value=12)
-    day = models.IntegerField(null=True, blank=True, min_value=1, max_value=31)
+    year = models.IntegerField(null=True, blank=True)
+    month = models.IntegerField(null=True, blank=True)
+    day = models.IntegerField(null=True, blank=True)
 
     collector = models.ForeignKey(Collector, null=True, blank=True)
     collection = models.ForeignKey(Collection, null=True, blank=True)
@@ -88,7 +87,7 @@ class SpeciesImage(models.Model):
 
 
 # TODO: write unit tests for this class before adding it.
-# class SpeciesImageMetadata(model.Model):
+# class SpeciesImageMetadata(models.Model):
 #     """
 #     Represents key/value metadata associated with a specific species image.
 
