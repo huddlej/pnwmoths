@@ -1,4 +1,5 @@
 # Django settings for pnwmoths project.
+from db import DATABASE_PASSWORDS
 import logging.config
 import os
 
@@ -20,6 +21,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(PROJECT_ROOT, 'pnwmoths.db')
+    },
+    'pnwmoths': {
+        'NAME': 'pnwmoths',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'pnwmoths',
+        'PASSWORD': DATABASE_PASSWORDS.get("pnwmoths")
     }
 }
 
