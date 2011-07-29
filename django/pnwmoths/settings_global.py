@@ -133,7 +133,8 @@ INSTALLED_APPS = (
     'pnwmoths.cms_search',
     'pnwmoths.couchdb_templatetags',
     'pnwmoths.similar_species',
-    'pnwmoths.species_images'
+    'pnwmoths.species_images',
+    'pnwmoths.species'
 )
 
 CMS_TEMPLATES = (
