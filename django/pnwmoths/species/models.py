@@ -8,6 +8,9 @@ class State(models.Model):
     choices = STATE_CHOICES + PROVINCE_CHOICES
     code = models.CharField(choices=choices, max_length=2)
 
+    def __unicode__(self):
+        return self.get_code_display()
+
 
 class County(models.Model):
     state = models.ForeignKey(State)
