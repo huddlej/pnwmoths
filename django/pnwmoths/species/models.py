@@ -17,7 +17,7 @@ class County(models.Model):
     name = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name_plural = "counties"
+        verbose_name_plural = u"counties"
 
     def __unicode__(self):
         return u"%s (%s)" % (self.name, self.state.code)
@@ -26,12 +26,18 @@ class County(models.Model):
 class Collector(models.Model):
     name = models.CharField(max_length=100)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Collection(models.Model):
     """
     Represents a location where a species record may be kept in storage.
     """
     name = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Species(models.Model):
@@ -41,6 +47,12 @@ class Species(models.Model):
     name = models.CharField(max_length=255)
     common_name = models.CharField(max_length=255, blank=True, null=True)
     similar = models.ManyToManyField("self")
+
+    class Meta:
+        verbose_name_plural = u"species"
+
+    def __unicode__(self):
+        return self.name
 
 
 class SpeciesRecord(models.Model):
@@ -70,6 +82,9 @@ class SpeciesRecord(models.Model):
     date_added = models.DateTimeField()
     date_modified = models.DateTimeField()
 
+    def __unicode__(self):
+        return u"%s at (%.2f, %.2f)" % (self.species, self.latitude, self.longitude)
+
     @property
     def date(self):
         try:
@@ -93,6 +108,9 @@ class SpeciesImage(models.Model):
     """
     species = models.ForeignKey(Species)
     file = models.FilePathField(path=settings.IMAGE_FILE_PATH)
+
+    def __unicode__(self):
+        return self.file
 
 
 # TODO: write unit tests for this class before adding it.
