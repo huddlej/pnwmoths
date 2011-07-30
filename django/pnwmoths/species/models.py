@@ -16,6 +16,12 @@ class County(models.Model):
     state = models.ForeignKey(State)
     name = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name_plural = "counties"
+
+    def __unicode__(self):
+        return u"%s (%s)" % (self.name, self.state.code)
+
 
 class Collector(models.Model):
     name = models.CharField(max_length=100)
