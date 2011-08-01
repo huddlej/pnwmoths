@@ -8,6 +8,9 @@ class State(models.Model):
     choices = STATE_CHOICES + PROVINCE_CHOICES
     code = models.CharField(choices=choices, max_length=2)
 
+    class Meta:
+        ordering = ["code"]
+
     def __unicode__(self):
         return self.get_code_display()
 
@@ -17,6 +20,7 @@ class County(models.Model):
     name = models.CharField(max_length=100)
 
     class Meta:
+        ordering = ["name"]
         verbose_name_plural = u"counties"
 
     def __unicode__(self):
@@ -25,6 +29,9 @@ class County(models.Model):
 
 class Collector(models.Model):
     name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ["name"]
 
     def __unicode__(self):
         return self.name
@@ -35,6 +42,9 @@ class Collection(models.Model):
     Represents a location where a species record may be kept in storage.
     """
     name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ["name"]
 
     def __unicode__(self):
         return self.name
@@ -49,6 +59,7 @@ class Species(models.Model):
     similar = models.ManyToManyField("self")
 
     class Meta:
+        ordering = ["name"]
         verbose_name_plural = u"species"
 
     def __unicode__(self):
