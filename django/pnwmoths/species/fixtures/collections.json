@@ -1,0 +1,562 @@
+[
+    {
+        "pk": 1, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "?"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "?UBC"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "A-data"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "ACE"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "ALangoisC"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "AMNH"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Anweiler Collection"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Biodiversity Institute of Ontario"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Bird Collection"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "bugguide.net"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Burke"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "CAS"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "CDFC"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "CH"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "CNC"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "CNCI"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Crawford-1992"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "CSG"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "CSU"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "CUIC"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "DAR"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "DLSC"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "DNR"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "DVM"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "EFauna BC"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Efauna BC website photo"
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "EMUS"
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Flickr photo"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "G. Morrell C."
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "GA"
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "GGAC"
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "GJBaloghC"
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "GPC"
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "GRL"
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "HK"
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "HM"
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "INSTITUTIONAL COLLECTION"
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "JHS"
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "JHSC"
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Jones, 1951"
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "JTT"
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "KMR"
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "LACM"
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "LGCC"
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "LLC"
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Macaulay Collection"
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "MZHF"
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Ngui collection"
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "NMNH"
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "NOFC"
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "ODA"
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "ODAC"
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "OSAC"
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Pacific Forestry Centre, Canadian Forest Service"
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "photo"
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "PJLC"
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "RBCM"
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Research Collection of Jeremy deWaard"
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Research Collection of Jim Troubridge"
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "RHL"
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "RMB"
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Robinson Collection"
+        }
+    }, 
+    {
+        "pk": 63, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "RSW"
+        }
+    }, 
+    {
+        "pk": 64, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Schmidt collection"
+        }
+    }, 
+    {
+        "pk": 65, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "Sight"
+        }
+    }, 
+    {
+        "pk": 66, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "TED"
+        }
+    }, 
+    {
+        "pk": 67, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "TMustelinC"
+        }
+    }, 
+    {
+        "pk": 68, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "UA"
+        }
+    }, 
+    {
+        "pk": 69, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "UASM"
+        }
+    }, 
+    {
+        "pk": 70, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "UBC"
+        }
+    }, 
+    {
+        "pk": 71, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "UCB"
+        }
+    }, 
+    {
+        "pk": 72, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "UCD"
+        }
+    }, 
+    {
+        "pk": 73, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "USNM"
+        }
+    }, 
+    {
+        "pk": 74, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "UWBM"
+        }
+    }, 
+    {
+        "pk": 75, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "WDN"
+        }
+    }, 
+    {
+        "pk": 76, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "WDP"
+        }
+    }, 
+    {
+        "pk": 77, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "WFBM"
+        }
+    }, 
+    {
+        "pk": 78, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "White collection"
+        }
+    }, 
+    {
+        "pk": 79, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "WSU"
+        }
+    }, 
+    {
+        "pk": 80, 
+        "model": "species.collection", 
+        "fields": {
+            "name": "WWU"
+        }
+    }
+]
