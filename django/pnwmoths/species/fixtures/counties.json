@@ -1,0 +1,2194 @@
+[
+    {
+        "pk": 1, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Skagit"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Whatcom"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Ada"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Adams"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Adams"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Alameda"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Asotin"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "species.county", 
+        "fields": {
+            "state": 7, 
+            "name": "Baca"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Baker"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Baker"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Bannock"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "species.county", 
+        "fields": {
+            "state": 8, 
+            "name": "Barber"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Lake"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "species.county", 
+        "fields": {
+            "state": 9, 
+            "name": "Becker"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Benewah"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Benton"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Benton"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Horn"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Bingham"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Blaine"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Blaine"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Boise"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Bonner"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Bonneville"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Boundary"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Elder"
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Broadwater"
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Butte"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Butte"
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Cache"
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Camas"
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Canyon"
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Carbon"
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Caribou"
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "species.county", 
+        "fields": {
+            "state": 12, 
+            "name": "Carroll"
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Cascade"
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Cassia"
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "species.county", 
+        "fields": {
+            "state": 13, 
+            "name": "Charleston"
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Chelan"
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Kittitas"
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "species.county", 
+        "fields": {
+            "state": 14, 
+            "name": "Churchill"
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Clackamas"
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Clallam"
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Jefferson"
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Clark"
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "species.county", 
+        "fields": {
+            "state": 14, 
+            "name": "Clark"
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Clark"
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Clatsop"
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Clearwater"
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "species.county", 
+        "fields": {
+            "state": 15, 
+            "name": "Coconino"
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Columbia"
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Columbia"
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "species.county", 
+        "fields": {
+            "state": 12, 
+            "name": "Coos"
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Coos"
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Cowlitz"
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Crook"
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "species.county", 
+        "fields": {
+            "state": 16, 
+            "name": "Crook"
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Curry"
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Custer"
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Daggett"
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Davis"
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Deschutes"
+        }
+    }, 
+    {
+        "pk": 63, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Douglas"
+        }
+    }, 
+    {
+        "pk": 64, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Douglas"
+        }
+    }, 
+    {
+        "pk": 65, 
+        "model": "species.county", 
+        "fields": {
+            "state": 17, 
+            "name": "Doyles"
+        }
+    }, 
+    {
+        "pk": 66, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Duchesne"
+        }
+    }, 
+    {
+        "pk": 67, 
+        "model": "species.county", 
+        "fields": {
+            "state": 14, 
+            "name": "Elko"
+        }
+    }, 
+    {
+        "pk": 68, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Elmore"
+        }
+    }, 
+    {
+        "pk": 69, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Emery"
+        }
+    }, 
+    {
+        "pk": 70, 
+        "model": "species.county", 
+        "fields": {
+            "state": 18, 
+            "name": "Essex"
+        }
+    }, 
+    {
+        "pk": 71, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Ferry"
+        }
+    }, 
+    {
+        "pk": 72, 
+        "model": "species.county", 
+        "fields": {
+            "state": 9, 
+            "name": "Fillmore"
+        }
+    }, 
+    {
+        "pk": 73, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Franklin"
+        }
+    }, 
+    {
+        "pk": 74, 
+        "model": "species.county", 
+        "fields": {
+            "state": 19, 
+            "name": "Franklin"
+        }
+    }, 
+    {
+        "pk": 75, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Franklin"
+        }
+    }, 
+    {
+        "pk": 76, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Fremont"
+        }
+    }, 
+    {
+        "pk": 77, 
+        "model": "species.county", 
+        "fields": {
+            "state": 16, 
+            "name": "Fremont"
+        }
+    }, 
+    {
+        "pk": 78, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Fresno"
+        }
+    }, 
+    {
+        "pk": 79, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Gallatin"
+        }
+    }, 
+    {
+        "pk": 80, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Garfield"
+        }
+    }, 
+    {
+        "pk": 81, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Gem"
+        }
+    }, 
+    {
+        "pk": 82, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Gilliam"
+        }
+    }, 
+    {
+        "pk": 83, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Glacier"
+        }
+    }, 
+    {
+        "pk": 84, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Glenn"
+        }
+    }, 
+    {
+        "pk": 85, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Gooding"
+        }
+    }, 
+    {
+        "pk": 86, 
+        "model": "species.county", 
+        "fields": {
+            "state": 7, 
+            "name": "Grand"
+        }
+    }, 
+    {
+        "pk": 87, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Grand"
+        }
+    }, 
+    {
+        "pk": 88, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Granite"
+        }
+    }, 
+    {
+        "pk": 89, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Grant"
+        }
+    }, 
+    {
+        "pk": 90, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Grant"
+        }
+    }, 
+    {
+        "pk": 91, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Harney"
+        }
+    }, 
+    {
+        "pk": 92, 
+        "model": "species.county", 
+        "fields": {
+            "state": 9, 
+            "name": "Hennepin"
+        }
+    }, 
+    {
+        "pk": 93, 
+        "model": "species.county", 
+        "fields": {
+            "state": 20, 
+            "name": "Howard"
+        }
+    }, 
+    {
+        "pk": 94, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Humboldt"
+        }
+    }, 
+    {
+        "pk": 95, 
+        "model": "species.county", 
+        "fields": {
+            "state": 14, 
+            "name": "Humboldt"
+        }
+    }, 
+    {
+        "pk": 96, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Idaho"
+        }
+    }, 
+    {
+        "pk": 97, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Island"
+        }
+    }, 
+    {
+        "pk": 98, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Jackon"
+        }
+    }, 
+    {
+        "pk": 99, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Jackson"
+        }
+    }, 
+    {
+        "pk": 100, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Jefferson"
+        }
+    }, 
+    {
+        "pk": 101, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Jefferson"
+        }
+    }, 
+    {
+        "pk": 102, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Jefferson"
+        }
+    }, 
+    {
+        "pk": 103, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Jerome"
+        }
+    }, 
+    {
+        "pk": 104, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Josephine"
+        }
+    }, 
+    {
+        "pk": 105, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Josephine"
+        }
+    }, 
+    {
+        "pk": 106, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Juab"
+        }
+    }, 
+    {
+        "pk": 107, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Kane"
+        }
+    }, 
+    {
+        "pk": 108, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "King"
+        }
+    }, 
+    {
+        "pk": 109, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Kitsap"
+        }
+    }, 
+    {
+        "pk": 110, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Klamath"
+        }
+    }, 
+    {
+        "pk": 111, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Klickitat"
+        }
+    }, 
+    {
+        "pk": 112, 
+        "model": "species.county", 
+        "fields": {
+            "state": 21, 
+            "name": "Knox"
+        }
+    }, 
+    {
+        "pk": 113, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Kootenai"
+        }
+    }, 
+    {
+        "pk": 114, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Lake"
+        }
+    }, 
+    {
+        "pk": 115, 
+        "model": "species.county", 
+        "fields": {
+            "state": 9, 
+            "name": "Lake"
+        }
+    }, 
+    {
+        "pk": 116, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Lake"
+        }
+    }, 
+    {
+        "pk": 117, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Lake"
+        }
+    }, 
+    {
+        "pk": 118, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Lake"
+        }
+    }, 
+    {
+        "pk": 119, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Lane"
+        }
+    }, 
+    {
+        "pk": 120, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Lassen"
+        }
+    }, 
+    {
+        "pk": 121, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Latah"
+        }
+    }, 
+    {
+        "pk": 122, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Lemhi"
+        }
+    }, 
+    {
+        "pk": 123, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Lewis"
+        }
+    }, 
+    {
+        "pk": 124, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Lewis"
+        }
+    }, 
+    {
+        "pk": 125, 
+        "model": "species.county", 
+        "fields": {
+            "state": 7, 
+            "name": "Lincoln"
+        }
+    }, 
+    {
+        "pk": 126, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Lincoln"
+        }
+    }, 
+    {
+        "pk": 127, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Lincoln"
+        }
+    }, 
+    {
+        "pk": 128, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Lincoln"
+        }
+    }, 
+    {
+        "pk": 129, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Lincoln"
+        }
+    }, 
+    {
+        "pk": 130, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Linn"
+        }
+    }, 
+    {
+        "pk": 131, 
+        "model": "species.county", 
+        "fields": {
+            "state": 22, 
+            "name": "Luna"
+        }
+    }, 
+    {
+        "pk": 132, 
+        "model": "species.county", 
+        "fields": {
+            "state": 23, 
+            "name": "Mackinac"
+        }
+    }, 
+    {
+        "pk": 133, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Madison"
+        }
+    }, 
+    {
+        "pk": 134, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Madison"
+        }
+    }, 
+    {
+        "pk": 135, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Malheur"
+        }
+    }, 
+    {
+        "pk": 136, 
+        "model": "species.county", 
+        "fields": {
+            "state": 15, 
+            "name": "Maricopa"
+        }
+    }, 
+    {
+        "pk": 137, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Marin"
+        }
+    }, 
+    {
+        "pk": 138, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Marion"
+        }
+    }, 
+    {
+        "pk": 139, 
+        "model": "species.county", 
+        "fields": {
+            "state": 24, 
+            "name": "Mason"
+        }
+    }, 
+    {
+        "pk": 140, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Mason"
+        }
+    }, 
+    {
+        "pk": 141, 
+        "model": "species.county", 
+        "fields": {
+            "state": 25, 
+            "name": "Maui"
+        }
+    }, 
+    {
+        "pk": 142, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Meagher"
+        }
+    }, 
+    {
+        "pk": 143, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Mendocino"
+        }
+    }, 
+    {
+        "pk": 144, 
+        "model": "species.county", 
+        "fields": {
+            "state": 26, 
+            "name": "Middlesex"
+        }
+    }, 
+    {
+        "pk": 145, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Millard"
+        }
+    }, 
+    {
+        "pk": 146, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Mineral"
+        }
+    }, 
+    {
+        "pk": 147, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Minidoka"
+        }
+    }, 
+    {
+        "pk": 148, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Missoula"
+        }
+    }, 
+    {
+        "pk": 149, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Modoc"
+        }
+    }, 
+    {
+        "pk": 150, 
+        "model": "species.county", 
+        "fields": {
+            "state": 15, 
+            "name": "Mojave"
+        }
+    }, 
+    {
+        "pk": 151, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Mono"
+        }
+    }, 
+    {
+        "pk": 152, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Monterey"
+        }
+    }, 
+    {
+        "pk": 153, 
+        "model": "species.county", 
+        "fields": {
+            "state": 7, 
+            "name": "Montezuma"
+        }
+    }, 
+    {
+        "pk": 154, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Morrow"
+        }
+    }, 
+    {
+        "pk": 155, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Multnomah"
+        }
+    }, 
+    {
+        "pk": 156, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Napa"
+        }
+    }, 
+    {
+        "pk": 157, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Nevada"
+        }
+    }, 
+    {
+        "pk": 158, 
+        "model": "species.county", 
+        "fields": {
+            "state": 26, 
+            "name": "Norfolk"
+        }
+    }, 
+    {
+        "pk": 159, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Okanogan"
+        }
+    }, 
+    {
+        "pk": 160, 
+        "model": "species.county", 
+        "fields": {
+            "state": 9, 
+            "name": "Olmsted"
+        }
+    }, 
+    {
+        "pk": 161, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Oneida"
+        }
+    }, 
+    {
+        "pk": 162, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Owyhee"
+        }
+    }, 
+    {
+        "pk": 163, 
+        "model": "species.county", 
+        "fields": {
+            "state": 27, 
+            "name": "Oxford"
+        }
+    }, 
+    {
+        "pk": 164, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Pacific"
+        }
+    }, 
+    {
+        "pk": 165, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Park"
+        }
+    }, 
+    {
+        "pk": 166, 
+        "model": "species.county", 
+        "fields": {
+            "state": 16, 
+            "name": "Park"
+        }
+    }, 
+    {
+        "pk": 167, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Payette"
+        }
+    }, 
+    {
+        "pk": 168, 
+        "model": "species.county", 
+        "fields": {
+            "state": 27, 
+            "name": "Penobacot"
+        }
+    }, 
+    {
+        "pk": 169, 
+        "model": "species.county", 
+        "fields": {
+            "state": 27, 
+            "name": "Penobscot"
+        }
+    }, 
+    {
+        "pk": 170, 
+        "model": "species.county", 
+        "fields": {
+            "state": 14, 
+            "name": "Pershing"
+        }
+    }, 
+    {
+        "pk": 171, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Phillips"
+        }
+    }, 
+    {
+        "pk": 172, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Pierce"
+        }
+    }, 
+    {
+        "pk": 173, 
+        "model": "species.county", 
+        "fields": {
+            "state": 15, 
+            "name": "Pima"
+        }
+    }, 
+    {
+        "pk": 174, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Placer"
+        }
+    }, 
+    {
+        "pk": 175, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Plumas"
+        }
+    }, 
+    {
+        "pk": 176, 
+        "model": "species.county", 
+        "fields": {
+            "state": 26, 
+            "name": "Plymouth"
+        }
+    }, 
+    {
+        "pk": 177, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Polk"
+        }
+    }, 
+    {
+        "pk": 178, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Power"
+        }
+    }, 
+    {
+        "pk": 179, 
+        "model": "species.county", 
+        "fields": {
+            "state": 9, 
+            "name": "Ramsey"
+        }
+    }, 
+    {
+        "pk": 180, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Ravalli"
+        }
+    }, 
+    {
+        "pk": 181, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Ravelli"
+        }
+    }, 
+    {
+        "pk": 182, 
+        "model": "species.county", 
+        "fields": {
+            "state": 9, 
+            "name": "Rennville"
+        }
+    }, 
+    {
+        "pk": 183, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Rich"
+        }
+    }, 
+    {
+        "pk": 184, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "River"
+        }
+    }, 
+    {
+        "pk": 185, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Riverside"
+        }
+    }, 
+    {
+        "pk": 186, 
+        "model": "species.county", 
+        "fields": {
+            "state": 7, 
+            "name": "Routt"
+        }
+    }, 
+    {
+        "pk": 187, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Sacramento"
+        }
+    }, 
+    {
+        "pk": 188, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Sanders"
+        }
+    }, 
+    {
+        "pk": 189, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Sanpete"
+        }
+    }, 
+    {
+        "pk": 190, 
+        "model": "species.county", 
+        "fields": {
+            "state": 16, 
+            "name": "several"
+        }
+    }, 
+    {
+        "pk": 191, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Shasta"
+        }
+    }, 
+    {
+        "pk": 192, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Sherman"
+        }
+    }, 
+    {
+        "pk": 193, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Shoshone"
+        }
+    }, 
+    {
+        "pk": 194, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Sierra"
+        }
+    }, 
+    {
+        "pk": 195, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Siskiyou"
+        }
+    }, 
+    {
+        "pk": 196, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Skamania"
+        }
+    }, 
+    {
+        "pk": 197, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Snohomish"
+        }
+    }, 
+    {
+        "pk": 198, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Spokane"
+        }
+    }, 
+    {
+        "pk": 199, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Stanislaus"
+        }
+    }, 
+    {
+        "pk": 200, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Stevens"
+        }
+    }, 
+    {
+        "pk": 201, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Stillwater"
+        }
+    }, 
+    {
+        "pk": 202, 
+        "model": "species.county", 
+        "fields": {
+            "state": 16, 
+            "name": "Sublette"
+        }
+    }, 
+    {
+        "pk": 203, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Summit"
+        }
+    }, 
+    {
+        "pk": 204, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Sweetgrass"
+        }
+    }, 
+    {
+        "pk": 205, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Tehama"
+        }
+    }, 
+    {
+        "pk": 206, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Teton"
+        }
+    }, 
+    {
+        "pk": 207, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Teton"
+        }
+    }, 
+    {
+        "pk": 208, 
+        "model": "species.county", 
+        "fields": {
+            "state": 16, 
+            "name": "Teton"
+        }
+    }, 
+    {
+        "pk": 209, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Thurston"
+        }
+    }, 
+    {
+        "pk": 210, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Tillamook"
+        }
+    }, 
+    {
+        "pk": 211, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Tooele"
+        }
+    }, 
+    {
+        "pk": 212, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Toole"
+        }
+    }, 
+    {
+        "pk": 213, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Treasure"
+        }
+    }, 
+    {
+        "pk": 214, 
+        "model": "species.county", 
+        "fields": {
+            "state": 8, 
+            "name": "Trego"
+        }
+    }, 
+    {
+        "pk": 215, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Trinity"
+        }
+    }, 
+    {
+        "pk": 216, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Uintah"
+        }
+    }, 
+    {
+        "pk": 217, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Umatilla"
+        }
+    }, 
+    {
+        "pk": 218, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Union"
+        }
+    }, 
+    {
+        "pk": 219, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Utah"
+        }
+    }, 
+    {
+        "pk": 220, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Valley"
+        }
+    }, 
+    {
+        "pk": 221, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Wahkiakum"
+        }
+    }, 
+    {
+        "pk": 222, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Wallowa"
+        }
+    }, 
+    {
+        "pk": 223, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Wasatch"
+        }
+    }, 
+    {
+        "pk": 224, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Wasco"
+        }
+    }, 
+    {
+        "pk": 225, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Washington"
+        }
+    }, 
+    {
+        "pk": 226, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Washington"
+        }
+    }, 
+    {
+        "pk": 227, 
+        "model": "species.county", 
+        "fields": {
+            "state": 28, 
+            "name": "Washington"
+        }
+    }, 
+    {
+        "pk": 228, 
+        "model": "species.county", 
+        "fields": {
+            "state": 14, 
+            "name": "Washoe"
+        }
+    }, 
+    {
+        "pk": 229, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Weber"
+        }
+    }, 
+    {
+        "pk": 230, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Wheeler"
+        }
+    }, 
+    {
+        "pk": 231, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Whitman"
+        }
+    }, 
+    {
+        "pk": 232, 
+        "model": "species.county", 
+        "fields": {
+            "state": 9, 
+            "name": "Winona"
+        }
+    }, 
+    {
+        "pk": 233, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Yakima"
+        }
+    }, 
+    {
+        "pk": 234, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Yamhill"
+        }
+    }, 
+    {
+        "pk": 235, 
+        "model": "species.county", 
+        "fields": {
+            "state": 15, 
+            "name": "Yavapai"
+        }
+    }, 
+    {
+        "pk": 236, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Yellowstone"
+        }
+    }, 
+    {
+        "pk": 237, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Bear Lake"
+        }
+    }, 
+    {
+        "pk": 238, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Big Horn"
+        }
+    }, 
+    {
+        "pk": 239, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Box Elder"
+        }
+    }, 
+    {
+        "pk": 240, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Chelan/Kittitas"
+        }
+    }, 
+    {
+        "pk": 241, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Clallam/Jefferson"
+        }
+    }, 
+    {
+        "pk": 242, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Del Norte"
+        }
+    }, 
+    {
+        "pk": 243, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "El Dorado"
+        }
+    }, 
+    {
+        "pk": 244, 
+        "model": "species.county", 
+        "fields": {
+            "state": 5, 
+            "name": "Fraser Valley"
+        }
+    }, 
+    {
+        "pk": 245, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Grays Harbor"
+        }
+    }, 
+    {
+        "pk": 246, 
+        "model": "species.county", 
+        "fields": {
+            "state": 3, 
+            "name": "Hood River"
+        }
+    }, 
+    {
+        "pk": 247, 
+        "model": "species.county", 
+        "fields": {
+            "state": 5, 
+            "name": "Kootenay district"
+        }
+    }, 
+    {
+        "pk": 248, 
+        "model": "species.county", 
+        "fields": {
+            "state": 7, 
+            "name": "Larimer/Grand/Boulder"
+        }
+    }, 
+    {
+        "pk": 249, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Lewis & Clark"
+        }
+    }, 
+    {
+        "pk": 250, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Los Angeles"
+        }
+    }, 
+    {
+        "pk": 251, 
+        "model": "species.county", 
+        "fields": {
+            "state": 29, 
+            "name": "New Haven"
+        }
+    }, 
+    {
+        "pk": 252, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Nez Perce"
+        }
+    }, 
+    {
+        "pk": 253, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Okanogan-Whatcom County line"
+        }
+    }, 
+    {
+        "pk": 254, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Okanogan/Whatcom"
+        }
+    }, 
+    {
+        "pk": 255, 
+        "model": "species.county", 
+        "fields": {
+            "state": 5, 
+            "name": "Peace River District"
+        }
+    }, 
+    {
+        "pk": 256, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Pend Oreille"
+        }
+    }, 
+    {
+        "pk": 257, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Pierce-Yakima County line"
+        }
+    }, 
+    {
+        "pk": 258, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Pierce/Yakima"
+        }
+    }, 
+    {
+        "pk": 259, 
+        "model": "species.county", 
+        "fields": {
+            "state": 15, 
+            "name": "Pima/Pinal"
+        }
+    }, 
+    {
+        "pk": 260, 
+        "model": "species.county", 
+        "fields": {
+            "state": 11, 
+            "name": "Salt Lake"
+        }
+    }, 
+    {
+        "pk": 261, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "San Bernardino"
+        }
+    }, 
+    {
+        "pk": 262, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "San Diego"
+        }
+    }, 
+    {
+        "pk": 263, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "San Francisco"
+        }
+    }, 
+    {
+        "pk": 264, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "San Juan"
+        }
+    }, 
+    {
+        "pk": 265, 
+        "model": "species.county", 
+        "fields": {
+            "state": 4, 
+            "name": "Santa Clara"
+        }
+    }, 
+    {
+        "pk": 266, 
+        "model": "species.county", 
+        "fields": {
+            "state": 15, 
+            "name": "Santa Cruz"
+        }
+    }, 
+    {
+        "pk": 267, 
+        "model": "species.county", 
+        "fields": {
+            "state": 6, 
+            "name": "SE province"
+        }
+    }, 
+    {
+        "pk": 268, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Silver Bow"
+        }
+    }, 
+    {
+        "pk": 269, 
+        "model": "species.county", 
+        "fields": {
+            "state": 30, 
+            "name": "St Croix"
+        }
+    }, 
+    {
+        "pk": 270, 
+        "model": "species.county", 
+        "fields": {
+            "state": 30, 
+            "name": "St. Croix"
+        }
+    }, 
+    {
+        "pk": 271, 
+        "model": "species.county", 
+        "fields": {
+            "state": 10, 
+            "name": "Sweet Grass"
+        }
+    }, 
+    {
+        "pk": 272, 
+        "model": "species.county", 
+        "fields": {
+            "state": 2, 
+            "name": "Twin Falls"
+        }
+    }, 
+    {
+        "pk": 273, 
+        "model": "species.county", 
+        "fields": {
+            "state": 1, 
+            "name": "Walla Walla"
+        }
+    }, 
+    {
+        "pk": 274, 
+        "model": "species.county", 
+        "fields": {
+            "state": 14, 
+            "name": "White Pine"
+        }
+    }
+]
