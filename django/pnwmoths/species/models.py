@@ -74,6 +74,19 @@ class SpeciesRecord(models.Model):
     Represents a single record of a species based on a combination of where and
     when the specimen was found and by whom. At the minimum, a species record
     must include latitude and longitude values.
+
+    The following fields define a unique record despite the fact that most of
+    these fields can be empty:
+
+    species,
+    latitude,
+    longitude,
+    year,
+    month,
+    day,
+    collector,
+    collection,
+    notes
     """
     species = models.ForeignKey(Species)
     latitude = models.FloatField()
