@@ -53,18 +53,20 @@ class Collection(models.Model):
 
 class Species(models.Model):
     """
-    Represents a species of life.
+    Represents a species with a near-constant genus and species name.
     """
-    name = models.CharField(max_length=255)
+    genus = models.CharField(max_length=255)
+    species = models.CharField(max_length=255)
     common_name = models.CharField(max_length=255, blank=True, null=True)
     similar = models.ManyToManyField("self")
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["genus", "species"]
+        unique_together = ("genus", "species")
         verbose_name_plural = u"species"
 
     def __unicode__(self):
-        return self.name
+        return u"%s %s" % (self.genus, self.species)
 
 
 class SpeciesRecord(models.Model):
