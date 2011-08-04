@@ -6,7 +6,7 @@ from django.db import models
 
 class State(models.Model):
     choices = STATE_CHOICES + PROVINCE_CHOICES
-    code = models.CharField(choices=choices, max_length=2)
+    code = models.CharField(unique=True, choices=choices, max_length=2)
 
     class Meta:
         ordering = ["code"]
@@ -21,6 +21,7 @@ class County(models.Model):
 
     class Meta:
         ordering = ["name"]
+        unique_together = ("state", "name")
         verbose_name_plural = u"counties"
 
     def __unicode__(self):
@@ -28,7 +29,7 @@ class County(models.Model):
 
 
 class Collector(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta:
         ordering = ["name"]
@@ -41,7 +42,7 @@ class Collection(models.Model):
     """
     Represents a location where a species record may be kept in storage.
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta:
         ordering = ["name"]
