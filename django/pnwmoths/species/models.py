@@ -135,6 +135,7 @@ class SpeciesImage(models.Model):
     """
     species = models.ForeignKey(Species)
     file = models.FilePathField(path=settings.IMAGE_FILE_PATH)
+    record = models.ForeignKey(SpeciesRecord, blank=True, null=True)
 
     def __unicode__(self):
         return self.file
