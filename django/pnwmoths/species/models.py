@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.contrib.localflavor.ca.ca_provinces import PROVINCE_CHOICES
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
@@ -121,12 +123,12 @@ class SpeciesRecord(models.Model):
 
         return date
 
-    def save(*args, **kwargs):
+    def save(self, *args, **kwargs):
         if not self.date_added:
             self.date_added = datetime.datetime.now()
         self.date_modified = datetime.datetime.now()
 
-        super(Species, self).save(*args, **kwargs)
+        super(SpeciesRecord, self).save(*args, **kwargs)
 
 
 class SpeciesImage(models.Model):
