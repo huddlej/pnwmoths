@@ -40,20 +40,19 @@ class ImportSpeciesRecordsForm(forms.Form):
         reader = csv.reader(file, delimiter=self.cleaned_data["delimiter"])
         errors = []
         docs = []
-        for row in reader:
-            if reader.line_num == 1:
-                # Get all non-empty column names using the first row of the
-                # data.
-                column_names = filter(lambda i: i, row)
-                continue
 
+        # Get all non-empty column names using the first row of the data.
+        column_names = [column.strip()
+                        for column in reader.next()
+                        if column.strip()]
+
+        for row in reader:
             column_range = xrange(min(len(column_names), len(row)))
-            doc = {}
-            # TODO: Replace this for loop with a zip.
-            for i in column_range:
-                # Map row value to corresponding column name.
-                if len(row[i]) > 0:
-                    doc[column_names[i]] = row[i]
+
+            # Map row values to corresponding column names.
+            doc = dict([(column_names[i], row[i])
+                        for i in column_range
+                        if len(row[i]) > 0])
 
             if self.cleaned_data["model"]:
                 model = registered_models.get(self.cleaned_data["model"])
