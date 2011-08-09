@@ -1,8 +1,11 @@
+import csv
+
 from django import forms
 
 from models import SpeciesRecord
 
 registered_models = {"SpeciesRecord": SpeciesRecord}
+
 
 class ImportSpeciesRecordsForm(forms.Form):
     """
@@ -32,37 +35,42 @@ class ImportSpeciesRecordsForm(forms.Form):
     def clean_delimiter(self):
         return self.DELIMITER_STRING_MAP[self.cleaned_data["delimiter"]]
 
-    def import_data(self, database, file):
+    def import_data(self, model, file, delimiter, overwrite=False, dry_run=True):
         """
-        Parses the given file object as a CSV file and adds the contents to the
-        given database using the first row as attribute names for each column.
+        Parses the given file object as a CSV file and creates an instance of
+        the given model for each row. The values of the first row define the
+        attribute names for each column.
         """
-        model = self.cleaned_data["model"]
-        #model = registered_models.get(self.cleaned_data["model"])
-        reader = csv.reader(file, delimiter=self.cleaned_data["delimiter"])
+        reader = csv.reader(file, delimiter=delimiter)
         errors = []
-        docs = []
+        results = []
 
         # Get all non-empty column names using the first row of the data.
         column_names = [column.strip()
                         for column in reader.next()
                         if column.strip()]
+        column_range = xrange(len(column_names))
 
         for row in reader:
-            column_range = xrange(min(len(column_names), len(row)))
-
             # Map row values to corresponding column names.
             doc = dict([(column_names[i], row[i])
                         for i in column_range
                         if len(row[i]) > 0])
 
             try:
-                coerced_doc = model.coerce(doc)
-                if self.cleaned_data["overwrite"]:
+                coerced_doc = model.coerce(**doc)
+
+                # If this is a dry run, create the model instances, but do not
+                # save them.
+                if dry_run:
+                    instance = model(**coerced_doc)
+                elif overwrite:
                     instance, created = model.objects.get_or_create(**coerced_doc)
                 else:
                     instance = model.objects.create(**coerced_doc)
-            except ValueError, e:
-                errors.append((coerced_doc, ))
 
-        return errors
+                results.append(instance)
+            except ValueError, e:
+                errors.append(doc)
+
+        return results, errors
