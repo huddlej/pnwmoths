@@ -130,6 +130,35 @@ class SpeciesRecord(models.Model):
 
         super(SpeciesRecord, self).save(*args, **kwargs)
 
+    @classmethod
+    def coerce(cls, **kwargs):
+        foreign_fields = {
+            "county": ("name", County),
+            "state": ("code", State),
+            "collector": ("name", Collector),
+            "collection": ("name", Collection)
+        }
+
+        coerced_doc = {}
+        fields_by_name = dict([(field.name, field)
+                               for field in cls._meta.fields])
+        coerced_doc["species"] = Species.objects.get(
+            genus=kwargs.pop("genus"),
+            species=kwargs.pop("species")
+        )
+
+        for field, values in foreign_fields:
+            if field in kwargs:
+                attribute_name, model = values
+                args = {attribute_name: kwargs.pop(field)}
+                coerced_doc[field] = model.objects.get(**args)
+
+        for field, value in kwargs.items():
+            if value.strip():
+                coerced_doc[field] = fields_by_name[field].to_python(value)
+
+        return coerced_doc
+
 
 class SpeciesImage(models.Model):
     """
