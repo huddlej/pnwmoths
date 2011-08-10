@@ -11,12 +11,6 @@ from models import SpeciesRecord
 
 
 class TestImportSpeciesRecordsForm(TestCase):
-    fixtures = ["species.json",
-                "collectors.json",
-                "collections.json",
-                "counties.json",
-                "states.json"]
-
     def setUp(self):
         self.model = SpeciesRecord
         path, current_file = os.path.split(os.path.abspath(__file__))
