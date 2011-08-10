@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from django.conf import settings
 from django.contrib.localflavor.ca.ca_provinces import PROVINCE_CHOICES
@@ -170,6 +171,10 @@ class SpeciesImage(models.Model):
 
     def __unicode__(self):
         return self.file
+
+    @property
+    def name(self):
+        return os.path.basename(self.file)
 
 
 # TODO: write unit tests for this class before adding it.
