@@ -39,3 +39,16 @@ class TestImportSpeciesRecordsForm(TestCase):
         self.assertTrue(len(results) > 0)
         self.assertTrue(isinstance(results[0], model))
 
+
+__test__ = {"doctest": """
+>>> from django.template import Context
+>>> from species.models import Species
+>>> from species.templatetags.species_tags import SpeciesByNameNode
+>>> species = Species.objects.create(genus="Acronicta", species="cyanescens")
+>>> context = Context({"name": "Acronicta cyanescens"})
+>>> node = SpeciesByNameNode("name", "species")
+>>> node.render(context)
+''
+>>> context["species"]
+<Species: Acronicta cyanescens>
+"""}
