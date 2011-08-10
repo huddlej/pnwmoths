@@ -166,7 +166,7 @@ class SpeciesImage(models.Model):
     Represents an image of a specific species.
     """
     species = models.ForeignKey(Species)
-    file = models.FilePathField(path=settings.IMAGE_FILE_PATH)
+    file = models.FilePathField(path=settings.IMAGE_FILE_PATH, unique=True)
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True)
 
     def __unicode__(self):
