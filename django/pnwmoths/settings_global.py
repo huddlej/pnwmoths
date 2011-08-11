@@ -134,7 +134,6 @@ INSTALLED_APPS = (
     'publisher',
     'pnwmoths.cms_search',
     'pnwmoths.couchdb_templatetags',
-    'pnwmoths.species_images',
     'pnwmoths.species'
 )
 
