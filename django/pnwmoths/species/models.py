@@ -75,6 +75,18 @@ class Species(models.Model):
     def name(self):
         return unicode(self)
 
+    def get_first_image(self):
+        """
+        Return the first image of this species' images if one exists and None
+        otherwise.
+
+        TODO: turn this into a m2m manager method for SpeciesImage
+        """
+        try:
+            return self.speciesimage_set.all()[0]
+        except:
+            return None
+
 
 class SpeciesRecord(models.Model):
     """
