@@ -52,7 +52,6 @@
             <li>
                 <a href="/images/{{ image.name }}">
                     <img src="/images/thumbnail/{{ image.name }}" title="{{ image.title }}" />
-                    {% if show_title %}<br />{{ image.species }}{% endif %}
                 </a>
             </li>
             {% if forloop.last %}
@@ -61,7 +60,23 @@
         {% endfor %}
         </div>
 
-        {% similar_species %}
+        <div id="similar">
+        <h2>
+            Similar Species
+        {% if request.user.is_staff %}
+            <span class="edit"><a href="{% url cushion_view "pnwmoths" "moths" "by_similar_species" %}?reduce=false&key={{ species_name }}" target="_new">edit</a></span>
+        {% endif %}
+        </h2>
+
+        <ul class="other-images jcarousel-skin-tango">
+        {% for similar_species in species.similar.all %}
+            <li>
+                <img src="/images/thumbnail/{{ similar_species.get_first_image.name }}" /><br />
+                <a href="{% page_id_url similar_species.name %}">{{ similar_species }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+        </div>
     </div>
     <div class="yui-u">
         <div id="googlemap" class="googlemap">
