@@ -71,6 +71,10 @@ class Species(models.Model):
     def __unicode__(self):
         return u"%s %s" % (self.genus, self.species)
 
+    @property
+    def name(self):
+        return unicode(self)
+
 
 class SpeciesRecord(models.Model):
     """
