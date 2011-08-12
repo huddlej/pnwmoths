@@ -1,10 +1,15 @@
 import datetime
 import os
+from tastypie.models import create_api_key
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.localflavor.ca.ca_provinces import PROVINCE_CHOICES
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from django.db import models
+
+
+models.signals.post_save.connect(create_api_key, sender=User)
 
 
 class State(models.Model):
