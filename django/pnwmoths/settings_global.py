@@ -128,7 +128,7 @@ INSTALLED_APPS = (
     'cms.plugins.googlemap',
     'couchdbkit.ext.django',
     'cushion',
-    'djangorestframework',
+    'tastypie',
     'haystack',
     'menus',
     'mptt',

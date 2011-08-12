@@ -1,10 +1,15 @@
-from django.conf.urls.defaults import patterns, url
-from djangorestframework.views import ListOrCreateModelView, InstanceModelView
+from tastypie.api import Api
 
-from resources import SpeciesResource
+from django.conf.urls.defaults import include, patterns, url
 
+from resources import CountyResource, SpeciesResource, StateResource
+
+data_api = Api(api_name="api")
+data_api.register(CountyResource())
+data_api.register(SpeciesResource())
+data_api.register(StateResource())
 
 urlpatterns = patterns('',
-    url(r'^species/$', ListOrCreateModelView.as_view(resource=SpeciesResource)),
-    url(r'^species/(?P<pk>[^/]+)/$', InstanceModelView.as_view(resource=SpeciesResource)),
+    url(r'', include(data_api.urls))
+#    url(r'^species/(?P<pk>[^/]+)/$', InstanceModelView.as_view(resource=SpeciesResource)),
 )
