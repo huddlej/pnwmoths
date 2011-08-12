@@ -100,8 +100,6 @@
 
 {% placeholder "factsheet" %}
 
-<!-- wikipage stop -->
-
 <!-- data start -->
 <span class="dokuwiki-data" id="species-data">
 {% couchdb /pnwmoths/_design/moths/_list/json_collection_doc/by_species?include_docs=true&key="%(key)s" key=current_page.get_title %}
