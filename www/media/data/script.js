@@ -10,7 +10,7 @@ PNWMOTHS.Data = function () {
 
                 // Trigger "data is ready" event for this data set.
                 jQuery("#" + data_name).trigger("dataIsReady", [new_data]);
-            }
+            };
         }
     };
 }();
