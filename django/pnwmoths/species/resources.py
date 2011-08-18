@@ -34,10 +34,11 @@ class StateResource(ModelResource):
 
 
 class CountyResource(ModelResource):
-    state = fields.ForeignKey(StateResource, "state", full=True)
+    state = fields.CharField(attribute="state__code")
 
     class Meta:
         queryset = County.objects.all()
+        fields = ["name", "state"]
         allowed_methods = ["get"]
 
 
