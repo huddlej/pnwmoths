@@ -4,7 +4,7 @@ import httplib
 from tastypie import fields
 from tastypie.resources import ModelResource
 
-from models import County, Species, State
+from models import Collection, County, Species, State
 
 
 def get_resource_by_url(url, data=None):
@@ -55,6 +55,20 @@ class CountyResource(ModelResource):
         """
         return ["%(name)s (%(state)s)" % bundle.data
                 for bundle in data["objects"]]
+
+
+class CollectionResource(ModelResource):
+    class Meta:
+        queryset = Collection.objects.all()
+        fields = ["name"]
+        allowed_methods = ["get"]
+        include_resource_uri = False
+
+    def alter_list_data_to_serialize(self, request, data):
+        """
+        Convert final serialized states to codes.
+        """
+        return [bundle.data["name"] for bundle in data["objects"]]
 
 
 class SpeciesResource(ModelResource):
