@@ -1,7 +1,29 @@
+from django.core.urlresolvers import resolve
+from django.http import HttpRequest
+import httplib
 from tastypie import fields
 from tastypie.resources import ModelResource
 
 from models import County, Species, State
+
+
+def get_resource_by_url(url, data=None):
+    if data is None:
+        data = {}
+
+    request = HttpRequest()
+    request.method = "GET"
+    request.GET.update(data)
+    view, args, kwargs = resolve(url)
+    kwargs["request"] = request
+
+    response = view(*args, **kwargs)
+    if response.status_code == httplib.OK:
+        content = response.content
+    else:
+        content = ""
+
+    return content
 
 
 class StateResource(ModelResource):
