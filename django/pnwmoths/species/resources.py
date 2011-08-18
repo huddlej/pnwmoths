@@ -31,6 +31,13 @@ class StateResource(ModelResource):
         queryset = State.objects.all()
         fields = ["code"]
         allowed_methods = ["get"]
+        include_resource_uri = False
+
+    def alter_list_data_to_serialize(self, request, data):
+        """
+        Convert final serialized states to codes.
+        """
+        return [bundle.data["code"] for bundle in data["objects"]]
 
 
 class CountyResource(ModelResource):
@@ -40,6 +47,14 @@ class CountyResource(ModelResource):
         queryset = County.objects.all()
         fields = ["name", "state"]
         allowed_methods = ["get"]
+        include_resource_uri = False
+
+    def alter_list_data_to_serialize(self, request, data):
+        """
+        Convert final serialized states to codes.
+        """
+        return ["%(name)s (%(state)s)" % bundle.data
+                for bundle in data["objects"]]
 
 
 class SpeciesResource(ModelResource):
@@ -47,3 +62,4 @@ class SpeciesResource(ModelResource):
         queryset = Species.objects.all()
         fields = ["genus", "species"]
         allowed_methods = ["get"]
+        include_resource_uri = False
