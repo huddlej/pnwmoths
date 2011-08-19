@@ -103,7 +103,7 @@
 <!-- data start -->
 {% cache 500 js_data species.name %}
 <span class="dokuwiki-data" id="species-data">
-{% couchdb /pnwmoths/_design/moths/_list/json_collection_doc/by_species?include_docs=true&key="%(key)s" key=current_page.get_title %}
+{% resource /data/api/speciesrecord/ format=json limit=0 %}
 </span>
 <span class="dokuwiki-data" id="state-data">
 {% resource /data/api/state/ format=json limit=0 %}
