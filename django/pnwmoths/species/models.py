@@ -62,6 +62,9 @@ class Collection(models.Model):
 class Species(models.Model):
     """
     Represents a species with a near-constant genus and species name.
+
+    TODO: handle general key/value attributes including discoverer/year,
+    synonyms, location on plates, NOC code, etc.
     """
     genus = models.CharField(max_length=255)
     species = models.CharField(max_length=255)
@@ -115,6 +118,8 @@ class SpeciesRecord(models.Model):
     species = models.ForeignKey(Species)
     latitude = models.FloatField()
     longitude = models.FloatField()
+
+    # TODO: also known as site_name and city in CouchDB
     locality = models.CharField(null=True, blank=True, max_length=255)
     county = models.ForeignKey(County, null=True, blank=True)
     state = models.ForeignKey(State, null=True, blank=True)
