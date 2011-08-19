@@ -130,8 +130,8 @@ class SpeciesRecord(models.Model):
     females = models.IntegerField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
 
-    date_added = models.DateTimeField()
-    date_modified = models.DateTimeField()
+    date_added = models.DateTimeField(editable=False)
+    date_modified = models.DateTimeField(editable=False)
 
     def __unicode__(self):
         return u"%s at (%.2f, %.2f)" % (self.species, self.latitude, self.longitude)
