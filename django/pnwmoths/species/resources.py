@@ -88,6 +88,7 @@ class SpeciesRecordResource(ModelResource):
     class Meta:
         queryset = SpeciesRecord.objects.all()
         allowed_methods = ["get"]
+        excludes = ["id", "notes"]
         include_resource_uri = False
 
     def dehydrate(self, bundle):
