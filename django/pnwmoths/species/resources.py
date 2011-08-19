@@ -106,3 +106,9 @@ class SpeciesRecordResource(ModelResource):
             ])
 
         return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        """
+        Convert final serialized states to codes.
+        """
+        return data["objects"]
