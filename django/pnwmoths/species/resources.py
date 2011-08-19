@@ -80,10 +80,10 @@ class SpeciesResource(ModelResource):
 
 
 class SpeciesRecordResource(ModelResource):
-    collection = fields.CharField(attribute="collection__name")
-    collector = fields.CharField(attribute="collector__name")
-    county = fields.CharField(attribute="county__name")
-    state = fields.CharField(attribute="state__code")
+    collection = fields.CharField(attribute="collection__name", null=True)
+    collector = fields.CharField(attribute="collector__name", null=True)
+    county = fields.CharField(attribute="county", null=True)
+    state = fields.CharField(attribute="state__code", null=True)
 
     class Meta:
         queryset = SpeciesRecord.objects.all()
