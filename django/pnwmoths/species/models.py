@@ -115,6 +115,10 @@ class SpeciesRecord(models.Model):
     collection,
     notes
     """
+    # Set the number of decimal points to include in longitude and latitude
+    # values returned to the user.
+    GPS_PRECISION = 2
+
     species = models.ForeignKey(Species)
     latitude = models.FloatField()
     longitude = models.FloatField()
