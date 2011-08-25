@@ -10,6 +10,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = "pnwmoths.settings"
 
 from django.conf import settings
 from pnwmoths.species.models import Species, SpeciesImage
+from bulkops import insert_many
 
 logger = logging.getLogger("sync_media")
 SIZES = {
@@ -38,14 +39,18 @@ def sync_media(database):
     files = set(files)
     files_not_in_db = files - files_in_db
 
-    # Add files from the filesystem that aren't already in the database.
+    # Create SpeciesImage instances for files that are in the filesystem but not
+    # the database.
+    objects = []
     for filename in files_not_in_db:
         kwargs = {
             "file": filename,
             "species": _get_species_for_file(filename)
         }
-        SpeciesImage.objects.create(**kwargs)
-        _create_or_update_sizes(filename)
+        objects.append(SpeciesImage(**kwargs))
+
+    # Save new records in one query.
+    insert_many(objects, "pnwmoths")
 
 
 def _get_species_for_file(file):
