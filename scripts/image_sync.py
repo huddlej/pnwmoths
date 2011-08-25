@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+import logging
+import Image
 import os
 import sys
 
@@ -8,11 +9,8 @@ path = "/usr/local/www/pnwmoths/django"
 sys.path.append(path)
 os.environ['DJANGO_SETTINGS_MODULE'] = "pnwmoths.settings"
 
-from couchdbkit import Server
-import logging
-import Image
-
 from django.conf import settings
+from pnwmoths.species.models import Species, SpeciesImage
 
 logger = logging.getLogger("sync_media")
 SIZES = {
@@ -21,96 +19,57 @@ SIZES = {
 }
 
 
-def cleanup_db(database):
-    server = Server(settings.COUCHDB_SERVER)
-    logging.debug("Connecting to CouchDB server: %s", settings.COUCHDB_SERVER)
-    db = server.get_or_create_db(database)
-    logging.debug("Found database: %s", db)
-
-    view = db.view("moths/by_species_image",
-                   reduce=False,
-                   include_docs=True)
-    logging.debug("Found %i results in by_species_image view.", view.total_rows)
-
-    bulk_docs = []
-    for row in view:
-        doc = row["doc"]
-        doc["_deleted"] = True
-        bulk_docs.append(doc)
-
-    if len(bulk_docs) > 0:
-        logging.info("Saving %i bulk docs.", len(bulk_docs))
-        db.bulk_save(bulk_docs)
-        db.compact()
-
-
+# TODO: rethink the creation and maintenance of thumbnail images. There is
+# probably a better way.
 def sync_media(database):
-    server = Server(settings.COUCHDB_SERVER)
-    logging.debug("Connecting to CouchDB server: %s", settings.COUCHDB_SERVER)
-    db = server.get_or_create_db(database)
-    logging.debug("Found database: %s", db)
+    """
+    Sync images on the filesystem with the record of images in the database.
 
-    view = db.view("moths/by_species_image",
-                   reduce=False,
-                   include_docs=True)
-    logging.debug("Found %i results in by_species_image view.", view.total_rows)
-
-    docs = [row["doc"] for row in view]
-    logging.debug("Found %i docs.", len(docs))
-
+    Any images on the filesystem that don't exist in the database should have
+    new database entries. Any images in the database that no longer exist on the
+    filesystem should be deleted from the database.
+    """
     files = _get_files()
-    relative_files = [os.path.split(file)[1] for file in files]
-    relative_files.sort()
-    logging.debug(relative_files)
 
-    bulk_docs = []
+    # Load image records that don't have files on the filesystem.
+    docs = SpeciesImage.objects.exclude(file__in=files)
+
+    # Process files that will be deleted.
+    #
+    # TODO: move this code into a custom queryset delete method for
+    # SpeciesImage.
     for doc in docs:
-        if doc["_id"] in relative_files:
-            # Don't process files already in the database.
-            relative_files.remove(doc["_id"])
+        # Make sure all other sizes for this image are deleted.
+        for size_name in SIZES.keys():
+            # Get path and base filename from image path.
+            path, filename = os.path.split(doc.file)
+            size_filename = os.path.join(path, size_name, filename)
+            _delete_file(size_filename)
 
-            if not "type" in doc or not "species" in doc:
-                doc.update({
-                    "type": "image",
-                    "species": _get_species_for_file(doc["_id"])
-                })
-                bulk_docs.append(doc)
-                logging.debug("Updating file already in database: %s", doc["_id"])
-            else:
-                logging.debug("Skipping file already in database: %s", doc["_id"])
+    # Remove files from the database that aren't in the filesystem.
+    logging.info("Deleting %i files from database", docs.count())
+    docs.delete()
 
-            # Update alternate sized files if they are out of date compared to
-            # the original image.
-            if _sizes_outdated(doc["_id"]):
-                _create_or_update_sizes(doc["_id"])
-        else:
-            # If the file is in the database and not in the filesystem, it needs
-            # to be deleted.
-            try:
-                # Make sure all other sizes for this image are deleted.
-                for size_name in SIZES.keys():
-                    filename = os.path.join(settings.CONTENT_ROOT, size_name, doc["_id"])
-                    _delete_file(filename)
+    # Update images in the database that have changed on the filesystem.
+    docs = SpeciesImage.objects.filter(file__in=files)
+    for doc in docs:
+        # Don't process files already in the database.
+        files.remove(doc.file)
+        logging.debug("Skipping file already in database: %s", doc)
 
-                logging.info("Deleting file from database: %s", doc["_id"])
-                doc["_deleted"] = True
-                bulk_docs.append(doc)
-            except UnicodeEncodeError, e:
-                logging.error("Couldn't delete file '%s': %s", filename, e)
+        # Update alternate sized files if they are out of date compared to the
+        # original image.
+        if _sizes_outdated(doc.file):
+            _create_or_update_sizes(doc.file)
 
-    # Process files not already in the database.
-    for file in relative_files:
-        doc = {
-            "_id": file,
-            "type": "image",
-            "species": _get_species_for_file(file)
+    # Add files from the filesystem that aren't already in the database.
+    for filename in files:
+        kwargs = {
+            "file": filename,
+            "species": _get_species_for_file(filename)
         }
-        bulk_docs.append(doc)
-        _create_or_update_sizes(file)
-
-    if len(bulk_docs) > 0:
-        logging.info("Saving %i bulk docs.", len(bulk_docs))
-        db.bulk_save(bulk_docs)
+        SpeciesImage.objects.create(**kwargs)
+        _create_or_update_sizes(filename)
 
 
 def _get_species_for_file(file):
@@ -136,6 +95,7 @@ def _get_files(path=None):
         elif os.path.isfile(file):
             files.append(file)
 
+    files.sort()
     return files
 
 
@@ -203,3 +163,4 @@ def _delete_file(filename):
 
 if __name__ == "__main__":
     sync_media("pnwmoths")
+
