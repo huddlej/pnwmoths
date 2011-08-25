@@ -53,8 +53,30 @@ def sync_media(database):
     insert_many(objects, "pnwmoths")
 
 
-def _get_species_for_file(file):
-    return file.split("-")[0]
+SPECIES_CACHE = {}
+def _get_species_for_file(filename):
+    """
+    Returns a Species instance for a given filename. Filenames usually look like
+    this:
+
+    Acronicta cyanescens-A-D.jpg
+
+    >>> _get_species_for_file("Acronicta cyanescens-A-D.jpg")
+    <Species: Acronicta cyanescens>
+    """
+    pieces = filename.split("-")
+    binomial_name = pieces[0]
+
+    if binomial_name in SPECIES_CACHE:
+        print "hit cache"
+        return SPECIES_CACHE[binomial_name]
+
+    print "missed cache"
+    genus, species = binomial_name.split()
+    instance = Species.objects.get(genus=genus, species=species)
+    SPECIES_CACHE[binomial_name] = instance
+
+    return instance
 
 
 def _get_files(path=None):
