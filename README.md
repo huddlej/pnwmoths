@@ -6,4 +6,4 @@
  * [jQuery](http://jquery.com)
  * [jCarousel](http://sorgalla.com/jcarousel/)
  * [jqPlot](http://www.jqplot.com)
- * [Django Rest Framework](http://django-rest-framework.org/)
+ * [tastypie](http://django-tastypie.readthedocs.org/en/latest/)
