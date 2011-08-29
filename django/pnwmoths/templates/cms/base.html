@@ -87,7 +87,6 @@
           {% if request.user.is_staff %}
               <li><a href="http://github.com/huddlej/pnwmoths/issues">Issues</a></li>
               <li><a href="{% url admin:index %}">Site Admin</a></li>
-              <li><a href="{% url cushion_index %}">Database Admin</a></li>
           {% endif %}
 
           <li><a href="{% url logout %}">Logout</a></li>

@@ -14,7 +14,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name="login"),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name="logout"),
-    (r'^cushion/', include('cushion.urls')),
     url(r'^admin/species/speciesrecord/import/', import_species_records, name="speciesrecord_import"),
     url(r'^data/', include('pnwmoths.species.urls')),
     (r'^admin/', include(admin.site.urls)),
