@@ -1,4 +1,5 @@
 import datetime
+from sorl.thumbnail import ImageField
 from tastypie.models import create_api_key
 
 from django.conf import settings
@@ -200,7 +201,7 @@ class SpeciesImage(models.Model):
     }
 
     species = models.ForeignKey(Species)
-    image = models.ImageField(upload_to="moths/")
+    image = ImageField(upload_to="moths/")
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True)
 
     def __unicode__(self):
