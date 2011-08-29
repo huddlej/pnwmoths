@@ -52,10 +52,13 @@
                 <ul class="other-images jcarousel-skin-tango">
             {% endif %}
             <li>
-                {% thumbnail species_image.image species_image.SIZES.thumbnail as im %}
-                    <a href="{{ species_image.image.url }}">
-                        <img src="{{ im.url }}" title="{{ species_image.title }}" />
-                    </a>
+                {% thumbnail species_image.image species_image.SIZES.medium as medium %}
+                    {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
+                        <a href="{{ species_image.image.url }}" class="thumbnail">
+                            <img src="{{ small.url }}" title="{{ species_image.title }}" />
+                        </a>
+                        <a href="{{ medium.url }}" class="hidden medium-thumbnail"></a>
+                    {% endthumbnail %}
                 {% endthumbnail %}
             </li>
             {% if forloop.last %}

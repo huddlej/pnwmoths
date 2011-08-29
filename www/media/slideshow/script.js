@@ -11,8 +11,8 @@ jQuery(document).ready(function() {
         jQuery("#images .other-images a").click(function (event) {
             event.preventDefault();
             jQuery("#images .current-image a").replaceWith(jQuery(this).clone());
-            image_dom = jQuery("#images .current-image a img")[0];
-            image_dom.src = image_dom.src.replace("thumbnail", "medium");
+            image_dom = jQuery("#images .current-image a img");
+            image_dom.attr("src", jQuery(this).parent().children("a.medium-thumbnail").attr("href"));
             jQuery("#images .current-image a").colorbox();
         });
         jQuery("#images .current-image a").colorbox();
