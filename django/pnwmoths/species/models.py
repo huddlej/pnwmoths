@@ -206,6 +206,9 @@ class SpeciesImage(models.Model):
     def __unicode__(self):
         return self.image.name
 
+    def title(self):
+        return self.species
+
 
 # TODO: write unit tests for this class before adding it.
 # class SpeciesImageMetadata(models.Model):
