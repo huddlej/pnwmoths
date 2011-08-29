@@ -194,6 +194,11 @@ class SpeciesImage(models.Model):
     """
     Represents an image of a specific species.
     """
+    SIZES = {
+        "thumbnail": "140x93",
+        "medium": "375x249"
+    }
+
     species = models.ForeignKey(Species)
     image = models.ImageField(upload_to="moths/")
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True)
