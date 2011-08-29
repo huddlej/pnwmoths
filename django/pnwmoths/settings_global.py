@@ -153,6 +153,3 @@ HAYSTACK_SEARCH_ENGINE = "xapian"
 
 FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHandler",
                         "django.core.files.uploadhandler.MemoryFileUploadHandler")
-
-# Path to species images on the local filesystem.
-IMAGE_FILE_PATH = "/usr/local/www/images/"
