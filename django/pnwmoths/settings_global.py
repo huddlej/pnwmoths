@@ -132,7 +132,8 @@ INSTALLED_APPS = (
     'mptt',
     'publisher',
     'pnwmoths.cms_search',
-    'pnwmoths.species'
+    'pnwmoths.species',
+    'sorl.thumbnail'
 )
 
 CMS_TEMPLATES = (
