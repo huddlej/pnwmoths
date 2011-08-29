@@ -1,5 +1,4 @@
 import datetime
-import os
 from tastypie.models import create_api_key
 
 from django.conf import settings
@@ -196,15 +195,11 @@ class SpeciesImage(models.Model):
     Represents an image of a specific species.
     """
     species = models.ForeignKey(Species)
-    file = models.FilePathField(path=settings.IMAGE_FILE_PATH, unique=True)
+    image = models.ImageField(upload_to="moths/")
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True)
 
     def __unicode__(self):
-        return self.file
-
-    @property
-    def name(self):
-        return os.path.basename(self.file)
+        return self.image.name
 
 
 # TODO: write unit tests for this class before adding it.
