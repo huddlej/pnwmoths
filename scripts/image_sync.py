@@ -75,22 +75,11 @@ def _get_species_for_file(filename):
     return instance
 
 
-def _get_files(path=None):
-    if not path:
-        path = settings.CONTENT_ROOT
-
-    files = []
-    dirlist = os.listdir(path)
-
-    for item in dirlist:
-        file = os.path.join(path, item)
-        if os.path.isdir(file):
-            files = files + _get_files(file)
-        elif os.path.isfile(file):
-            files.append(file)
-
-    files.sort()
-    return files
+def _get_files(path):
+    """
+    Returns a list of all files relative to the given path.
+    """
+    return os.listdir(path)
 
 
 if __name__ == "__main__":
