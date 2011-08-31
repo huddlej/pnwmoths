@@ -26,12 +26,12 @@ def sync_media(database):
     files = _get_files()
 
     # Delete image records that don't have files on the filesystem.
-    docs = SpeciesImage.objects.exclude(file__in=files)
+    docs = SpeciesImage.objects.exclude(image__in=files)
     logging.info("Deleting %i files from database", docs.count())
     docs.delete()
 
     # Update images in the database that have changed on the filesystem.
-    files_in_db = set(SpeciesImage.objects.filter(file__in=files).value_list("file", flat=True))
+    files_in_db = set(SpeciesImage.objects.filter(image__in=files).value_list("image", flat=True))
     files = set(files)
     files_not_in_db = files - files_in_db
 
@@ -40,7 +40,7 @@ def sync_media(database):
     objects = []
     for filename in files_not_in_db:
         kwargs = {
-            "file": filename,
+            "image": os.path.join(base_path, filename),
             "species": _get_species_for_file(filename)
         }
         objects.append(SpeciesImage(**kwargs))
