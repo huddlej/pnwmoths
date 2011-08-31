@@ -1,29 +1,27 @@
-#!/usr/bin/env python
-"""
-TODO: Convert this script to a Django manage.py command.
-"""
-
 import logging
 import os
-import sys
-
-# Setup Django environment.
-path = "/usr/local/www/pnwmoths/django"
-sys.path.append(path)
-os.environ['DJANGO_SETTINGS_MODULE'] = "pnwmoths.settings"
 
 from django.conf import settings
+from django.core.management.base import BaseCommand
 from pnwmoths.species.models import Species, SpeciesImage
 from bulkops import insert_many
 
 logger = logging.getLogger("sync_media")
 
 
-class ImageSyncer(object):
-    def __init__(self):
-        self.species_cache = {}
+class SyncImages(BaseCommand):
+    """
+    Sync images for the species application.
 
-    def sync_media(self, path, database):
+    For example: ./manage.py sync_images
+    """
+    def __init__(self, *args, **kwargs):
+        super(SyncImages, self).__init__(*args, **kwargs)
+        self.species_cache = {}
+        self.path = os.path.join(settings.MEDIA_ROOT, SpeciesImage.IMAGE_PATH)
+        self.database = "pnwmoths"
+
+    def handle(self, *args, **kwargs):
         """
         Sync images on the filesystem with the record of images in the database.
 
@@ -31,8 +29,8 @@ class ImageSyncer(object):
         new database entries. Any images in the database that no longer exist on the
         filesystem should be deleted from the database.
         """
-        root_path, base_path = os.path.split(path)
-        files = self.get_files(path)
+        root_path, base_path = os.path.split(self.path)
+        files = self.get_files(self.path)
         files = [os.path.join(base_path, filename) for filename in files]
 
         # Delete image records that don't have files on the filesystem.
@@ -56,7 +54,7 @@ class ImageSyncer(object):
             objects.append(SpeciesImage(**kwargs))
 
         # Save new records in one query.
-        insert_many(objects, "pnwmoths")
+        insert_many(objects, self.database)
 
     def get_species_for_file(self, filename):
         """
@@ -87,9 +85,3 @@ class ImageSyncer(object):
         Returns a list of all files relative to the given path.
         """
         return os.listdir(path)
-
-
-if __name__ == "__main__":
-    path = os.path.join(settings.MEDIA_ROOT, SpeciesImage.IMAGE_PATH)
-    syncer = ImageSyncer()
-    syncer.sync_media(path, "pnwmoths")
