@@ -9,14 +9,14 @@ from bulkops import insert_many
 logger = logging.getLogger("sync_media")
 
 
-class SyncImages(BaseCommand):
+class Command(BaseCommand):
     """
     Sync images for the species application.
 
     For example: ./manage.py sync_images
     """
     def __init__(self, *args, **kwargs):
-        super(SyncImages, self).__init__(*args, **kwargs)
+        super(Command, self).__init__(*args, **kwargs)
         self.species_cache = {}
         self.path = os.path.join(settings.MEDIA_ROOT, SpeciesImage.IMAGE_PATH)
         self.database = "pnwmoths"
