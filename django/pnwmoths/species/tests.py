@@ -10,6 +10,14 @@ from forms import ImportSpeciesRecordsForm
 from models import SpeciesRecord
 
 
+class TestImageSync(TestCase):
+    def test_get_files(self):
+        path = os.path.join(settings.MEDIA_ROOT, SpeciesImage.IMAGE_PATH)
+        syncer = ImageSyncer()
+        files = syncer.get_files(path)
+        self.assertTrue(len(files) > 0)
+
+
 class TestImportSpeciesRecordsForm(TestCase):
     def setUp(self):
         self.model = SpeciesRecord
