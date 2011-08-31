@@ -15,7 +15,7 @@ from bulkops import insert_many
 logger = logging.getLogger("sync_media")
 
 
-def sync_media(database):
+def sync_media(path, database):
     """
     Sync images on the filesystem with the record of images in the database.
 
@@ -23,7 +23,9 @@ def sync_media(database):
     new database entries. Any images in the database that no longer exist on the
     filesystem should be deleted from the database.
     """
-    files = _get_files()
+    root_path, base_path = os.path.split(path)
+    files = _get_files(path)
+    files = [os.path.join(base_path, filename) for filename in files]
 
     # Delete image records that don't have files on the filesystem.
     docs = SpeciesImage.objects.exclude(image__in=files)
@@ -83,4 +85,5 @@ def _get_files(path):
 
 
 if __name__ == "__main__":
-    sync_media("pnwmoths")
+    path = os.path.join(settings.MEDIA_ROOT, SpeciesImage.IMAGE_PATH)
+    sync_media(path, "pnwmoths")
