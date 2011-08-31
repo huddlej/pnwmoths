@@ -1,4 +1,5 @@
 import logging
+import optparse
 import os
 
 from django.conf import settings
@@ -15,6 +16,16 @@ class Command(BaseCommand):
 
     For example: ./manage.py sync_images
     """
+    option_list = BaseCommand.option_list + (
+        optparse.make_option(
+            "--dry-run",
+            action="store_true",
+            dest="dry_run",
+            default=False,
+            help="Run command printing output without making any changes"
+        ),
+    )
+
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
         self.species_cache = {}
@@ -33,6 +44,12 @@ class Command(BaseCommand):
         new database entries. Any images in the database that no longer exist on the
         filesystem should be deleted from the database.
         """
+        print "Syncing path %s to database %s" % (self.path, self.database)
+        if options["dry_run"]:
+            print "Dry run"
+        else:
+            print "Real thing"
+
         root_path, base_path = os.path.split(self.path)
         files = self.get_files(self.path)
         files = [os.path.join(base_path, filename) for filename in files]
@@ -40,10 +57,15 @@ class Command(BaseCommand):
         # Delete image records that don't have files on the filesystem.
         docs = SpeciesImage.objects.exclude(image__in=files)
         logging.info("Deleting %i files from database", docs.count())
-        docs.delete()
+
+        if options["dry_run"]:
+            print "Deleting %i files from database" % docs.count()
+            print docs
+        else:
+            docs.delete()
 
         # Update images in the database that have changed on the filesystem.
-        files_in_db = set(SpeciesImage.objects.filter(image__in=files).value_list("image", flat=True))
+        files_in_db = set(SpeciesImage.objects.filter(image__in=files).values_list("image", flat=True))
         files = set(files)
         files_not_in_db = files - files_in_db
 
@@ -52,24 +74,29 @@ class Command(BaseCommand):
         objects = []
         for filename in files_not_in_db:
             kwargs = {
-                "image": os.path.join(base_path, filename),
+                "image": filename,
                 "species": self.get_species_for_file(filename)
             }
             objects.append(SpeciesImage(**kwargs))
 
-        # Save new records in one query.
-        insert_many(objects, self.database)
+        if options["dry_run"]:
+            print "Inserting %i objects into %s" % (len(objects), self.database)
+            print objects
+        else:
+            # Save new records in one query.
+            insert_many(objects, self.database)
 
     def get_species_for_file(self, filename):
         """
         Returns a Species instance for a given filename. Filenames usually look like
         this:
 
-        Acronicta cyanescens-A-D.jpg
+        moths/Acronicta cyanescens-A-D.jpg
 
-        >>> _get_species_for_file("Acronicta cyanescens-A-D.jpg")
+        >>> get_species_for_file("moths/Acronicta cyanescens-A-D.jpg")
         <Species: Acronicta cyanescens>
         """
+        path, filename = os.path.split(filename)
         pieces = filename.split("-")
         binomial_name = pieces[0]
 
