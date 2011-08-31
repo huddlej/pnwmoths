@@ -195,13 +195,17 @@ class SpeciesImage(models.Model):
     """
     Represents an image of a specific species.
     """
+    IMAGE_PATH = "moths/"
     SIZES = {
         "thumbnail": "140x93",
         "medium": "375x249"
     }
 
     species = models.ForeignKey(Species)
-    image = ImageField(upload_to="moths/")
+    # Image field manages the creation and deletion of thumbnails
+    # automatically. When an instance of this class is deleted, thumbnails
+    # created for this field are automatically deleted too.
+    image = ImageField(upload_to=IMAGE_PATH)
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True)
 
     def __unicode__(self):
