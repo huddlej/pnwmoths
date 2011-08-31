@@ -21,7 +21,11 @@ class Command(BaseCommand):
         self.path = os.path.join(settings.MEDIA_ROOT, SpeciesImage.IMAGE_PATH)
         self.database = "pnwmoths"
 
-    def handle(self, *args, **kwargs):
+        # Remove trailing slash from path if it exists.
+        if self.path.endswith(os.sep):
+            self.path = self.path[:-1]
+
+    def handle(self, *args, **options):
         """
         Sync images on the filesystem with the record of images in the database.
 
