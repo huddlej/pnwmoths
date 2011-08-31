@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+"""
+TODO: Convert this script to a Django manage.py command.
+"""
+
 import logging
 import os
 import sys
@@ -15,75 +19,77 @@ from bulkops import insert_many
 logger = logging.getLogger("sync_media")
 
 
-def sync_media(path, database):
-    """
-    Sync images on the filesystem with the record of images in the database.
+class ImageSyncer(object):
+    def __init__(self):
+        self.species_cache = {}
 
-    Any images on the filesystem that don't exist in the database should have
-    new database entries. Any images in the database that no longer exist on the
-    filesystem should be deleted from the database.
-    """
-    root_path, base_path = os.path.split(path)
-    files = _get_files(path)
-    files = [os.path.join(base_path, filename) for filename in files]
+    def sync_media(self, path, database):
+        """
+        Sync images on the filesystem with the record of images in the database.
 
-    # Delete image records that don't have files on the filesystem.
-    docs = SpeciesImage.objects.exclude(image__in=files)
-    logging.info("Deleting %i files from database", docs.count())
-    docs.delete()
+        Any images on the filesystem that don't exist in the database should have
+        new database entries. Any images in the database that no longer exist on the
+        filesystem should be deleted from the database.
+        """
+        root_path, base_path = os.path.split(path)
+        files = self.get_files(path)
+        files = [os.path.join(base_path, filename) for filename in files]
 
-    # Update images in the database that have changed on the filesystem.
-    files_in_db = set(SpeciesImage.objects.filter(image__in=files).value_list("image", flat=True))
-    files = set(files)
-    files_not_in_db = files - files_in_db
+        # Delete image records that don't have files on the filesystem.
+        docs = SpeciesImage.objects.exclude(image__in=files)
+        logging.info("Deleting %i files from database", docs.count())
+        docs.delete()
 
-    # Create SpeciesImage instances for files that are in the filesystem but not
-    # the database.
-    objects = []
-    for filename in files_not_in_db:
-        kwargs = {
-            "image": os.path.join(base_path, filename),
-            "species": _get_species_for_file(filename)
-        }
-        objects.append(SpeciesImage(**kwargs))
+        # Update images in the database that have changed on the filesystem.
+        files_in_db = set(SpeciesImage.objects.filter(image__in=files).value_list("image", flat=True))
+        files = set(files)
+        files_not_in_db = files - files_in_db
 
-    # Save new records in one query.
-    insert_many(objects, "pnwmoths")
+        # Create SpeciesImage instances for files that are in the filesystem but not
+        # the database.
+        objects = []
+        for filename in files_not_in_db:
+            kwargs = {
+                "image": os.path.join(base_path, filename),
+                "species": self.get_species_for_file(filename)
+            }
+            objects.append(SpeciesImage(**kwargs))
 
+        # Save new records in one query.
+        insert_many(objects, "pnwmoths")
 
-SPECIES_CACHE = {}
-def _get_species_for_file(filename):
-    """
-    Returns a Species instance for a given filename. Filenames usually look like
-    this:
+    def get_species_for_file(self, filename):
+        """
+        Returns a Species instance for a given filename. Filenames usually look like
+        this:
 
-    Acronicta cyanescens-A-D.jpg
+        Acronicta cyanescens-A-D.jpg
 
-    >>> _get_species_for_file("Acronicta cyanescens-A-D.jpg")
-    <Species: Acronicta cyanescens>
-    """
-    pieces = filename.split("-")
-    binomial_name = pieces[0]
+        >>> _get_species_for_file("Acronicta cyanescens-A-D.jpg")
+        <Species: Acronicta cyanescens>
+        """
+        pieces = filename.split("-")
+        binomial_name = pieces[0]
 
-    if binomial_name in SPECIES_CACHE:
-        logger.debug("hit cache: %s" % binomial_name)
-        return SPECIES_CACHE[binomial_name]
+        if binomial_name in self.species_cache:
+            logger.debug("hit cache: %s" % binomial_name)
+            return self.species_cache[binomial_name]
 
-    logger.debug("missed cache: %s" % binomial_name)
-    genus, species = binomial_name.split()
-    instance = Species.objects.get(genus=genus, species=species)
-    SPECIES_CACHE[binomial_name] = instance
+        logger.debug("missed cache: %s" % binomial_name)
+        genus, species = binomial_name.split()
+        instance = Species.objects.get(genus=genus, species=species)
+        self.species_cache[binomial_name] = instance
 
-    return instance
+        return instance
 
-
-def _get_files(path):
-    """
-    Returns a list of all files relative to the given path.
-    """
-    return os.listdir(path)
+    def get_files(self, path):
+        """
+        Returns a list of all files relative to the given path.
+        """
+        return os.listdir(path)
 
 
 if __name__ == "__main__":
     path = os.path.join(settings.MEDIA_ROOT, SpeciesImage.IMAGE_PATH)
-    sync_media(path, "pnwmoths")
+    syncer = ImageSyncer()
+    syncer.sync_media(path, "pnwmoths")
