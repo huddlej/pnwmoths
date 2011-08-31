@@ -64,10 +64,10 @@ def _get_species_for_file(filename):
     binomial_name = pieces[0]
 
     if binomial_name in SPECIES_CACHE:
-        print "hit cache"
+        logger.debug("hit cache: %s" % binomial_name)
         return SPECIES_CACHE[binomial_name]
 
-    print "missed cache"
+    logger.debug("missed cache: %s" % binomial_name)
     genus, species = binomial_name.split()
     instance = Species.objects.get(genus=genus, species=species)
     SPECIES_CACHE[binomial_name] = instance
