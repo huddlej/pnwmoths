@@ -13,10 +13,6 @@ from pnwmoths.species.models import Species, SpeciesImage
 from bulkops import insert_many
 
 logger = logging.getLogger("sync_media")
-SIZES = {
-    "thumbnail": 140,
-    "medium": 375
-}
 
 
 def sync_media(database):
