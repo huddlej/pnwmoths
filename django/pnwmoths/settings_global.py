@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'cms.plugins.file',
     'cms.plugins.snippet',
     'cms.plugins.googlemap',
+    'csvimporter',
     'tastypie',
     'haystack',
     'menus',
@@ -153,3 +154,16 @@ HAYSTACK_SEARCH_ENGINE = "xapian"
 
 FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHandler",
                         "django.core.files.uploadhandler.MemoryFileUploadHandler")
+
+# csvimporter
+#
+# Custom setting used to calculate excluded apps with a simpler definition.
+CSVIMPORTER_INCLUDE = ["pnwmoths.fake"]
+
+# Actual csvimporter settings.
+CSVIMPORTER_EXCLUDE = [app.split(".")[-1] for app in INSTALLED_APPS
+                       if app not in CSVIMPORTER_INCLUDE]
+
+CSVIMPORTER_DATA_TRANSFORMS = {
+    "fake.speciesrecord": "pnwmoths.fake.views.transform_species_record"
+}
