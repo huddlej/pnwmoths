@@ -160,12 +160,12 @@ FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHand
 # csvimporter
 #
 # Custom setting used to calculate excluded apps with a simpler definition.
-CSVIMPORTER_INCLUDE = ["pnwmoths.fake"]
+CSVIMPORTER_INCLUDE = ["pnwmoths.species"]
 
 # Actual csvimporter settings.
 CSVIMPORTER_EXCLUDE = [app.split(".")[-1] for app in INSTALLED_APPS
                        if app not in CSVIMPORTER_INCLUDE]
 
 CSVIMPORTER_DATA_TRANSFORMS = {
-    "fake.speciesrecord": "pnwmoths.fake.views.transform_species_record"
+    "species.speciesrecord": "pnwmoths.species.views.transform_species_record"
 }
