@@ -5,9 +5,11 @@ from models import (Collection, Collector, County, Species, SpeciesImage,
                     SpeciesRecord, State)
 
 
-
 class SpeciesAdmin(admin.ModelAdmin):
     filter_horizontal = ("similar",)
+    list_display = ("__unicode__", "common_name")
+    list_editable = ("common_name",)
+    search_fields = ("genus", "species")
 admin.site.register(Species, SpeciesAdmin)
 
 
