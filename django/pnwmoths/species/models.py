@@ -69,7 +69,7 @@ class Species(models.Model):
     genus = models.CharField(max_length=255)
     species = models.CharField(max_length=255)
     common_name = models.CharField(max_length=255, blank=True, null=True)
-    similar = models.ManyToManyField("self")
+    similar = models.ManyToManyField("self", blank=True)
 
     class Meta:
         ordering = ["genus", "species"]
