@@ -5,6 +5,12 @@ from models import (Collection, Collector, County, Species, SpeciesImage,
                     SpeciesRecord, State)
 
 
+
+class SpeciesAdmin(admin.ModelAdmin):
+    filter_horizontal = ("similar",)
+admin.site.register(Species, SpeciesAdmin)
+
+
 class SpeciesImageAdmin(AdminImageMixin, admin.ModelAdmin):
     pass
 admin.site.register(SpeciesImage, SpeciesImageAdmin)
@@ -32,5 +38,4 @@ admin.site.register(SpeciesRecord, SpeciesRecordAdmin)
 admin.site.register(Collection)
 admin.site.register(Collector)
 admin.site.register(County)
-admin.site.register(Species)
 admin.site.register(State)
