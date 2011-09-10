@@ -77,7 +77,12 @@ class Species(models.Model):
         verbose_name_plural = u"species"
 
     def __unicode__(self):
-        return u"%s %s" % (self.genus, self.species)
+        if self.common_name:
+            name = u"%s %s (%s)" % (self.genus, self.species, self.common_name)
+        else:
+            name = u"%s %s" % (self.genus, self.species)
+
+        return name
 
     @property
     def name(self):
