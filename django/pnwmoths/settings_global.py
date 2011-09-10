@@ -3,6 +3,7 @@ from db import DATABASE_PASSWORDS
 import logging.config
 import os
 
+
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 # Define gettext for translation in settings.py.
