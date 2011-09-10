@@ -149,6 +149,7 @@ LANGUAGES = (
         ('en', gettext('English')),
 )
 
+# django-haystack
 HAYSTACK_XAPIAN_PATH = os.path.join(PROJECT_ROOT, "site_index")
 HAYSTACK_SITECONF = "pnwmoths.search_sites"
 HAYSTACK_SEARCH_ENGINE = "xapian"
