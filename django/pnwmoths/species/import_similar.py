@@ -59,5 +59,5 @@ def import_similar(filename):
     for species_name, similars in similar_by_species.items():
         species = species_by_fullname[species_name]
         similar_species = [species_by_fullname[s] for s in similars]
-        #species.similar.add(*similar_species)
+        species.similar.add(*similar_species)
         print "%s: %s" % (species, ", ".join(map(str, similar_species)))
