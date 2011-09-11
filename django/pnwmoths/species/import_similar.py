@@ -6,12 +6,21 @@ from django.db.models import Q
 from models import Species
 
 
-def import_similar(filename):
+def get_data(filename):
     fh = open(filename, "r")
     data = json.load(fh)
     fh.close()
     print "Found %i rows" % data["total_rows"]
+    return data
 
+
+def import_speciesrecords(filename):
+    data = get_data(filename)
+
+
+
+def import_similar(filename):
+    data = get_data(filename)
     similar_by_species = {}
     unique_species = set()
     for row in data["rows"]:
