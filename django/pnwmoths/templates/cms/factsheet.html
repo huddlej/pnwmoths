@@ -81,9 +81,9 @@
             {% with similar_species.get_first_image as similar_image %}
                 {% thumbnail similar_image similar_image.SIZES.thumbnail as im %}
                     <img src="{{ im.url }}" title="{{ similar_image.title }}" /><br />
-                    <a href="{% page_id_url similar_species.name %}">{{ similar_species }}</a>
                 {% endthumbnail %}
             {% endwith %}
+                 <a href="{% page_id_url similar_species.name %}">{{ similar_species }}</a>
             </li>
         {% endfor %}
         </ul>
