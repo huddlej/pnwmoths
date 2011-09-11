@@ -1,4 +1,5 @@
 import json
+from Levenshtein import distance
 import operator
 
 from django.db.models import Q
@@ -32,10 +33,28 @@ def import_similar(filename):
     species_by_fullname = dict([(unicode(s), s) for s in species])
 
     # Create species that didn't exist yet.
-    # TODO: check for spelling mistakes
     for i in unique_species:
         if " ".join(i) not in species_by_fullname:
-            print "Couldn't find %s %s" % i
+            matches = Species.objects.filter(
+                genus__startswith=i[0][:2],
+                genus__endswith=i[0][-2:],
+                species__startswith=i[1][:2],
+                species__endswith=i[1][-2:]
+            )
+            complete_name = u" ".join(i)
+            min_match = 10
+            min_match_species = None
+            for match in matches:
+                d = distance(complete_name, unicode(match))
+                if d < min_match:
+                    min_match = d
+                    min_match_species = match
+
+            if min_match_species and d < 3:
+                species_by_fullname[complete_name] = min_match_species
+            else:
+                species = Species.objects.create(genus=i[0], species=i[1])
+                species_by_fullname[complete_name] = species
 
     for species_name, similars in similar_by_species.items():
         species = species_by_fullname[species_name]
