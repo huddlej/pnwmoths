@@ -29,7 +29,7 @@ def import_similar(filename):
     species_filter = reduce(operator.or_, species_queries)
     species = Species.objects.filter(species_filter)
     print "Loaded %i unique species" % species.count()
-    species_by_fullname = dict([(str(s), s) for s in species])
+    species_by_fullname = dict([(unicode(s), s) for s in species])
 
     # Create species that didn't exist yet.
     # TODO: check for spelling mistakes
