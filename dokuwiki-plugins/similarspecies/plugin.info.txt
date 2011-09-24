@@ -1,7 +1,0 @@
-base   similarspecies
-author John Huddleston
-email  huddlej@gmail.com
-date   2010-03-08
-name   similarspecies plugin
-desc   Displays similar species for a given species name.
-url    http://www.biol.wwu.edu/PNWmoths

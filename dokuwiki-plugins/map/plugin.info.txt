@@ -1,7 +1,0 @@
-base   map
-author John Huddleston
-email  huddlej@gmail.com
-date   2010-03-15
-name   map plugin
-desc   Displays map data.
-url    http://www.biol.wwu.edu/PNWmoths

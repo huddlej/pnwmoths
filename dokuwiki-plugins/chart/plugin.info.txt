@@ -1,7 +1,0 @@
-base   chart
-author John Huddleston
-email  huddlej@gmail.com
-date   2010-05-20
-name   chart plugin
-desc   Displays chart data using jqPlot.
-url    http://www.biol.wwu.edu/PNWmoths
