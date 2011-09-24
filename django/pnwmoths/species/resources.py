@@ -2,7 +2,7 @@ from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 import httplib
 from tastypie import fields
-from tastypie.resources import ModelResource
+from tastypie.resources import ALL, ALL_WITH_RELATIONS, ModelResource
 
 from models import Collection, County, Species, SpeciesRecord, State
 
@@ -77,12 +77,14 @@ class SpeciesResource(ModelResource):
         fields = ["genus", "species"]
         allowed_methods = ["get"]
         include_resource_uri = False
+        filtering = {"genus": ALL, "species": ALL}
 
 
 class SpeciesRecordResource(ModelResource):
     collection = fields.CharField(attribute="collection__name", null=True)
     collector = fields.CharField(attribute="collector__name", null=True)
     county = fields.CharField(attribute="county", null=True)
+    species = fields.ForeignKey(SpeciesResource, "species")
     state = fields.CharField(attribute="state__code", null=True)
 
     class Meta:
@@ -90,6 +92,7 @@ class SpeciesRecordResource(ModelResource):
         allowed_methods = ["get"]
         excludes = ["id", "notes"]
         include_resource_uri = False
+        filtering = {"species": ALL_WITH_RELATIONS}
 
     def dehydrate(self, bundle):
         precision = SpeciesRecord.GPS_PRECISION
