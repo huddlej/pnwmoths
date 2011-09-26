@@ -128,7 +128,6 @@ class SpeciesRecord(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
 
-    # TODO: also known as site_name and city in CouchDB
     locality = models.CharField(null=True, blank=True, max_length=255)
     county = models.ForeignKey(County, null=True, blank=True)
     state = models.ForeignKey(State, null=True, blank=True)
