@@ -2,6 +2,7 @@ import datetime
 import simplejson
 from Levenshtein import distance
 import operator
+import os
 import pprint
 import re
 
@@ -12,6 +13,7 @@ from models import (
     Collector,
     County,
     Species,
+    SpeciesImage,
     SpeciesRecord,
     State
 )
@@ -25,7 +27,31 @@ def get_data(filename):
     return data
 
 
-def import_speciesrecords(filename, start=0):
+def save_speciesrecords(records, labels):
+    print "Inserting %i records" % len(records)
+    if labels:
+        for record in records:
+            # Manually save each record to obtain an id and enable many-to-many
+            # relationships.
+            record.save()
+
+            # Label records have keys in the format of "Genus species-A-label".
+            # Images are named in the format of "moths/Genus species-A-D.jpg".
+            #
+            # Find all images with the record's prefix and add them to the
+            # record's image set.
+            image_prefix = os.path.join(SpeciesImage.IMAGE_PATH,
+                                        record.label_id.replace("label", ""))
+            images = SpeciesImage.objects.filter(image__startswith=image_prefix)
+            record.speciesimage_set.add(*images)
+    else:
+        insert_many(records, using="pnwmoths")
+
+
+def import_speciesrecords(filename, labels=False):
+    """
+    {"_id":"Abagrotis apposta-A-label","_rev":"5-20a90e3ee143752f14ffa35ac9d57aca","doc_type":"Label","elevation":"1900","species":"Abagrotis apposta","date_modified":"2011-06-24T20:23:05.711555","type":"label","elevation_units":"m.","collection":"LGCC","month":"7","county":"Kittitas","state":"WA","longitude":"-121.081","year":"2005","latitude":"47.074","collector":"C Coughlin & L Crabo","city":"Quartz Mtn","day":"14"}
+    """
     data = get_data(filename)
     total_records = data["total_rows"]
 
@@ -37,6 +63,11 @@ def import_speciesrecords(filename, start=0):
     for row in data["rows"]:
         doc = row["doc"]
 
+        if labels:
+            genus, species = doc.get("species").split(" ", 1)
+            doc["genus"] = genus
+            doc["species"] = species
+
         if doc.get("genus") and doc.get("species"):
             unique_species.add((doc["genus"], doc["species"]))
 
@@ -45,7 +76,8 @@ def import_speciesrecords(filename, start=0):
             state = doc["state"][:2].upper()
             unique_states.add(state)
             if doc.get("county"):
-                unique_counties.add((state, doc["county"]))
+                county = " ".join([i.capitalize() for i in doc["county"].split(" ")])
+                unique_counties.add((state, county))
 
         if doc.get("collection"):
             unique_collections.add(doc["collection"])
@@ -67,7 +99,7 @@ def import_speciesrecords(filename, start=0):
 
     # Create non-existent records.
     for s in nonexistent:
-        instance = Species.objects.create(genus=s[0], species=s[1])
+        instance, created = Species.objects.get_or_create(genus=s[0], species=s[1])
         species[s] = instance.id
     print "Created %i species" % len(nonexistent)
 
@@ -85,7 +117,7 @@ def import_speciesrecords(filename, start=0):
 
     # Create non-existent records.
     for s in nonexistent:
-        instance = State.objects.create(code=s)
+        instance, created = State.objects.get_or_create(code=s)
         states[s] = instance.id
     print "Created %i states" % len(nonexistent)
 
@@ -103,7 +135,8 @@ def import_speciesrecords(filename, start=0):
 
     # Create non-existent records.
     for s in nonexistent:
-        instance = County.objects.create(state_id=states[s[0]], name=s[1])
+        state = State.objects.get(pk=states[s[0]])
+        instance, created = County.objects.get_or_create(state=state, name=s[1])
         counties[s] = instance.id
     print "Created %i counties" % len(nonexistent)
 
@@ -147,7 +180,7 @@ def import_speciesrecords(filename, start=0):
     records = []
     records_skipped = []
     records_per_update = 10000
-    for row in data["rows"][start:]:
+    for row in data["rows"]:
         doc = row["doc"]
         kwargs = {}
 
@@ -160,11 +193,14 @@ def import_speciesrecords(filename, start=0):
         # Set lat/lng.
         now = datetime.datetime.now()
         kwargs.update({
-            "latitude": doc.get("latitude") or 0,
-            "longitude": doc.get("longitude") or 0,
+            "latitude": doc.get("latitude") or "0",
+            "longitude": doc.get("longitude") or "0",
             "date_added": now,
             "date_modified": now
         })
+
+        kwargs["latitude"] = kwargs["latitude"].replace(" ", ".")
+        kwargs["longitude"] = kwargs["longitude"].replace(" ", ".")
 
         # Set foreign key fields.
         if doc.get("collection"):
@@ -177,6 +213,7 @@ def import_speciesrecords(filename, start=0):
             state = doc["state"][:2].upper()
             kwargs["state_id"] = states.get(state)
             if doc.get("county"):
+                county = " ".join([i.capitalize() for i in doc["county"].split(" ")])
                 kwargs["county_id"] = counties.get((state, doc.get("county")))
 
         if "males" in doc:
@@ -193,7 +230,7 @@ def import_speciesrecords(filename, start=0):
 
         # Pull integers out of date fields.
         int_regex = re.compile("\d+")
-        for field in ("year", "month", "day"):
+        for field in ("year", "month", "day", "elevation"):
             if doc.get(field):
                 match = int_regex.search(doc[field])
                 if match:
@@ -202,30 +239,31 @@ def import_speciesrecords(filename, start=0):
         # Set remaining fields.
         fields_by_name = {
             "city": "locality",
-            "elevation": "elevation",
             "notes": "notes"
         }
         kwargs.update(dict([(model_field, doc[doc_field])
                             for doc_field, model_field in fields_by_name.items()
                             if model_field not in kwargs and doc.get(doc_field)]))
 
-        records.append(SpeciesRecord(**kwargs))
+        record = SpeciesRecord(**kwargs)
+        if labels:
+            record.label_id = doc["_id"]
+        records.append(record)
 
         if (len(records) == records_per_update or
             records_created + len(records) == total_records):
-            print "Inserting %i records" % len(records)
-            insert_many(records, using="pnwmoths")
+            save_speciesrecords(records, labels)
             records_created += len(records)
             records = []
 
     if len(records) > 0:
-        print "Inserting %i records" % len(records)
-        insert_many(records, using="pnwmoths")
+        save_speciesrecords(records, labels)
         records_created += len(records)
 
     print "Inserted %i records out of %i total." % (records_created, total_records)
     print "Records skipped:"
     pprint.pprint(records_skipped)
+
 
 def import_similar(filename):
     data = get_data(filename)
