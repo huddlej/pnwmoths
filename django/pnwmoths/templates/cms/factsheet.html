@@ -70,7 +70,7 @@
         <div id="similar">
         <h2>
             Similar Species
-        {% if request.user.is_staff %}
+        {% if request.user.is_staff and species %}
             <span class="edit"><a href="{% url admin:species_species_change species.id %}" target="_new">edit</a></span>
         {% endif %}
         </h2>
@@ -112,19 +112,21 @@
 {% placeholder "factsheet" %}
 
 <!-- data start -->
-{% cache 500 js_data species.name %}
-<span class="dokuwiki-data" id="species-data">
-{% resource /data/api/speciesrecord/ format=json species__genus=species.genus species__species=species.species limit=0 %}
-</span>
-<span class="dokuwiki-data" id="state-data">
-{% resource /data/api/state/ format=json limit=0 %}
-</span>
-<span class="dokuwiki-data" id="county-data">
-{% resource /data/api/county/ format=json limit=0 %}
-</span>
-<span class="dokuwiki-data" id="collection-data">
-{% resource /data/api/collection/ format=json limit=0 %}
-</span>
-{% endcache %}
+{% if species %}
+    {% cache 500 js_data species.name %}
+    <span class="dokuwiki-data" id="species-data">
+    {% resource /data/api/speciesrecord/ format=json species__genus=species.genus species__species=species.species limit=0 %}
+    </span>
+    <span class="dokuwiki-data" id="state-data">
+    {% resource /data/api/state/ format=json limit=0 %}
+    </span>
+    <span class="dokuwiki-data" id="county-data">
+    {% resource /data/api/county/ format=json limit=0 %}
+    </span>
+    <span class="dokuwiki-data" id="collection-data">
+    {% resource /data/api/collection/ format=json limit=0 %}
+    </span>
+    {% endcache %}
+{% endif %}
 <!-- data stop -->
 {% endblock %}
