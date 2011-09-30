@@ -24,10 +24,16 @@ class SpeciesByNameNode(Node):
     def render(self, context):
         # Create the template var by adding to context.
         genus, species = self.obj.resolve(context).split(" ", 1)
-        context[self.context_var] = Species.objects.get(
-            genus=genus,
-            species=species
-        )
+
+        try:
+            instance = Species.objects.get(
+                genus=genus,
+                species=species
+            )
+        except Species.DoesNotExist:
+            instance = None
+
+        context[self.context_var] = instance
 
         return ""
 
