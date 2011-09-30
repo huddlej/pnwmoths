@@ -73,6 +73,9 @@ class Command(BaseCommand):
         # the database.
         objects = []
         for filename in files_not_in_db:
+            if filename.endswith(("medium", "thumbnail", "Thumbs.db")):
+                continue
+
             kwargs = {
                 "image": filename,
                 "species": self.get_species_for_file(filename)
@@ -105,8 +108,8 @@ class Command(BaseCommand):
             return self.species_cache[binomial_name]
 
         logger.debug("missed cache: %s" % binomial_name)
-        genus, species = binomial_name.split()
-        instance = Species.objects.get(genus=genus, species=species)
+        genus, species = binomial_name.split(" ", 1)
+        instance, created = Species.objects.get_or_create(genus=genus, species=species)
         self.species_cache[binomial_name] = instance
 
         return instance
