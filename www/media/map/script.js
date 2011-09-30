@@ -62,7 +62,7 @@ PNWMOTHS.Map = function () {
                 jQuery.each(PNWMOTHS.Map.states, function (index, state) {
                     // Adding the new GGeoXml overlay to the map will load the
                     // overlay data for the first time.
-                    geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/pnwmoths/" + state + ".kmz");
+                    geo_xml = new GGeoXml("http://www.biol.wwu.edu/~huddlej/kmz/" + state + ".kmz");
                     PNWMOTHS.Map.xml.push(geo_xml);
                     PNWMOTHS.Map.map.addOverlay(geo_xml);
                 });
