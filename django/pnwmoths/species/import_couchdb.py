@@ -30,6 +30,7 @@ def get_data(filename):
 def save_speciesrecords(records, labels):
     print "Inserting %i records" % len(records)
     if labels:
+        images_added = 0
         for record in records:
             # Manually save each record to obtain an id and enable many-to-many
             # relationships.
@@ -43,7 +44,9 @@ def save_speciesrecords(records, labels):
             image_prefix = os.path.join(SpeciesImage.IMAGE_PATH,
                                         record.label_id.replace("label", ""))
             images = SpeciesImage.objects.filter(image__startswith=image_prefix)
+            images_added += images.count()
             record.speciesimage_set.add(*images)
+        print "Added %i images to records" % images_added
     else:
         insert_many(records, using="pnwmoths")
 
