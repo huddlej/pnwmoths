@@ -182,7 +182,7 @@ def import_speciesrecords(filename, labels=False):
     records_created = 0
     records = []
     records_skipped = []
-    records_per_update = 10000
+    records_per_update = 1000
     for row in data["rows"]:
         doc = row["doc"]
         kwargs = {}
@@ -202,8 +202,9 @@ def import_speciesrecords(filename, labels=False):
             "date_modified": now
         })
 
-        kwargs["latitude"] = kwargs["latitude"].replace(" ", ".")
-        kwargs["longitude"] = kwargs["longitude"].replace(" ", ".")
+        if labels:
+            kwargs["latitude"] = kwargs["latitude"].replace(" ", ".")
+            kwargs["longitude"] = kwargs["longitude"].replace(" ", ".")
 
         # Set foreign key fields.
         if doc.get("collection"):
@@ -234,7 +235,7 @@ def import_speciesrecords(filename, labels=False):
         # Pull integers out of date fields.
         int_regex = re.compile("\d+")
         for field in ("year", "month", "day", "elevation"):
-            if doc.get(field):
+            if doc.get(field) and isinstance(doc[field], basestring):
                 match = int_regex.search(doc[field])
                 if match:
                     kwargs[field] = match.group()
