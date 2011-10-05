@@ -146,6 +146,9 @@ class SpeciesRecord(models.Model):
     date_added = models.DateTimeField(editable=False)
     date_modified = models.DateTimeField(editable=False)
 
+    class Meta:
+        ordering = ("species", "latitude", "longitude")
+
     def __unicode__(self):
         return u"%s at (%.2f, %.2f)" % (self.species, self.latitude, self.longitude)
 
