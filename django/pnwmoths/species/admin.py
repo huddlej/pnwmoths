@@ -24,8 +24,9 @@ class SpeciesRecordAdmin(admin.ModelAdmin):
         "species",
         "latitude",
         "longitude",
-        "state",
+        "locality",
         "county",
+        "state",
         "collection",
         "collector"
     )
