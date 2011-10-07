@@ -15,7 +15,7 @@ admin.site.register(Species, SpeciesAdmin)
 
 
 class SpeciesImageAdmin(AdminImageMixin, admin.ModelAdmin):
-    pass
+    readonly_fields = ("record",)
 admin.site.register(SpeciesImage, SpeciesImageAdmin)
 
 
