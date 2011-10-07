@@ -1,4 +1,5 @@
 from django.contrib import admin
+from sorl.thumbnail.admin import AdminImageMixin
 
 from actions import export_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage,
@@ -11,6 +12,11 @@ class SpeciesAdmin(admin.ModelAdmin):
     list_editable = ("common_name",)
     search_fields = ("genus", "species")
 admin.site.register(Species, SpeciesAdmin)
+
+
+class SpeciesImageAdmin(AdminImageMixin, admin.ModelAdmin):
+    pass
+admin.site.register(SpeciesImage, SpeciesImageAdmin)
 
 
 class SpeciesRecordAdmin(admin.ModelAdmin):
@@ -37,5 +43,4 @@ admin.site.register(SpeciesRecord, SpeciesRecordAdmin)
 admin.site.register(Collection)
 admin.site.register(Collector)
 admin.site.register(County)
-admin.site.register(SpeciesImage)
 admin.site.register(State)
