@@ -1,9 +1,23 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 from sorl.thumbnail.admin import AdminImageMixin
+from tastypie.admin import ApiKeyInline
+from tastypie.models import ApiAccess, ApiKey
 
 from actions import export_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage,
                     SpeciesRecord, State)
+
+
+admin.site.register(ApiKey)
+admin.site.register(ApiAccess)
+
+class UserModelAdmin(UserAdmin):
+        inlines = [ApiKeyInline]
+
+admin.site.unregister(User)
+admin.site.register(User,UserModelAdmin)
 
 
 class CountyAdmin(admin.ModelAdmin):
