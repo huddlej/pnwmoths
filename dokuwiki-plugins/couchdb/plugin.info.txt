@@ -1,7 +1,0 @@
-base   couchdb
-author John Huddleston
-email  huddlej@gmail.com
-date   2010-04-27
-name   couchdb plugin
-desc   Returns the output of any couchdb request
-url    http://www.biol.wwu.edu/PNWmoths

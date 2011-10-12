@@ -1,0 +1,212 @@
+[
+    {
+        "pk": 1, 
+        "model": "species.state", 
+        "fields": {
+            "code": "WA"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "species.state", 
+        "fields": {
+            "code": "ID"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "species.state", 
+        "fields": {
+            "code": "OR"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "species.state", 
+        "fields": {
+            "code": "CA"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "species.state", 
+        "fields": {
+            "code": "BC"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "species.state", 
+        "fields": {
+            "code": "AB"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "species.state", 
+        "fields": {
+            "code": "CO"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "species.state", 
+        "fields": {
+            "code": "KS"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "species.state", 
+        "fields": {
+            "code": "MN"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "species.state", 
+        "fields": {
+            "code": "MT"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "species.state", 
+        "fields": {
+            "code": "UT"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "species.state", 
+        "fields": {
+            "code": "NH"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "species.state", 
+        "fields": {
+            "code": "SC"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "species.state", 
+        "fields": {
+            "code": "NV"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "species.state", 
+        "fields": {
+            "code": "AZ"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "species.state", 
+        "fields": {
+            "code": "WY"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "species.state", 
+        "fields": {
+            "code": "NF"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "species.state", 
+        "fields": {
+            "code": "NY"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "species.state", 
+        "fields": {
+            "code": "OH"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "species.state", 
+        "fields": {
+            "code": "TX"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "species.state", 
+        "fields": {
+            "code": "TN"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "species.state", 
+        "fields": {
+            "code": "NM"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "species.state", 
+        "fields": {
+            "code": "MI"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "species.state", 
+        "fields": {
+            "code": "NC"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "species.state", 
+        "fields": {
+            "code": "HI"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "species.state", 
+        "fields": {
+            "code": "MA"
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "species.state", 
+        "fields": {
+            "code": "ME"
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "species.state", 
+        "fields": {
+            "code": "RI"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "species.state", 
+        "fields": {
+            "code": "CT"
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "species.state", 
+        "fields": {
+            "code": "WI"
+        }
+    }
+]

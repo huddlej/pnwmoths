@@ -1,6 +1,8 @@
 # Django settings for pnwmoths project.
+from db import DATABASE_PASSWORDS
 import logging.config
 import os
+
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
@@ -20,8 +22,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(PROJECT_ROOT, 'pnwmoths.db')
+    },
+    'pnwmoths': {
+        'NAME': 'pnwmoths',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'pnwmoths',
+        'PASSWORD': DATABASE_PASSWORDS.get("pnwmoths")
     }
 }
+
+DATABASE_ROUTERS = ["pnwmoths.routers.MySqlRouter"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -48,7 +58,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/home/huddlej/pnwmoths/www/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -117,16 +127,15 @@ INSTALLED_APPS = (
     'cms.plugins.file',
     'cms.plugins.snippet',
     'cms.plugins.googlemap',
-    'couchdbkit.ext.django',
-    'cushion',
+    'csvimporter',
+    'tastypie',
     'haystack',
     'menus',
     'mptt',
     'publisher',
     'pnwmoths.cms_search',
-    'pnwmoths.couchdb_templatetags',
-    'pnwmoths.similar_species',
-    'pnwmoths.species_images'
+    'pnwmoths.species',
+    'sorl.thumbnail'
 )
 
 CMS_TEMPLATES = (
@@ -140,6 +149,7 @@ LANGUAGES = (
         ('en', gettext('English')),
 )
 
+# django-haystack
 HAYSTACK_XAPIAN_PATH = os.path.join(PROJECT_ROOT, "site_index")
 HAYSTACK_SITECONF = "pnwmoths.search_sites"
 HAYSTACK_SEARCH_ENGINE = "xapian"
@@ -147,5 +157,15 @@ HAYSTACK_SEARCH_ENGINE = "xapian"
 FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHandler",
                         "django.core.files.uploadhandler.MemoryFileUploadHandler")
 
-# Path to species images on the local filesystem.
-IMAGE_FILE_PATH = "/usr/local/www/images/"
+# csvimporter
+#
+# Custom setting used to calculate excluded apps with a simpler definition.
+CSVIMPORTER_INCLUDE = ["pnwmoths.species"]
+
+# Actual csvimporter settings.
+CSVIMPORTER_EXCLUDE = [app.split(".")[-1] for app in INSTALLED_APPS
+                       if app not in CSVIMPORTER_INCLUDE]
+
+CSVIMPORTER_DATA_TRANSFORMS = {
+    "species.speciesrecord": "pnwmoths.species.views.transform_species_record"
+}

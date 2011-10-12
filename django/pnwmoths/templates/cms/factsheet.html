@@ -1,5 +1,5 @@
 {% extends "cms/base.html" %}
-{% load cms_tags couchdb similar_species %}
+{% load cache cms_tags species_tags thumbnail %}
 
 {% block scripts %}
 {{ block.super }}
@@ -37,13 +37,57 @@
 <!-- wikipage start -->
 <h1>{% page_attribute page_title %}</h1>
 
+{% species_by_name current_page.get_title as species %}
+
 <div class="factsheet yui-g">
     <div class="yui-u first all-images all-images-no-js">
         <div id="images">
-            {% couchdb /pnwmoths/_design/moths/_list/full_images/by_labelled_species_image?image_url=http://pnwmoths.biol.wwu.edu&first_image=true&startkey=["%(key)s","A"]&endkey=["%(key)s","Z"] key=current_page.get_title %}
+        {% for species_image in species.speciesimage_set.all %}
+            {% if forloop.first %}
+                <div class="current-image">
+                    {% thumbnail species_image.image species_image.SIZES.medium as im %}
+                        <a href="{{ species_image.image.url }}"><img src="{{ im.url }}" title="{{ species_image.title }}" /></a>
+                    {% endthumbnail %}
+                </div>
+                <ul class="other-images jcarousel-skin-tango">
+            {% endif %}
+            <li>
+                {% thumbnail species_image.image species_image.SIZES.medium as medium %}
+                    {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
+                        <a href="{{ species_image.image.url }}" class="thumbnail">
+                            <img src="{{ small.url }}" title="{{ species_image.title }}" />
+                        </a>
+                        <a href="{{ medium.url }}" class="hidden medium-thumbnail"></a>
+                    {% endthumbnail %}
+                {% endthumbnail %}
+            </li>
+            {% if forloop.last %}
+                </ul>
+            {% endif %}
+        {% endfor %}
         </div>
 
-        {% similar_species %}
+        <div id="similar">
+        <h2>
+            Similar Species
+        {% if request.user.is_staff and species %}
+            <span class="edit"><a href="{% url admin:species_species_change species.id %}" target="_new">edit</a></span>
+        {% endif %}
+        </h2>
+
+        <ul class="other-images jcarousel-skin-tango">
+        {% for similar_species in species.similar.all %}
+            <li>
+            {% with similar_species.get_first_image as similar_image %}
+                {% thumbnail similar_image similar_image.SIZES.thumbnail as im %}
+                    <img src="{{ im.url }}" title="{{ similar_image.title }}" /><br />
+                {% endthumbnail %}
+            {% endwith %}
+                 <a href="{% page_id_url similar_species.name %}">{{ similar_species }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+        </div>
     </div>
     <div class="yui-u">
         <div id="googlemap" class="googlemap">
@@ -67,20 +111,22 @@
 
 {% placeholder "factsheet" %}
 
-<!-- wikipage stop -->
-
 <!-- data start -->
-<span class="dokuwiki-data" id="species-data">
-{% couchdb /pnwmoths/_design/moths/_list/json_collection_doc/by_species?include_docs=true&key="%(key)s" key=current_page.get_title %}
-</span>
-<span class="dokuwiki-data" id="state-data">
-{% couchdb /pnwmoths/_design/moths/_list/json_keys/states?group=true&reduce=true %}
-</span>
-<span class="dokuwiki-data" id="county-data">
-{% couchdb /pnwmoths/_design/moths/_list/json_keys/counties?group=true&reduce=true %}
-</span>
-<span class="dokuwiki-data" id="collection-data">
-{% couchdb /pnwmoths/_design/moths/_list/json_keys/by_collection?group=true&reduce=true %}
-</span>
+{% if species %}
+    {% cache 500 js_data species.name %}
+    <span class="dokuwiki-data" id="species-data">
+    {% resource /data/api/speciesrecord/ format=json species__genus=species.genus species__species=species.species limit=0 %}
+    </span>
+    <span class="dokuwiki-data" id="state-data">
+    {% resource /data/api/state/ format=json limit=0 %}
+    </span>
+    <span class="dokuwiki-data" id="county-data">
+    {% resource /data/api/county/ format=json limit=0 %}
+    </span>
+    <span class="dokuwiki-data" id="collection-data">
+    {% resource /data/api/collection/ format=json limit=0 %}
+    </span>
+    {% endcache %}
+{% endif %}
 <!-- data stop -->
 {% endblock %}

@@ -1,3 +1,0 @@
-[submodule "django/pnwmoths/couchdb_templatetags"]
-	path = django/pnwmoths/couchdb_templatetags
-	url = git@github.com:huddlej/couchdb_templatetags.git
