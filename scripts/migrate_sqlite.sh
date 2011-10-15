@@ -1,17 +1,31 @@
-#!/bin/sh
+#!/bin/bash
+set -e
+
+# Make sure we're on master branch.
+git co master
 
 # Back up current MySQL database.
-#mysqldump -u pnwmoths -p pnwmoths > mysql_dump.sql
+mysqldump -u pnwmoths -p pnwmoths > mysql_dump.sql
 
-# Dump current sqlite database.
-mkdir -p sql
-echo ".dump" | /usr/bin/sqlite3 pnwmoths.db > sql/cms_data.sql
+# Create a test database in MySQL.
+echo "create database test; grant all privileges on test.* to 'pnwmoths'@'localhost';" | mysql -u root -p
 
-# Fix differing SQL syntax.
-sed -i 's/"/`/g' sql/cms_data.sql
-sed -i '/BEGIN/d;/COMMIT/d;' sql/cms_data.sql
-sed -i 's/autoincrement/auto_increment/g' sql/cms_data.sql
+# Load original MySQL data into test database.
+cat mysql_dump.sql | mysql -u pnwmoths -p test
 
-# Import sqlite data into MySQL.
-cat sql/cms_data.sql | mysql -u pnwmoths -p test
+# Dump Django data from sqlite.
+./manage.py dumpdata -n --format=json contenttypes > contenttypes.json
+./manage.py dumpdata -n --format=json auth > auth.json
+./manage.py dumpdata -n --format=json --exclude=contenttypes --exclude=auth > data.json
 
+# Switch branches to "sqlite" and create missing db structure.
+git co sqlite
+./manage.py syncdb --noinput
+
+# Delete default values for content types and auth.
+./manage.py reset --noinput contenttypes auth
+
+# Load sqlite data into MySQL.
+./manage.py loaddata contenttypes.json
+./manage.py loaddata auth.json
+./manage.py loaddata data.json
