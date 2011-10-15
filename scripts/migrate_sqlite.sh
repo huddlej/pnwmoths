@@ -5,12 +5,15 @@ set -e
 git co master
 
 # Back up current MySQL database.
+echo "dump current database"
 mysqldump -u pnwmoths -p pnwmoths > mysql_dump.sql
 
 # Create a test database in MySQL.
+echo "create test db"
 echo "create database test; grant all privileges on test.* to 'pnwmoths'@'localhost';" | mysql -u root -p
 
 # Load original MySQL data into test database.
+echo "load original data"
 cat mysql_dump.sql | mysql -u pnwmoths -p test
 
 # Dump Django data from sqlite.
