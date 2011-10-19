@@ -1,6 +1,7 @@
 import logging
 import optparse
 import os
+import re
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -31,6 +32,9 @@ class Command(BaseCommand):
         self.species_cache = {}
         self.path = os.path.join(settings.MEDIA_ROOT, SpeciesImage.IMAGE_PATH)
         self.database = "pnwmoths"
+
+        # Matches species names in a given image filename.
+        self.filename_regex = re.compile(SpeciesImage.SPECIES_RE)
 
         # Remove trailing slash from path if it exists.
         if self.path.endswith(os.sep):
@@ -78,7 +82,7 @@ class Command(BaseCommand):
 
             kwargs = {
                 "image": filename,
-                "species": self.get_species_for_file(filename)
+                "species": self.get_species_by_filename(filename)
             }
             objects.append(SpeciesImage(**kwargs))
 
@@ -89,19 +93,34 @@ class Command(BaseCommand):
             # Save new records in one query.
             insert_many(objects, self.database)
 
-    def get_species_for_file(self, filename):
+    def get_binomial_for_file(self, filename):
         """
-        Returns a Species instance for a given filename. Filenames usually look like
-        this:
+        Returns a binomial species name for a given filename. Filenames usually
+        look like this:
 
         moths/Acronicta cyanescens-A-D.jpg
 
-        >>> get_species_for_file("moths/Acronicta cyanescens-A-D.jpg")
+        >>> get_binomial_for_file("moths/Acronicta cyanescens-A-D.jpg")
+        'Acronicta cyanescens'
+        >>> get_binomial_for_file("moths/Autographa v-alba-A-D.jpg")
+        'Autographa v-alba'
+        """
+        match = self.filename_regex.findall(filename)
+        if match:
+            return match[0]
+
+    def get_species_by_filename(self, filename):
+        """
+        Returns a Species instance or None for a given filename.
+
+        For example:
+
+        >>> get_species_by_filename("moths/Acronicta cyanescens-A-D.jpg")
         <Species: Acronicta cyanescens>
         """
-        path, filename = os.path.split(filename)
-        pieces = filename.split("-")
-        binomial_name = pieces[0]
+        binomial_name = self.get_binomial_for_file(filename)
+        if not binomial_name:
+            return None
 
         if binomial_name in self.species_cache:
             logger.debug("hit cache: %s" % binomial_name)
