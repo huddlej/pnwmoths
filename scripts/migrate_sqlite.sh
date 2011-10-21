@@ -19,7 +19,8 @@ cat mysql_dump.sql | mysql -u pnwmoths -p test
 # Dump Django data from sqlite.
 ./manage.py dumpdata -n --format=json contenttypes > contenttypes.json
 ./manage.py dumpdata -n --format=json auth > auth.json
-./manage.py dumpdata -n --format=json --exclude=contenttypes --exclude=auth > data.json
+./manage.py dumpdata -n --format=json cms text picture link file snippet googlemap mptt publisher > cms.json
+./manage.py dumpdata -n --indent=2 --format=json --exclude=contenttypes --exclude=auth --exclude=cms --exclude=text --exclude=picture --exclude=link --exclude=file --exclude=snippet --exclude=googlemap --exclude=mptt --exclude=publisher --exclude=thumbnail --exclude=tastypie > data.json
 
 # Switch branches to "sqlite" and create missing db structure.
 git co sqlite
@@ -32,3 +33,4 @@ git co sqlite
 ./manage.py loaddata contenttypes.json
 ./manage.py loaddata auth.json
 ./manage.py loaddata data.json
+./manage.py loaddata cms.json
