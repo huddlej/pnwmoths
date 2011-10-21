@@ -20,7 +20,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'NAME': 'test',
+        'NAME': 'pnwmoths',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'pnwmoths',
         'PASSWORD': DATABASE_PASSWORDS.get("pnwmoths")
