@@ -173,6 +173,7 @@ class SpeciesImage(models.Model):
     """
     Represents an image of a specific species.
     """
+    SPECIES_RE = r"(\w+ [-\w]+)-\w-\w.jpg"
     IMAGE_PATH = "moths/"
     SIZES = {
         "thumbnail": "140x93",
