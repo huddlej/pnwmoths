@@ -20,18 +20,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_ROOT, 'pnwmoths.db')
-    },
-    'pnwmoths': {
         'NAME': 'pnwmoths',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'pnwmoths',
         'PASSWORD': DATABASE_PASSWORDS.get("pnwmoths")
     }
 }
-
-DATABASE_ROUTERS = ["pnwmoths.routers.MySqlRouter"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -90,6 +84,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
