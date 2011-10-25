@@ -17,7 +17,7 @@ class UserModelAdmin(UserAdmin):
         inlines = [ApiKeyInline]
 
 admin.site.unregister(User)
-admin.site.register(User,UserModelAdmin)
+admin.site.register(User, UserModelAdmin)
 
 
 class CountyAdmin(admin.ModelAdmin):
