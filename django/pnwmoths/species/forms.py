@@ -7,6 +7,20 @@ from models import SpeciesRecord
 registered_models = {"SpeciesRecord": SpeciesRecord}
 
 
+class SpeciesRecordForm(forms.ModelForm):
+    genus = forms.CharField()
+    species = forms.CharField()
+    city = forms.CharField()
+    collector = forms.CharField()
+    collection = forms.CharField()
+    county = forms.CharField()
+    state = forms.CharField()
+    notes = forms.CharField()
+
+    class Meta:
+        model = SpeciesRecord
+
+
 class ImportSpeciesRecordsForm(forms.Form):
     """
     Imports the uploaded file of data into the selected database.
