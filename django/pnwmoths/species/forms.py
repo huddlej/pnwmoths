@@ -1,10 +1,31 @@
 import csv
+import re
 
 from django import forms
 
 from models import Collection, Collector, County, Species, SpeciesRecord, State
 
 registered_models = {"SpeciesRecord": SpeciesRecord}
+
+
+class LazyIntegerField(forms.IntegerField):
+    def clean(self, value):
+        """
+        Tries to find an integer in the given value. If the value is a string,
+        uses a regular expression to pull the first integer value out.
+
+        Returns None if value is an empty string.
+        """
+        if isinstance(value, basestring):
+            value = value.strip() or None
+            if value is not None:
+                # First wildcard match is greedy to allow integer group to get
+                # all integer-like values.
+                match = re.match(r".*?(\d+).*", value)
+                if match:
+                    value = match.groups()[0]
+
+        return super(LazyIntegerField, self).clean(value)
 
 
 class SpeciesRecordForm(forms.ModelForm):
