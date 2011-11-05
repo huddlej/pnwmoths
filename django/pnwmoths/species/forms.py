@@ -9,7 +9,7 @@ registered_models = {"SpeciesRecord": SpeciesRecord}
 
 class SpeciesRecordForm(forms.ModelForm):
     genus = forms.CharField()
-    species = forms.CharField(required=False)
+    species = forms.CharField()
     city = forms.CharField(required=False)
     collector = forms.CharField(required=False)
     collection = forms.CharField(required=False)
