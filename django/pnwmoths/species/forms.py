@@ -57,15 +57,13 @@ class SpeciesRecordForm(forms.ModelForm):
     def clean(self):
         cleaned_data = self.cleaned_data
 
-        try:
-            species_instance = Species.objects.get(
+        # Species are created if they don't exist.
+        if cleaned_data.get("genus") and cleaned_data.get("species"):
+            species_instance, created = Species.objects.get_or_create(
                 genus=cleaned_data.get("genus"),
                 species=cleaned_data.get("species")
             )
             cleaned_data["species"] = species_instance
-        except Species.DoesNotExist, e:
-            del self.cleaned_data["species"]
-            raise forms.ValidationError(e.message)
 
         if cleaned_data.get("county"):
             if cleaned_data.get("state"):
