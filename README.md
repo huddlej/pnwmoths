@@ -9,3 +9,4 @@
  * [jQuery colorbox](http://colorpowered.com/colorbox/)
  * [tastypie](http://django-tastypie.readthedocs.org/en/latest/)
  * [sorl thumbnails](http://thumbnail.sorl.net/)
+ * [pylevenshtein](http://code.google.com/p/pylevenshtein/)
