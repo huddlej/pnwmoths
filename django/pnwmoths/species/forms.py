@@ -42,7 +42,8 @@ class SpeciesRecordForm(forms.ModelForm):
         model = SpeciesRecord
         exclude = ("county",)
 
-    def _get_instance_by_name(self, field_name, field_class, field_key):
+    def _get_instance_by_name(self, field_name, field_class, field_key,
+                              create_missing=False):
         """
         Cleans an instance name and returns an instance or raises a
         ValidationError if one doesn't exist for the given name.
@@ -52,7 +53,10 @@ class SpeciesRecordForm(forms.ModelForm):
         if value:
             try:
                 kwargs = {field_key: value}
-                value = field_class.objects.get(**kwargs)
+                if create_missing:
+                    value, created = field_class.objects.get_or_create(**kwargs)
+                else:
+                    value = field_class.objects.get(**kwargs)
             except field_class.DoesNotExist, e:
                 raise forms.ValidationError(e.message)
         else:
