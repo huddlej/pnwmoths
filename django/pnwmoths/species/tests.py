@@ -4,9 +4,10 @@ Species application tests.
 import csv
 import os
 
+from django import forms
 from django.test import TestCase
 
-from forms import ImportSpeciesRecordsForm
+from forms import ImportSpeciesRecordsForm, LazyIntegerField
 from models import SpeciesRecord
 
 
@@ -40,6 +41,34 @@ class TestImportSpeciesRecordsForm(TestCase):
         self.assertEqual(0, len(errors))
         self.assertTrue(len(results) > 0)
         self.assertTrue(isinstance(results[0], model))
+
+
+class TestLazyIntegerField(TestCase):
+    def setUp(self):
+        self.field = LazyIntegerField(required=False)
+
+    def test_empty_string(self):
+        self.assertEqual(None, self.field.clean(""))
+
+    def test_whitespace_string(self):
+        self.assertEqual(None, self.field.clean("  "))
+
+    def test_integer_string(self):
+        value = "1"
+        self.assertEqual(int(value), self.field.clean(value))
+
+    def test_nested_integer_string(self):
+        integer = 123
+        value = "[[%s]]" % integer
+        self.assertEqual(integer, self.field.clean(value))
+
+    def test_integer(self):
+        value = 123
+        self.assertEqual(value, self.field.clean(value))
+
+    def test_non_integer(self):
+        value = "[x]"
+        self.assertRaises(forms.ValidationError, self.field.clean, value)
 
 
 __test__ = {"doctest": """
