@@ -21,38 +21,35 @@ class SpeciesRecordForm(forms.ModelForm):
         model = SpeciesRecord
         exclude = ("county",)
 
-    def clean_collection(self):
-        value = self.cleaned_data.get("collection") or None
+    def _get_instance_by_name(self, field_name, field_class, field_key):
+        """
+        Cleans an instance name and returns an instance or raises a
+        ValidationError if one doesn't exist for the given name.
+        """
+        value = self.cleaned_data.get(field_name, "").strip()
 
         if value:
             try:
-                value = Collection.objects.get(name=value)
-            except Collection.DoesNotExist, e:
+                kwargs = {field_key: value}
+                value = field_class.objects.get(**kwargs)
+            except field_class.DoesNotExist, e:
                 raise forms.ValidationError(e.message)
+        else:
+            value = None
 
         return value
+
+    def clean_genus(self):
+        return self.cleaned_data.get("genus", "").strip()
+
+    def clean_collection(self):
+        return self._get_instance_by_name("collection", Collection, "name")
 
     def clean_collector(self):
-        value = self.cleaned_data.get("collector") or None
-
-        if value:
-            try:
-                value = Collector.objects.get(name=value)
-            except Collector.DoesNotExist, e:
-                raise forms.ValidationError(e.message)
-
-        return value
+        return self._get_instance_by_name("collector", Collector, "name")
 
     def clean_state(self):
-        value = self.cleaned_data.get("state") or None
-
-        if value:
-            try:
-                value = State.objects.get(code=value)
-            except State.DoesNotExist, e:
-                raise forms.ValidationError(e.message)
-
-        return value
+        return self._get_instance_by_name("state", State, "code")
 
     def clean(self):
         cleaned_data = self.cleaned_data
