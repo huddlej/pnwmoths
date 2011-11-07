@@ -35,6 +35,8 @@ class SpeciesRecordForm(forms.ModelForm):
     collector = forms.CharField(required=False)
     collection = forms.CharField(required=False)
     county = forms.CharField(required=False)
+    males = LazyIntegerField(required=False)
+    females = LazyIntegerField(required=False)
     state = forms.CharField(required=False)
     notes = forms.CharField(required=False)
 
