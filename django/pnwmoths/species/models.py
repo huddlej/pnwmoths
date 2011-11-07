@@ -20,7 +20,7 @@ class State(models.Model):
         ordering = ["code"]
 
     def __unicode__(self):
-        return self.get_code_display()
+        return self.code
 
 
 class County(models.Model):
