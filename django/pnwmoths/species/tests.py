@@ -7,7 +7,7 @@ import os
 from django import forms
 from django.test import TestCase
 
-from forms import ImportSpeciesRecordsForm, LazyIntegerField
+from forms import ImportSpeciesRecordsForm, LazyIntegerField, SpeciesRecordForm
 from models import SpeciesRecord
 
 
@@ -41,6 +41,45 @@ class TestImportSpeciesRecordsForm(TestCase):
         self.assertEqual(0, len(errors))
         self.assertTrue(len(results) > 0)
         self.assertTrue(isinstance(results[0], model))
+
+
+class TestSpeciesRecordForm(TestCase):
+    def setUp(self):
+        self.record = {'collection': 'ODA',
+                       'collector': 'Harold Foster',
+                       'county': None,
+                       'date_added': '2011-11-07 01:28:32',
+                       'date_modified': '2011-11-07 01:28:32',
+                       'day': '30',
+                       'elevation': '230',
+                       'females': '0',
+                       'id': '261998',
+                       'latitude': '44.72',
+                       'locality': 'Jefferson',
+                       'longitude': -123.01000000000001,
+                       'males': '1',
+                       'month': '6',
+                       'notes': '',
+                       'species': 'Antheraea polyphemus',
+                       'state': 'OR',
+                       'year': '1960'}
+
+    def test_update_records(self):
+        """
+        Confirms that saving a species record form with an id for an existing
+        record updates the record instead of adding a new one.
+        """
+        # Create a new instance of this record.
+        form = SpeciesRecordForm(self.record)
+        form.save()
+        self.assertNotEqual(self.record["id"], form.instance.pk)
+
+        # Set the record id to the actual primary key and confirm that the
+        # resulting instance is the same as the original.
+        self.record["id"] = form.instance.pk
+        update_form = SpeciesRecordForm(self.record)
+        update_form.save()
+        self.assertEqual(self.record["id"], update_form.instance.pk)
 
 
 class TestLazyIntegerField(TestCase):
