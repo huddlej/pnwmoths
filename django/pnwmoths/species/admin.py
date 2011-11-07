@@ -55,6 +55,7 @@ class SpeciesRecordAdmin(admin.ModelAdmin):
         "county",
         "collection"
     )
+    list_select_related = True
     search_fields = ("species__genus", "species__species")
     actions = [export_as_csv_action("CSV export")]
 admin.site.register(SpeciesRecord, SpeciesRecordAdmin)
