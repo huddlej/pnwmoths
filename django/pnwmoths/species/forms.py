@@ -83,12 +83,35 @@ class SpeciesRecordForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
 
         # Species are created if they don't exist.
-        if cleaned_data.get("genus") and cleaned_data.get("species"):
-            species_instance, created = Species.objects.get_or_create(
-                genus=cleaned_data.get("genus"),
-                species=cleaned_data.get("species")
-            )
-            cleaned_data["species"] = species_instance
+        if cleaned_data.get("species"):
+            species = cleaned_data.get("species")
+
+            # If genus is defined, it must have its own column. Otherwise, it's
+            # probably part of the species name in the form of a binomial.
+            if cleaned_data.get("genus"):
+                genus = cleaned_data.get("genus")
+            else:
+                # Try splitting the species name no more than one time on
+                # spaces.
+                pieces = species.split(" ", 1)
+                if len(pieces) >= 2:
+                    # Unpack each piece into genus and species names.
+                    genus, species = pieces
+                else:
+                    genus = None
+
+            if genus and species:
+                species_instance, created = Species.objects.get_or_create(
+                    genus=genus,
+                    species=species
+                )
+                cleaned_data["species"] = species_instance
+
+        # If a Species instance doesn't exist for the given data, alert the
+        # user.
+        if not isinstance(cleaned_data.get("species"), Species):
+            del cleaned_data["species"]
+            raise forms.ValidationError("Species isn't defined.")
 
         if cleaned_data.get("county"):
             if cleaned_data.get("state"):
