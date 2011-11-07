@@ -29,6 +29,7 @@ class LazyIntegerField(forms.IntegerField):
 
 
 class SpeciesRecordForm(forms.ModelForm):
+    id = forms.IntegerField(required=False, widget=forms.HiddenInput)
     genus = forms.CharField(required=False)
     species = forms.CharField()
     city = forms.CharField(required=False)
