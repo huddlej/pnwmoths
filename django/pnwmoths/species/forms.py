@@ -130,6 +130,20 @@ class SpeciesRecordForm(forms.ModelForm):
 
         return cleaned_data
 
+    def save(self, commit=True):
+        if self.is_valid():
+            # Clean up fields that aren't in SpeciesRecords.
+            del self.cleaned_data["city"]
+            del self.cleaned_data["genus"]
+
+            self.instance = SpeciesRecord(**self.cleaned_data)
+            if commit:
+                self.instance.save()
+            else:
+                return self.instance
+        else:
+            raise forms.ValidationError("Data for record didn't validate.")
+
 
 class ImportSpeciesRecordsForm(forms.Form):
     """
