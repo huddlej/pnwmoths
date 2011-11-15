@@ -109,7 +109,9 @@ class SpeciesRecordForm(forms.ModelForm):
         # If a Species instance doesn't exist for the given data, alert the
         # user.
         if not isinstance(cleaned_data.get("species"), Species):
-            del cleaned_data["species"]
+            # Delete the species entry from cleaned data if it is defined.
+            if cleaned_data.get("species"):
+                del cleaned_data["species"]
             raise forms.ValidationError("Species isn't defined.")
 
         if cleaned_data.get("county"):
