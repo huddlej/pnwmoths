@@ -130,7 +130,7 @@ class SpeciesRecordForm(forms.ModelForm):
                     )
                 except County.DoesNotExist, e:
                     del self.cleaned_data["county"]
-                    raise forms.ValidationError("County doesn't exist.")
+                    raise forms.ValidationError("County '%s' doesn't exist." % county)
             else:
                 del cleaned_data["county"]
 
