@@ -32,7 +32,6 @@ class SpeciesRecordForm(forms.ModelForm):
     id = forms.IntegerField(required=False, widget=forms.HiddenInput)
     genus = forms.CharField(required=False)
     species = forms.CharField()
-    city = forms.CharField(required=False)
     collector = forms.CharField(required=False)
     collection = forms.CharField(required=False)
     county = forms.CharField(required=False)
@@ -125,8 +124,6 @@ class SpeciesRecordForm(forms.ModelForm):
                     raise forms.ValidationError("County doesn't exist.")
             else:
                 del cleaned_data["county"]
-
-        cleaned_data["locality"] = cleaned_data.get("city")
 
         return cleaned_data
 
