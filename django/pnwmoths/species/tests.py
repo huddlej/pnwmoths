@@ -45,7 +45,9 @@ class TestImportSpeciesRecordsForm(TestCase):
 
 class TestSpeciesRecordForm(TestCase):
     def setUp(self):
-        self.record = {'collection': 'ODA',
+        # Example of a record exported from Django's admin interface with an
+        # existing id.
+        self.exported_record = {'collection': 'ODA',
                        'collector': 'Harold Foster',
                        'county': None,
                        'date_added': '2011-11-07 01:28:32',
@@ -70,16 +72,16 @@ class TestSpeciesRecordForm(TestCase):
         record updates the record instead of adding a new one.
         """
         # Create a new instance of this record.
-        form = SpeciesRecordForm(self.record)
+        form = SpeciesRecordForm(self.exported_record)
         form.save()
-        self.assertNotEqual(self.record["id"], form.instance.pk)
+        self.assertNotEqual(self.exported_record["id"], form.instance.pk)
 
         # Set the record id to the actual primary key and confirm that the
         # resulting instance is the same as the original.
-        self.record["id"] = form.instance.pk
-        update_form = SpeciesRecordForm(self.record)
+        self.exported_record["id"] = form.instance.pk
+        update_form = SpeciesRecordForm(self.exported_record)
         update_form.save()
-        self.assertEqual(self.record["id"], update_form.instance.pk)
+        self.assertEqual(self.exported_record["id"], update_form.instance.pk)
 
 
 class TestLazyIntegerField(TestCase):
