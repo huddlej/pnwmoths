@@ -139,8 +139,10 @@ class SpeciesRecordForm(forms.ModelForm):
     def save(self, commit=True):
         if self.is_valid():
             # Clean up fields that aren't in SpeciesRecords.
-            del self.cleaned_data["city"]
-            del self.cleaned_data["genus"]
+            if "DELETE" in self.cleaned_data:
+                del self.cleaned_data["DELETE"]
+            if "genus" in self.cleaned_data:
+                del self.cleaned_data["genus"]
 
             self.instance = SpeciesRecord(**self.cleaned_data)
             if commit:
