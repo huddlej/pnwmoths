@@ -118,8 +118,8 @@ class SpeciesRecordForm(forms.ModelForm):
             raise forms.ValidationError("Species isn't defined.")
 
         if cleaned_data.get("county") is not None:
-            county = cleaned_data.get("county")
-            if cleaned_data.get("state"):
+            county = cleaned_data.get("county").strip()
+            if county and cleaned_data.get("state"):
                 # Check for state code in parentheses after the county name. For
                 # example, "Skagit (WA)". Split the name on spaces and rejoin
                 # without the last element.
