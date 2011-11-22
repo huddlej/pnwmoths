@@ -14,7 +14,7 @@ class LazyIntegerField(forms.IntegerField):
         Tries to find an integer in the given value. If the value is a string,
         uses a regular expression to pull the first integer value out.
 
-        Returns None if value is an empty string.
+        Returns None if an integer can't be found.
         """
         if isinstance(value, basestring):
             value = value.strip() or None
@@ -24,6 +24,8 @@ class LazyIntegerField(forms.IntegerField):
                 match = re.match(r".*?(\d+).*", value)
                 if match:
                     value = match.groups()[0]
+                else:
+                    value = None
 
         return super(LazyIntegerField, self).clean(value)
 
