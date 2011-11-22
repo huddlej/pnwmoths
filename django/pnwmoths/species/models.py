@@ -1,4 +1,5 @@
 import datetime
+from Levenshtein import distance
 from sorl.thumbnail import ImageField
 from tastypie.models import create_api_key
 
@@ -20,7 +21,7 @@ class State(models.Model):
         ordering = ["code"]
 
     def __unicode__(self):
-        return self.get_code_display()
+        return self.code
 
 
 class County(models.Model):
@@ -57,6 +58,35 @@ class Collection(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class SpeciesManager(models.Manager):
+    def search_by_similar_name(self, genus, species):
+        """
+        Search for Species with a similarly spelled name as the given name.
+
+        This method can help correct spelling mistakes in species names.
+        """
+        matches = self.filter(
+            genus__startswith=genus[:2],
+            genus__endswith=genus[-2:],
+            species__startswith=species[:2],
+            species__endswith=species[-2:]
+        )
+        complete_name = u" ".join((genus, species))
+        min_match = 10
+        min_match_species = None
+        for match in matches:
+            d = distance(complete_name, unicode(match))
+            if d < min_match:
+                min_match = d
+                min_match_species = match
+
+        if min_match_species and d < 3:
+            species_by_fullname[complete_name] = min_match_species
+        else:
+            species = Species.objects.create(genus=i[0], species=i[1])
+            species_by_fullname[complete_name] = species
 
 
 class Species(models.Model):

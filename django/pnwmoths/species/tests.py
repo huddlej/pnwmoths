@@ -4,9 +4,10 @@ Species application tests.
 import csv
 import os
 
+from django import forms
 from django.test import TestCase
 
-from forms import ImportSpeciesRecordsForm
+from forms import ImportSpeciesRecordsForm, LazyIntegerField, SpeciesRecordForm
 from models import SpeciesRecord
 
 
@@ -40,6 +41,75 @@ class TestImportSpeciesRecordsForm(TestCase):
         self.assertEqual(0, len(errors))
         self.assertTrue(len(results) > 0)
         self.assertTrue(isinstance(results[0], model))
+
+
+class TestSpeciesRecordForm(TestCase):
+    def setUp(self):
+        # Example of a record exported from Django's admin interface with an
+        # existing id.
+        self.exported_record = {'collection': 'ODA',
+                       'collector': 'Harold Foster',
+                       'county': None,
+                       'date_added': '2011-11-07 01:28:32',
+                       'date_modified': '2011-11-07 01:28:32',
+                       'day': '30',
+                       'elevation': '230',
+                       'females': '0',
+                       'id': '261998',
+                       'latitude': '44.72',
+                       'locality': 'Jefferson',
+                       'longitude': -123.01000000000001,
+                       'males': '1',
+                       'month': '6',
+                       'notes': '',
+                       'species': 'Antheraea polyphemus',
+                       'state': 'OR',
+                       'year': '1960'}
+
+    def test_update_records(self):
+        """
+        Confirms that saving a species record form with an id for an existing
+        record updates the record instead of adding a new one.
+        """
+        # Create a new instance of this record.
+        form = SpeciesRecordForm(self.exported_record)
+        form.save()
+        self.assertNotEqual(self.exported_record["id"], form.instance.pk)
+
+        # Set the record id to the actual primary key and confirm that the
+        # resulting instance is the same as the original.
+        self.exported_record["id"] = form.instance.pk
+        update_form = SpeciesRecordForm(self.exported_record)
+        update_form.save()
+        self.assertEqual(self.exported_record["id"], update_form.instance.pk)
+
+
+class TestLazyIntegerField(TestCase):
+    def setUp(self):
+        self.field = LazyIntegerField(required=False)
+
+    def test_empty_string(self):
+        self.assertEqual(None, self.field.clean(""))
+
+    def test_whitespace_string(self):
+        self.assertEqual(None, self.field.clean("  "))
+
+    def test_integer_string(self):
+        value = "1"
+        self.assertEqual(int(value), self.field.clean(value))
+
+    def test_nested_integer_string(self):
+        integer = 123
+        value = "[[%s]]" % integer
+        self.assertEqual(integer, self.field.clean(value))
+
+    def test_integer(self):
+        value = 123
+        self.assertEqual(value, self.field.clean(value))
+
+    def test_non_integer(self):
+        value = "[x]"
+        self.assertRaises(forms.ValidationError, self.field.clean, value)
 
 
 __test__ = {"doctest": """
