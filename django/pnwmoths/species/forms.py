@@ -117,7 +117,7 @@ class SpeciesRecordForm(forms.ModelForm):
                 del cleaned_data["species"]
             raise forms.ValidationError("Species isn't defined.")
 
-        if cleaned_data.get("county"):
+        if cleaned_data.get("county") is not None:
             county = cleaned_data.get("county")
             if cleaned_data.get("state"):
                 # Check for state code in parentheses after the county name. For
