@@ -1,0 +1,67 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block title %}Validate CSV file{% endblock %}
+
+{% block breadcrumbs %}{% if not is_popup %}
+<div class="breadcrumbs">
+     <a href="../../../../">{% trans "Home" %}</a> &rsaquo;
+     <a href="../../../">{{ app_label|capfirst|escape }}</a> &rsaquo;
+     {% if has_change_permission %}<a href="../../">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %} &rsaquo;
+     <a href="../">{{ instance|truncatewords:"18" }}</a> &rsaquo;
+     Validate
+</div>
+{% endif %}{% endblock %}
+
+{% block content %}
+{% if formset %}
+<div class="spreadsheet">
+<p>{{ invalid_row_count }} invalid row{{ invalid_row_count|pluralize }} out of {{ row_count }} total.</p>
+
+{% if too_many_rows %}
+    <ul class="errorlist">
+        <li>Too many rows had errors. Showing the first {{ max_invalid_forms }} forms.</li>
+    </ul>
+{% endif %}
+
+<form method="post" action="">{% csrf_token %}
+{{ formset.management_form }}
+
+{% if formset.non_form_errors %}
+    <div class="error">{{ formset.non_form_errors }}</div>
+{% endif %}
+
+<table>
+    <tr>
+        <th>Errors</th>
+    {% for field in formset.forms.0 %}
+        {% if not field.is_hidden %}
+            <th>{{ field.label }}</th>
+        {% endif %}
+    {% endfor %}
+    </tr>
+    {% for form in formset.forms %}
+        <tr>
+            <td>
+            {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+            {% endif %}
+            </td>
+        {% for field in form %}
+            {% if not field.is_hidden %}
+                <td>
+                    {{ field }}
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                </td>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+</div>
+<p><input type="submit" name="validate" value="Validate" /></p>
+</form>
+{% endif %}
+{% endblock %}
