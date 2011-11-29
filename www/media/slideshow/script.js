@@ -6,7 +6,9 @@ jQuery(document).ready(function() {
     jQuery(".no-js").hide();
 
     if (jQuery("#images .other-images").length > 0) {
-        jQuery("#images .other-images").jcarousel();
+        jQuery("#images .other-images").jcarousel({
+            scroll: 2
+        });
 
         jQuery("#images .other-images a").click(function (event) {
             event.preventDefault();
