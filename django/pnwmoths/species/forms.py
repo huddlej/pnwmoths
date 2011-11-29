@@ -81,6 +81,9 @@ class SpeciesRecordForm(forms.Form):
 
         return value
 
+    def _get_model(self):
+        return SpeciesRecord
+
     def clean_genus(self):
         return self.cleaned_data.get("genus", "").strip()
 
@@ -160,7 +163,8 @@ class SpeciesRecordForm(forms.Form):
             if "genus" in self.cleaned_data:
                 del self.cleaned_data["genus"]
 
-            self.instance = SpeciesRecord(**self.cleaned_data)
+            cls = self._get_model()
+            self.instance = cls(**self.cleaned_data)
             if commit:
                 self.instance.save()
             else:
