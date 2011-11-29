@@ -9,6 +9,12 @@ registered_models = {"SpeciesRecord": SpeciesRecord}
 
 
 class LazyIntegerField(forms.IntegerField):
+    widget = forms.TextInput(attrs={"size": "3"})
+
+    def __init__(self, *args, **kwargs):
+        super(LazyIntegerField, self).__init__(*args, **kwargs)
+        self.required = False
+
     def clean(self, value):
         """
         Tries to find an integer in the given value. If the value is a string,
