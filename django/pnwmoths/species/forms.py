@@ -36,21 +36,28 @@ class LazyIntegerField(forms.IntegerField):
         return super(LazyIntegerField, self).clean(value)
 
 
-class SpeciesRecordForm(forms.ModelForm):
-    id = forms.IntegerField(required=False)
+class SpeciesRecordForm(forms.Form):
+    attrs = {"size": "4"}
+    id = forms.IntegerField(required=False, widget=forms.TextInput(attrs=attrs))
     genus = forms.CharField(required=False)
     species = forms.CharField()
+    latitude = forms.FloatField(widget=forms.TextInput(attrs=attrs))
+    longitude = forms.FloatField(widget=forms.TextInput(attrs=attrs))
+    locality = forms.CharField(required=False)
+    county = forms.CharField(required=False)
+    state = forms.CharField(required=False, widget=forms.TextInput(attrs=attrs))
+    elevation = LazyIntegerField()
+    month = LazyIntegerField()
+    day = LazyIntegerField()
+    year = LazyIntegerField()
     collector = forms.CharField(required=False)
     collection = forms.CharField(required=False)
-    county = forms.CharField(required=False)
-    males = LazyIntegerField(required=False)
-    females = LazyIntegerField(required=False)
-    state = forms.CharField(required=False)
-    notes = forms.CharField(required=False)
-
-    class Meta:
-        model = SpeciesRecord
-        exclude = ("county",)
+    males = LazyIntegerField()
+    females = LazyIntegerField()
+    notes = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={"rows": "5"})
+    )
 
     def _get_instance_by_name(self, field_name, field_class, field_key,
                               create_missing=False):
