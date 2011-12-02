@@ -165,3 +165,10 @@ CSVIMPORTER_EXCLUDE = [app.split(".")[-1] for app in INSTALLED_APPS
 CSVIMPORTER_DATA_TRANSFORMS = {
     "species.speciesrecord": "pnwmoths.species.views.transform_species_record"
 }
+
+# CSV admin settings
+CSV_ADMIN_CONTENT_FORMS = {
+    ("species", "speciesrecord"): "pnwmoths.species.forms.SpeciesRecordForm"
+}
+CSV_ADMIN_USE_TRANSACTIONS=False
+CSV_ADMIN_TEMPLATE="admin/csv_admin/validate_form.html"
