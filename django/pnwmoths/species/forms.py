@@ -88,7 +88,8 @@ class SpeciesRecordForm(forms.Form):
         return self.cleaned_data.get("genus", "").strip()
 
     def clean_collection(self):
-        return self._get_instance_by_name("collection", Collection, "name")
+        return self._get_instance_by_name("collection", Collection, "name",
+                                          create_missing=True)
 
     def clean_collector(self):
         return self._get_instance_by_name("collector", Collector, "name",
