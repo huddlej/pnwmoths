@@ -1,10 +1,7 @@
-* indicates steps only necessary during database migration
-
 Install MySQL
 
 Create pnwmoths database(s) (production and development)
   database: pnwmoths
-            pnwmothsdev
 
 Create pnwmoths user with access to databases
   user: pnwmoths
@@ -29,29 +26,3 @@ syncdb
 Configure Apache WSGI
 
 Confirm basic site functionality
-
-*Import existing content from sqlite
-
-*Confirm site functionality
-
-[at this point, the site should be functionally equivalent to the production site albeit with a different SQL backend]
-
-*Branch pnwmoths -> "migration"
-
-*Copy existing "pnwmoths" database to "pnwmothsmigration"
-
-*Update Django settings to use migration database
-
-*Create schemata for CouchDB data types
-
-*Import existing content from CouchDB
-
-*Update references to CouchDB with SQL code
-
-*Confirm site functionality
-
-*Backup existing "pnwmoths" database
-
-*Replace existing "pnwmoths" database with the migration version
-
-[at this point the site should be functionality equivalent to the production site with a SQL backend for all data]
