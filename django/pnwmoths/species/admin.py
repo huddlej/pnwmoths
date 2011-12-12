@@ -36,6 +36,12 @@ admin.site.register(Species, SpeciesAdmin)
 
 class SpeciesImageAdmin(AdminImageMixin, admin.ModelAdmin):
     readonly_fields = ("record",)
+    list_display = (
+        "species",
+        "image",
+        "weight"
+    )
+    list_editable = ("weight",)
 admin.site.register(SpeciesImage, SpeciesImageAdmin)
 
 

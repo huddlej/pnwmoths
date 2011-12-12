@@ -215,10 +215,19 @@ class SpeciesImage(models.Model):
     # automatically. When an instance of this class is deleted, thumbnails
     # created for this field are automatically deleted too.
     image = ImageField(upload_to=IMAGE_PATH)
+    
+    weight_docs = "Images with the smallest weight are shown first. If images share the same weight, they are then sorted alphabetically as a group."
+    weight_docs += "<br /><br />In the following examples, each number represents an image's weight. The bracketed groupings are sorted alphabetically."
+    weight_docs += "<br />Example 1: [-1,-1],[0,0,0],2,3"
+    weight_docs += "<br />Example 2 (DEFAULT): [0,0,0,0,0]"
+    weight = models.IntegerField(blank=True, null=False, default=0, help_text=weight_docs)
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True)
 
+    class Meta:
+        ordering = ['species', 'weight', 'image']
+
     def __unicode__(self):
-        return self.image.name
+        return u"%s - %s" % (self.species, self.image.name)
 
     def title(self):
         return self.species
