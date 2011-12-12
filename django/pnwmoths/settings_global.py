@@ -131,7 +131,8 @@ INSTALLED_APPS = (
     'publisher',
     'pnwmoths.cms_search',
     'pnwmoths.species',
-    'sorl.thumbnail'
+    'sorl.thumbnail',
+    'south'
 )
 
 CMS_TEMPLATES = (
