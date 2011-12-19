@@ -33,6 +33,7 @@ PNWMOTHS.Map = function () {
             // Center on Washington State.
             PNWMOTHS.Map.mapCenter = new GLatLng(46.90, -118.00);
             map.setCenter(PNWMOTHS.Map.mapCenter, 5);
+
             map.addControl(new GSmallMapControl());
             map.addControl(new GMapTypeControl());
             map.addControl(PNWMOTHS.Map.getFullscreenControl());
@@ -44,6 +45,9 @@ PNWMOTHS.Map = function () {
             PNWMOTHS.Map.bounds = PNWMOTHS.Map.addTerritoryBoundaries(map);
             PNWMOTHS.Map.icons = PNWMOTHS.Map.buildMapIcons();
             PNWMOTHS.Map.mgr = new MarkerManager(map);
+
+            // After all markers have been placed, set the proper zoom level
+            map.setCenter(PNWMOTHS.Map.mapCenter, map.getBoundsZoomLevel(PNWMOTHS.Map.bounds));
 
             // Add filters to map container.
             if (typeof(PNWMOTHS.Filters.getFilterElement()) !== "undefined") {
