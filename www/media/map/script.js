@@ -302,7 +302,7 @@ PNWMOTHS.Map = function () {
             var polygon = new GPolygon([
                   new GLatLng(40, -111.0),
                   new GLatLng(52.3, -111.0),
-                  new GLatLng(52.3, -126),
+                  new GLatLng(52.3, -130),
                   new GLatLng(40, -126),
                   new GLatLng(40, -111.0)
             ], "#000000", 2, 1, "#ffffff", 0);
