@@ -95,7 +95,8 @@ PNWMOTHS.Map = function () {
                     "county",
                     "state",
                     "elevation",
-                    "precision"
+                    "precision",
+                    "notes"
                 ];
 
             for (i in data) {
@@ -174,6 +175,7 @@ PNWMOTHS.Map = function () {
                               "longitude": "Longitude"},
                 pointHtml = "<div class='infowindow'>",
                 collectionHtml = "",
+                notesHtml = "",
                 attribute, attribute_name, attribute_value, i, j;
 
             for (attribute in attributes) {
@@ -209,7 +211,10 @@ PNWMOTHS.Map = function () {
                 collectionHtml += "</div>";
             }
 
-            return [pointHtml, collectionHtml];
+            // regex replace to display multiline notes properly in HTML
+            notesHtml = "<p>" + record["notes"].replace(/\r\n/g, "<br />").replace(/\n/g, "<br />") + "</p>";
+
+            return [pointHtml, collectionHtml, notesHtml];
         },
         createMarkers: function (data) {
             // Creates markers for a given set of data for which each record has
@@ -253,7 +258,8 @@ PNWMOTHS.Map = function () {
                 // the "html" variable and created a tab for each entry with the
                 // tab name in the variable.
                 marker.openInfoWindowTabsHtml([new GInfoWindowTab("Site", html[0]),
-                                               new GInfoWindowTab("Collections", html[1])]);
+                                               new GInfoWindowTab("Collections", html[1]),
+                                               new GInfoWindowTab("Notes", html[2]),]);
             });
 
             return marker;
