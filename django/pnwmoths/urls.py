@@ -8,6 +8,7 @@ from django.conf.urls.defaults import (
 from django.contrib import admin
 
 from species.views import import_species_records
+from cms_search.views import FancyRedirectSearchView
 
 admin.autodiscover()
 
@@ -18,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^data/', include('pnwmoths.species.urls')),
     (r'^admin/import/', include('csvimporter.urls')),
     (r'^admin/', include(admin.site.urls)),
-    url(r'^search/', include('haystack.urls'), name="search"),
+    url(r'^search/', FancyRedirectSearchView(), name="search"),
     #url(r"^contact-us/", contact_us, name="contact-us"),
     url(r'^', include('cms.urls')),
 )
