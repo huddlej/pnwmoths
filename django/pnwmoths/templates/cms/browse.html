@@ -4,9 +4,14 @@
 {% block content %}
 {% placeholder "before menu" %}
 
-<ol>
-{% show_sub_menu %}
-</ol>
+<script type="text/javascript">
+var menu = {
+"data" : "root",
+"children" : [
+{% show_sub_menu 1000 "menu/tax_data.html" %}
+],
+};
+</script>
 
 {% placeholder "after menu" %}
 {% endblock %}
