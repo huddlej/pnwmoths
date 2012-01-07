@@ -9,7 +9,7 @@ from django.conf import settings
 from django.test import TestCase
 
 from forms import ImportSpeciesRecordsForm, LazyIntegerField, SpeciesRecordForm
-from models import SpeciesRecord
+from models import Species, SpeciesImage, SpeciesRecord
 
 
 class TestImageSync(TestCase):
@@ -18,6 +18,33 @@ class TestImageSync(TestCase):
         syncer = ImageSyncer()
         files = syncer.get_files(path)
         self.assertTrue(len(files) > 0)
+
+
+class TestSpeciesImage(TestCase):
+    def test_order_by_weight(self):
+        species = Species.objects.create(
+            genus="Fake",
+            species="fakerton"
+        )
+        image_args = {
+            "species": species,
+            "image": "/fake/path/image.png",
+        }
+
+        # Make sure there are no images in the database.
+        SpeciesImage.objects.all().delete()
+
+        # Generate images with weights 3, 0, and -3.
+        images = []
+        for i in xrange(3, -4, -3):
+            image_args["weight"] = i
+            images.append(SpeciesImage.objects.create(**image_args))
+
+        # Confirm images are sorted in the database as they are weighted.
+        db_images = list(SpeciesImage.objects.all())
+        images.reverse()
+        self.assertEqual([image.id for image in images],
+                         [image.id for image in db_images])
 
 
 class TestImportSpeciesRecordsForm(TestCase):
