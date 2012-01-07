@@ -82,8 +82,6 @@ PNWMOTHS.Chart = function () {
 
                         // Count the number of records for this month and this segment.
                         phenology_data[month][segment] += 1;
-                    } else {
-                        alert('Bad month found in a record with the following locality: ' + data[i].locality);
                     }
                 }
             }
