@@ -1,4 +1,5 @@
 #spacetree {
   width: 680px;
   height: 680px;
+  overflow:hidden;
 }
