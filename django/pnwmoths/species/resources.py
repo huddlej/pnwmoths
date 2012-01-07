@@ -90,7 +90,7 @@ class SpeciesRecordResource(ModelResource):
     class Meta:
         queryset = SpeciesRecord.objects.all()
         allowed_methods = ["get"]
-        excludes = ["id", "notes"]
+        excludes = ["id"]
         include_resource_uri = False
         filtering = {"species": ALL_WITH_RELATIONS}
 

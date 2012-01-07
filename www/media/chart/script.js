@@ -61,16 +61,15 @@ PNWMOTHS.Chart = function () {
             // Map sample data to the given interval by counting each sample
             // that matches an interval marker.
             for (i in data) {
-                if (data.hasOwnProperty(i) && data[i].month) {
-                    // If a record doesn't have a "day" value, don't use it. It is
-                    // better to omit a record than mislead users by defaulting the
-                    // record to the beginning of the month or some other similar
-                    // strategy.
-                    if (data[i].day) {
-                        // Records are indexed starting with 0 so all months are
-                        // shifted by 1.
-                        month = parseInt(data[i].month) - 1;
+                // If a record is missing a day and/or month ignore the record. It is
+                // better to omit an incomplete record than mislead users by defaulting the
+                // record.
+                if (data.hasOwnProperty(i) && data[i].month && data[i].day) {
+                    // Records are indexed starting with 0 so all months are
+                    // shifted by 1.
+                    month = parseInt(data[i].month) - 1;
 
+                    if (0 <= month && month <= 11) {
                         // If a record has a day value, place it in the right
                         // segment.
                         segment = Math.floor(parseInt(data[i].day) / days_per_segment);
@@ -166,15 +165,6 @@ PNWMOTHS.Chart = function () {
                 }
             };
             options = jQuery.extend(true, {}, default_options, custom_options);
-
-            if (data.length > 0) {
-                for (var i = 0; i < data[0].length; i++) {
-                    if (isNaN(data[0][i])) {
-                        alert("Phenology data for this species is invalid.");
-                        return null;
-                    }
-                }                
-            }
 
             // Return a new jqPlot. This mostly consists of a lot of jqPlot
             // options.

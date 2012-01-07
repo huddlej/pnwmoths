@@ -33,6 +33,7 @@ PNWMOTHS.Map = function () {
             // Center on Washington State.
             PNWMOTHS.Map.mapCenter = new GLatLng(46.90, -118.00);
             map.setCenter(PNWMOTHS.Map.mapCenter, 5);
+
             map.addControl(new GSmallMapControl());
             map.addControl(new GMapTypeControl());
             map.addControl(PNWMOTHS.Map.getFullscreenControl());
@@ -44,6 +45,9 @@ PNWMOTHS.Map = function () {
             PNWMOTHS.Map.bounds = PNWMOTHS.Map.addTerritoryBoundaries(map);
             PNWMOTHS.Map.icons = PNWMOTHS.Map.buildMapIcons();
             PNWMOTHS.Map.mgr = new MarkerManager(map);
+
+            // After all markers have been placed, set the proper zoom level
+            map.setCenter(PNWMOTHS.Map.mapCenter, map.getBoundsZoomLevel(PNWMOTHS.Map.bounds));
 
             // Add filters to map container.
             if (typeof(PNWMOTHS.Filters.getFilterElement()) !== "undefined") {
@@ -95,7 +99,8 @@ PNWMOTHS.Map = function () {
                     "county",
                     "state",
                     "elevation",
-                    "precision"
+                    "precision",
+                    "notes"
                 ];
 
             for (i in data) {
@@ -174,6 +179,7 @@ PNWMOTHS.Map = function () {
                               "longitude": "Longitude"},
                 pointHtml = "<div class='infowindow'>",
                 collectionHtml = "",
+                notesHtml = "",
                 attribute, attribute_name, attribute_value, i, j;
 
             for (attribute in attributes) {
@@ -209,7 +215,10 @@ PNWMOTHS.Map = function () {
                 collectionHtml += "</div>";
             }
 
-            return [pointHtml, collectionHtml];
+            // regex replace to display multiline notes properly in HTML
+            notesHtml = "<p>" + record["notes"].replace(/\r\n/g, "<br />").replace(/\n/g, "<br />") + "</p>";
+
+            return [pointHtml, collectionHtml, notesHtml];
         },
         createMarkers: function (data) {
             // Creates markers for a given set of data for which each record has
@@ -253,7 +262,8 @@ PNWMOTHS.Map = function () {
                 // the "html" variable and created a tab for each entry with the
                 // tab name in the variable.
                 marker.openInfoWindowTabsHtml([new GInfoWindowTab("Site", html[0]),
-                                               new GInfoWindowTab("Collections", html[1])]);
+                                               new GInfoWindowTab("Collections", html[1]),
+                                               new GInfoWindowTab("Notes", html[2]),]);
             });
 
             return marker;
@@ -302,7 +312,7 @@ PNWMOTHS.Map = function () {
             var polygon = new GPolygon([
                   new GLatLng(40, -111.0),
                   new GLatLng(52.3, -111.0),
-                  new GLatLng(52.3, -126),
+                  new GLatLng(52.3, -130),
                   new GLatLng(40, -126),
                   new GLatLng(40, -111.0)
             ], "#000000", 2, 1, "#ffffff", 0);
