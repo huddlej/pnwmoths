@@ -62,6 +62,9 @@ strong, b, strong *, b * {
 em, i, em *, i * {
     font-style: italic;
 }
+u, u * {
+    text-decoration: underline;
+}
 del {
     text-decoration: line-through;
 }
