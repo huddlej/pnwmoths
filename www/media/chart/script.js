@@ -69,8 +69,7 @@ PNWMOTHS.Chart = function () {
                     // shifted by 1.
                     month = parseInt(data[i].month) - 1;
 
-                    if (0 <= month && month <= 11)
-                    {
+                    if (0 <= month && month <= 11) {
                         // If a record has a day value, place it in the right
                         // segment.
                         segment = Math.floor(parseInt(data[i].day) / days_per_segment);
