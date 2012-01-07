@@ -56,8 +56,11 @@ a:hover {
     text-decoration: none;
 }
 
-strong {
+strong, b, strong *, b * {
     font-weight: bold;
+}
+em, i, em *, i * {
+    font-style: italic;
 }
 del {
     text-decoration: line-through;
@@ -236,7 +239,3 @@ div.dokuwiki table.inline td {
   padding: 3px;
   border: 1px solid __border__;
 }
-
-/* Yahoo CSS Reset Fix */
-strong, b, strong *, b * { font-weight: bold !important; }
-em, i, em *, i * { font-style: italic !important; }
