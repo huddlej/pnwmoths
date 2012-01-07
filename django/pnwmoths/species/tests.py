@@ -109,7 +109,7 @@ class TestLazyIntegerField(TestCase):
 
     def test_non_integer(self):
         value = "[x]"
-        self.assertRaises(forms.ValidationError, self.field.clean, value)
+        self.assertEqual(None, self.field.clean(value))
 
 
 __test__ = {"doctest": """
