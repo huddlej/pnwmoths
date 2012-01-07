@@ -69,17 +69,19 @@ PNWMOTHS.Chart = function () {
                     // shifted by 1.
                     month = parseInt(data[i].month) - 1;
 
-                    // If a record has a day value, place it in the right
-                    // segment.
-                    segment = Math.floor(parseInt(data[i].day) / days_per_segment);
+                    if (0 <= month && month <= 11) {
+                        // If a record has a day value, place it in the right
+                        // segment.
+                        segment = Math.floor(parseInt(data[i].day) / days_per_segment);
 
-                    // The graph will never display more than the max number
-                    // of segments, so days 30 and 31 get placed into the last
-                    // segment.
-                    segment = Math.min(segment, max_segments);
+                        // The graph will never display more than the max number
+                        // of segments, so days 30 and 31 get placed into the last
+                        // segment.
+                        segment = Math.min(segment, max_segments);
 
-                    // Count the number of records for this month and this segment.
-                    phenology_data[month][segment] += 1;
+                        // Count the number of records for this month and this segment.
+                        phenology_data[month][segment] += 1;
+                    }
                 }
             }
 

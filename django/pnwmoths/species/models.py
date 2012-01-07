@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.localflavor.ca.ca_provinces import PROVINCE_CHOICES
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 models.signals.post_save.connect(create_api_key, sender=User)
@@ -164,8 +165,8 @@ class SpeciesRecord(models.Model):
     elevation = models.IntegerField(help_text="measured in feet", null=True,
                                     blank=True)
     year = models.IntegerField(null=True, blank=True)
-    month = models.IntegerField(null=True, blank=True)
-    day = models.IntegerField(null=True, blank=True)
+    month = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(12)])
+    day = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(31)])
 
     collector = models.ForeignKey(Collector, null=True, blank=True)
     collection = models.ForeignKey(Collection, null=True, blank=True)

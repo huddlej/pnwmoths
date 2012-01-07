@@ -56,8 +56,11 @@ a:hover {
     text-decoration: none;
 }
 
-strong {
+strong, b, strong *, b * {
     font-weight: bold;
+}
+em, i, em *, i * {
+    font-style: italic;
 }
 del {
     text-decoration: line-through;

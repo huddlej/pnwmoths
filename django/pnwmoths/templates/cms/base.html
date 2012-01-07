@@ -7,9 +7,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>{% block title %}{% page_attribute page_title %}{% endblock %} | PNW Moths</title>
 
-  {% block scripts %}
-  {% endblock %}
-
   {% block stylesheets %}
   <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/reset-fonts-grids.css" type="text/css">
   <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/base.css" type="text/css">
@@ -98,5 +95,8 @@
   </div>
 
 </div>
+
+{% block scripts %}
+{% endblock %}
 </body>
 </html>
