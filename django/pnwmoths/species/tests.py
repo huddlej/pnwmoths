@@ -5,6 +5,7 @@ import csv
 import os
 
 from django import forms
+from django.conf import settings
 from django.test import TestCase
 
 from forms import ImportSpeciesRecordsForm, LazyIntegerField, SpeciesRecordForm
