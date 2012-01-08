@@ -31,7 +31,6 @@
 }
 
 .spacetree .node.selected {
-	font-size: 120%;
 	color: #f04e19;
 	z-index: 5;
 }
