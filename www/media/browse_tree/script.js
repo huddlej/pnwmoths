@@ -339,6 +339,7 @@ PNWMOTHS.spacetree = function(options) {
 			});
 		
 		var handler = function() {
+      alert('test');
 				var val = that.jitctxt.parent().parent().find('.spacetree-search-form').find('input[type=text]:first').val();
 				var node = that.st.graph.getByName(val);
 				if (node) {
