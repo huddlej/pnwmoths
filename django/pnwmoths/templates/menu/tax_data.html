@@ -1,7 +1,7 @@
 {% load menu_tags %}
 {% for child in children %}
 {
-"id" : "{{ child.id }}",
+"id" : "b_{{ child.id }}",
 "name" : "{{ child.get_menu_title }}",
 "url" : "{{ child.attr.redirect_url|default:child.get_absolute_url }}",
 {% if child.children %}

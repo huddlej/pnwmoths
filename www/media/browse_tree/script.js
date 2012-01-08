@@ -28,6 +28,37 @@ PNWMOTHS.spacetree = function(options) {
 				that.jitctxt.height()
 			);
 		});
+
+  // CUSTOM BJORGE HACK
+		that.jitctxt.parent().parent().find('.jit-home').click(function() {
+        that.st.onClick(that.st.root, {
+            Move: {
+              offsetX: that.st.canvas.translateOffsetX,
+              offsetY: that.st.canvas.translateOffsetY
+            },
+						onComplete: function() {
+							jQuery('#' + that.st.root).trigger('click');
+						}
+					});
+		});
+		that.jitctxt.parent().parent().find('.jit-back').click(function() {
+        var t_n = "root";
+        var t_id = "root";
+        if (that.st.clickedNode.getParents()[0]) {
+          t_n = that.st.clickedNode.getParents()[0].name;
+          t_id = that.st.clickedNode.getParents()[0].id;
+        }
+        //alert(t_id);
+        that.st.onClick(t_id, {
+            Move: {
+              offsetX: that.st.canvas.translateOffsetX,
+              offsetY: that.st.canvas.translateOffsetY
+            },
+						onComplete: function() {
+							jQuery('#' + t_id).trigger('click');
+						}
+					});
+		});
 	
 	if (options['enable_hiding']) {
 		that.jitctxt.parent().parent().find('.jit-hide').click(  // TODO this is not a properly namespaced selector
