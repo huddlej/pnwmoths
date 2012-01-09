@@ -69,11 +69,6 @@ var TAX_MENU = {
 
 var FLAT_TAX_MENU = [{name:"root",id:"root"},{% show_sub_menu 1000 "menu/flat_search_data.html" %}];
 
-$("#nodes").autocomplete({
-  source:FLAT_TAX_MENU,
-  select: function(event, ui){
-        window.thejit_spacetree['browse_spacetree'].st.onClick(ui.item.id); 
-	},})
 jQuery("#no-js_spacetree").empty();
 
 var json = {

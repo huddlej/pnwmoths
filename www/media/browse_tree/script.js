@@ -75,6 +75,20 @@ PNWMOTHS.spacetree = function(options) {
     }
     return objects;
     }
+
+  $("#nodes").autocomplete({
+  source:FLAT_TAX_MENU,
+  select: function(event, ui){
+        window.thejit_spacetree['browse_spacetree'].st.onClick(ui.item.id, {
+            Move: {
+              offsetX: window.thejit_spacetree['browse_spacetree'].st.canvas.translateOffsetX,
+              offsetY: window.thejit_spacetree['browse_spacetree'].st.canvas.translateOffsetY
+            },
+						onComplete: function() {
+							jQuery('#' + ui.item.id).trigger('click');
+						}
+        });
+	},});
 	
 	if (options['enable_full_screen']) {
 		var fullScreen = that.fullScreen = function(fs) {
@@ -210,7 +224,7 @@ PNWMOTHS.spacetree = function(options) {
 							}
               var n = getObjects(FLAT_TAX_MENU, 'id', node['id'])[0];
 							that.jitctxt.find('.jit-node-info .header .title').html(node['name']);
-							that.jitctxt.find('.jit-node-info .content').html(n['fulldiv']);
+							that.jitctxt.find('.jit-node-info .content').html('<img src="'+n['img']+'" /><br /><a href="http://localhost'+n['url']+'">GO TO PAGE</a>');
               if (callback) { callback(); }
 			};
 			
