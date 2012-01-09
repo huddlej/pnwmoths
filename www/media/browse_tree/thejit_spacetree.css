@@ -13,26 +13,34 @@
 }
 
 .spacetree {
-	background-color: #333333;
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#666666), to(#333333));
-	background: -moz-linear-gradient(center top, #666666, #333333);
+  background: #c9de96;
+background: -moz-linear-gradient(left, #c9de96 0%, #8ab66b 44%, #398235 100%);
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,#c9de96), color-stop(44%,#8ab66b), color-stop(100%,#398235));
+background: -webkit-linear-gradient(left, #c9de96 0%,#8ab66b 44%,#398235 100%);
+background: -o-linear-gradient(left, #c9de96 0%,#8ab66b 44%,#398235 100%);
+background: -ms-linear-gradient(left, #c9de96 0%,#8ab66b 44%,#398235 100%);
+background: linear-gradient(left, #c9de96 0%,#8ab66b 44%,#398235 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9de96', endColorstr='#398235',GradientType=1 );
 	overflow: hidden;
 	position: relative;
 }
 
 .spacetree .node {
-	color: #ffffff;
+	color: #000000;
 	cursor:pointer;
 	text-align:center;
 	border: none;
 	margin: 0;
 	position: absolute;
+  -moz-user-select: none; 
+  -khtml-user-select: none; 
+  -webkit-user-select: none; 
+  user-select: none;
 }
 
 .spacetree .node.selected {
-	font-weight: bold;
   font-size: 120%;
-	color: #f04e19;
+	color: #FFFFFF;
 	z-index: 5;
 }
 

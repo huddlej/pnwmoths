@@ -30,6 +30,7 @@ PNWMOTHS.spacetree = function(options) {
 		});
 
   // CUSTOM BJORGE HACK
+  // HOME
 		that.jitctxt.parent().parent().find('.jit-home').click(function() {
         that.st.onClick(that.st.root, {
             Move: {
@@ -41,6 +42,7 @@ PNWMOTHS.spacetree = function(options) {
 						}
 					});
 		});
+    // BACK
 		that.jitctxt.parent().parent().find('.jit-back').click(function() {
         var t_n = "root";
         var t_id = "root";
@@ -59,28 +61,20 @@ PNWMOTHS.spacetree = function(options) {
 						}
 					});
 		});
-	
-	if (options['enable_hiding']) {
-		that.jitctxt.parent().parent().find('.jit-hide').click(  // TODO this is not a properly namespaced selector
-			function() {
-				var clicked = jQuery(this);
-				clicked.parent().next('.spacetree-wrapper:first').animate(
-						{'height':'toggle', 'opacity':'toggle'},
-						400,
-						jQuery.easing['easeOutExpo'] ? 'easeOutExpo' : 'swing',
-						function() {
-							clicked.toggleClass('jit-show');
-							if (clicked.hasClass('jit-show')) {
-								clicked.attr('title','Show visualization');
-							} else {
-								clicked.attr('title','Hide visualization');
-								resize(that.jitctxt.width(), that.jitctxt.height());
-							}
-						}
-					);
-			
-			});
-	}
+
+    //http://stackoverflow.com/questions/4992383/use-jquerys-find-on-json-object
+    function getObjects(obj, key, val) {
+    var objects = [];
+    for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) continue;
+        if (typeof obj[i] == 'object') {
+            objects = objects.concat(getObjects(obj[i], key, val));
+        } else if (i == key && obj[key] == val) {
+            objects.push(obj);
+        }
+    }
+    return objects;
+    }
 	
 	if (options['enable_full_screen']) {
 		var fullScreen = that.fullScreen = function(fs) {
@@ -211,23 +205,13 @@ PNWMOTHS.spacetree = function(options) {
 		if (options['enable_node_info']) {
 			var lookupNodeInfo = that.lookupNodeInfo = function(node, callback) {
 				var id = node['id'].replace(that.thisid + '_','');
-				var ni_url = Drupal.settings.basePath + options['node_info_path'] + id;
-				jQuery.ajax({
-					url: ni_url,
-					dataType: 'json',
-					success:
-						function(resp) {
 							if (options['cache_node_info']) {
 								jQuery('#' + node['id']).data('node_info', resp);
 							}
-							that.jitctxt.find('.jit-node-info .header .title').html(resp.title);
-							that.jitctxt.find('.jit-node-info .content').html(resp.body);
-						},
-					error: function(xml, error, errorObj) {
-//						alert(error);
-						},
-					complete: function() { if (callback) { callback(); } }
-					});
+              var n = getObjects(FLAT_TAX_MENU, 'id', node['id'])[0];
+							that.jitctxt.find('.jit-node-info .header .title').html(node['name']);
+							that.jitctxt.find('.jit-node-info .content').html(n['fulldiv']);
+              if (callback) { callback(); }
 			};
 			
 			var getNodeInfo = that.getNodeInfo = function(node, callback) {
@@ -291,63 +275,6 @@ PNWMOTHS.spacetree = function(options) {
 			};
 		}
 
-		if (options['enable_help']) {
-			var showHelp = that.showHelp = function() {
-				clearTimeout(hideHelp._t);
-				showHelp._t = setTimeout(
-					function() {
-						that.jitctxt.find('.jit-help').animate({'right':'0px'}, 250, jQuery.easing['easeOutExpo'] ? 'easeOutExpo' : 'swing');
-					},
-					100);
-			};
-			
-			var hideHelp = that.hideHelp = function() {
-				clearTimeout(showHelp._t);
-				hideHelp._t = setTimeout(
-					function() {
-						var w = that.jitctxt.find('.jit-help .content').outerWidth();
-						that.jitctxt.find('.jit-help').animate({'right':'-' + w + 'px'}, 250, jQuery.easing['easeOutBack'] ? 'easeOutBack' : 'swing');
-					},
-					100);
-			};
-			
-			var disableHelp = that.disableHelp = function(disable) {
-				var help = that.jitctxt.find('.jit-help');
-				if (disable) {
-					var w = help.outerWidth();
-					help.animate({'right':'-' + w + 'px'}, 250);
-					help.next().hide(); // hide shadow
-				} else {
-					hideHelp();  // this adds the help tab back minimized
-					setTimeout(function() {help.next().show();}, 200);
-				}
-			};
-		
-			hideHelp();
-			that.jitctxt.find('.jit-help').hover(showHelp,hideHelp);
-		}
-	}
-	
-	if (options['enable_orient']) {
-		that.jitctxt.parent().parent().find("input[name='orient']").click(
-			function() {
-				if (! that.st.busy) {
-					that.jitctxt.parent().parent().find("input[name='orient']").attr('disabled','disabled');
-					var orient = jQuery(this).val();
-					that.jitctxt.removeClass('top right bottom left');
-					that.jitctxt.addClass(orient);
-					that.st.switchPosition(orient, 'animate', {
-							onComplete: function() {
-								if (options['enable_node_info'])
-									moveNodeInfo();
-								that.jitctxt.parent().parent().find("input[name='orient']").removeAttr('disabled');
-							}
-						});
-				} else {
-					return false;
-				}
-			}
-		);
 	}
 	
 	if (options['enable_search']) {
@@ -368,32 +295,6 @@ PNWMOTHS.spacetree = function(options) {
 					jQuery(this).remove();
 				});
 			});
-		
-		var handler = function() {
-      alert('test');
-				var val = that.jitctxt.parent().parent().find('.spacetree-search-form').find('input[type=text]:first').val();
-				var node = that.st.graph.getByName(val);
-				if (node) {
-					that.st.canvas.translate(-that.st.canvas.translateOffsetX, -that.st.canvas.translateOffsetY);
-					var open = function(n, callback) {
-						if (!n.drawn) {
-							open(n.getParents()[0], function() {open(n, callback)});
-						} else {
-							var oncomplete = {};
-							if (callback) {
-								oncomplete['onComplete'] = callback;
-							}
-							that.st.onClick(n.id, oncomplete);
-						}
-		
-					}
-					open(node, function() {jQuery('#'+node.id).trigger('click');});
-					jQuery('.spacetree-search-form-overlay').trigger('click');
-				}
-				return false;
-			};
-		that.jitctxt.parent().parent().find('.spacetree-search-form input[type=submit]').click(handler);
-		that.jitctxt.parent().parent().find('.spacetree-search-form form').submit(handler);
 	}
 	
 	$jit.ST.Plot.NodeTypes.implement({

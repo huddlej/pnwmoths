@@ -1,10 +1,24 @@
-{% load menu_tags %}
+{% load menu_tags cache cms_tags species_tags thumbnail %}
+
 {% for child in children %}
-{
-"id" : "{{ child.id }}",
-"label" : "{{ child.get_menu_title }}",
-},
-{% if child.children %}
-    {% show_menu from_level to_level extra_inactive extra_active template "" "" child %}
+{% if child.is_leaf_node %}
+{% species_by_name child.get_menu_title as species %}
 {% endif %}
+  {
+    "id" : "b_{{ child.id }}",
+    "label" : "{{ child.get_menu_title }}",
+    "url" : "{{ child.attr.redirect_url|default:child.get_absolute_url }}",
+      {% if species %}
+        {% for species_image in species.speciesimage_set.all %}
+            {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
+                  "img" : "{{ small.url }}",
+            {% endthumbnail %}
+        {% endfor %}
+      {% endif %}
+  },
+
+  {% if child.children %}
+    {% show_menu from_level to_level extra_inactive extra_active template "" "" child %}
+  {% endif %}
+
 {% endfor %}

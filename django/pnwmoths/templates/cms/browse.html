@@ -46,6 +46,10 @@
 	<div class="spacetree-wrapper">
 		
 		<div id="browse_spacetree" class="spacetree" style="height: 680px">
+				<div class='jit-node-info'>
+					<div class='header'><div class='title'></div><div class='closer'></div></div>
+					<div class='content'></div>
+				</div>
 		</div>
 	
 		<div class="jit-after">
@@ -10200,7 +10204,7 @@ jQuery(document).ready(function () {
 			window.thejit_spacetree = {};
 		}
 		if (! window.thejit_spacetree['browse_spacetree']) {
-			window.thejit_spacetree['browse_spacetree'] = new PNWMOTHS.spacetree({ "id": "browse_spacetree", "levelDistance": 120, "Node": {type: 'expanding',overridable: true,width: 90,align: 'center'}, "siblingOffset": 30, "height": 680, "duration": 150, "levels_to_show": 2, "init_orient": "left", "selected_node": "root", "enable_orient": 0, "enable_full_screen": 1, "enable_hiding": 0, "enable_help": 0, "help_function_name": "clade_jit_jit_help", "enable_search": 1, "search_path": "clade/autocomplete", "enable_node_info": 0, "node_info_path": "clade/jit/spacetree/node_info/", "cache_node_info": 0, "edge_color": "#ffffff", "selected_edge_color": "#db671e"});
+			window.thejit_spacetree['browse_spacetree'] = new PNWMOTHS.spacetree({ "id": "browse_spacetree", "levelDistance": 120, "Node": {type: 'expanding',overridable: true,width: 90,align: 'center'}, "siblingOffset": 30, "height": 680, "duration": 150, "levels_to_show": 2, "init_orient": "left", "selected_node": "root", "enable_orient": 0, "enable_full_screen": 1, "enable_search": 1, "enable_node_info": 1, "cache_node_info": 0, "edge_color": "#000000", "selected_edge_color": "#FFFFFF"});
 
 							window.thejit_spacetree['browse_spacetree'].st.config.onBeforeCompute = function(node) {};
 						
@@ -10315,6 +10319,7 @@ jQuery(document).ready(function () {
 							window.thejit_spacetree['browse_spacetree'].st.config.request = false;
 						
 
+				//window.thejit_spacetree['browse_spacetree'].render(json);
 				window.thejit_spacetree['browse_spacetree'].render(TAX_MENU);
         //window.thejit_spacetree['browse_spacetree'].st.onClick(window.thejit_spacetree['browse_spacetree'].st.root); 
 		}
