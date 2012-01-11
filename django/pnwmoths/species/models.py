@@ -207,6 +207,7 @@ class SpeciesImage(models.Model):
     SPECIES_RE = r"(\w+ [-\w]+)-\w-\w.jpg"
     IMAGE_PATH = "moths/"
     SIZES = {
+        "micro": "35x23",
         "thumbnail": "140x93",
         "medium": "375x249"
     }
