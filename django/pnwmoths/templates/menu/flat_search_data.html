@@ -13,6 +13,9 @@
             {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
                   "img" : "{{ small.url }}",
             {% endthumbnail %}
+            {% thumbnail species_image.image species_image.SIZES.micro as small %}
+                  "micro_img" : "{{ small.url }}",
+            {% endthumbnail %}
         {% endfor %}
       {% endif %}
   },

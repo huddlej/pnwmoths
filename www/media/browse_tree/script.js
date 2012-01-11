@@ -224,7 +224,9 @@ PNWMOTHS.spacetree = function(options) {
 							}
               var n = getObjects(FLAT_TAX_MENU, 'id', node['id'])[0];
 							that.jitctxt.find('.jit-node-info .header .title').html(node['name']);
-							that.jitctxt.find('.jit-node-info .content').html('<img src="'+n['img']+'" /><br /><a href="http://localhost'+n['url']+'">GO TO PAGE</a>');
+              if(n['url']) {
+							  that.jitctxt.find('.jit-node-info .content').html('<img src="'+n['img']+'" /><br /><a href="http://localhost'+n['url']+'" class="species_button">View Details</a>');
+              }
               if (callback) { callback(); }
 			};
 			

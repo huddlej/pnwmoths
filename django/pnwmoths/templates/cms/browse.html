@@ -30,16 +30,13 @@
 </div>
 
 <div class="jit jit-spacetree">
-		<div class="jit-before">
-      "Before"
-		</div>
 		<div class="jit-controls">
 			<div class="jit-control jit-home" title="Home"></div>
 			<div class="jit-control jit-back" title="Back"></div>
 			<div class="jit-control jit-full" title="Fullscreen"></div>
       <div class="jit-control jit-search spacetree-search" title="Search"></div>
       <div class="spacetree-search-form">
-      	<label for="nodes">Nodes: </label>
+      	<label for="nodes">Search: </label>
         <input id="nodes" />
       </div>
 		</div>
@@ -50,10 +47,6 @@
 					<div class='header'><div class='title'></div><div class='closer'></div></div>
 					<div class='content'></div>
 				</div>
-		</div>
-	
-		<div class="jit-after">
-      After
 		</div>
 	</div>
 </div>
@@ -10194,12 +10187,24 @@ var json = {
 		]
 };
 
+    function getObjects(obj, key, val) {
+    var objects = [];
+    for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) continue;
+        if (typeof obj[i] == 'object') {
+            objects = objects.concat(getObjects(obj[i], key, val));
+        } else if (i == key && obj[key] == val) {
+            objects.push(obj);
+        }
+    }
+    return objects;
+    }
 jQuery(document).ready(function () {
 		if (! window.thejit_spacetree) {
 			window.thejit_spacetree = {};
 		}
 		if (! window.thejit_spacetree['browse_spacetree']) {
-			window.thejit_spacetree['browse_spacetree'] = new PNWMOTHS.spacetree({ "id": "browse_spacetree", "levelDistance": 120, "Node": {type: 'expanding',overridable: true,width: 90,align: 'center'}, "siblingOffset": 30, "height": 680, "duration": 150, "levels_to_show": 2, "init_orient": "left", "selected_node": "root", "enable_orient": 0, "enable_full_screen": 1, "enable_search": 1, "enable_node_info": 1, "cache_node_info": 0, "edge_color": "#000000", "selected_edge_color": "#FFFFFF"});
+			window.thejit_spacetree['browse_spacetree'] = new PNWMOTHS.spacetree({ "id": "browse_spacetree", "levelDistance": 120, "Node": {type: 'expanding',overridable: true,width: 90,align: 'center'}, "siblingOffset": 50, "height": 680, "duration": 150, "levels_to_show": 2, "init_orient": "left", "selected_node": "root", "enable_orient": 0, "enable_full_screen": 1, "enable_search": 1, "enable_node_info": 1, "cache_node_info": 0, "edge_color": "#000000", "selected_edge_color": "#FFFFFF"});
 
 							window.thejit_spacetree['browse_spacetree'].st.config.onBeforeCompute = function(node) {};
 						
@@ -10257,8 +10262,15 @@ jQuery(document).ready(function () {
 					});
 			}
 		});
-	lbl.width(node.getData('width')).html(node.name);
-	if (node.data.active && node.data.active === "0") {
+    var d = getObjects(FLAT_TAX_MENU, 'id', node.id)[0];
+  var micro = '';
+  if(d.hasOwnProperty('micro_img')) {
+    micro = '<img src="'+d.micro_img+'" class="micro_img" /><br />';
+  }
+
+  lbl.width(node.getData('width')).html(micro+node.name);
+  
+  if (node.data.active && node.data.active === "0") {
 		lbl.addClass('inactive');
 	}
 	
@@ -10321,5 +10333,6 @@ jQuery(document).ready(function () {
 	});
 </script>
 
+<!-- <div xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" about="http://paularmstrongdesigns.com/projects/bwpx-icns/viewall/index.php"><span property="dct:title">bwpx.icns</span> (<a rel="cc:attributionURL" property="cc:attributionName" href="http://paularmstrongdesigns.com">Paul Armstrong</a>) / <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">CC BY-SA 3.0</a></div> -->
 {% placeholder "after menu" %}
 {% endblock %}
