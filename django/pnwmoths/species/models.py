@@ -100,6 +100,7 @@ class Species(models.Model):
     genus = models.CharField(max_length=255)
     species = models.CharField(max_length=255)
     common_name = models.CharField(max_length=255, blank=True, null=True)
+    authority = models.CharField(max_length=255, blank=True)
     similar = models.ManyToManyField("self", blank=True)
 
     class Meta:
@@ -108,10 +109,7 @@ class Species(models.Model):
         verbose_name_plural = u"species"
 
     def __unicode__(self):
-        if self.common_name:
-            name = u"%s %s (%s)" % (self.genus, self.species, self.common_name)
-        else:
-            name = u"%s %s" % (self.genus, self.species)
+        name = u"%s %s" % (self.genus, self.species)
 
         return name
 
