@@ -60,6 +60,12 @@ class Collection(models.Model):
     def __unicode__(self):
         return self.name
 
+class Author(models.Model):
+    authority = models.CharField(max_length=255, unique=True)
+    
+    def __unicode__(self):
+        return self.authority
+
 
 class SpeciesManager(models.Manager):
     def search_by_similar_name(self, genus, species):
@@ -100,7 +106,7 @@ class Species(models.Model):
     genus = models.CharField(max_length=255)
     species = models.CharField(max_length=255)
     common_name = models.CharField(max_length=255, blank=True, null=True)
-    authority = models.CharField(max_length=255, blank=True)
+    authority = models.ForeignKey(Author, null=True, blank=True)
     similar = models.ManyToManyField("self", blank=True)
 
     class Meta:

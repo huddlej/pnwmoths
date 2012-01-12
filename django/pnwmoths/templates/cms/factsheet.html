@@ -39,10 +39,8 @@
 <!-- wikipage start -->
 {% species_by_name current_page.get_title as species %}
 
-<h1><em>{{ species.name }}</em> {{ species.authority }}</h1>
-{% if species.common_name %}
-<h2>{{ species.common_name }}</h2>
-{% endif %}
+<h1><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h1>
+{% if species.common_name %}<h2>{{ species.common_name }}</h2>{% endif %}
 
 <div class="factsheet yui-g">
     <div class="yui-u first all-images all-images-no-js">
