@@ -57,13 +57,13 @@ a:hover {
 }
 
 strong, b, strong *, b * {
-    font-weight: bold;
+    font-weight: bold !important;
 }
 em, i, em *, i * {
-    font-style: italic;
+    font-style: italic !important;
 }
 u, u * {
-    text-decoration: underline;
+    text-decoration: underline !important;
 }
 del {
     text-decoration: line-through;
