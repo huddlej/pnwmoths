@@ -62,7 +62,7 @@ strong, b, strong *, b * {
 em, i, em *, i * {
     font-style: italic !important;
 }
-u, u * {
+u, u *, .u {
     text-decoration: underline !important;
 }
 del {
