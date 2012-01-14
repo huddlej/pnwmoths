@@ -679,6 +679,7 @@ jQuery(document).ready(function () {
     // TODO: maybe this should go into the fullscreen control.
     jQuery("#googlemap").bind("fullscreen", function () {
         jQuery(this).toggleClass("fullscreen");
+	jQuery('#cms_toolbar').toggle(); // Toggle button blocking django-cms toolbar
         PNWMOTHS.Map.map.checkResize();
         PNWMOTHS.Map.map.setCenter(
             PNWMOTHS.Map.mapCenter,
