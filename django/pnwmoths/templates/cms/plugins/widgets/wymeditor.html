@@ -1,0 +1,137 @@
+{% load i18n %}
+<script type="text/javascript">
+
+// Global var, for storing callbacks, see below.
+var editPluginPopupCallbacks = {};
+
+{% include "cms/plugins/widgets/widget_lib.js" %}
+
+$(document).ready(function(){
+    $('#id_{{ name }}').wymeditor({
+        lang: 'en',
+        skin: 'django',
+        skinPath: "{{ CMS_MEDIA_URL }}js/wymeditor/skins/django/",
+        updateSelector: 'input[type=submit],',
+        updateEvent: 'click',
+		logoHtml: '',
+		toolsItems: [
+			    {{ WYM_TOOLS }}
+			],
+		containersItems: [
+		        {{ WYM_CONTAINERS }}
+		    ],
+		classesItems: [
+			    {{ WYM_CLASSES }}
+			],
+      editorStyles: [
+      {'name': '.u', 'css': 'text-decoration: underline !important;'},
+      {'name': 'span', 'css': 'background-color: inherit;'},
+			{{ WYM_STYLES }}
+			],
+		{% if WYM_STYLESHEET %}
+		stylesheet:
+			{{ WYM_STYLESHEET }}
+		,
+		{% endif %}
+        postInit: function(wym) {
+             var html = "<li class='wym_tools_underline'>"
+                 + "<a style=\"background-image: url(data:image/gif;base64,R0lGODlhGAAZALMMAN3d3YiIiDMzM8zMzBEREe7u7qqqqmZmZru7u0RERJmZmQAAAP///wAAAAAAAAAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4wLWMwNjEgNjQuMTQwOTQ5LCAyMDEwLzEyLzA3LTEwOjU3OjAxICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgV2luZG93cyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5OENGMzMwMjNDQzMxMUUxODJFNUEyQTQ1MUFBQjE1NCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo5OENGMzMwMzNDQzMxMUUxODJFNUEyQTQ1MUFBQjE1NCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjk4Q0YzMzAwM0NDMzExRTE4MkU1QTJBNDUxQUFCMTU0IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjk4Q0YzMzAxM0NDMzExRTE4MkU1QTJBNDUxQUFCMTU0Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEAQAADAAsAAAAABgAGQAABE6QyUmrvTjrzbv/oKcsC0AlS9KN5ZmupDmhKsfKEg2382vHrtrmFtzhGLrfYkAR+DYIkoDJCJAOnQKBxOUGPNauFGRAkQjfkHrNbrvfnAgAOw==);\" href='#'"
+                 + " title='Underline'>"
+                 + "Underline"
+                 + "</a></li>";
+ 
+              jQuery(wym._box).find(wym._options.toolsSelector).prepend(html);
+            
+              //handle click event
+              jQuery(wym._box).find('.wym_tools_underline a').click(function() {
+     
+              if(jQuery(wym.selected()).hasClass("u")) {
+                 wym.unwrap();
+              } else {
+                wym.wrap('<span class="u">', '</span>');
+              }
+              return(false);
+            });
+
+            //construct the insertLinkButton html
+            html = get_plugin_html()
+            //add the button to the tools box
+            jQuery(wym._box)
+            .find(wym._options.toolsSelector + wym._options.toolsListSelector)
+            .append(html);
+            // Enable the placeholderbridge plugin, to allow
+            // the placeholder controls to talk to editor
+            wym.placeholderbridge({'name': '{{ name }}'});
+            init_buttons("{{ name }}");
+        },
+        //handle click event on dialog's submit button
+        postInitDialog: function( wym, wdw ) {
+     
+        }
+    });
+	
+
+   
+
+    /* onclick for 'Insert object' */
+	
+	function init_buttons(placeholder){
+		$('span.insert-object').click(function(){
+			var select = $(this).parent().children("select");
+			var pluginvalue = select.attr('value');
+			var splits = window.location.href.split("?")[0].split("/");
+			var parent_id = Number(splits[splits.length - 2]);
+			var language = $('#id_language').attr('value');
+			
+			if (pluginvalue == "") {
+				alert("{% filter escapejs %}{% trans "Please select a plugin type." %}{% endfilter %}");
+				return;
+			}
+			
+			var texteditor = get_editor(placeholder);
+			if (texteditor == null || texteditor.insertText == null) {
+				alert("{% filter escapejs %}{% trans "Text editor does not support inserting objects." %}{% endfilter %}");
+				return;
+			}
+			// First create db instance using AJAX post back
+			add_plugin(pluginvalue, parent_id, language)
+			
+		}).css("cursor", "pointer").css("margin", "5px");
+		
+		/* onclick for 'Edit selected object' */
+		$('span.edit-object').click(function(){
+			var texteditor = get_editor(placeholder);
+			if (texteditor == null || texteditor.selectedObject == null) {
+				alert("{% filter escapejs %}{% trans "Text editor does not support editing objects." %}{% endfilter %}");
+				return;
+			}
+			var imgobj = texteditor.selectedObject();
+			if (imgobj == null) {
+				alert("{% filter escapejs %}{% trans "No object selected." %}{% endfilter %}");
+				return;
+			}
+			if (imgobj.id == null || imgobj.id.indexOf("plugin_obj_") != 0) {
+				alert("{% filter escapejs %}{% trans "Not a plugin object" %}{% endfilter %}");
+				return;
+			}
+			var plugin_id = imgobj.id.substr("plugin_obj_".length);
+			edit_plugin(plugin_id);
+		}).css("cursor", "pointer").css("margin","5px");
+	}
+});
+
+
+
+function get_plugin_html(){
+	html = '<li class="wym_tools_plugins">'
+        + '<select name="plugins">'
+        + '<option value="" selected="selected">{% filter escapejs %}{% trans "Available Plugins" %}{% endfilter %}</option>'{% for p in installed_plugins %}
+    	+ '<option value="{{ p.value }}">{{ p.name }}</option>'{% endfor %}
+        + '</select>'
+        + '<span class="insert-object addlink">{% filter escapejs %}{% trans "Insert plugin" %}{% endfilter %}</span>'
+        + '<span class="edit-object changelink">{% filter escapejs %}{% trans "Edit selected plugin" %}{% endfilter %}</span>'
+        + '</li>';
+return html;
+
+}
+    </script>
