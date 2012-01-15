@@ -7,7 +7,7 @@ from tastypie.models import ApiAccess, ApiKey
 
 from actions import export_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage,
-                    SpeciesRecord, State)
+                    SpeciesRecord, State, Author)
 
 
 admin.site.register(ApiKey)
@@ -25,6 +25,10 @@ class CountyAdmin(admin.ModelAdmin):
     list_filter = ("state",)
 admin.site.register(County, CountyAdmin)
 
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ("authority",)
+    search_fields = ("authority",)
+admin.site.register(Author, AuthorAdmin)
 
 class SpeciesAdmin(admin.ModelAdmin):
     filter_horizontal = ("similar",)
@@ -42,6 +46,7 @@ class SpeciesImageAdmin(AdminImageMixin, admin.ModelAdmin):
         "weight"
     )
     list_editable = ("weight",)
+    search_fields = ("species__genus","species__species", "image")
 admin.site.register(SpeciesImage, SpeciesImageAdmin)
 
 
