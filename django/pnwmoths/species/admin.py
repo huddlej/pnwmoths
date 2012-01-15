@@ -46,7 +46,7 @@ class SpeciesImageAdmin(AdminImageMixin, admin.ModelAdmin):
         "weight"
     )
     list_editable = ("weight",)
-    search_fields = ("species__genus","species__species", "image")
+    search_fields = ("species__genus", "species__species", "image")
 admin.site.register(SpeciesImage, SpeciesImageAdmin)
 
 
