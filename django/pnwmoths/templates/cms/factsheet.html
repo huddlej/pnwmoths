@@ -70,27 +70,29 @@
         {% endfor %}
         </div>
 
-        <div id="similar">
-        <h2>
-            Similar Species
-        {% if request.user.is_staff and species %}
-            <span class="edit"><a href="{% url admin:species_species_change species.id %}" target="_new">edit</a></span>
-        {% endif %}
-        </h2>
+        {% if species.similar.all %}
+            <div id="similar">
+            <h2>
+                Similar Species
+            {% if request.user.is_staff and species %}
+                <span class="edit"><a href="{% url admin:species_species_change species.id %}" target="_new">edit</a></span>
+            {% endif %}
+            </h2>
 
-        <ul class="other-images jcarousel-skin-tango">
-        {% for similar_species in species.similar.all %}
-            <li>
-            {% with similar_species.get_first_image as similar_image %}
-                {% thumbnail similar_image similar_image.SIZES.thumbnail as im %}
-                    <img src="{{ im.url }}" title="{{ similar_image.title }}" /><br />
-                {% endthumbnail %}
-            {% endwith %}
-                 <a href="{% page_id_url similar_species.name %}" target="_blank">{{ similar_species }}</a>
-            </li>
-        {% endfor %}
-        </ul>
-        </div>
+            <ul class="other-images jcarousel-skin-tango">
+            {% for similar_species in species.similar.all %}
+                <li>
+                {% with similar_species.get_first_image as similar_image %}
+                    {% thumbnail similar_image similar_image.SIZES.thumbnail as im %}
+                        <img src="{{ im.url }}" title="{{ similar_image.title }}" /><br />
+                    {% endthumbnail %}
+                {% endwith %}
+                     <a href="{% page_id_url similar_species.name %}" target="_blank">{{ similar_species }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+          </div>
+      {% endif %}
     </div>
     <div class="yui-u">
         <div id="googlemap" class="googlemap">
