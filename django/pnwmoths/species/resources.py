@@ -88,7 +88,7 @@ class SpeciesRecordResource(ModelResource):
     state = fields.CharField(attribute="state__code", null=True)
 
     class Meta:
-        queryset = SpeciesRecord.objects.all()
+        queryset = SpeciesRecord.records.all()
         allowed_methods = ["get"]
         excludes = ["id"]
         include_resource_uri = False
