@@ -51,6 +51,8 @@ admin.site.register(SpeciesImage, SpeciesImageAdmin)
 
 
 class SpeciesRecordAdmin(admin.ModelAdmin):
+    class Media:
+        js = ("/media/custom_admin/speciesrecords.js",)    
     list_display = (
         "species",
         "latitude",

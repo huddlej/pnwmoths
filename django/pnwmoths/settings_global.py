@@ -173,3 +173,16 @@ CSV_ADMIN_CONTENT_FORMS = {
 }
 CSV_ADMIN_USE_TRANSACTIONS=False
 CSV_ADMIN_TEMPLATE="admin/csv_admin/validate_form.html"
+
+# Converts imported row's filename to species, genus
+def filename_to_species(row):
+    if 'filename' in row:
+        SPECIES_RE = r"(\w+ [-\w]+)-\w-\w"
+        filename_regex = re.compile(SPECIES_RE)
+        match = filename_regex.findall(row['filename'])
+        try:
+            row['genus'], row['species'] = match[0].split(" ", 1)
+        except IndexError:
+            row['genus'] = row['filename']
+
+CSV_ADMIN_ROW_FUNCTIONS = [filename_to_species]
