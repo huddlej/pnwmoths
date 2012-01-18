@@ -135,12 +135,20 @@ class Species(models.Model):
         except:
             return None
 
+class RecordManager(models.Manager):
+    def get_query_set(self):
+        return super(RecordManager, self).get_query_set().filter(speciesimage__isnull=True)
+
+class LabelManager(models.Manager):
+    def get_query_set(self):
+        return super(LabelManager, self).get_query_set().filter(speciesimage__isnull=False)
+
 
 class SpeciesRecord(models.Model):
     """
     Represents a single record of a species based on a combination of where and
-    when the specimen was found and by whom. At the minimum, a species record
-    must include latitude and longitude values.
+    when the specimen was found and by whom. If a record is missing latitude and
+    longitude coordinates, it is assumed to be a label.
 
     The following fields define a unique record despite the fact that most of
     these fields can be empty:
@@ -160,8 +168,8 @@ class SpeciesRecord(models.Model):
     GPS_PRECISION = 2
 
     species = models.ForeignKey(Species)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     locality = models.CharField(null=True, blank=True, max_length=255)
     county = models.ForeignKey(County, null=True, blank=True)
@@ -181,11 +189,19 @@ class SpeciesRecord(models.Model):
     date_added = models.DateTimeField(editable=False)
     date_modified = models.DateTimeField(editable=False)
 
+    # Managers
+    objects = models.Manager()
+    records = RecordManager()
+    labels = LabelManager()
+
     class Meta:
         ordering = ("species", "latitude", "longitude")
 
     def __unicode__(self):
-        return u"%s at (%.2f, %.2f)" % (self.species, self.latitude, self.longitude)
+        if self.latitude and self.longitude:
+            return u"Record - %s at (%.2f, %.2f)" % (self.species, self.latitude, self.longitude)
+        else:
+            return u"Label - %s" % (self.species)
 
     @property
     def date(self):
