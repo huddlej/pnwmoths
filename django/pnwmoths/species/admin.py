@@ -5,7 +5,7 @@ from sorl.thumbnail.admin import AdminImageMixin
 from tastypie.admin import ApiKeyInline
 from tastypie.models import ApiAccess, ApiKey
 
-from actions import export_as_csv_action
+from actions import export_records_as_csv_action, export_labels_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage,
                     SpeciesRecord, State, Author)
 
@@ -70,7 +70,14 @@ class SpeciesRecordAdmin(admin.ModelAdmin):
     )
     list_select_related = True
     search_fields = ("species__genus", "species__species")
-    actions = [export_as_csv_action("CSV export")]
+    actions = [export_labels_as_csv_action(), export_records_as_csv_action()]
+    
+    # The admin section's record/label filter performs a table join that returns
+    # duplicate records that display in the admin interface. This override
+    # guarentees distinct results.
+    def queryset(self, request):
+        return super(SpeciesRecordAdmin,self).queryset(request).distinct()
+
 admin.site.register(SpeciesRecord, SpeciesRecordAdmin)
 
 

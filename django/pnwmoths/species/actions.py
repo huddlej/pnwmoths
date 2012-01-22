@@ -1,35 +1,59 @@
 import csv
 from django.http import HttpResponse
+from os.path import basename, splitext
 
-
-def export_as_csv_action(description="Export selected objects as CSV file",
-                         fields=None, exclude=None, header=True):
-    """
-    This function returns an export csv action
-    'fields' and 'exclude' work like in django ModelForm
-    'header' is whether or not to output the column names as the first row
-    """
-    def export_as_csv(modeladmin, request, queryset):
-        """
-        Generic csv export admin action.
-        based on http://djangosnippets.org/snippets/1697/
-        """
+"""
+    csv export
+    based on http://djangosnippets.org/snippets/1697/
+"""
+def export_labels_as_csv_action(description="Export Labels as CSV"):
+    def export_labels_as_csv(modeladmin, request, queryset):
         opts = modeladmin.model._meta
         field_names = set([field.name for field in opts.fields])
-        if fields:
-            fieldset = set(fields)
-            field_names = field_names & fieldset
-        elif exclude:
-            excludeset = set(exclude)
-            field_names = field_names - excludeset
+        field_names = field_names - set(["species", "genus"])
+        field_names = list(field_names)
+
+        response = HttpResponse(mimetype='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=%s.csv' % unicode(opts).replace('.', '_')
+        writer = csv.writer(response)
+        
+        field_names.insert(0, "filename")
+        writer.writerow(field_names)
+        field_names.pop(0)
+
+        # removes non-labels from the queryset
+        queryset = queryset.filter(speciesimage__isnull=False)
+        
+        for obj in queryset:
+            # for each label's image:
+            for im in obj.speciesimage_set.all():
+                d = [unicode(getattr(obj, field, "")
+                                         if getattr(obj, field) is not None
+                                         else "").encode("utf-8","replace")
+                                 for field in field_names]
+                # basename grabs the filename, splitext seperates the extension
+                d.insert(0, splitext(basename(im.image.name))[0])
+                writer.writerow(d)
+
+        return response
+
+    export_labels_as_csv.short_description = description
+    return export_labels_as_csv
+
+def export_records_as_csv_action(description="Export Records as CSV"):
+    def export_records_as_csv(modeladmin, request, queryset):
+        opts = modeladmin.model._meta
+        field_names = set([field.name for field in opts.fields])
 
         field_names = list(field_names)
 
         response = HttpResponse(mimetype='text/csv')
         response['Content-Disposition'] = 'attachment; filename=%s.csv' % unicode(opts).replace('.', '_')
         writer = csv.writer(response)
-        if header:
-            writer.writerow(field_names)
+        writer.writerow(field_names)
+
+        # removes non-records from the queryset
+        queryset = queryset.filter(speciesimage__isnull=True)
 
         for obj in queryset:
             writer.writerow([unicode(getattr(obj, field, "")
@@ -39,5 +63,5 @@ def export_as_csv_action(description="Export selected objects as CSV file",
 
         return response
 
-    export_as_csv.short_description = description
-    return export_as_csv
+    export_records_as_csv.short_description = description
+    return export_records_as_csv
