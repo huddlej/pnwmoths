@@ -337,8 +337,8 @@ PNWMOTHS.Map = function () {
             // Set the date for this marker.
             var date = PNWMOTHS.Map.renderDate(record);
 
-            // Only render collections that have a date and aren't protected.
-            if (date != "" && !record.is_protected) {
+            // Only render collections that aren't protected.
+            if (!record.is_protected) {
                 return [date, record.collector, record.collection];
             }
 
@@ -360,7 +360,7 @@ PNWMOTHS.Map = function () {
                 return record.year;
             }
             else {
-                return "";
+                return "None";
             }
         }
     };
@@ -679,6 +679,7 @@ jQuery(document).ready(function () {
     // TODO: maybe this should go into the fullscreen control.
     jQuery("#googlemap").bind("fullscreen", function () {
         jQuery(this).toggleClass("fullscreen");
+	jQuery('#cms_toolbar').toggle(); // Toggle button blocking django-cms toolbar
         PNWMOTHS.Map.map.checkResize();
         PNWMOTHS.Map.map.setCenter(
             PNWMOTHS.Map.mapCenter,

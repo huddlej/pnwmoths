@@ -9,15 +9,38 @@ from django.conf import settings
 from django.test import TestCase
 
 from forms import ImportSpeciesRecordsForm, LazyIntegerField, SpeciesRecordForm
+from management.commands.sync_images import Command
 from models import Species, SpeciesImage, SpeciesRecord
 
 
-class TestImageSync(TestCase):
-    def test_get_files(self):
-        path = os.path.join(settings.MEDIA_ROOT, SpeciesImage.IMAGE_PATH)
-        syncer = ImageSyncer()
-        files = syncer.get_files(path)
-        self.assertTrue(len(files) > 0)
+class TestSyncImages(TestCase):
+    def setUp(self):
+        self.command = Command()
+
+    def test_get_binomial_for_file(self):
+        # Test simple name.
+        self.assertEqual(
+            "Acronicta cyanescens",
+            self.command.get_binomial_for_file(
+                "moths/Acronicta cyanescens-A-D.jpg"
+            )
+        )
+
+        # Test hyphenated name.
+        self.assertEqual(
+            "Autographa v-alba",
+            self.command.get_binomial_for_file(
+                "moths/Autographa v-alba-A-D.jpg"
+            )
+        )
+
+    def test_get_species_by_filename(self):
+        genus = "Acronicta"
+        species = "cyanescens"
+        filename = "moths/%s %s-A-D.jpg" % (genus, species)
+        instance = Species.objects.create(genus=genus, species=species)
+        instance_by_filename = self.command.get_species_by_filename(filename)
+        self.assertEqual(instance, instance_by_filename)
 
 
 class TestSpeciesImage(TestCase):
