@@ -25,16 +25,11 @@ class SpeciesByNameNode(Node):
         # Create the template var by adding to context.
         try:
             genus, species = self.obj.resolve(context).split(" ", 1)
-        except ValueError:
-            # In the event that the string cannot be split
-            instance = None
-
-        try:
             instance = Species.objects.get(
                 genus=genus,
                 species=species
             )
-        except Species.DoesNotExist:
+        except (ValueError, Species.DoesNotExist):
             instance = None
 
         context[self.context_var] = instance
