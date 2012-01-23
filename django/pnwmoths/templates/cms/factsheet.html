@@ -14,6 +14,7 @@
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.canvasAxisLabelRenderer.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.categoryAxisRenderer.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}colorbox/jquery.colorbox-min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.tipTip.minified.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}slideshow/script.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}map/script.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}chart/script.js"></script>
@@ -27,6 +28,7 @@
 {% block stylesheets %}
 {{ block.super }}
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery.jqplot.css" type="text/css">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery.tipTip.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}colorbox/colorbox.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}slideshow/style.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}map/style.css" type="text/css">
@@ -49,7 +51,13 @@
             {% if forloop.first %}
                 <div class="current-image">
                     {% thumbnail species_image.image species_image.SIZES.medium as im %}
-                        <a href="{{ species_image.image.url }}"><img src="{{ im.url }}" title="{{ species_image.title }}" /></a>
+                        <a href="{{ species_image.image.url }}">
+                            <img src="{{ im.url }}" />
+                        </a>
+                        <div id="slideshow-copyright">
+                            <strong>{{ species_image.specimen_details|safe }}</strong>
+                                {{ species_image.license_details|safe }}
+                        </div>
                     {% endthumbnail %}
                 </div>
                 <ul class="other-images jcarousel-skin-tango">
@@ -57,8 +65,8 @@
             <li>
                 {% thumbnail species_image.image species_image.SIZES.medium as medium %}
                     {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
-                        <a href="{{ species_image.image.url }}" class="thumbnail">
-                            <img src="{{ small.url }}" title="{{ species_image.title }}" />
+                        <a href="{{ species_image.image.url }}" title="<strong>{{ species_image.specimen_details|safe }}</strong>{{ species_image.license_details|safe }}" class="thumbnail">
+                            <img src="{{ small.url }}" />
                         </a>
                         <a href="{{ medium.url }}" class="hidden medium-thumbnail"></a>
                     {% endthumbnail %}

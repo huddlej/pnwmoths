@@ -141,6 +141,12 @@ ol#breadcrumbs li {
     width: 100%;
 }
 
+#slideshow-copyright {
+    text-align: left;
+    margin-top: 4px;
+    margin-left: 4px;
+}
+
 ol#other-images img {
     width: 140px;
 }

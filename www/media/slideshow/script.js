@@ -10,11 +10,14 @@ jQuery(document).ready(function() {
             scroll: 2
         });
 
+        jQuery("#images .other-images a").tipTip();
+
         jQuery("#images .other-images a").click(function (event) {
             event.preventDefault();
             jQuery("#images .current-image a").replaceWith(jQuery(this).clone());
             image_dom = jQuery("#images .current-image a img");
             image_dom.attr("src", jQuery(this).parent().children("a.medium-thumbnail").attr("href"));
+            jQuery("#slideshow-copyright").html(jQuery("#tiptip_content").html()); // Underneath image copyright
             jQuery("#images .current-image a").colorbox();
         });
         jQuery("#images .current-image a").colorbox();

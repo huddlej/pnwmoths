@@ -253,6 +253,27 @@ class SpeciesImage(models.Model):
     def title(self):
         return self.species
 
+    def specimen_details(self):
+        r = self.record
+        s = ""
+
+        if r.state:
+            s += str(r.state) + " : "
+        cs = [r.locality, r.county.name, r.elevation, (r.latitude, r.longitude)]
+        cs = map(lambda x: str(x), cs)
+        s += ", ".join(cs) + "<br />"
+
+        return s
+
+    def license_details(self):
+        r = self.record        
+        s = ""
+
+        s += "Collected on %s by %s." % (r.date.strftime("%B %d, %Y"), r.collector)
+        s += "<br />Specimen courtesy of %s." % r.collection
+        s += "<br />License information pending"
+
+        return s
 
 # TODO: write unit tests for this class before adding it.
 # class SpeciesImageMetadata(models.Model):
