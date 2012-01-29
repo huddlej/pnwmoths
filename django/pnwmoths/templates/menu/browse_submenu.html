@@ -1,0 +1,21 @@
+{% load menu_tags %}
+{% for child in children %}
+<div class="browse_item">
+  <div class="browse_heading">
+    <h3><a href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a></h3>
+  </div>
+  <div style="clear: both; height: 0px;">&nbsp;</div>
+  <div class="browse_content">
+    <table border="0" width="100%" cellpadding="5" cellspacing="10">
+      <tr>
+        <td><p>Short Description?</p></td>
+        <td rowspan="2"><img class="browse_bigimg" src="http://pnwmoths.biol.wwu.edu/media/cache/ad/49/ad490da31a395735c467c4212f1f1ea5.jpg"></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="browse_thumbs"><center><img src="http://pnwmoths.biol.wwu.edu/media/cache/c2/42/c24225e0f7282eed752110d9a0319a66.jpg"><img src="http://pnwmoths.biol.wwu.edu/media/cache/c2/e8/c2e895a988dd04dfd8794d64fc5c734e.jpg">                </center></td>
+      </tr>
+    </table>
+  </div>
+</div>
+{% endfor %}
