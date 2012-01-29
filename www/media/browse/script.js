@@ -20,7 +20,7 @@ jQuery(document).ready(function() {
     );
     // Toggle on click
     jQuery('.browse_item .browse_heading .toggle_item').click(function() {
-        jQuery(this).parent().siblings('.browse_content').slideToggle('slow');
+        jQuery(this).parent().siblings('.browse_thumbs').slideToggle('slow');
         return false;
     });
 
