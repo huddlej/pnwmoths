@@ -6,6 +6,9 @@ import re
 
 from pnwmoths.species.models import Species
 from pnwmoths.species.resources import get_resource_by_url
+from cms.models.pagemodel import Page
+
+import random
 
 register = Library()
 
@@ -63,6 +66,54 @@ def species_by_name(parser, token):
 
     return SpeciesByNameNode(bits[1], bits[3])
 
+class ImagesetByNavNode(Node):
+    """
+    Get the species instance for the given name and add it to the context.
+    """
+    def __init__(self, navnode, leaf_count, context_var):
+        self.obj = Variable(navnode)
+        self.leaf_count = int(leaf_count)
+        self.context_var = context_var
+
+    def render(self, context):
+        # Create the template var by adding to context.
+        try:
+            navnode = self.obj.resolve(context)
+            page = Page.objects.get(pk=navnode.id)
+            leaves = [x for x in page.get_descendants(include_self=True) if x.is_leaf_node()]
+            imageset = []
+            while len(imageset) < self.leaf_count and len(leaves) > 0:
+                p = random.choice(leaves)
+                leaves.remove(p)
+                genus, species = p.get_title().split(" ", 1)
+                im = Species.objects.get(genus=genus, species=species).get_first_image()
+                imageset.append(im)
+
+        except (Exception):
+            imageset = None
+
+        context[self.context_var] = imageset
+
+        return ""
+
+
+def imageset_by_navnode(parser, token):
+    """
+    Retrieves a random set of n images, 1 from each n species beneath this level
+    in the tree. If navnode is a leaf, tries to return images from this species.
+    If their are less than 4 species leaf nodes, however
+    many species are found get 1 image put in.
+
+    {% imageset_by_navnode navnode as 4 species %}
+    """
+    try:
+        navnode, _, leaf_count, context_var = token.split_contents()[1:]
+    except ValueError:
+        raise TemplateSyntaxError(
+            _('tag requires exactly 4 arguments')
+        )
+
+    return ImagesetByNavNode(navnode, leaf_count, context_var)
 
 class ResourceNode(Node):
     def __init__(self, url, kwargs):
@@ -110,4 +161,5 @@ def resource(parser, token):
 
 
 register.tag("species_by_name", species_by_name)
+register.tag("imageset_by_navnode", imageset_by_navnode)
 register.tag("resource", resource)
