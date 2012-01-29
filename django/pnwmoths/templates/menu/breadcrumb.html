@@ -1,0 +1,16 @@
+{% load menu_tags %}
+{% for ance in ancestors %}
+<li{% if forloop.first %} class="first"{% endif %}>
+        <a href="{{ ance.get_absolute_url }}">{{ ance.get_menu_title }}</a><span>&nbsp;</span>
+        
+        <div class="megamenu">
+            <div class="tail">&nbsp;</div>
+            <div class="container">
+                <ul>
+                    {% show_menu forloop.counter forloop.counter 0 1 %}
+                </ul>
+                <div style="clear: both; height: 0px;">&nbsp;</div>
+            </div>
+        </div>
+</li>
+{% endfor %}

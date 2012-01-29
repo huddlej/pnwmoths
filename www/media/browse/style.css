@@ -1,0 +1,65 @@
+#bd>.browse_item {
+    border: 1px dashed grey;
+    margin: 0;
+    margin-bottom: 10px;
+}
+.browse_item {
+    margin-bottom: 10px;
+    margin-left: 10px;
+    border-left: 1px solid grey;
+    background-color: none;
+    clear: both;
+}
+
+.species {
+    cursor: pointer;
+    border: 1px dotted blue;
+    width: 46%;
+    float: left;
+    display: inline;
+    clear: none;
+}
+
+.species h3 {
+    font-size: 1.5em;
+}
+
+.browse_item_hover {
+    background-color: #F0F6F9 !important;
+    margin-bottom: 10px !important;
+    border-bottom: 1px solid blue !important;
+}
+
+.browse_heading h3 {
+    float: left;
+    margin-top: .5em;
+    margin-left: 10px;
+}
+
+.browse_heading h3 a {
+    color: black;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.browse_thumbs img {
+    margin-left: 10px;
+}
+
+.toggle_item {
+    cursor: pointer;
+    float: left;
+    padding: 0;
+    margin: 0;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.species img{    
+    width: 94%;
+    margin-bottom: 10px;
+}
+
+.ajax{
+    display: none;
+}

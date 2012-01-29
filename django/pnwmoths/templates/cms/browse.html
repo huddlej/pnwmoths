@@ -1,12 +1,25 @@
 {% extends "cms/base.html" %}
 {% load cms_tags menu_tags %}
 
+{% block scripts %}
+{{ block.super }}
+<!--
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+        type="text/javascript"></script>
+-->
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}browse/script.js"></script>
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}browse/jquery.waitforimages.js"></script>
+{% endblock %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" href="{{ MEDIA_URL }}browse/style.css" type="text/css">
+{% endblock %}
+
 {% block content %}
 {% placeholder "before menu" %}
 
-<ol>
-{% show_sub_menu %}
-</ol>
+{% show_sub_menu 1 "menu/browse_submenu.html" %}
 
 {% placeholder "after menu" %}
 {% endblock %}
