@@ -1,0 +1,48 @@
+.browse_item {
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 10px;
+    clear: both;
+    border: 1px dotted blue;
+    background-color: none;
+}
+
+.browse_item_hover {
+    background-color: #F0F6F9 !important;
+    margin-bottom: 10px !important;
+    border-bottom: 1px solid blue !important;
+}
+
+.browse_heading h3 {
+    float: left;
+}
+
+.browse_heading h3 a {
+    font: Georgia;
+    font-size: 24px;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 1px solid blue;
+}
+
+.browse_content {
+    padding: 5px;
+}
+
+.browse_thumbs {
+    vertical-align: bottom;
+    padding-top: 10px;
+}
+
+.browse_thumbs img {
+    margin-right: 25px;
+}
+
+.browse_bigimg {
+    margin-right: 0px;
+}
+
+.toggle_item {
+    float: right;
+}
