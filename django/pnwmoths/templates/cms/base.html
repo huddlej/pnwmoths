@@ -10,6 +10,7 @@
   {% block stylesheets %}
   <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/reset-fonts-grids.css" type="text/css">
   <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/base.css" type="text/css">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}breadcrumbs/style.css" type="text/css">
   {% endblock %}
 
   {{ meta_headers }}
@@ -56,7 +57,7 @@
     </div>
 
     <ol id="breadcrumbs">
-    {% show_breadcrumb %}
+    {% show_breadcrumb 1 %}
     </ol>
   </div>
 
@@ -97,6 +98,7 @@
 </div>
 
 {% block scripts %}
+    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}breadcrumbs/script.js"></script>
 {% endblock %}
 </body>
 </html>
