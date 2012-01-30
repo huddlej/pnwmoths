@@ -4,7 +4,6 @@ jQuery(document).ready(function() {
         window.location=jQuery(this).find("h3 a").attr("href");
         return false;
     });
-    // Set div's hover effect
 
     // Set div's hover effect
     jQuery(".browse_item").hover(function() {
