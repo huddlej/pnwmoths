@@ -12,7 +12,7 @@ jQuery(document).ready(function() {
     });
 
     // Add collapsing arrow to div
-    jQuery('.browse_item .browse_heading').append('<img src="http://i.imgur.com/R5I0z.jpg" class="toggle_item" />');
+    jQuery('.browse_item:not(.species) .browse_heading').append('<img src="http://i.imgur.com/R5I0z.jpg" class="toggle_item" />');
     // Give the arrow toggle states
     jQuery('.browse_item .browse_heading .toggle_item').toggle(
         function(){ jQuery(this).attr("src", "http://i.imgur.com/OiJKx.jpg"); },

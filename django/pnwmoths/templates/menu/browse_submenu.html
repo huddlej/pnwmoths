@@ -1,6 +1,6 @@
 {% load menu_tags thumbnail species_tags %}
 {% for child in children %}
-<div class="browse_item">
+<div class="browse_item{% if child.is_leaf_node %} species{% endif%}">
   <div class="browse_heading">
     <h3><a href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a></h3>
   </div>
@@ -8,9 +8,15 @@
   <div class="browse_thumbs">
     {% imageset_by_navnode child as 4 subtree_images %}
     {% for species_image in subtree_images %}
-        {% thumbnail species_image.image species_image.SIZES.thumbnail as im %}
-            <img src="{{ im.url }}" />
-        {% endthumbnail %}
+        {% if child.is_leaf_node %}
+            {% thumbnail species_image.image species_image.SIZES.medium as im %}
+                <img src="{{ im.url }}" />
+            {% endthumbnail %}
+        {% else %}
+            {% thumbnail species_image.image species_image.SIZES.thumbnail as im %}
+                <img src="{{ im.url }}" />
+            {% endthumbnail %}
+        {% endif %}        
     {% endfor %} 
   </div>
 </div>

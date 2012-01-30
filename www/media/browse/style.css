@@ -2,9 +2,18 @@
     cursor: pointer;
     margin-bottom: 10px;
     padding: 10px;
-    clear: both;
     border: 1px dotted blue;
     background-color: none;
+    clear: both;
+    width: 100%;
+}
+
+.species {
+    margin-right: 15px;
+    width: 45% !important;
+    float: left;
+    display: inline;
+    clear: none !important;
 }
 
 .browse_item_hover {
@@ -15,11 +24,10 @@
 
 .browse_heading h3 {
     float: left;
+    margin-top: 0;
 }
 
 .browse_heading h3 a {
-    font: Georgia;
-    font-size: 24px;
     color: black;
     font-weight: bold;
     text-decoration: none;
@@ -30,6 +38,6 @@
     float: right;
 }
 
-.browse_thumbs img {
-    margin-right: 20px;
+.species img{
+    width: 100%;
 }
