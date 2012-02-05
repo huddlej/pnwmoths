@@ -104,7 +104,9 @@ PNWMOTHS.Map = function () {
                 ];
 
             for (i in data) {
-                if (data.hasOwnProperty(i)) {
+                if (data.hasOwnProperty(i) && data[i].latitude != null && data[i].longitude != null) {
+                    // Remove null lat,lon pairs from the map
+                    // These will still show up in phenology
                     key = [data[i].latitude, data[i].longitude];
 
                     // Create an entry for this record's latitude and longitude

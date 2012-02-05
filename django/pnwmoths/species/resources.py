@@ -95,10 +95,11 @@ class SpeciesRecordResource(ModelResource):
         filtering = {"species": ALL_WITH_RELATIONS}
 
     def dehydrate(self, bundle):
-        precision = SpeciesRecord.GPS_PRECISION
-        bundle.data["precision"] = precision
-        bundle.data["latitude"] = round(bundle.data["latitude"], precision)
-        bundle.data["longitude"] = round(bundle.data["longitude"], precision)
+        if isinstance(bundle.data['longitude'], float) and isinstance(bundle.data['latitude'], float):
+            precision = SpeciesRecord.GPS_PRECISION
+            bundle.data["precision"] = precision
+            bundle.data["latitude"] = round(bundle.data["latitude"], precision)
+            bundle.data["longitude"] = round(bundle.data["longitude"], precision)
         bundle.data["site_name"] = bundle.data["locality"]
 
         # Create a sortable date for javascript apps.
