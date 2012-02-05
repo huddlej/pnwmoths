@@ -5,6 +5,7 @@
     <h3><a href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a></h3>
   </div>
   <div style="clear: both; height: 0px;">&nbsp;</div>
+  <div class="ajax"></div>
   <div class="browse_thumbs">
     {% imageset_by_navnode child as 4 subtree_images %}
     {% for species_image in subtree_images %}
