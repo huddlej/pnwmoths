@@ -59,6 +59,20 @@ class SpeciesRecordForm(forms.Form):
         widget=forms.Textarea(attrs={"rows": "5"})
     )
 
+    def __init__(self, *args, **kwargs):
+        super(SpeciesRecordForm, self).__init__(*args, **kwargs)
+        self._parse_filename()
+    
+    def _parse_filename(self):
+        if 'filename' in self.data:
+            SPECIES_RE = r"(\w+ [-\w]+)-\w-\w"
+            filename_regex = re.compile(SPECIES_RE)
+            match = filename_regex.findall(self.data['filename'])
+            try:
+                self.data['genus'], self.data['species'] = match[0].split(" ", 1)
+            except IndexError:
+                self.data['genus'] = self.data['filename'] 
+    
     def _get_instance_by_name(self, field_name, field_class, field_key,
                               create_missing=False):
         """
