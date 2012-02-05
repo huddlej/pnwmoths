@@ -62,8 +62,12 @@ class SpeciesRecordForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(SpeciesRecordForm, self).__init__(*args, **kwargs)
         self._parse_filename()
-    
+   
     def _parse_filename(self):
+        """
+        Checks for the existence of filename data and if its found,
+        attempts to parse and replace species, genus data.
+        """
         if 'filename' in self.data:
             SPECIES_RE = r"(\w+ [-\w]+)-\w-\w"
             filename_regex = re.compile(SPECIES_RE)
