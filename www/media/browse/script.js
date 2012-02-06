@@ -4,6 +4,8 @@ $.fn.implement_browse = function () {
     // +1 to account for #bd's children
     var parentOffset = jQuery(this).parents('.browse_item').length + 1; 
     jQuery(this).width(jQuery('#bd').width() - 10*parentOffset);
+    jQuery(this).find('.ajax').width(jQuery('#bd').width() - 10*parentOffset);
+
     // set h3 size to improve nesting
     if (jQuery(this).parents('.browse_item').length) {
         var curFontSize = jQuery(this).parents('.browse_item').find('h3').css('fontSize');
@@ -19,6 +21,7 @@ $.fn.implement_browse = function () {
         function(){ jQuery(this).attr("src", "http://i.imgur.com/WtKF5.png"); },
         function(){ jQuery(this).attr("src", "http://i.imgur.com/ETq1Y.png"); }
     );
+
     // Toggle on click
     jQuery(this).find('.toggle_item').click(function() {
         if (jQuery(this).parent().siblings('.ajax').html().length) {
