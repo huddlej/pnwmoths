@@ -39,7 +39,9 @@ $.fn.implement_browse = function () {
                 jQuery(this).append('<div style="height: 0px; clear: both;">&nbsp;</div>');
                 jQuery(this).find('.browse_item:not(.species)').implement_browse();
                 jQuery(this).implement_species_width();
-                jQuery(this).slideToggle('slow');
+                jQuery(this).waitForImages(function() {
+                    jQuery(this).slideToggle('slow');
+                });
                 return false;
             });
         }
