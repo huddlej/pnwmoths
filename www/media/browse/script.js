@@ -15,7 +15,7 @@ $.fn.implement_browse = function () {
     }
 
     // Add collapsing arrow to div
-    jQuery(this).find('.browse_heading').append('<img src="http://i.imgur.com/ETq1Y.png" class="toggle_item" />');
+    jQuery(this).find('.browse_heading').prepend('<img src="http://i.imgur.com/ETq1Y.png" class="toggle_item" />');
     // Give the arrow toggle states
     jQuery(this).find('.toggle_item').toggle(
         function(){ jQuery(this).attr("src", "http://i.imgur.com/WtKF5.png"); },
