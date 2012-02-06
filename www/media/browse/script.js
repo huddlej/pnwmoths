@@ -19,7 +19,6 @@ $.fn.implement_browse = function () {
         function(){ jQuery(this).attr("src", "http://i.imgur.com/WtKF5.png"); },
         function(){ jQuery(this).attr("src", "http://i.imgur.com/ETq1Y.png"); }
     );
-
     // Toggle on click
     jQuery(this).find('.toggle_item').click(function() {
         if (jQuery(this).parent().siblings('.ajax').html().length) {
@@ -28,8 +27,9 @@ $.fn.implement_browse = function () {
         } else {
             // AJAX Load
             var url = jQuery(this).parent().find('h3 a').attr('href');
+            jQuery(this).attr("src", "http://i.imgur.com/HgnWu.gif");
             jQuery(this).parent().siblings('.ajax').load(url + ' .browse_item', function() {
-
+                jQuery(this).parent().find('.toggle_item').attr("src", "http://i.imgur.com/WtKF5.png");
                 jQuery(this).siblings('.browse_thumbs').slideToggle('slow');
                 // BASICALLY, WE ADD +/- AND FUNCTIONALITY
                 // Apply THIS_FUNC() to jQuery(this) and below
