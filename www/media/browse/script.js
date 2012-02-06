@@ -48,12 +48,15 @@ $.fn.implement_species_width = function() {
     var count = jQuery(this).children('.species').length;
     if (count <= 6) {
         jQuery(this).children('.species').width('46%');
+        jQuery(this).children('.species:nth-child(2n+1)').css("clear", "both");
     }
-    else if (count > 6) {
+    else if (6 < count && count <= 20) {
         jQuery(this).children('.species').width('30%');
+        jQuery(this).children('.species:nth-child(3n+1)').css("clear", "both");
     }
     else {
         jQuery(this).children('.species').width('23%');
+        jQuery(this).children('.species:nth-child(4n+1)').css("clear", "both");
     }
 }
 
