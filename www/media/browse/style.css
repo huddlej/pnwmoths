@@ -17,7 +17,7 @@
     width: 46%;
     float: left;
     display: inline;
-    clear: none !important;
+    clear: none;
 }
 
 .species h3 {
