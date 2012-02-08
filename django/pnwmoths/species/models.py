@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.localflavor.ca.ca_provinces import PROVINCE_CHOICES
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 
 
 models.signals.post_save.connect(create_api_key, sender=User)
@@ -99,13 +99,16 @@ class SpeciesManager(models.Manager):
 class Species(models.Model):
     """
     Represents a species with a near-constant genus and species name.
+    NOC ID Accepted Formatting: 12-1234 or 12-1234.1
 
     TODO: handle general key/value attributes including discoverer/year,
-    synonyms, location on plates, NOC code, etc.
+    synonyms, location on plates, etc.
     """
     genus = models.CharField(max_length=255)
     species = models.CharField(max_length=255)
     common_name = models.CharField(max_length=255, blank=True, null=True)
+    noc_id = models.CharField("NOC #", max_length=9, blank=True, null=True,
+                              validators=[RegexValidator("\d{2}\-\d{4}(\.\d{1})?", "Enter a valid NOC #")])
     authority = models.ForeignKey(Author, null=True, blank=True)
     similar = models.ManyToManyField("self", blank=True)
 
