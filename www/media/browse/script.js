@@ -33,13 +33,13 @@ $.fn.implement_browse = function () {
             jQuery(this).attr("src", "http://i.imgur.com/HgnWu.gif");
             jQuery(this).parent().siblings('.ajax').load(url + ' .browse_item', function() {
                 jQuery(this).parent().find('.toggle_item').attr("src", "http://i.imgur.com/WtKF5.png");
-                jQuery(this).siblings('.browse_thumbs').slideToggle('slow');
                 // BASICALLY, WE ADD +/- AND FUNCTIONALITY
                 // Apply THIS_FUNC() to jQuery(this) and below
                 jQuery(this).append('<div style="height: 0px; clear: both;">&nbsp;</div>');
                 jQuery(this).find('.browse_item:not(.species)').implement_browse();
                 jQuery(this).implement_species_width();
                 jQuery(this).waitForImages(function() {
+                    jQuery(this).siblings('.browse_thumbs').slideToggle('slow');
                     jQuery(this).slideToggle('slow');
                 });
                 return false;
