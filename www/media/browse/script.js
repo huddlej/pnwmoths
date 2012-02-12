@@ -33,6 +33,7 @@ $.fn.implement_browse = function () {
             jQuery(this).attr("src", "http://i.imgur.com/HgnWu.gif");
             jQuery(this).parent().siblings('.ajax').load(url + ' .browse_item', function() {
                 jQuery(this).parent().find('.toggle_item').attr("src", "http://i.imgur.com/WtKF5.png");
+
                 // BASICALLY, WE ADD +/- AND FUNCTIONALITY
                 // Apply THIS_FUNC() to jQuery(this) and below
                 jQuery(this).append('<div style="height: 0px; clear: both;">&nbsp;</div>');
