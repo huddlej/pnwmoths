@@ -68,7 +68,7 @@ def species_by_name(parser, token):
 
 class ImagesetByNavNode(Node):
     """
-    Get the species instance for the given name and add it to the context.
+    Adds an imageset for the current tree level's species.
     """
     def __init__(self, navnode, leaf_count, context_var):
         self.obj = Variable(navnode)
@@ -87,8 +87,8 @@ class ImagesetByNavNode(Node):
                 leaves.remove(p)
                 genus, species = p.get_title().split(" ", 1)
                 im = Species.objects.get(genus=genus, species=species).get_first_image()
-                imageset.append(im)
-
+                if im:
+                    imageset.append(im)
         except (Exception):
             imageset = None
 

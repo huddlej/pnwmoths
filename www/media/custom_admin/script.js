@@ -4,6 +4,13 @@
         $title.click(function(){
             $title.next().slideToggle();
         });
+        var t = $title.text();
+        $(this).text("+ " + t);
+        $title.toggle(function() {
+            $(this).text("- " + t);
+        }, function() {
+            $(this).text("+ " + t);
+        });
         $title.next().toggle();
     });
     var toggle_flag = true;

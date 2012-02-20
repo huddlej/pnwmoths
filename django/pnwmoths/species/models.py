@@ -135,7 +135,7 @@ class Species(models.Model):
         """
         try:
             return self.speciesimage_set.all()[0]
-        except:
+        except (Exception):
             return None
 
 class RecordManager(models.Manager):
@@ -256,25 +256,39 @@ class SpeciesImage(models.Model):
     def title(self):
         return self.species
 
+
     def specimen_details(self):
         r = self.record
-        s = ""
 
+        s = "<strong>"
         if r.state:
-            s += str(r.state) + " : "
-        cs = [r.locality, r.county.name, r.elevation, (r.latitude, r.longitude)]
-        cs = map(lambda x: str(x), cs)
-        s += ", ".join(cs) + "<br />"
+            s += str(r.state)
+        if r.county:
+            s += " : " + str(r.county)
+        s += "</strong>"
+        if r.locality or r.elevation:
+            s += "<br />"
+        if r.locality:
+            s += r.locality
+        if r.elevation:
+            s += ", " + r.elevation
 
+        if r.latitude and r.longitude:
+            s += "<br />"
+            s += str(round(r.latitude, 1)) + ", " + str(round(r.longitude, 1))
+        if s != "<strong></strong>":
+            s += "<br />"
+        else:
+            s = ""
         return s
 
     def license_details(self):
-        r = self.record        
+        r = self.record
         s = ""
 
-        s += "Collected on %s by %s." % (r.date.strftime("%B %d, %Y"), r.collector)
-        s += "<br />Specimen courtesy of %s." % r.collection
-        s += "<br />License information pending"
+        s += "%s, %s." % (r.date.strftime("%B %d, %Y"), r.collector)
+        s += "<br />Specimen courtesy of %s" % r.collection
+        s += "<br />Photograph copyright of ..."
 
         return s
 

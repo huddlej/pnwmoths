@@ -55,7 +55,7 @@
                             <img src="{{ im.url }}" />
                         </a>
                         <div id="slideshow-copyright">
-                            <strong>{{ species_image.specimen_details|safe }}</strong>
+                                {{ species_image.specimen_details|safe }}
                                 {{ species_image.license_details|safe }}
                         </div>
                     {% endthumbnail %}
@@ -65,7 +65,7 @@
             <li>
                 {% thumbnail species_image.image species_image.SIZES.medium as medium %}
                     {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
-                        <a href="{{ species_image.image.url }}" title="<strong>{{ species_image.specimen_details|safe }}</strong>{{ species_image.license_details|safe }}" class="thumbnail">
+                        <a href="{{ species_image.image.url }}" title="{{ species_image.specimen_details|safe }}{{ species_image.license_details|safe }}" class="thumbnail">
                             <img src="{{ small.url }}" />
                         </a>
                         <a href="{{ medium.url }}" class="hidden medium-thumbnail"></a>
