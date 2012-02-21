@@ -3,7 +3,8 @@
 #googlemap {
     height: 363px;
     display: none;
-    width: 100%;
+    width: 98%;
+    margin-bottom: 10px;
 }
 #googlemap.fullscreen {
     height: 100%!important;

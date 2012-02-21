@@ -35,17 +35,29 @@
 <link rel="stylesheet" href="{{ MEDIA_URL }}chart/style.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}data/style.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}similar_species/style.css" type="text/css">
+<style type="text/css">
+    .fs_title {
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    .padded {
+        margin: 10px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <!-- wikipage start -->
 {% species_by_name current_page.get_title as species %}
-
-<h1><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h1>
-{% if species.common_name %}<h2>{{ species.common_name }}</h2>{% endif %}
-
-<div class="factsheet yui-g">
-    <div class="yui-u first all-images all-images-no-js">
+<div class="row top">
+    <div class="twelvecol last">
+        <h2 class="fs_title"><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h2>
+        {% if species.common_name %}<h3 class="fs_title">{{ species.common_name }}</h3>{% endif %}
+    </div>
+</div>
+<div id="fs_yui-g" class="row">
+    <div class="sixcol">
+        <div class="all-images all-images-no-js">
         <div id="images">
         {% for species_image in species.speciesimage_set.all %}
             {% if forloop.first %}
@@ -101,8 +113,9 @@
             </ul>
           </div>
       {% endif %}
+      </div>
     </div>
-    <div class="yui-u">
+    <div class="sixcol last">
         <div id="googlemap" class="googlemap">
             <span class="data">"species-data"</span>
             <div id="filters">
@@ -122,7 +135,13 @@
     </div>
 </div>
 
-{% placeholder "factsheet" %}
+<div id="fs_content" class="row bottom">
+    <div class="twelvecol last">
+    <div class="padded">
+    {% placeholder "factsheet" %}
+    </div>
+    </div>
+</div>
 
 <!-- data start -->
 {% if species %}

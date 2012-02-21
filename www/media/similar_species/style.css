@@ -207,6 +207,10 @@
 /**
  * Custom jCarousel CSS
  */
+#similar {
+    width: 375px;
+    margin: 10px auto;
+}
 
 #similar h2 {
     font-size: 150%;

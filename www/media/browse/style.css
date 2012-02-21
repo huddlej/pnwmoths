@@ -1,4 +1,4 @@
-#bd>.browse_item {
+#body>.browse_item {
     border: 1px dashed grey;
     margin: 0;
     margin-bottom: 10px;
@@ -9,6 +9,10 @@
     border-left: 1px solid grey;
     background-color: none;
     clear: both;
+}
+
+h3.browse_genus_species {
+    font-style: italic;
 }
 
 .species {
@@ -52,7 +56,14 @@
     padding: 0;
     margin: 0;
     margin-left: 10px;
-    margin-top: 10px;
+    margin-top: 12px;
+    padding: 5px 8px 5px 8px;
+    text-align: center;
+    width: 10px;
+}
+
+.loading_toggle {
+    background: #EEEEEE center no-repeat url('ajax-loader.gif');
 }
 
 .species img{    

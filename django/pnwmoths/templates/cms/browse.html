@@ -17,9 +17,10 @@
 {% endblock %}
 
 {% block content %}
-{% placeholder "before menu" %}
+<div class="row top bottom">
+    <div class="twelvecol last">
+        {% show_sub_menu 1 "menu/browse_submenu.html" %}
+    </div>
+</div>
 
-{% show_sub_menu 1 "menu/browse_submenu.html" %}
-
-{% placeholder "after menu" %}
 {% endblock %}

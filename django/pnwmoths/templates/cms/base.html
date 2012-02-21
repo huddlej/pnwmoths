@@ -1,104 +1,118 @@
 {% load cms_tags menu_tags %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang=""
- lang="" dir="">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>{% block title %}{% page_attribute page_title %}{% endblock %} | PNW Moths</title>
 
-  {% block stylesheets %}
-  <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/reset-fonts-grids.css" type="text/css">
-  <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/base.css" type="text/css">
-    <link rel="stylesheet" href="{{ MEDIA_URL }}breadcrumbs/style.css" type="text/css">
-  {% endblock %}
+<!DOCTYPE html>
+<html lang="en" style=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<title>{% block title %}{% page_attribute page_title %}{% endblock %} | PNW Moths</title>
 
-  {{ meta_headers }}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	{% block stylesheets %}
+	<!-- 1140px Grid styles for IE -->
+	<!--[if lte IE 9]><link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/ie.css" type="text/css" media="screen" /><![endif]-->
+
+	<!-- The 1140px Grid - http://cssgrid.net/ -->
+	<link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/1140.css" type="text/css" media="screen">
+	
+	<!-- Your styles -->
+    <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/base.css" type="text/css">
+    <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/styles.css" type="text/css">
+    {% endblock %}
+
+    {{ meta_headers }}
 </head>
 
 <body>
-<div id="doc" class="yui-t7 dokuwiki">
-  <div class="stylehead">
-
-    <div id="hd" class="header" role="banner">
-      <!-- start site nav -->
-      <h1 id="site-id">PNW Moths</h1>
-      <ol id="navigation">
-          <li><a href="{% page_id_url "index" %}">Home</a></li>
-          <li><a href="{% page_id_url "identify" %}">Identify</a></li>
-          <li><a href="{% page_id_url "browse" %}">Browse</a></li>
-          <li><a href="{% page_id_url "about-project" %}">About the Project</a></li>
-          <li><a href="">Contact Us</a></li>
-          <li id="search">
-              <form method="get" action="/search/">
-                  <input type="text" name="q" size="20" />
-                  <input type="submit" value="Search" />
-              </form>
-          </li>
-      </ol>
-      <!-- end site nav -->
-
-      <div class="pagename">
-      </div>
-      <div class="logo">
-      </div>
-
-      <div class="clearer"></div>
+<div id="header" class="container">
+	<div class="row">
+		<div id="title" class="twelvecol last"><a href="{% page_id_url "index" %}" style="float: left"><h1>PNW Moths</h1></a>
+			<form method="get" action="/search/">
+                <input style="float: right; margin-top: 10px; margin-right: 10px;" type="submit" value="Search">
+                <input style="float: right; margin-top: 12px; margin-right: 8px;" type="text" name="q" size="20">
+            </form>
+		</div>
+	</div>
+	<div class="row">
+		<div id="mainnav" class="twelvecol last">
+			<ul>
+				<li><a href="/" class="first">Home</a></li>
+				<li><a href="/browse/">Browse List</a></li>
+				<li><a href="#">Browse Images</a></li>
+				<li><a href="#">Identify a Moth</a></li>
+				<li><a href="#">About Moths</a></li>
+				<li><a href="#">Moth Collecting/Photography</a></li>
+				<li><a href="#">FAQs</a></li>
+			</ul>
+        </div>
+	</div>
+    <div class="row">
+        <div class="twelvecol last"><ul id="breadcrumbs">{% show_breadcrumb 1 %}</ul></div>
     </div>
+</div>
 
-    <div class="bar" id="bar__top">
-      <div class="bar-left" id="bar__topleft">
-      </div>
-
-      <div class="bar-right" id="bar__topright">
-      </div>
-
-      <div class="clearer"></div>
-    </div>
-
-    <ol id="breadcrumbs">
-    {% show_breadcrumb 1 %}
-    </ol>
-  </div>
-  <div style="height: 0px; clear: both;">&nbsp;</div>
-  <div id="bd" class="page" role="main">
+<div id="body" class="container">
       {% block messages %}
-      {% if messages %}
-          <ul class="messages">
-          {% for message in messages %}
-              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-          {% endfor %}
-          </ul>
-      {% endif %}
+          {% if messages %}
+              <ul class="messages">
+              {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+              </ul>
+          {% endif %}
       {% endblock %}
 
       {% block content %}
-      <!-- wikipage start -->
-      {% placeholder "content" %}
-      <!-- wikipage stop -->
+          {% placeholder "content" %}
       {% endblock %}
-  </div>
+</div>
 
-  <div id="ft" class="stylefoot" role="contentinfo">
-    <ol id="ft-navigation">
-      {% if request.user.is_authenticated %}
-          {% if request.user.is_staff %}
-              <li><a href="http://github.com/huddlej/pnwmoths/issues">Issues</a></li>
-              <li><a href="{% url admin:index %}">Site Admin</a></li>
-          {% endif %}
-
-          <li><a href="{% url logout %}">Logout</a></li>
-      {% else %}
-          <li><a href="{% url login %}">Login</a></li>
-      {% endif %}
-    </ol>
-    <p id="copyright">Copyright {% now "Y" %}</p>
-  </div>
-
+<div id="footer" class="container">
+	<div id="footnavhead" class="row">
+		<div class="threecol first"><h5>Moth Basics</h5>
+        	<ul>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">Moth Tutorial</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">EcoRegions</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">History of Moth Collecting</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">Glossary</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">References</a></li>
+			</ul>        
+        </div>
+		<div class="threecol"><h5>Explore Data</h5>
+			<ul>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">Browse Moths</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">Browse Image Plates</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">Identify a Moth</a></li>
+			</ul>	
+        </div>
+		<div class="threecol"><h5>About Us</h5>
+			<ul>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">FAQs</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">About the Project</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">Acknowledgements</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">Related Sites</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">We're OpenSource!</a></li>
+				<li><a href="http://www.philipbjorge.com/pnwmoths_home/#">Contact</a></li>
+			</ul>
+        </div>
+		<div class="threecol last"><h5>Stats</h5>
+			<ul>
+				<li><strong>Species</strong>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1390</li>
+				<li><strong>Images</strong>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3447</li>
+				<li><strong>Data Points</strong>:&nbsp;&nbsp;&nbsp;&nbsp;54,006</li>
+			</ul>	
+        </div>
+	</div>
+	<div class="row">
+		<div id="credits" class="twelvecol last">
+		<ul>
+			<li>TODO: Institution Logos<li>
+        </ul>
+        </div>
+    </div>
 </div>
 
 {% block scripts %}
-    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}breadcrumbs/script.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/responsive.navigation.js"></script>
 {% endblock %}
 </body>
 </html>

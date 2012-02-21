@@ -1,3 +1,7 @@
+#breadcrumbs {
+    padding-top: 10px;
+}
+
 #breadcrumbs li {
     list-style: none;
     line-height: 23px;
@@ -11,7 +15,7 @@
     color: blue;  
     padding-left: 20px;
     padding-right: 10px;
-    background: url('http://i.imgur.com/ejhTO.png') top left repeat-x;
+    background: url('arrow_crumb.png') top left repeat-x;
     /*Arrow left*/
     float: left;
     display: block;
@@ -27,7 +31,7 @@
     margin-left: 0px;
     padding-left: 10px;
     padding-right: 10px;
-    background: url('http://i.imgur.com/czHDB.png') top left repeat-x;
+    background: url('first_crumb.png') top left repeat-x;
     /* rounded left */
 }
 
@@ -35,14 +39,22 @@
     text-decoration: none;
 }
 
-#breadcrumbs li span {
+.crumb_no_arrow {
     float: left;
-    background: url('http://i.imgur.com/9YxUX.png') right no-repeat;
+    background: url('no_arrow.png') right no-repeat;
     /*Right no-js*/
     width: 19px;
 }
 
+.crumb_arrow {
+    cursor: pointer;
+    width: 32px;
+    background: url('arrow.png');
+}
 
+.crumb_arrow_down {
+    background: url('arrow_down.png');
+}
 
 /*Mega Menu*/
 .megamenu {
@@ -60,7 +72,7 @@
     z-index: 998;
 }
 
-.megamenu .container {
+.megamenu .megacontent {
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-left-radius: 10px;

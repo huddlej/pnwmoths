@@ -1,10 +1,10 @@
 (function($) {
     $.fn.implement_browse = function () {
         // Set width to fix jerky slidetoggle
-        // +1 to account for #bd's children
+        // +1 to account for #body children
         var parentOffset = jQuery(this).parents('.browse_item').length + 1; 
-        jQuery(this).width(jQuery('#bd').width() - 10*parentOffset);
-        jQuery(this).find('.ajax').width(jQuery('#bd').width() - 10*parentOffset);
+        jQuery(this).width(jQuery('#body').width() - 10*parentOffset);
+        jQuery(this).find('.ajax').width(jQuery('#body').width() - 10*parentOffset);
 
         // set h3 size to improve nesting
         if (jQuery(this).parents('.browse_item').length) {
@@ -15,11 +15,11 @@
         }
 
         // Add collapsing arrow to div
-        jQuery(this).find('.browse_heading').prepend('<img src="http://i.imgur.com/ETq1Y.png" class="toggle_item" />');
+        jQuery(this).find('.browse_heading').prepend('<a class="toggle_item button">+</a>');
         // Give the arrow toggle states
         jQuery(this).find('.toggle_item').toggle(
-            function(){ jQuery(this).attr("src", "http://i.imgur.com/WtKF5.png"); },
-            function(){ jQuery(this).attr("src", "http://i.imgur.com/ETq1Y.png"); }
+            function(){ jQuery(this).html("-"); },
+            function(){ jQuery(this).html("+"); }
         );
 
         // Make images clickable
@@ -35,9 +35,12 @@
             } else {
                 // AJAX Load
                 var url = jQuery(this).parent().find('h3 a').attr('href');
-                jQuery(this).attr("src", "http://i.imgur.com/HgnWu.gif");
+                jQuery(this).html('&nbsp;');
+                jQuery(this).addClass('loading_toggle');
                 jQuery(this).parent().siblings('.ajax').load(url + ' .browse_item', function() {
-                    jQuery(this).parent().find('.toggle_item').attr("src", "http://i.imgur.com/WtKF5.png");
+                    
+                    //jQuery(this).find('img').remove();
+                    jQuery(this).parent().find('.toggle_item').removeClass('loading_toggle').html("-");
                     jQuery(this).append('<div style="height: 0px; clear: both;">&nbsp;</div>');
                     jQuery(this).find('.browse_item:not(.species)').implement_browse();
                     jQuery(this).implement_species_width();
@@ -72,7 +75,7 @@
 
 
 jQuery(document).ready(function() {
-    jQuery('#bd').find('.browse_item:not(.species)').implement_browse();
+    jQuery('#body').find('.browse_item:not(.species)').implement_browse();
 
     //Make species div clickable using first link in the container
     jQuery(".ajax").delegate(".species" ,"click", function(){

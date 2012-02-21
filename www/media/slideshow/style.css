@@ -3,12 +3,9 @@
  */
 
 .all-images {
-    -moz-border-radius-bottomleft: 10px;
-    -moz-border-radius-bottomright: 10px;
+    margin-left: 10px;
     background-color: #F0F6F9;
     border: 1px solid #346F97;
-    padding-bottom: 1em;
-    width: 375px!important;
 }
 
 /* Styles for users without javascript. */
@@ -266,6 +263,7 @@
  */
 #images {
     width: 375px;
+    margin: 10px auto;
 }
 #images .current-image img {
     height: 250px;

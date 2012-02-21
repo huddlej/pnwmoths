@@ -1,11 +1,22 @@
 {% load menu_tags %}
+
+{% block scripts %}
+{{ block.super }}
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}breadcrumbs/script.js"></script>
+{% endblock %}
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" href="{{ MEDIA_URL }}breadcrumbs/style.css" type="text/css">
+{% endblock %}
+
 {% for ance in ancestors %}
 <li{% if forloop.first %} class="first"{% endif %}>
-        <a href="{{ ance.get_absolute_url }}">{{ ance.get_menu_title }}</a><span>&nbsp;</span>
+        <a href="{{ ance.get_absolute_url }}">{{ ance.get_menu_title }}</a><span class="crumb_no_arrow">&nbsp;</span>
         
         <div class="megamenu">
             <div class="tail">&nbsp;</div>
-            <div class="container">
+            <div class="megacontent">
                 <ul>
                     {% show_menu forloop.counter forloop.counter 0 1 %}
                 </ul>
