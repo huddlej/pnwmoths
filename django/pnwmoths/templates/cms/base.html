@@ -17,6 +17,7 @@
 	<!-- Your styles -->
     <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/base.css" type="text/css">
     <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/styles.css" type="text/css">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}breadcrumbs/style.css" type="text/css">
     {% endblock %}
 
     {{ meta_headers }}
@@ -46,7 +47,12 @@
         </div>
 	</div>
     <div class="row">
-        <div class="twelvecol last"><ul id="breadcrumbs">{% show_breadcrumb 1 %}</ul></div>
+        <div class="twelvecol last">
+            {% block breadcrumbs %}
+                <ul id="breadcrumbs">{% show_breadcrumb 1 %}</ul>
+                <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}breadcrumbs/script.js"></script>
+            {% endblock %}
+        </div>
     </div>
 </div>
 

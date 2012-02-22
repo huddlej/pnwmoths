@@ -2,9 +2,10 @@ from tastypie.api import Api
 
 from django.conf.urls.defaults import include, patterns, url
 
-from resources import CollectionResource, CountyResource, SpeciesResource, SpeciesRecordResource, StateResource
+from resources import AllCoordsResource, CollectionResource, CountyResource, SpeciesResource, SpeciesRecordResource, StateResource
 
 data_api = Api(api_name="api")
+data_api.register(AllCoordsResource())
 data_api.register(CollectionResource())
 data_api.register(CountyResource())
 data_api.register(SpeciesResource())

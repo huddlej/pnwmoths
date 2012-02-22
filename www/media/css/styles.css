@@ -165,10 +165,10 @@
 		padding: 0 20px 0 0px;
 	}
 	
-	#featuredmoth div {
+	#featuredmoth>div {
 		padding-left: 20px;
 	}
-	#fullmap div {
+	#fullmap>div {
 		padding-right: 20px;
 	}
 	

@@ -116,3 +116,20 @@ class SpeciesRecordResource(ModelResource):
         Convert final serialized states to codes.
         """
         return data["objects"]
+
+class AllCoordsResource(ModelResource):
+    class Meta:
+        queryset = SpeciesRecord.objects.filter(latitude__isnull=False, longitude__isnull=False)
+        allowed_methods = ["get"]
+        fields = ["latitude", "longitude"]
+        include_resource_uri = False
+
+    def alter_list_data_to_serialize(self, request, data):
+        """
+        Convert final serialized states to codes.
+        """
+        # Multiplying by 10 to bypass floating point problems
+        l = [ (int(round(bundle.data['latitude'], 1)*10), int(round(bundle.data['longitude'], 1)*10))
+              for bundle in data["objects"] ]
+        l = set(l) # removes duplicates
+        return [ dict({'latitude': tup[0]/10.0, 'longitude': tup[1]/10.0}) for tup in l]
