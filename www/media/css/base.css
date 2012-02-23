@@ -134,6 +134,7 @@
 /* #Buttons
 ================================================== */
 
+a.button { color: black !important; }
 	.button,
 	button,
 	input[type="submit"],
@@ -149,7 +150,6 @@
 	  border: 1px solid #aaa;
 	  border-top: 1px solid #ccc;
 	  border-left: 1px solid #ccc;
-	  padding: 4px 12px;
 	  -moz-border-radius: 3px;
 	  -webkit-border-radius: 3px;
 	  border-radius: 3px;
@@ -160,9 +160,9 @@
 	  text-decoration: none;
 	  text-shadow: 0 1px rgba(255, 255, 255, .75);
 	  cursor: pointer;
-	  margin-bottom: 20px;
+	  margin-bottom: 20px !important;
 	  line-height: normal;
-	  padding: 8px 10px;
+	  padding: 8px 10px !important;
 	  font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 	.button:hover,

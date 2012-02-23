@@ -6,8 +6,8 @@
         // Set width to fix jerky slidetoggle
         // +1 to account for #body children
         var parentOffset = jQuery(this).parents('.browse_item').length + 1; 
-        jQuery(this).width(jQuery('#body').width() - 10*parentOffset);
-        jQuery(this).find('.ajax').width(jQuery('#body').width() - 10*parentOffset);
+        jQuery(this).width(jQuery('.twelvecol').width() - 10*parentOffset);
+        jQuery(this).find('.ajax').width(jQuery('.twelvecol').width() - 10*parentOffset);
 
         // set h3 size to improve visual nesting
         if (jQuery(this).parents('.browse_item').length) {

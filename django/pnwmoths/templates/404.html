@@ -4,6 +4,8 @@
 {% block title %}This page doesn't exist{% endblock %}
 
 {% block content %}
+<div class="row top bottom">
+<div class="twelvecol last">
 <h1>This page doesn't exist</h1>
 
 <p>The page you requested ({{ request_path }}) doesn't exist.</p>
@@ -18,4 +20,6 @@
     </li>
     <li>Or try <a href="{% page_id_url "browse" %}">browsing our moths</a></li>
 </p>
+</div>
+</div>
 {% endblock %}

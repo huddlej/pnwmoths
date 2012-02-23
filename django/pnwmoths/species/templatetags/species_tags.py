@@ -86,7 +86,10 @@ class ImagesetByNavNode(Node):
                 p = random.choice(leaves)
                 leaves.remove(p)
                 genus, species = p.get_title().split(" ", 1)
-                im = Species.objects.get(genus=genus, species=species).get_first_image()
+                try:
+                    im = Species.objects.get(genus=genus, species=species).get_first_image()
+                except (Exception):
+                    im = None
                 if im:
                     imageset.append(im)
         except (Exception):

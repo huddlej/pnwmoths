@@ -32,7 +32,7 @@ jQuery(window).load(function() {
     var mgr = new MarkerManager(map);
     
     // Define Marker Style
-    imagePath = "http://localhost/media/images/markers/";
+    imagePath = "http://pnwmoths.biol.wwu.edu/media/images/markers/";
     var icon = new GIcon();
     icon.iconSize = new GSize(6, 6);
     icon.shadowSize = new GSize(9, 6);

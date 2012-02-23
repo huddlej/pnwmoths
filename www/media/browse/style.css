@@ -63,7 +63,7 @@ h3.browse_genus_species {
 }
 
 .loading_toggle {
-    background: #EEEEEE center no-repeat url('ajax-loader.gif');
+    background: #EEEEEE center no-repeat url('ajax-loader.gif') !important;
 }
 
 .species img{    
