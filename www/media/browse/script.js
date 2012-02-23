@@ -38,16 +38,24 @@
                 jQuery(this).html('&nbsp;');
                 jQuery(this).addClass('loading_toggle');
                 jQuery(this).parent().siblings('.ajax').load(url + ' .browse_item', function() {
-                    
-                    //jQuery(this).find('img').remove();
                     jQuery(this).parent().find('.toggle_item').removeClass('loading_toggle').html("-");
                     jQuery(this).append('<div style="height: 0px; clear: both;">&nbsp;</div>');
                     jQuery(this).find('.browse_item:not(.species)').implement_browse();
                     jQuery(this).implement_species_width();
-                    jQuery(this).waitForImages(function() {
+
+                    // Hide images and skip wait if we are in advanced mode
+                    if (jQuery('#browse_images_toggle').hasClass('browse_checked')) {
+                        jQuery('.browse_thumbs img').hide();
                         jQuery(this).siblings('.browse_thumbs').slideToggle('slow');
                         jQuery(this).slideToggle('slow');
-                    });
+                    }
+                    else 
+                    {
+                        jQuery(this).waitForImages(function() {
+                            jQuery(this).siblings('.browse_thumbs').slideToggle('slow');
+                            jQuery(this).slideToggle('slow');
+                        });
+                    }
                     return false;
                 });
             }
@@ -76,6 +84,11 @@
 
 jQuery(document).ready(function() {
     jQuery('#body').find('.browse_item:not(.species)').implement_browse();
+
+    jQuery('#browse_images_toggle').toggle(
+        function(){ jQuery(this).html("Turn on Images?"); jQuery(this).addClass('browse_checked'); jQuery('.browse_thumbs img').hide(); },
+        function(){ jQuery(this).html("Turn off Images?"); jQuery(this).removeClass('browse_checked'); jQuery('.browse_thumbs img').show(); }
+    );
 
     //Make species div clickable using first link in the container
     jQuery(".ajax").delegate(".species" ,"click", function(){
