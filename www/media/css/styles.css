@@ -198,13 +198,19 @@
 		border-left: none;
 	}
 
-	#footnavhead div ul {
+    #footnavhead div ul {
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+	
+
+	#footnavhead div>ul {
         background-color: #FFFFFF;
 		padding: 5px 0 0 15px;
 		list-style-type: none;
         width: 100%;
 	}
-	
+
 	#credits {
 		margin:0 auto;
 		border-top: 1px dotted #003F87;
