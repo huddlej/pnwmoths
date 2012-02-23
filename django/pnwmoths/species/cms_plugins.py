@@ -5,6 +5,12 @@ from django.utils.translation import ugettext_lazy as _
 from models import FeaturedMothImage
 
 class FeaturedMothImagePlugin(CMSPluginBase):
+    """
+       Django CMS plugin that can be inserted on any page.
+       Configuration Options: A list of species to select from randomly.
+       Sets fm, Species, and fm_img, Image, in the template's context.
+       Created for use in templates/cms/home.html
+    """
     model = FeaturedMothImage
     name = _("Featured Moth Image")
     render_template = "cms_plugin/featured_moth.html"

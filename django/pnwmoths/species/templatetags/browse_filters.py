@@ -8,26 +8,27 @@ def navnode_is_species_or_genus(value):
     """
         Returns True if a navigation node is a genus
         or species, otherwise False.
+        Created for use in templates/menu/browse_submenu.html
     """
     if isinstance(value, NavigationNode):
         p = Page.objects.get(pk=value.id)
-        if p.is_leaf_node():
-            # species
-            return True
-        else:
-            for i in p.children.all():
-                if not len(i.children.all()):
-                    # genus
-                    return True
-            return False
+        
+        # genus check        
+        for i in p.children.all():
+            if not len(i.children.all()):
+                return True #genus
+    
+        # species check
+        return p.is_leaf_node()
     else:
         return False
 
 @register.filter
 def navnode_species_count(value):
     """
-        Returns the leaf count in (%d) format if
+        Returns the leaf count of a NavigationNode in (%d) format if
         greater than 0, otherwise empty string.
+        Created for use in templates/menu/browse_submenu.html
     """
     if isinstance(value, NavigationNode):
         page = Page.objects.get(pk=value.id)

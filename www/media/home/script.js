@@ -6,6 +6,9 @@ jQuery(window).load(function() {
         return;
     }    
 
+    // A lot of copy/paste here
+    // This is a test implementation to see how Google Maps V2 handles ALL of our data points
+    // on the homepage.
     jQuery("#googlemap").show();
     var map = new GMap2(jQuery("#googlemap").get(0));
     map.setCenter(new GLatLng(46.90, -118.00), 5);

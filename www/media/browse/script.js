@@ -1,3 +1,6 @@
+// Implements recursive, nested, AJAX-loaded tree browsing.
+// http://pnwmoths.biol.wwu.edu/browse/
+
 (function($) {
     $.fn.implement_browse = function () {
         // Set width to fix jerky slidetoggle
@@ -6,7 +9,7 @@
         jQuery(this).width(jQuery('#body').width() - 10*parentOffset);
         jQuery(this).find('.ajax').width(jQuery('#body').width() - 10*parentOffset);
 
-        // set h3 size to improve nesting
+        // set h3 size to improve visual nesting
         if (jQuery(this).parents('.browse_item').length) {
             var curFontSize = jQuery(this).parents('.browse_item').find('h3').css('fontSize');
             var finalNum = parseFloat(curFontSize, 10)/1.2;
@@ -14,9 +17,9 @@
             jQuery(this).find('h3').css('fontSize', finalNum + stringEnding);
         }
 
-        // Add collapsing arrow to div
+        // Add collapsing button to div
         jQuery(this).find('.browse_heading').prepend('<a class="toggle_item button">+</a>');
-        // Give the arrow toggle states
+        // Give the button toggle states
         jQuery(this).find('.toggle_item').toggle(
             function(){ jQuery(this).html("-"); },
             function(){ jQuery(this).html("+"); }
@@ -85,6 +88,7 @@
 jQuery(document).ready(function() {
     jQuery('#body').find('.browse_item:not(.species)').implement_browse();
 
+    // Toggle functions for advanced, image-free browsing
     jQuery('#browse_images_toggle').toggle(
         function(){ jQuery(this).html("Turn on Images?"); jQuery(this).addClass('browse_checked'); jQuery('.browse_thumbs img').hide(); },
         function(){ jQuery(this).html("Turn off Images?"); jQuery(this).removeClass('browse_checked'); jQuery('.browse_thumbs img').show(); }

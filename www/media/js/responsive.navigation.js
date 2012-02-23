@@ -1,6 +1,8 @@
 jQuery(document).ready(function() {
-
-	// Create the dropdown base
+    // This changes our main menu to a drop down list
+    // for iPhone/mobile usability.
+	
+    // Create the dropdown base
 	jQuery("<select />").appendTo("#mainnav");
 
 	// Create default option "Go to..."
@@ -22,5 +24,4 @@ jQuery(document).ready(function() {
 	jQuery("#mainnav select").change(function() {
 	  window.location = jQuery(this).find("option:selected").val();
 	});
-
 });

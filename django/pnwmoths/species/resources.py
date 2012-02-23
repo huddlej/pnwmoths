@@ -118,6 +118,14 @@ class SpeciesRecordResource(ModelResource):
         return data["objects"]
 
 class AllCoordsResource(ModelResource):
+    """
+        Resource accessed at /data/api/allcoords/?format=json
+        This resource reduces the number of points by rounding every
+        lat/lon pair to 1 decimal place and removing duplicates.
+        
+        Currently, this is being used to test an "all data points"
+        map on the front page.
+    """
     class Meta:
         queryset = SpeciesRecord.objects.filter(latitude__isnull=False, longitude__isnull=False)
         allowed_methods = ["get"]
@@ -125,10 +133,7 @@ class AllCoordsResource(ModelResource):
         include_resource_uri = False
 
     def alter_list_data_to_serialize(self, request, data):
-        """
-        Convert final serialized states to codes.
-        """
-        # Multiplying by 10 to bypass floating point problems
+        # Multiplying by 10 to bypass floating point comparison problems
         l = [ (int(round(bundle.data['latitude'], 1)*10), int(round(bundle.data['longitude'], 1)*10))
               for bundle in data["objects"] ]
         l = set(l) # removes duplicates
