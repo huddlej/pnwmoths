@@ -9,7 +9,7 @@ from django.contrib.localflavor.ca.ca_provinces import PROVINCE_CHOICES
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
-
+from cms.models.pluginmodel import CMSPlugin
 
 models.signals.post_save.connect(create_api_key, sender=User)
 
@@ -291,6 +291,15 @@ class SpeciesImage(models.Model):
         s += "<br />Photograph copyright of ..."
 
         return s
+
+class FeaturedMothImage(CMSPlugin):
+    species =  models.ManyToManyField(Species)
+
+    def __unicode__(self):
+        return "FeaturedMothImagePlugin"
+
+    def copy_relations(self, oldinstance):
+        self.species = oldinstance.species.all()
 
 # TODO: write unit tests for this class before adding it.
 # class SpeciesImageMetadata(models.Model):
