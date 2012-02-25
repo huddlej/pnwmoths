@@ -1,4 +1,7 @@
 /* map styles */
+.googlemap img {
+  max-width: none;
+}
 
 #googlemap {
     height: 363px;
