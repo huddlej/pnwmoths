@@ -1,4 +1,4 @@
-{% load cms_tags menu_tags %}
+{% load cache cms_tags menu_tags %}
 
 <!DOCTYPE html>
 <html lang="en" style=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -50,7 +50,9 @@
     <div class="row">
         <div class="twelvecol last">
             {% block breadcrumbs %}
+                {% cache 0 breadcrumbs request.current_page.id %}
                 <ul id="breadcrumbs">{% show_breadcrumb 1 %}</ul>
+                {% endcache %}
                 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}breadcrumbs/script.js"></script>
             {% endblock %}
         </div>
@@ -84,12 +86,16 @@
         </div>
 		<div class="threecol"><h5>About Moths</h5>
 			<ul>
+                {% cache 0 about_moths_submenu %}
                 {% show_menu_below_id "about-moths" 0 100 100 100 %}
+                {% endcache %}
 			</ul>	
         </div>
 		<div class="threecol"><h5>About Us</h5>
             <ul>
+            {% cache 0 about_us_submenu %}
             {% show_menu_below_id "about-us" 0 100 100 100 %}
+            {% endcache %}
             </ul>
         </div>
 		<div class="threecol last"><h5>Related Sites</h5>

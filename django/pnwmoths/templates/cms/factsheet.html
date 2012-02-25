@@ -147,7 +147,7 @@
 
 <!-- data start -->
 {% if species %}
-    {% cache 500 js_data species.name %}
+    {% cache 0 js_data species.name %}
     <span class="dokuwiki-data" id="species-data">
     {% resource /data/api/speciesrecord/ format=json species__genus=species.genus species__species=species.species limit=0 %}
     </span>

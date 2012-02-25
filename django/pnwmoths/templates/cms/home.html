@@ -77,7 +77,7 @@
 				<h3>Our Data Points</h3>
 				<div id="googlemap" class="googlemap"></div>
                 <span class="dokuwiki-data" id="all-coords">
-                {% cache 86400 allcoords %}
+                {% cache 0 allcoords %}
                 {% resource /data/api/allcoords/ format=json limit=0 %}
                 {% endcache %}
                 </span>

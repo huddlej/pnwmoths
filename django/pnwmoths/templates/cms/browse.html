@@ -1,5 +1,5 @@
 {% extends "cms/base.html" %}
-{% load cms_tags menu_tags %}
+{% load cache cms_tags menu_tags %}
 
 {% block scripts %}
 {{ block.super }}
@@ -22,8 +22,9 @@
         <div style="margin-left: 10px; clear: both;">
             <a id="browse_images_toggle" class="button" title="Advanced Browse">Turn off Images?</a>
         </div>
+        {% cache 0 browse_submenu request.current_page.id %}
         {% show_sub_menu 1 "menu/browse_submenu.html" %}
+        {% endcache %}
     </div>
 </div>
-
 {% endblock %}

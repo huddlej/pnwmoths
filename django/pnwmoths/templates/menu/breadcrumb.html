@@ -1,5 +1,4 @@
 {% load menu_tags %}
-
 {% for ance in ancestors %}
 <li{% if forloop.first %} class="first"{% endif %}>
         <a href="{{ ance.get_absolute_url }}">{{ ance.get_menu_title }}</a><span class="crumb_no_arrow">&nbsp;</span>
