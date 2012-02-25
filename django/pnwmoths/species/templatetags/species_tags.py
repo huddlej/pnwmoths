@@ -2,6 +2,7 @@ from django.template import Library, Node, TemplateSyntaxError
 from django.template import Variable
 from django.utils.encoding import smart_str
 from django.utils.translation import ugettext as _
+from django.db.models import F
 import re
 
 from pnwmoths.species.models import Species
@@ -80,11 +81,9 @@ class ImagesetByNavNode(Node):
         try:
             navnode = self.obj.resolve(context)
             page = Page.objects.get(pk=navnode.id)
-            leaves = [x for x in page.get_descendants(include_self=True) if x.is_leaf_node()]
+            leaves = list(page.get_descendants(include_self=True).filter(lft=F('rght')-1)[:6])
             imageset = []
-            while len(imageset) < self.leaf_count and len(leaves) > 0:
-                p = random.choice(leaves)
-                leaves.remove(p)
+            for p in leaves:
                 genus, species = p.get_title().split(" ", 1)
                 try:
                     im = Species.objects.get(genus=genus, species=species).get_first_image()
@@ -92,6 +91,8 @@ class ImagesetByNavNode(Node):
                     im = None
                 if im:
                     imageset.append(im)
+                if len(imageset) == self.leaf_count:
+                    break 
         except (Exception):
             imageset = None
 

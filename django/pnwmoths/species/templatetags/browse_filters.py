@@ -1,4 +1,5 @@
 from django import template
+from django.db.models import F
 from cms.models.pagemodel import Page
 from cms.menu import NavigationNode
 register = template.Library()
@@ -13,13 +14,10 @@ def navnode_is_species_or_genus(value):
     if isinstance(value, NavigationNode):
         p = Page.objects.get(pk=value.id)
         
-        # genus check        
-        for i in p.children.all():
-            if not len(i.children.all()):
-                return True #genus
-    
-        # species check
-        return p.is_leaf_node()
+        if p.is_leaf_node():
+            return True
+        
+        return not p.get_children().exclude(lft=F('rght')-1).count()
     else:
         return False
 
@@ -32,9 +30,9 @@ def navnode_species_count(value):
     """
     if isinstance(value, NavigationNode):
         page = Page.objects.get(pk=value.id)
-        leaves = [x for x in page.get_descendants() if x.is_leaf_node()]
-        if len(leaves):
-            return "(%d)" % len(leaves)
+        lf_ct = page.get_descendants().filter(lft=F('rght')-1).count()
+        if lf_ct:
+            return "(%d)" % lf_ct
         else:
             return ""
     else:
