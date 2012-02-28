@@ -50,7 +50,7 @@
     <div class="row">
         <div class="twelvecol last">
             {% block breadcrumbs %}
-                {% cache 0 breadcrumbs request.current_page.id %}
+                {% cache 0 breadcrumbs request.path_info %}
                 <ul id="breadcrumbs">{% show_breadcrumb 1 %}</ul>
                 {% endcache %}
                 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}breadcrumbs/script.js"></script>
