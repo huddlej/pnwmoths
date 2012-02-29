@@ -33,23 +33,11 @@ jQuery(window).load(function() {
     
     // Define Marker Style
     imagePath = "http://pnwmoths.biol.wwu.edu/media/images/markers/";
-    var icon = new GIcon();
-    icon.iconSize = new GSize(6, 6);
-    icon.shadowSize = new GSize(9, 6);
-    icon.iconAnchor = new GPoint(3, 6);
-    icon.infoWindowAnchor = new GPoint(3, 0);
-    icon.image = imagePath + "cccccc" + "/image.png";
-    icon.printImage = imagePath + "cccccc" + "/printImage.gif";
-    icon.mozPrintImage = imagePath + "cccccc" + "/mozPrintImage.gif";
-    icon.shadow = imagePath + "cccccc" + "/shadow.png";
-    icon.transparent = imagePath + "cccccc" + "/transparent.png";
-    icon.printShadow = imagePath + "cccccc" + "/printShadow.gif";
-
     // Place Markers
     var markers = []
-    jQuery.each(PNWMOTHS.Data.data['all-coords'], function(index, coords) {
+    jQuery.each(PNWMOTHS.Data.data['all-coords'].objects, function(index, coords) {
         if (coords['latitude'] && coords['latitude']) {
-            markers.push(new GMarker(new GLatLng(coords['latitude'], coords['longitude']), icon));
+            markers.push(new MarkerLight(new GLatLng(coords['latitude'], coords['longitude']), {height: 8, width: 8, image: "/media/images/markers/cccccc/image.png"}));
         }
     });
 

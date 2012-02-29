@@ -3,6 +3,7 @@ from django.http import HttpRequest
 import httplib
 from tastypie import fields
 from tastypie.resources import ALL, ALL_WITH_RELATIONS, ModelResource
+import itertools
 
 from models import Collection, County, Species, SpeciesRecord, State
 
@@ -127,14 +128,19 @@ class AllCoordsResource(ModelResource):
         map on the front page.
     """
     class Meta:
-        queryset = SpeciesRecord.objects.filter(latitude__isnull=False, longitude__isnull=False)
-        allowed_methods = ["get"]
+        queryset = SpeciesRecord.records.filter(latitude__isnull=False, longitude__isnull=False).values("latitude", "longitude").distinct()
         fields = ["latitude", "longitude"]
+        allowed_methods = ["get"]
         include_resource_uri = False
 
     def alter_list_data_to_serialize(self, request, data):
-        # Multiplying by 10 to bypass floating point comparison problems
-        l = [ (int(round(bundle.data['latitude'], 1)*10), int(round(bundle.data['longitude'], 1)*10))
-              for bundle in data["objects"] ]
-        l = set(l) # removes duplicates
-        return [ dict({'latitude': tup[0]/10.0, 'longitude': tup[1]/10.0}) for tup in l]
+        vals = list(self.Meta.queryset)
+        for d in vals:
+            for k in d.keys():
+                try:
+                    d[k] = "%.1f" % d[k]
+                except(TypeError):
+                    pass
+        s = set([tuple(d.values()) for d in vals])
+        data['objects'] = [dict({'latitude': float(e[0]), 'longitude': float(e[1])}) for e in s]
+        return data
