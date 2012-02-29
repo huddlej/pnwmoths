@@ -3,6 +3,19 @@
   max-width: none;
 }
 
+.googlemap form {
+    margin-bottom: 0px !important;
+}
+
+.googlemap .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+    margin-bottom: 0px !important;
+    padding: 2px 4px !important;
+}
+
+.googlemap input[type="text"], input[type="password"], input[type="email"], textarea, select {
+    margin-bottom: 4px !important;
+}
+
 #googlemap {
     height: 363px;
     display: none;
