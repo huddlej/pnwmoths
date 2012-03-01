@@ -92,7 +92,7 @@
         </div>
         {% endcache %}
 
-        {% if species.similar.all %}
+        {% if species.similar.all or request.user.is_staff %}
             {% cache 0 similar_species species.name %}
             <div id="similar">
             <h2>
