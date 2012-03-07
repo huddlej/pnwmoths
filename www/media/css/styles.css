@@ -264,7 +264,7 @@
 		clear: both;
 		float: left;
 	}
-	#header {
+	#header div:first-child {
 		background-color: #FFFFFF;
 	}
 }
