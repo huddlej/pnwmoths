@@ -205,6 +205,11 @@ jQuery(document).ready(function () {
                         data,
                         options
                     );
+            $(window).resize(function(event, ui) {
+                jQuery.each(PNWMOTHS.Chart.charts, function(i,p) {
+                    p.replot();
+                });
+            });
                     PNWMOTHS.Chart.charts[jQuery(chart).attr("id")] = chart_instance;
                 }
             );
