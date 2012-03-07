@@ -32,7 +32,7 @@ admin.site.register(Author, AuthorAdmin)
 
 class SpeciesAdmin(admin.ModelAdmin):
     filter_horizontal = ("similar",)
-    list_display = ("noc_id", "__unicode__", "common_name")
+    list_display = ("__unicode__", "noc_id", "factsheet", "common_name")
     list_editable = ("common_name",)
     search_fields = ("genus", "species")
 admin.site.register(Species, SpeciesAdmin)

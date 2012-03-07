@@ -105,7 +105,7 @@
             <ul class="other-images jcarousel-skin-tango">
             {% for similar_species in species.similar.all %}
                 <li>
-                <a href="{% page_id_url similar_species.name %}" target="_blank">
+                <a href="{% page_url similar_species.factsheet %}" target="_blank">
                 {% with similar_species.get_first_image as similar_image %}
                     {% thumbnail similar_image.image similar_image.SIZES.thumbnail as im %}
                         <img src="{{ im.url }}" title="{{ similar_image.title }}" /><br />

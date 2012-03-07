@@ -4,6 +4,7 @@ from sorl.thumbnail import ImageField
 from tastypie.models import create_api_key
 
 from django.conf import settings
+from cms.models.fields import  PageField
 from django.contrib.auth.models import User
 from django.contrib.localflavor.ca.ca_provinces import PROVINCE_CHOICES
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
@@ -114,6 +115,7 @@ class Species(models.Model):
                               validators=[RegexValidator("(\d{2}\-)?\d{4}(\.\d{1})?", "Enter a valid NOC #")])
     authority = models.ForeignKey(Author, null=True, blank=True)
     similar = models.ManyToManyField("self", blank=True)
+    factsheet = PageField(unique=True, blank=True, null=True)
 
     class Meta:
         ordering = ["genus", "species"]
