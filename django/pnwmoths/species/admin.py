@@ -32,7 +32,7 @@ admin.site.register(Author, AuthorAdmin)
 
 class SpeciesAdmin(admin.ModelAdmin):
     filter_horizontal = ("similar",)
-    list_display = ("__unicode__", "common_name")
+    list_display = ("noc_id", "__unicode__", "common_name")
     list_editable = ("common_name",)
     search_fields = ("genus", "species")
 admin.site.register(Species, SpeciesAdmin)
@@ -40,7 +40,14 @@ admin.site.register(Species, SpeciesAdmin)
 
 class SpeciesImageAdmin(AdminImageMixin, admin.ModelAdmin):
     readonly_fields = ("record",)
+
+    # callable required to include foreign key in list_display
+    def noc_id(self):
+        return self.species.noc_id
+    noc_id.admin_order_field  = 'species__noc_id'
+
     list_display = (
+        noc_id,
         "species",
         "image",
         "weight"
@@ -53,7 +60,21 @@ admin.site.register(SpeciesImage, SpeciesImageAdmin)
 class SpeciesRecordAdmin(admin.ModelAdmin):
     class Media:
         js = ("/media/custom_admin/filter.js", "/media/custom_admin/speciesrecords.js", )
+    
+    # callable required to include foreign key in list_display
+    def noc_id(self):
+        return self.species.noc_id
+    noc_id.admin_order_field  = 'species__noc_id'
+
+    def rec_type(self):
+        if self.speciesimage_set.exists():
+            return "Label"
+        else:
+            return "Record"
+
     list_display = (
+        rec_type,
+        noc_id,
         "species",
         "latitude",
         "longitude",
@@ -61,15 +82,22 @@ class SpeciesRecordAdmin(admin.ModelAdmin):
         "county",
         "state",
         "collection",
-        "collector"
+        "collector",
+        "day",
+        "month",
+        "year",
+        "notes",
     )
     list_filter = (
         "state",
         "county",
-        "collection"
+        "collection",
+        "year",
+        "collector",
+        "locality",
     )
     list_select_related = True
-    search_fields = ("species__genus", "species__species")
+    search_fields = ("species__genus", "species__species", "year", "collector", "locality", "notes", "latitude", "longitude")
     actions = [export_labels_as_csv_action(), export_records_as_csv_action()]
     
     # The admin section's record/label filter performs a table join that returns
