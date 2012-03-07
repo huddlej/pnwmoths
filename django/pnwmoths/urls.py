@@ -20,6 +20,5 @@ urlpatterns = patterns('',
     (r'^admin/import/', include('csvimporter.urls')),
     (r'^admin/', include(admin.site.urls)),
     url(r'^search/', FancyRedirectSearchView(), name="search"),
-    #url(r"^contact-us/", contact_us, name="contact-us"),
     url(r'^', include('cms.urls')),
 )
