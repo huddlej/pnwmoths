@@ -98,10 +98,9 @@
             </ul>
         </div>
 		<div class="threecol last"><h5>Related Sites</h5>
-			<ul>
-				<li><a href="http://www.butterfliesandmoths.org/">Butterflies and Moths of North America</a></li>
-				<li><a href="http://www.cbif.gc.ca/spp_pages/pdfs/index_e.php">Moths of Canada</a></li>
-			</ul>	
+            {% block related_sites_footer %}
+                {% show_placeholder "related_sites" "index" %}
+            {% endblock %}
         </div>
 	</div>
 	<div class="row">
