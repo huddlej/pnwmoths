@@ -1,5 +1,5 @@
 {% extends "cms/base.html" %}
-{% load cache cms_tags menu_tags species_tags %}
+{% load cache cms_tags menu_tags species_tags browse_filters stats_filters %}
 
 {% block scripts %}
 {{ block.super }}
@@ -80,6 +80,7 @@
 		<div id="fullmap" class="sixcol last">
 			<div>
 				<h3>Our Data Points</h3>
+                <h4>&nbsp;</h4>
 				<div id="googlemap" class="googlemap"></div>
                 <span class="dokuwiki-data" id="all-coords">
                 {% cache 0 allcoords %}
@@ -87,6 +88,15 @@
                 {% endcache %}
                 </span>
 			</div>
+            <div>
+                <h3>Stats</h3>
+                <ul id="stats_list">
+                    <li><strong>{{ "Browse"|navnode_species_count }}</strong> Species Profiles</li>
+                    <li><strong>{{ "SpeciesImage"|species_stat_count }}</strong> Species Images</li>
+                    <li><strong>{{ "Collection"|species_stat_count }}</strong> Collections</li>
+                    <li><strong>{{ "Collector"|species_stat_count }}</strong> Collectors</li>
+                </ul>
+            </div>
 		</div>
 	</div>
 

@@ -3,7 +3,7 @@
 <div class="browse_item{% if child.is_leaf_node %} species{% endif%}">
   <div class="browse_heading">
     <h3 {% if child|navnode_is_species_or_genus %}class="browse_genus_species"{% endif %}>
-        <a href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a> {{ child|navnode_species_count }}
+        <a href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a> ({{ child|navnode_species_count }})
     </h3>
   </div>
   <div style="clear: both; height: 0px;">&nbsp;</div>
