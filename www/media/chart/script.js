@@ -205,7 +205,7 @@ jQuery(document).ready(function () {
                         data,
                         options
                     );
-            $(window).resize(function(event, ui) {
+            jQuery(window).resize(function(event, ui) {
                 jQuery.each(PNWMOTHS.Chart.charts, function(i,p) {
                     p.replot();
                 });
