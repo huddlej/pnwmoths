@@ -137,6 +137,7 @@ INSTALLED_APPS = (
 
 CMS_TEMPLATES = (
     ('cms/base.html', gettext('default')),
+    ('cms/stub.html', gettext('stub')),
     ('cms/home.html', gettext('home')),
     ('cms/browse.html', gettext('browse')),
     ('cms/factsheet.html', gettext('factsheet')),
