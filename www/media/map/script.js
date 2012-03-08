@@ -173,7 +173,7 @@ PNWMOTHS.Map = function () {
         renderMarkerRecord: function (record) {
             // Render one marker data record to an array of HTML for the marker
             // info window tabs.
-            var attributes = {"site_name": "Site Name",
+            var attributes = {"site_name": "Locality",
                               "county": "County",
                               "state": "State",
                               "elevation": "Elevation (ft.)",
