@@ -58,7 +58,6 @@
 <div id="fs_yui-g" class="row">
     <div class="sixcol">
         <div class="all-images all-images-no-js">
-        {% cache 0 species_images species.name %}
         <div id="images">
         {% for species_image in species.speciesimage_set.all %}
             {% if forloop.first %}
@@ -90,10 +89,8 @@
             {% endif %}
         {% endfor %}
         </div>
-        {% endcache %}
 
         {% if species.similar.all or request.user.is_staff %}
-            {% cache 0 similar_species species.name %}
             <div id="similar">
             <h2>
                 Similar Species
@@ -117,7 +114,6 @@
             {% endfor %}
             </ul>
           </div>
-          {% endcache %}
       {% endif %}
       </div>
     </div>
