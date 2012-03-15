@@ -206,10 +206,13 @@ class SpeciesRecord(models.Model):
         ordering = ("species", "latitude", "longitude")
 
     def __unicode__(self):
-        if self.latitude and self.longitude:
-            return u"Record - %s at (%.2f, %.2f)" % (self.species, self.latitude, self.longitude)
+        if self.speciesimage_set.exists():
+            return u"Label - %s"  % self.species
         else:
-            return u"Label - %s" % (self.species)
+            try:
+                return u"Record - %s at (%.2f, %.2f)" % (self.species, self.latitude, self.longitude)
+            except (Exception):
+                return u"Record - %s" % self.species
 
     @property
     def date(self):
@@ -253,7 +256,7 @@ class SpeciesImage(models.Model):
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True)
 
     class Meta:
-        ordering = ['species', 'weight', 'image']
+        ordering = ['weight', 'image']
 
     def __unicode__(self):
         return u"%s - %s" % (self.species, self.image.name)
