@@ -2,6 +2,11 @@
 /* ! Layout for desktop version   */
 /* ============================== */
 
+/* CMS TOOLBAR HOTFIX */
+.cms_toolbar_submenu {
+    position: static !important;
+}
+
 	body {
 		background-color: #E2E2DD;
 	}
