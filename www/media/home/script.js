@@ -1,48 +1,52 @@
 jQuery(window).load(function() {
 	jQuery('.blueberry').blueberry({interval: 8000, pager: false});
 
-    if (typeof(GBrowserIsCompatible) == "undefined" || !GBrowserIsCompatible()) {
-        jQuery("#googlemap").html("<p>Sorry, your browser is not compatible with the current version of Google Maps.</p><p>For more information, visit <a href='http://local.google.com/support/bin/answer.py?answer=16532&topic=1499'>Google's browser support page</a>.</p>");
-        return;
-    }    
+var mapDiv = jQuery("#googlemap");
+mapDiv.show();
+var centerPoint = new google.maps.LatLng(46.9, -118.0);
+var options = {
+                zoom: 4,
+                streetViewControl: false,
+                center: centerPoint,
+                mapTypeId: 'terrain'
+            };  
+var map = new google.maps.Map(mapDiv[0], options);
+var mgr = new MarkerManager(map);
+var everythingElse = [
+                new google.maps.LatLng(-87, 120),
+                new google.maps.LatLng(-87, -87),
+                new google.maps.LatLng(-87, 0),];
+var pnw = [
+              new google.maps.LatLng(40, -126),
+              new google.maps.LatLng(52.3, -130),
+              new google.maps.LatLng(52.3, -105.0),
+              new google.maps.LatLng(40, -105.0),];
+var polygon = new google.maps.Polygon({
+              paths: [everythingElse, pnw],
+              strokeColor: "#003F87",
+              strokeOpacity: 0.9,
+              strokeWeight: 2,
+              fillColor: "#000000",
+              fillOpacity: .1,
+            });
+polygon.setMap(map);
 
-    // A lot of copy/paste here
-    // This is a test implementation to see how Google Maps V2 handles ALL of our data points
-    // on the homepage.
-    jQuery("#googlemap").show();
-    var map = new GMap2(jQuery("#googlemap").get(0));
-    map.setCenter(new GLatLng(46.90, -118.00), 5);
-    
-    map.addControl(new GSmallMapControl());
-    map.addControl(new GMapTypeControl());
-    map.addMapType(G_PHYSICAL_MAP);
-    map.removeMapType(G_NORMAL_MAP);
-    map.removeMapType(G_SATELLITE_MAP);
-    map.setMapType(G_PHYSICAL_MAP);
 
-    var polygon = new GPolygon([
-                    new GLatLng(40, -111.0),
-                    new GLatLng(52.3, -111.0),
-                    new GLatLng(52.3, -130),
-                    new GLatLng(40, -126),
-                    new GLatLng(40, -111.0)
-                  ], "#000000", 2, 1, "#ffffff", 0);
-    map.addOverlay(polygon);
-
-    var mgr = new MarkerManager(map);
-    
-    // Define Marker Style
-    imagePath = "http://pnwmoths.biol.wwu.edu/media/images/markers/";
-    // Place Markers
-    var markers = []
+    var markers = [];
     jQuery.each(PNWMOTHS.Data.data['all-coords'].objects, function(index, coords) {
-        if (coords['latitude'] && coords['latitude']) {
-            markers.push(new MarkerLight(new GLatLng(coords['latitude'], coords['longitude']), {height: 8, width: 8, image: "/media/images/markers/cccccc/image.png"}));
+        if (coords['latitude'] && coords['longitude']) {
+            point = new google.maps.LatLng(coords['latitude'], coords['longitude']);
+            var marker = new google.maps.Marker({
+                             position: point,
+                             map: map,
+                             icon: new google.maps.MarkerImage("http://fish.freeshell.org/style/small_red.png")
+                        });
+            markers.push(marker);
         }
     });
-
-    mgr.addMarkers(markers, map.getCurrentMapType().getMinimumResolution(), map.getCurrentMapType().getMaximumResolution());
+google.maps.event.addListener(mgr, 'loaded', function() {
+    mgr.addMarkers(markers, 1);
     mgr.refresh();
+});
 
-    map.setCenter(new GLatLng(46.90, -118.00), map.getBoundsZoomLevel(polygon.getBounds()));
 });
