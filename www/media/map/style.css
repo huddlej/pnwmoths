@@ -3,21 +3,8 @@
   max-width: none;
 }
 
-.googlemap form {
-    margin-bottom: 0px !important;
-}
-
-.googlemap .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
-    margin-bottom: 0px !important;
-    padding: 2px 4px !important;
-}
-
-.googlemap input[type="text"], input[type="password"], input[type="email"], textarea, select {
-    margin-bottom: 4px !important;
-}
-
 #googlemap {
-    height: 363px;
+    height: 400px;
     display: none;
     width: 98%;
     margin-bottom: 10px;
@@ -32,7 +19,6 @@
 }
 
 div.infowindow {
-    width: 264px;
 }
 
 div.infowindow p {
@@ -47,6 +33,7 @@ div.collections {
 div.collections table {
     border-collapse: collapse;
     margin-left: 1px;
+	width: 98%;
 }
 div.collections table th {
     font-weight: bold;
@@ -59,21 +46,150 @@ div.collections table td {
 
 /* filter styles */
 
-#filters {
-    -moz-border-radius: 1em;
-    background-color: #ffffff;
-    display: none;
-    height: 160px;
-    margin: 0 auto;
-    overflow: auto;
-    padding: 1em;
-    position: relative;
-    top: 100px;
-    width: 290px;
+#factsheet-filters {
+    width: 100%;
+	margin-top: 10px;
+	font-size: 12px !important;
 }
-#filters p {
-    margin: 0.25em 0 0;
+#factsheet-filters .whole {
+    width: 90%;
+	margin-left: auto;
+	margin-right: auto;
 }
-#filters .right {
-    float: right;
+#factsheet-filters .third {
+    width: 20%;
+    display: inline;
+}
+
+
+/* multiselect styles */
+.ui-multiselect:hover {
+	border: 1px solid #79B7E7 !important;
+	background: none !important;
+	font-weight: bold !important;
+	color: #E17009 !important;
+}
+.ui-multiselect { padding:2px 0 2px 4px; text-align:left; width: 33% !important; }
+.ui-multiselect span.ui-icon { float:right }
+.ui-multiselect-single .ui-multiselect-checkboxes input { position:absolute !important; top: auto !important; left:-9999px; }
+.ui-multiselect-single .ui-multiselect-checkboxes label { padding:5px !important }
+
+.ui-multiselect-header { margin-bottom:3px; padding:3px 0 3px 4px }
+.ui-multiselect-header ul { font-size:0.8em }
+.ui-multiselect-header ul li { float:left; padding:0 0 0 0 }
+.ui-multiselect-header a { text-decoration:none }
+.ui-multiselect-header a:hover { text-decoration:underline }
+.ui-multiselect-header span.ui-icon { float:left }
+.ui-multiselect-header li.ui-multiselect-close { float:right; text-align:right; padding-right:0 }
+
+.ui-multiselect-menu { display:none; padding:3px; position:absolute; z-index:10000; text-align: left }
+.ui-multiselect-checkboxes { position:relative /* fixes bug in IE6/7 */; overflow-y:scroll }
+.ui-multiselect-checkboxes label { cursor:default; display:block; border:1px solid transparent; padding:3px 1px }
+.ui-multiselect-checkboxes label input { position:relative; top:1px }
+.ui-multiselect-checkboxes li { clear:both; font-size:0.9em; padding-right:3px; margin-bottom: 0px !important; }
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label { text-align:center; font-weight:bold; border-bottom:1px solid }
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a { display:block; padding:3px; margin:1px 0; text-decoration:none }
+
+/* remove label borders in IE6 because IE6 does not support transparency */
+* html .ui-multiselect-checkboxes label { border:none }
+
+.ui-multiselect-hasfilter ul { position:relative; top:2px }
+.ui-multiselect-filter { float:left; margin-right:10px; font-size:11px }
+.ui-multiselect-filter input { width:100px; font-size:10px; margin-left:5px; height:15px; padding:2px; border:1px solid #292929; -webkit-appearance:textfield; -webkit-box-sizing:content-box; }
+
+/**
+ * default development theme for jQRangeSlider
+ * Using fam fam icon set from Mark James, http://www.famfamfam.com/lab/icons/silk/ (Creative Commons Attribution 2.5 License)
+ */
+
+.ui-rangeSlider{
+    height:22px;
+}
+
+.ui-rangeSlider .ui-rangeSlider-innerBar{
+    height:16px;
+    margin:3px 6px;
+    background:#DDD;
+}
+
+.ui-rangeSlider .ui-rangeSlider-handle{
+    width:6px;
+    height:22px;
+    background:#AAA;
+    background:rgba(100,100,100, 0.3);
+    cursor:col-resize;
+}
+
+.ui-rangeSlider .ui-rangeSlider-bar{
+    margin: 1px 0;
+    background:#CCC;
+    background:rgba(100,100,150, 0.2);
+    height:20px;
+    cursor:move;
+    cursor:grab;
+    cursor: -moz-grab;
+}
+
+.ui-rangeSlider .ui-rangeSlider-bar.ui-draggable-dragging{
+    cursor:    -moz-grabbing;
+    cursor:grabbing;
+}
+
+.ui-rangeSlider-arrow{
+    height:16px;
+    margin:2px 0;
+    width:16px;
+    background-repeat:no-repeat;
+    cursor:pointer;
+}
+
+.ui-rangeSlider-arrow.ui-rangeSlider-leftArrow{
+    background-image: url('icons/resultset_previous.png');
+    background-position:center left;
+}
+
+.ui-rangeSlider-arrow.ui-rangeSlider-rightArrow{
+    background-image: url('icons/resultset_next.png');
+    background-position:center right;
+}
+
+.ui-rangeSlider-container{
+    height:22px;
+}
+
+.ui-rangeSlider-withArrows .ui-rangeSlider-container{
+    margin:0 11px;
+}
+
+.ui-rangeSlider-noArrow .ui-rangeSlider-container{
+    margin:0;
+}
+
+.ui-rangeSlider-label{
+    padding:2px 5px 6px;
+    margin:0 2px 2px;
+    background-image:url('icons/label.png');
+    background-position:bottom center;
+    background-repeat:no-repeat;
+        white-space: nowrap;
+}
+
+/*
+ * Edit slider
+ */
+.ui-editRangeSlider .ui-rangeSlider-label{
+
+}
+
+input.ui-editRangeSlider-inputValue{
+    width:3em;
+    vertical-align: middle;
+    text-align:center;
+}
+
+/*
+* Date Slider
+*/
+#date-filter-1{
+    padding-top: 30px !important;
 }
