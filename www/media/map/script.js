@@ -133,11 +133,6 @@ PNWMOTHS.Map = function () {
          */     
         makeMarkers: function(raw, map){      
             /**
-             * infoBubble Variable
-             * This variable is globally defined for defaults that are loaded.
-             */
-            var infoBubbles = [];
-            /**
              * array of all of the markers that are on the map
              */
             var markersArray = [];
@@ -164,29 +159,19 @@ PNWMOTHS.Map = function () {
                             
                             markersArray.push(marker);
                             
-                            var html = PNWMOTHS.Map.renderMarkerRecord(data[i]);
-                            
-                            infoBubbles[i] = new InfoBubble({ 
-                                map: map,
-                                disableAnimation: true,
-                                minWidth: 340,
-                                disableAutoPan: false, 
-                                hideCloseButton: false, 
-                                arrowPosition: 30, 
-                                padding: 12,
-                            }); 
-                            
-                            infoBubbles[i].addTab('Site', html[0]);
-                            infoBubbles[i].addTab('Collections', html[1]);
-                            infoBubbles[i].addTab('Notes', html[2]);
-                            
                              /**
                              * add the listeners for the markerClicks and the sideBarClicks 
                              * 
                              * @type {google}
                              * @todo eventDomListener does not work yet, this is the click listener of the sidebar item's
                              */
-                            google.maps.event.addListener(marker, 'click', PNWMOTHS.Map.handleMarkerClick(map, marker, infoBubbles[i])); 
+							 
+							 /**
+							 * infoBubble Variable
+							 * This variable is globally defined for defaults that are loaded.
+							 */
+							 infoBubbles = [];
+                            google.maps.event.addListener(marker, 'click', PNWMOTHS.Map.handleMarkerClick(map, marker, i, data[i])); 
                         }
                     }
 
@@ -246,8 +231,25 @@ PNWMOTHS.Map = function () {
         },
         openIB: null,
         openMarker: null,
-        handleMarkerClick: function(map, marker, IB) { 
+        handleMarkerClick: function(map, marker, i, data) { 
             return function() { 
+				if (infoBubbles[i] == undefined) {
+					var html = PNWMOTHS.Map.renderMarkerRecord(data);
+					infoBubbles[i] = new InfoBubble({ 
+                                map: map,
+                                disableAnimation: true,
+                                minWidth: 340,
+                                disableAutoPan: false, 
+                                hideCloseButton: false, 
+                                arrowPosition: 30, 
+                                padding: 12,
+                     }); 
+					 
+                     infoBubbles[i].addTab('Site', html[0]);
+                     infoBubbles[i].addTab('Collections', html[1]);
+                     infoBubbles[i].addTab('Notes', html[2]);
+				}
+				var IB = infoBubbles[i];
                 if (!IB.isOpen()) { 
                     if (PNWMOTHS.Map.openIB != null){
                         PNWMOTHS.Map.openIB.close(map, PNWMOTHS.Map.openMarker);
@@ -363,16 +365,22 @@ PNWMOTHS.Filters = function () {
         },
         "getFilterFunction": function (name, values) {
             return function (record) {
-                if (typeof(values) !== "object" && record[name] == values) {
-                    return record;
-                }
-                else if (typeof(values) === "object" && values.length == 2 &&
-                         record[name] >= values[0] && record[name] <= values[1]) {
-                    return record;
-                }
-                else {
-                    return null;
-                }
+				if (name == "elevation" || name == "date") {
+					if (name == "date")
+						var t = new Date(record[name]);
+					else
+						var t = record[name];
+					
+					if (record[name] != null && t >= values[0] && t <= values[1]) {
+						return record;
+					}
+				} else {
+					for (var j = 0; j < values.length; j++) {
+						if (record[name] == values[j])
+							return record;
+					}
+				}
+				return null;
             };
         },
         "filterData": function (data, filters) {
@@ -392,27 +400,34 @@ PNWMOTHS.Filters = function () {
         
         
         "MultiSelectFilter": function(filterConfig) {
-           // Handles processing of option filters. Expects the following ids
-            // in the DOM:
-            //
-            //  * #form-{name} - the form that wraps the filter's select field.
-            //  * #clear-filter-{name} - the element that is used to clear the filter.
-            //  * #{name} - the element that has the value of the filter.
-            var name = filterConfig.name;
-            var noneSelectedText = filterConfig.noneSelectedText;
-            var selectedText = filterConfig.selectedText;
-            var ajaxPopulate = filterConfig.ajax;
-            var finishInit = function() {
-                    jQuery("#f-" + name).multiselect({
-                        noneSelectedText: noneSelectedText,
-                        selectedText: selectedText,
-                        selectedList: 10,
-						minWidth: "auto",
-                    }).multiselectfilter();
-                
-                $("#f-" + name).bind("multiselectclick", function(event, ui) { alert('t'); });
-                $("#f-" + name).bind("multiselectcheckall", function(event, ui) { alert('t'); });
-                $("#f-" + name).bind("multiselectuncheckall", function(event, ui) { alert('t'); });
+			   // Handles processing of option filters. Expects the following ids
+				// in the DOM:
+				//
+				//  * #form-{name} - the form that wraps the filter's select field.
+				//  * #clear-filter-{name} - the element that is used to clear the filter.
+				//  * #{name} - the element that has the value of the filter.
+				var name = filterConfig.name;
+				var noneSelectedText = filterConfig.noneSelectedText;
+				var selectedText = filterConfig.selectedText;
+				var ajaxPopulate = filterConfig.ajax;
+				var finishInit = function() {
+						jQuery("#f-" + name).multiselect({
+							noneSelectedText: noneSelectedText,
+							selectedText: selectedText,
+							selectedList: 10,
+							minWidth: "auto",
+						}).multiselectfilter();
+					
+				var updateFilter = function(event, ui) {
+					PNWMOTHS.Filters.filters[name] = jQuery(this).multiselect("getChecked").map(function() { return this.value; });
+					if (PNWMOTHS.Filters.filters[name].length == 0)
+						delete PNWMOTHS.Filters.filters[name];
+					jQuery(document).trigger("requestData");
+				};
+				
+                jQuery("#f-" + name).bind("multiselectclick", updateFilter);
+                jQuery("#f-" + name).bind("multiselectcheckall", updateFilter);
+                jQuery("#f-" + name).bind("multiselectuncheckall", updateFilter);
             };
 
             return {
@@ -424,6 +439,7 @@ PNWMOTHS.Filters = function () {
                 },
                 ajaxPopulate: ajaxPopulate,
                 populate: function (event, data) {
+					jQuery(this).unbind(event);
                     // Builds an option filter's options given a set of data.
                     var select = jQuery("#f-" + name),
                         option, i;
@@ -457,7 +473,13 @@ PNWMOTHS.Filters = function () {
                     jQuery("#f-" + name).dateRangeSlider({defaultValues:bounds,
                                                           bounds: bounds, arrows: false});   
                     // Change handler
-                    jQuery("#f-" + name).bind("valuesChanged", function(event, ui) { alert('t'); });
+                    jQuery("#f-" + name).bind("valuesChanged", function(event, ui) {
+						PNWMOTHS.Filters.filters[name] = [ui.values.min, ui.values.max];
+						if (ui.values.min < new Date(bounds.min).add(1) && ui.values.max > new Date(bounds.max).add(-1)) {
+							delete PNWMOTHS.Filters.filters[name];
+						}
+						jQuery(document).trigger("requestData");
+					});
                     
                     return jQuery("#f-" + name);
                 },
@@ -477,9 +499,15 @@ PNWMOTHS.Filters = function () {
             return {
                 initialize: function () {
                     jQuery("#f-" + name).editRangeSlider({defaultValues: bounds,
-                                                          bounds: bounds,arrows: false, formatter: function(value) { return Math.round(value) + " ft";}, });   
+                                                          bounds: bounds,arrows: false, });   
                     // Change handler
-                    jQuery("#f-" + name).bind("valuesChanged", function(event, ui) { alert('t'); });
+                    jQuery("#f-" + name).bind("valuesChanged", function(event, ui) {
+						PNWMOTHS.Filters.filters[name] = [ui.values.min, ui.values.max];
+						if (ui.values.min < bounds.min+1 && ui.values.max > bounds.max-1) {
+							delete PNWMOTHS.Filters.filters[name];
+						}
+						jQuery(document).trigger("requestData");
+					});
                     
                     return jQuery("#f-" + name);
                 },
@@ -536,13 +564,12 @@ jQuery(document).ready(function () {
 			{"name": "county", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Counties", "selectedText": "Filtering on # counties", "ajax": true},
 			{"name": "state", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "States", "selectedText": "Filtering on # states", "ajax": true},
 			{"name": "collection", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Collections", "selectedText": "Filtering on # collections", "ajax": true},
-			{"name": "daterange", "type": PNWMOTHS.Filters.DateRangeFilter, "bounds": {min:new Date(1900,1,1), max:new Date(2011,2,31)}},
-			{"name": "dateyears", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Years", "selectedText": "Filtering on # years", "ajax": false},
-			{"name": "datemonths", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Months", "selectedText": "Filtering on # months", "ajax": false},
-			{"name": "datedays", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Days", "selectedText": "Filtering on # days", "ajax": false},
+			{"name": "date", "type": PNWMOTHS.Filters.DateRangeFilter, "bounds": {min:new Date(1900,0,1), max:new Date()}},
+			{"name": "year", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Years", "selectedText": "Filtering on # years", "ajax": false},
+			{"name": "month", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Months", "selectedText": "Filtering on # months", "ajax": false},
+			{"name": "day", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Days", "selectedText": "Filtering on # days", "ajax": false},
 			{"name": "elevation", "type": PNWMOTHS.Filters.EditRangeFilter, "bounds": {min: 0, max: 10000}}
 		];
-
 
 		// Initialize each filter based on its type.
 		jQuery.each(filters, function (index, filterConfig) {
@@ -554,6 +581,20 @@ jQuery(document).ready(function () {
 				// field with the options available in the data.
 				jQuery("#" + filterConfig.name + "-data").bind("dataIsReady", filter.populate);
 			}
+			// TODO: rename event to filterData?
+			// Setup custom events "requestData" and "dataIsReady". The latter initiates
+			// a request to the data service passing any filters that have been
+			// set. When the data is ready, the "dataIsReady" event is triggered.
+			jQuery(document).bind("requestData", function (event) {
+				// Filter data locally and let all listeners know the data is ready.
+				jQuery(data_id).trigger(
+					"dataIsReady",
+					[PNWMOTHS.Filters.filterData(
+						PNWMOTHS.Data.data[data_name],
+						PNWMOTHS.Filters.filters
+					)]
+				);
+			});
 		});
     }
 });
