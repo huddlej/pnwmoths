@@ -376,6 +376,8 @@ PNWMOTHS.Filters = function () {
 					}
 				} else {
 					for (var j = 0; j < values.length; j++) {
+                        if (values[j] == "None (BC)")
+                            values[j] = null;
 						if (record[name] == values[j])
 							return record;
 					}
@@ -551,6 +553,10 @@ jQuery(document).ready(function () {
                     // Always clear the current marker set before adding new markers.
                     google.maps.event.addListener(PNWMOTHS.Map.mgr, 'loaded', add);
                 } else {
+					if (PNWMOTHS.Map.openIB != null){
+						PNWMOTHS.Map.openIB.close(PNWMOTHS.Map.map, PNWMOTHS.Map.openMarker);
+						PNWMOTHS.Map.openIB = null;
+					}
                     PNWMOTHS.Map.mgr.clearMarkers();
                     add();
                 }
