@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'south',
     'reversion',
+    'ajax_select',
 )
 
 CMS_TEMPLATES = (
@@ -176,3 +177,14 @@ CSV_ADMIN_CONTENT_FORMS = {
 }
 CSV_ADMIN_USE_TRANSACTIONS=False
 CSV_ADMIN_TEMPLATE="admin/csv_admin/validate_form.html"
+
+
+# django-ajax-selects
+# define the lookup channels in use on the site
+AJAX_LOOKUP_CHANNELS = {
+    #   pass a dict with the model and the field to search against
+    'SpeciesRecord'  : ('species.ajaxselect_lookups', 'SpeciesRecordLookup')
+}
+# magically include jqueryUI/js/css
+AJAX_SELECT_BOOTSTRAP = True
+AJAX_SELECT_INLINES = 'inline'
