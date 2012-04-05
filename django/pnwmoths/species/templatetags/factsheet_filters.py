@@ -1,5 +1,5 @@
 from django import template
-from species.models import State
+from pnwmoths.species.models import State
 
 register = template.Library()
 
