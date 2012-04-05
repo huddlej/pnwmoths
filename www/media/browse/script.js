@@ -45,9 +45,6 @@
                     jQuery(this).append('<div style="height: 0px; clear: both;">&nbsp;</div>');
                     jQuery(this).find('.browse_item:not(.species)').implement_browse();
                     jQuery(this).implement_species_width();
-                    
-                    // Fast Expand 1-Node Branches
-                    jQuery(this).find('.browse_item:contains("(1)")').find('.toggle_item').click();
 
                     // Hide images and skip wait if we are in advanced mode
                     if (jQuery('#browse_images_toggle').hasClass('browse_checked')) {
@@ -57,9 +54,11 @@
                     }
                     else 
                     {
-                        jQuery(this).waitForImages(function() {
-                            jQuery(this).siblings('.browse_thumbs').slideToggle('slow');
-                            jQuery(this).slideToggle('slow');
+                        var t = jQuery(this);
+                        jQuery(this).parent().waitForImages(function() {
+                            t.siblings('.browse_thumbs').slideToggle('slow');
+                            t.slideToggle('300');
+                            t.find('.browse_item:contains("(1)")').find('.toggle_item').click();
                         });
                     }
                     return false;

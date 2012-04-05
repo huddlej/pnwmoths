@@ -3,10 +3,12 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from reversion.admin import VersionAdmin
 from sorl.thumbnail.admin import AdminImageMixin
+from sorl.thumbnail import get_thumbnail
 from tastypie.admin import ApiKeyInline
 from tastypie.models import ApiAccess, ApiKey
 from ajax_select import make_ajax_form
 from ajax_select.admin import AjaxSelectAdmin
+from django.core import urlresolvers
 
 from actions import export_records_as_csv_action, export_labels_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage,
@@ -63,7 +65,7 @@ class SpeciesImageAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
 admin.site.register(SpeciesImage, SpeciesImageAdmin)
 
 
-class SpeciesRecordAdmin(VersionAdmin, admin.ModelAdmin):
+class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
     class Media:
         js = ("/media/custom_admin/filter.js", "/media/custom_admin/speciesrecords.js", )
     
@@ -71,6 +73,17 @@ class SpeciesRecordAdmin(VersionAdmin, admin.ModelAdmin):
     def noc_id(self):
         return self.species.noc_id
     noc_id.admin_order_field  = 'species__noc_id'
+    
+    def thumb(self):
+        t = self.speciesimage_set.all()
+        if t:
+            pk = t[0].pk
+            t = get_thumbnail(t[0].image,"70x46")
+            return u'<a href="%s" target="_blank"><img src="%s" /></a>' % (urlresolvers.reverse('admin:species_speciesimage_change', args=(pk,)), t.url)
+        else:
+            return u"None"
+    thumb.short_description = 'Photo'
+    thumb.allow_tags = True 
 
     def rec_type(self):
         if self.speciesimage_set.exists():
@@ -80,6 +93,7 @@ class SpeciesRecordAdmin(VersionAdmin, admin.ModelAdmin):
 
     list_display = (
         rec_type,
+        thumb,
         noc_id,
         "species",
         "latitude",
