@@ -278,7 +278,7 @@ class SpeciesImage(models.Model):
     weight_docs += "<br />Example 1: [-1,-1],[0,0,0],2,3"
     weight_docs += "<br />Example 2 (DEFAULT): [0,0,0,0,0]"
     weight = models.IntegerField(blank=True, null=False, default=0, help_text=weight_docs)
-    record = models.ForeignKey(SpeciesRecord, blank=True, null=True)
+    record = models.ForeignKey(SpeciesRecord, blank=True, null=True, verbose_name="Label")
 
     class Meta:
         ordering = ['weight', 'image']
