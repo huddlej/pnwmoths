@@ -376,7 +376,7 @@ PNWMOTHS.Filters = function () {
 					}
 				} else {
 					for (var j = 0; j < values.length; j++) {
-                        if (values[j] == "None (BC)")
+                        if (values[j] == "None (CANADA)")
                             values[j] = null;
 						if (record[name] == values[j])
 							return record;

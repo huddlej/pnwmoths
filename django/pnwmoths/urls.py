@@ -9,6 +9,7 @@ from django.contrib import admin
 
 from species.views import import_species_records
 from cms_search.views import FancyRedirectSearchView
+from ajax_select import urls as ajax_select_urls
 
 admin.autodiscover()
 
@@ -18,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^admin/species/speciesrecord/import/', import_species_records, name="speciesrecord_import"),
     url(r'^data/', include('pnwmoths.species.urls')),
     (r'^admin/import/', include('csvimporter.urls')),
+    (r'^admin/lookups/', include(ajax_select_urls)),
     (r'^admin/', include(admin.site.urls)),
     url(r'^search/', FancyRedirectSearchView(), name="search"),
     url(r'^', include('cms.urls')),

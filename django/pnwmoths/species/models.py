@@ -213,6 +213,31 @@ class SpeciesRecord(models.Model):
                 return u"Record - %s at (%.2f, %.2f)" % (self.species, self.latitude, self.longitude)
             except (Exception):
                 return u"Record - %s" % self.species
+                
+    def details_tostr(self):
+        r = self
+
+        s = "<strong>"
+        if r.state:
+            s += str(r.state)
+        if r.county:
+            s += " : " + str(r.county)
+        s += "</strong>"
+        if r.locality or r.elevation:
+            s += "<br />"
+        if r.locality:
+            s += r.locality
+        if r.elevation:
+            s += ", " + str(r.elevation) + " ft"
+
+        if r.latitude and r.longitude:
+            s += "<br />"
+            s += str(round(r.latitude, 1)) + ", " + str(round(r.longitude, 1))
+        if s != "<strong></strong>":
+            s += "<br />"
+        else:
+            s = ""
+        return s
 
     @property
     def date(self):
@@ -266,29 +291,7 @@ class SpeciesImage(models.Model):
 
 
     def specimen_details(self):
-        r = self.record
-
-        s = "<strong>"
-        if r.state:
-            s += str(r.state)
-        if r.county:
-            s += " : " + str(r.county)
-        s += "</strong>"
-        if r.locality or r.elevation:
-            s += "<br />"
-        if r.locality:
-            s += r.locality
-        if r.elevation:
-            s += ", " + r.elevation
-
-        if r.latitude and r.longitude:
-            s += "<br />"
-            s += str(round(r.latitude, 1)) + ", " + str(round(r.longitude, 1))
-        if s != "<strong></strong>":
-            s += "<br />"
-        else:
-            s = ""
-        return s
+        return self.record.details_tostr()
 
     def license_details(self):
         r = self.record

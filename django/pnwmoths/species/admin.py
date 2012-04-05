@@ -5,6 +5,8 @@ from reversion.admin import VersionAdmin
 from sorl.thumbnail.admin import AdminImageMixin
 from tastypie.admin import ApiKeyInline
 from tastypie.models import ApiAccess, ApiKey
+from ajax_select import make_ajax_form
+from ajax_select.admin import AjaxSelectAdmin
 
 from actions import export_records_as_csv_action, export_labels_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage,
@@ -40,8 +42,9 @@ admin.site.register(Species, SpeciesAdmin)
 
 
 class SpeciesImageAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
+    class Media:
+        css = {'all': ("/media/custom_admin/ajax_select.css",)}
     ordering = ["species", "weight", "image"]
-    readonly_fields = ("record",)
     # callable required to include foreign key in list_display
     def noc_id(self):
         return self.species.noc_id
@@ -55,6 +58,8 @@ class SpeciesImageAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
     )
     list_editable = ("weight",)
     search_fields = ("species__genus", "species__species", "image")
+    form = make_ajax_form(SpeciesImage,{'record':'SpeciesRecord'})
+    
 admin.site.register(SpeciesImage, SpeciesImageAdmin)
 
 
