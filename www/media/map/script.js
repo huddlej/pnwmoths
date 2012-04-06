@@ -32,19 +32,19 @@ PNWMOTHS.Map = function () {
             var everythingElse = [
                 new google.maps.LatLng(-87, 120),
                 new google.maps.LatLng(-87, -87),
-                new google.maps.LatLng(-87, 0),];
+                new google.maps.LatLng(-87, 0)];
             var pnw = [
               new google.maps.LatLng(40, -126),
               new google.maps.LatLng(52.3, -130),
               new google.maps.LatLng(52.3, -105.0),
-              new google.maps.LatLng(40, -105.0),];
+              new google.maps.LatLng(40, -105.0)];
             var polygon = new google.maps.Polygon({
               paths: [everythingElse, pnw],
               strokeColor: "#003F87",
               strokeOpacity: 0.9,
               strokeWeight: 2,
               fillColor: "#000000",
-              fillOpacity: .1,
+              fillOpacity: .1
             });
             polygon.setMap(map);
             return polygon;
@@ -97,7 +97,7 @@ PNWMOTHS.Map = function () {
             return new google.maps.FusionTablesLayer({
               query: {
                 select: 'geometry',
-                from: '3165511',
+                from: '3165511'
               },
                 options : {suppressInfoWindows:true}, 
               styles: [{
@@ -109,12 +109,12 @@ PNWMOTHS.Map = function () {
                 fillOpacity: 0.01,
                 strokeColor: "#FFFFFF",
                 strokeOpacity: 0.5,
-                strokeWeight: "2",
+                strokeWeight: "2"
               },
               polylineOptions: {
                 strokeColor: "#rrggbb",
                 strokeWeight: "int"  }
-              }],
+              }]
             });
         },
         /**
@@ -242,7 +242,7 @@ PNWMOTHS.Map = function () {
                                 disableAutoPan: false, 
                                 hideCloseButton: false, 
                                 arrowPosition: 30, 
-                                padding: 12,
+                                padding: 12
                      }); 
 					 
                      infoBubbles[i].addTab('Site', html[0]);
@@ -417,7 +417,7 @@ PNWMOTHS.Filters = function () {
 							noneSelectedText: noneSelectedText,
 							selectedText: selectedText,
 							selectedList: 10,
-							minWidth: "auto",
+							minWidth: "auto"
 						}).multiselectfilter();
 					
 				var updateFilter = function(event, ui) {
@@ -457,7 +457,7 @@ PNWMOTHS.Filters = function () {
                     finishInit();
                     
                     return select;
-                },
+                }
             };            
         },
         "DateRangeFilter": function(filterConfig) {
@@ -485,7 +485,7 @@ PNWMOTHS.Filters = function () {
                     
                     return jQuery("#f-" + name);
                 },
-                ajaxPopulate: false,
+                ajaxPopulate: false
             };            
         },
         "EditRangeFilter": function(filterConfig) {
@@ -501,7 +501,7 @@ PNWMOTHS.Filters = function () {
             return {
                 initialize: function () {
                     jQuery("#f-" + name).editRangeSlider({defaultValues: bounds,
-                                                          bounds: bounds,arrows: false, });   
+                                                          bounds: bounds,arrows: false}); 
                     // Change handler
                     jQuery("#f-" + name).bind("valuesChanged", function(event, ui) {
 						PNWMOTHS.Filters.filters[name] = [ui.values.min, ui.values.max];
@@ -513,9 +513,9 @@ PNWMOTHS.Filters = function () {
                     
                     return jQuery("#f-" + name);
                 },
-                ajaxPopulate: false,
+                ajaxPopulate: false
             };            
-        },
+        }
         
 
     };
