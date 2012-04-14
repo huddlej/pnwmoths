@@ -69,7 +69,8 @@ jQuery(window).load(function() {
 {% species_by_name current_page.get_title as species %}
 <div class="row top">
     <div class="twelvecol last">
-        <h2 class="fs_title"><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h2>
+        <h2 style="display: inline" class="fs_title"><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h2>
+        {% if species.noc_id %}<h3 style="float: right; margin-right: 10px; color: grey">{{ species.noc_id }}</h3>{% endif %}
         {% if species.common_name %}<h3 class="fs_title">{{ species.common_name }}</h3>{% endif %}
     </div>
 </div>
