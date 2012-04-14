@@ -409,37 +409,37 @@ PNWMOTHS.Filters = function () {
             return filtered_data;
         },
         "MultiSelectFilter": function(filterConfig) {
-			   // Handles processing of option filters. Expects the following ids
-				// in the DOM:
-				//
-				//  * #form-{name} - the form that wraps the filter's select field.
-				//  * #clear-filter-{name} - the element that is used to clear the filter.
-				//  * #{name} - the element that has the value of the filter.
-				var name = filterConfig.name;
-				var noneSelectedText = filterConfig.noneSelectedText;
-				var selectedText = filterConfig.selectedText;
-				var ajaxPopulate = filterConfig.ajax;
-				var finishInit = function() {
-						jQuery("#f-" + name).multiselect({
-							noneSelectedText: noneSelectedText,
-							selectedText: selectedText,
-							selectedList: 10,
-							minWidth: "auto"
-						}).multiselectfilter();
-					
-				var updateFilter = function(event, ui) {
-					PNWMOTHS.Filters.filters[name] = jQuery(this).multiselect("getChecked").map(function() { return this.value; });
-					if (PNWMOTHS.Filters.filters[name].length == 0)
-						delete PNWMOTHS.Filters.filters[name];
-					jQuery(document).trigger("requestData");
-				};
+               // Handles processing of option filters. Expects the following ids
+                // in the DOM:
+                //
+                //  * #form-{name} - the form that wraps the filter's select field.
+                //  * #clear-filter-{name} - the element that is used to clear the filter.
+                //  * #{name} - the element that has the value of the filter.
+                var name = filterConfig.name;
+                var noneSelectedText = filterConfig.noneSelectedText;
+                var selectedText = filterConfig.selectedText;
+                var ajaxPopulate = filterConfig.ajax;
+                var finishInit = function() {
+                    jQuery("#f-" + name).multiselect({
+                            noneSelectedText: noneSelectedText,
+                            selectedText: selectedText,
+                            selectedList: 10,
+                            minWidth: "auto"
+                    }).multiselectfilter();
+                        
+                    var updateFilter = function(event, ui) {
+                        PNWMOTHS.Filters.filters[name] = jQuery(this).multiselect("getChecked").map(function() { return this.value; });
+                        if (PNWMOTHS.Filters.filters[name].length == 0)
+                                delete PNWMOTHS.Filters.filters[name];
+                        jQuery(document).trigger("requestData");
+                    };
 				
-                jQuery("#f-" + name).bind("multiselectclick", updateFilter);
-                jQuery("#f-" + name).bind("multiselectcheckall", updateFilter);
-                jQuery("#f-" + name).bind("multiselectuncheckall", updateFilter);
-            };
+                    jQuery("#f-" + name).bind("multiselectclick", updateFilter);
+                    jQuery("#f-" + name).bind("multiselectcheckall", updateFilter);
+                    jQuery("#f-" + name).bind("multiselectuncheckall", updateFilter);
+                };
 
-            return {
+                return {
                 initialize: function () {
                     if(!ajaxPopulate) {
                         finishInit();
@@ -464,7 +464,10 @@ PNWMOTHS.Filters = function () {
                     finishInit();
                     
                     return select;
-                }
+                },
+                reset: function() {
+                    jQuery("#f-" + name).multiselect("uncheckAll");
+               }
             };            
         },
         "DateRangeFilter": function(filterConfig) {
@@ -492,7 +495,13 @@ PNWMOTHS.Filters = function () {
                     
                     return jQuery("#f-" + name);
                 },
-                ajaxPopulate: false
+                ajaxPopulate: false,
+                reset: function() {
+                    var m = jQuery("#f-" + name);
+                    var b = m.dateRangeSlider("bounds");
+                    m.dateRangeSlider("values", b.min, b.max); 
+                    delete PNWMOTHS.Filters.filters[name];
+                }
             };            
         },
         "EditRangeFilter": function(filterConfig) {
@@ -520,7 +529,13 @@ PNWMOTHS.Filters = function () {
                     
                     return jQuery("#f-" + name);
                 },
-                ajaxPopulate: false
+                ajaxPopulate: false,
+                reset: function() {
+                    var m = jQuery("#f-" + name);
+                    var b = m.editRangeSlider("bounds");
+                    m.editRangeSlider("values", b.min, b.max); 
+                    delete PNWMOTHS.Filters.filters[name];
+                }
             };            
         }
         
@@ -578,9 +593,11 @@ jQuery(document).ready(function () {
 			{"name": "elevation", "type": PNWMOTHS.Filters.EditRangeFilter, "bounds": {min: 0, max: 10000}}
 		];
 
+                var init_filters = [];
 		// Initialize each filter based on its type.
 		jQuery.each(filters, function (index, filterConfig) {
 			var filter = new filterConfig.type(filterConfig);
+                        init_filters.push(filter);
 			filter.initialize();
 			// Option filters rely on externally loaded data for their options.
 			if (filter.ajaxPopulate) {
@@ -589,6 +606,14 @@ jQuery(document).ready(function () {
 				jQuery("#" + filterConfig.name + "-data").bind("dataIsReady", filter.populate);
 			}
 		});
+
+                jQuery("#f-reset").click(function() {
+                    jQuery.each(init_filters, function(index, f) {
+                        f.reset();
+                    });
+                    jQuery(document).trigger("requestData");
+                });
+
                 // TODO: rename event to filterData?
                 // Setup custom events "requestData" and "dataIsReady". The latter initiates
                 // a request to the data service passing any filters that have been
