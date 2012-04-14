@@ -49,6 +49,8 @@
                     // Hide images and skip wait if we are in advanced mode
                     if (jQuery('#browse_images_toggle').hasClass('browse_checked')) {
                         jQuery('.browse_thumbs img').hide();
+                        jQuery(this).find('.browse_genus_species').toggleClass('browse_genus_species');
+                        jQuery(this).find('.browse_genus_species').toggleClass('browse_genus_species');
                         jQuery(this).siblings('.browse_thumbs').slideToggle('slow');
                         jQuery(this).slideToggle('slow');
                     }
@@ -58,6 +60,14 @@
                         jQuery(this).parent().waitForImages(function() {
                             t.siblings('.browse_thumbs').slideToggle('slow');
                             t.slideToggle('300');
+
+                            // Sliding Italic content in IE7 causes it to not display
+                            // Resetting the style fixes it.
+                            var IE7_fix = jQuery(this).find('.browse_genus_species');
+                            IE7_fix.toggleClass('browse_genus_species');
+                            IE7_fix.toggleClass('browse_genus_species');
+
+                            // Fast Expand 1 child nodes
                             if(t.find('.browse_item').length == t.find('.browse_item:contains("(1)")').length)
                                 t.find('.browse_item:contains("(1)")').find('.toggle_item').click();
                         });

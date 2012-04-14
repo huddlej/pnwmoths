@@ -1,5 +1,5 @@
 jQuery(window).load(function() {
-	jQuery('.blueberry').blueberry({interval: 8000, pager: false});
+jQuery('.blueberry').blueberry({interval: 8000, pager: false});
 
 var mapDiv = jQuery("#googlemap");
 mapDiv.show();
@@ -35,7 +35,7 @@ polygon.setMap(map);
                 select: 'location',
                 from: '3454735'
               },
-              clickable: false,
+              clickable: false
             });
             allcoords.setMap(map);
 });

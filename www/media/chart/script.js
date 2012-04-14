@@ -181,6 +181,13 @@ jQuery(document).ready(function () {
     // For each chart declaration in the current document, determine the data
     // source to listen to and initialize a chart with the data found at that
     // source.
+
+    jQuery(window).resize(function(event, ui) {
+        jQuery.each(PNWMOTHS.Chart.charts, function(i,p) {
+            p.replot();
+        });
+    });
+
     jQuery.each(jQuery(".chart"), function (index, chart) {
         var data_id, data_name, options;
 
@@ -200,16 +207,14 @@ jQuery(document).ready(function () {
                 "dataIsReady",
                 // TODO: move this function into Charts class for testing.
                 function (event, data) {
+                    if (data.length == 0)
+                        data = [[null]];    // Empty data plot fix
+
                     var chart_instance = PNWMOTHS.Chart.initialize(
                         jQuery(chart).attr("id"),
                         data,
                         options
                     );
-            jQuery(window).resize(function(event, ui) {
-                jQuery.each(PNWMOTHS.Chart.charts, function(i,p) {
-                    p.replot();
-                });
-            });
                     PNWMOTHS.Chart.charts[jQuery(chart).attr("id")] = chart_instance;
                 }
             );

@@ -487,7 +487,7 @@ PNWMOTHS.Filters = function () {
                     // Change handler
                     jQuery("#f-" + name).bind("valuesChanged", function(event, ui) {
 						PNWMOTHS.Filters.filters[name] = [ui.values.min, ui.values.max];
-						if (ui.values.min < new Date(bounds.min).add(1) && ui.values.max > new Date(bounds.max).add(-1)) {
+						if (ui.values.min < new Date().setDate(bounds.min.getDate()+1) && ui.values.max > new Date().setDate(bounds.max.getDate()-1)){
 							delete PNWMOTHS.Filters.filters[name];
 						}
 						jQuery(document).trigger("requestData");
