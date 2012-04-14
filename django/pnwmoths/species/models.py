@@ -103,7 +103,6 @@ class SpeciesManager(models.Manager):
 class Species(models.Model):
     """
     Represents a species with a near-constant genus and species name.
-    NOC ID Accepted Formatting: 1234, 1234.1, 12-1234 or 12-1234.1
 
     TODO: handle general key/value attributes including discoverer/year,
     synonyms, location on plates, etc.
@@ -111,8 +110,7 @@ class Species(models.Model):
     genus = models.CharField(max_length=255)
     species = models.CharField(max_length=255)
     common_name = models.CharField(max_length=255, blank=True, null=True)
-    noc_id = models.CharField("NOC #", max_length=9, blank=True, null=True,
-                              validators=[RegexValidator("(\d{2}\-)?\d{4}(\.\d{1})?", "Enter a valid NOC #")])
+    noc_id = models.CharField("NOC #", max_length=24, blank=True, null=True)
     authority = models.ForeignKey(Author, null=True, blank=True)
     similar = models.ManyToManyField("self", blank=True)
     factsheet = PageField(unique=True, blank=True, null=True)
