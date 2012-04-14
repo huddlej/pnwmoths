@@ -262,12 +262,10 @@
  * Custom jCarousel CSS
  */
 #images {
-    width: 375px;
-    margin: 10px auto;
+    margin: 0px auto;
 }
 #images .current-image img {
-    height: 250px;
-    width: 375px;
+    width: 100%;
 }
 #images .other-images {
     text-align: center;

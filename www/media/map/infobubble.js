@@ -39,6 +39,7 @@ function InfoBubble(opt_options) {
   this.activeTab_ = null;
   this.baseZIndex_ = 100;
   this.isOpen_ = false;
+  this.calcOnce = true;
 
   var options = opt_options || {};
 
@@ -210,8 +211,8 @@ InfoBubble.prototype.buildDom_ = function() {
   // Close button
   var close = this.close_ = document.createElement('IMG');
   close.style['position'] = 'absolute';
-  close.style['width'] = this.px(12);
-  close.style['height'] = this.px(12);
+  close.style['width'] = this.px(16);
+  close.style['height'] = this.px(16);
   close.style['border'] = 0;
   close.style['zIndex'] = this.baseZIndex_ + 1;
   close.style['cursor'] = 'pointer';
@@ -1012,7 +1013,6 @@ InfoBubble.prototype.open_ = function(opt_map, opt_anchor) {
   // Show the bubble and the show
   this.bubble_.style['display'] = this.bubbleShadow_.style['display'] = '';
   var animation = !this.get('disableAnimation');
-
   if (animation) {
     // Add the animation
     this.bubble_.className += ' ' + this.animationName_;
@@ -1198,16 +1198,6 @@ InfoBubble.prototype.updateContent_ = function() {
     }
     this.content_.appendChild(content);
 
-    var that = this;
-    var images = this.content_.getElementsByTagName('IMG');
-    for (var i = 0, image; image = images[i]; i++) {
-      // Because we don't know the size of an image till it loads, add a
-      // listener to the image load so the marker can resize and reposition
-      // itself to be the correct height.
-      google.maps.event.addDomListener(image, 'load', function() {
-        that.imageLoaded_();
-      });
-    }
     google.maps.event.trigger(this, 'domready');
   }
   this.redraw_();
@@ -1505,6 +1495,7 @@ InfoBubble.prototype.updateTab = function(index, opt_label, opt_content) {
     this.setContent(tab.content);
     this.updateContent_();
   }
+  
   this.redraw_();
 };
 InfoBubble.prototype['updateTab'] = InfoBubble.prototype.updateTab;
@@ -1602,7 +1593,9 @@ InfoBubble.prototype.getElementSize_ = function(element, opt_maxWidth,
  * @private
  */
 InfoBubble.prototype.redraw_ = function() {
-  this.figureOutSize_();
+  if (this.calcOnce == true) {
+    this.figureOutSize_();
+  }
   this.positionCloseButton_();
   this.draw();
 };

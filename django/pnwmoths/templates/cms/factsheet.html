@@ -9,33 +9,41 @@
 -->
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/excanvas.min.js"></script><![endif]-->
 <script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.js"></script>
-<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jcarousel.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jqplot.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.barRenderer.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.canvasTextRenderer.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.canvasAxisLabelRenderer.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jqplot.categoryAxisRenderer.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}colorbox/jquery.colorbox-min.js"></script>
-<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.tipTip.minified.js"></script>
-<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}slideshow/script.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}map/script.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}chart/script.js"></script>
-<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}similar_species/script.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}map/jquery.multiselect.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}map/jquery.multiselect.filter.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}map/jquery.rangeslider.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}map/jquery.daterangeslider.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}map/jquery.editrangeslider.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}map/jquery.ui.touchpunch.js"></script>
+
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.tipTip.minified.js"></script>
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.elastislide.js"></script>
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}similar_species/script.js"></script>
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}slideshow/script.js"></script>
+
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}data/script.js"></script>
 
-<script src="http://maps.google.com/maps/api/js?sensor=false&.js" type="text/javascript"></script>
-<script src="{{ MEDIA_URL }}map/markermanager_packed.js " type="text/javascript"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}map/FastMarkerOverlay.js " type="text/javascript"></script>
 <script src="{{ MEDIA_URL }}map/infobubble.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+jQuery(window).load(function() {
+    jQuery(window).resize();
+});
+</script>
 {% endblock %}
 
 {% block stylesheets %}
 {{ block.super }}
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/elastislide.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery.jqplot.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css/jquery.tipTip.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}colorbox/colorbox.css" type="text/css">
@@ -82,22 +90,24 @@
                         </div>
                     {% endthumbnail %}
                 </div>
-                <ul class="other-images jcarousel-skin-tango">
-            {% endif %}
-            <li>
-                {% thumbnail species_image.image species_image.SIZES.medium as medium %}
-                    {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
-                        <a href="{{ species_image.image.url }}" title="{{ species_image.specimen_details|safe }}{{ species_image.license_details|safe }}" class="thumbnail">
-                            <img src="{{ small.url }}" />
-                        </a>
-                        <a href="{{ medium.url }}" class="hidden medium-thumbnail"></a>
-                    {% endthumbnail %}
-                {% endthumbnail %}
-            </li>
-            {% if forloop.last %}
-                </ul>
-            {% endif %}
-        {% endfor %}
+                <div id="carousel-other-images" class="es-carousel-wrapper">
+                <div class="es-carousel">
+                <ul class="other-images">
+                    {% endif %}
+                    <li>
+                        {% thumbnail species_image.image species_image.SIZES.medium as medium %}
+                            {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
+                                <a href="{{ species_image.image.url }}" title="{{ species_image.specimen_details|safe }}{{ species_image.license_details|safe }}" class="thumbnail">
+                                    <img src="{{ small.url }}" />
+                                </a>
+                                <a href="{{ medium.url }}" class="hidden medium-thumbnail"></a>
+                            {% endthumbnail %}
+                        {% endthumbnail %}
+                    </li>
+                    {% if forloop.last %}
+                        </ul></div></div>
+                    {% endif %}
+                {% endfor %}
         </div>
 
         {% if species.similar.all or request.user.is_staff %}
@@ -109,7 +119,9 @@
             {% endif %}
             </h2>
 
-            <ul class="other-images jcarousel-skin-tango">
+            <div id="carousel-similarspecies-images" class="es-carousel-wrapper">
+            <div class="es-carousel">
+            <ul class="other-images">
             {% for similar_species in species.similar.all %}
                 <li>
                 <a href="{% page_url similar_species.factsheet %}" target="_blank">
@@ -122,12 +134,12 @@
                 </a>
                 </li>
             {% endfor %}
-            </ul>
+            </ul></div></div>
           </div>
       {% endif %}
       </div>
     </div>
-    <div class="sixcol last">
+    <div id="map_phen_filter_col" class="sixcol last">
         <div id="googlemap" class="googlemap">
             <span class="data">"species-data"</span>
         </div>

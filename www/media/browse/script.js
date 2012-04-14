@@ -58,7 +58,8 @@
                         jQuery(this).parent().waitForImages(function() {
                             t.siblings('.browse_thumbs').slideToggle('slow');
                             t.slideToggle('300');
-                            t.find('.browse_item:contains("(1)")').find('.toggle_item').click();
+                            if(t.find('.browse_item').length == t.find('.browse_item:contains("(1)")').length)
+                                t.find('.browse_item:contains("(1)")').find('.toggle_item').click();
                         });
                     }
                     return false;

@@ -1,8 +1,27 @@
 /* map styles */
+/* 1140 fix */
+html {
+    /* Address IE6 background flicker */
+    filter: expression(document.execCommand("BackgroundImageCache", false, true));
+} 
+.marker {
+    height: 9px;
+    width: 9px; 
+    background-image: url('small-yellow.png');
+    cursor: pointer;
+}
 .googlemap img {
   max-width: none;
 }
+/* android tablet fix */
+.gmnoprint {
+    -webkit-transform: translate3d(0,0,0);
+}
 
+/* remove scrollbar on fullscreen */
+html.fullscreen {
+    overflow-y: hidden;
+}
 #googlemap {
     height: 400px;
     display: none;
@@ -12,8 +31,8 @@
 #googlemap.fullscreen {
     height: 100%!important;
     width: 100%!important;
+    position: fixed !important;
     left: 0;
-    position: absolute!important;
     top: 0;
     z-index: 100;
 }

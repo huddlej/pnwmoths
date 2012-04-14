@@ -22,10 +22,25 @@ PNWMOTHS.Map = function () {
                 mapTypeId: 'terrain'
             };  
             map = new google.maps.Map(mapDiv[0], options);
-            PNWMOTHS.Map.mgr = new MarkerManager(map);
             PNWMOTHS.Map.boundary = PNWMOTHS.Map.addBoundary(map);
             PNWMOTHS.Map.addControls(map);
             PNWMOTHS.Map.counties = PNWMOTHS.Map.getCounties();
+            PNWMOTHS.Map.openIB = new InfoBubble({ 
+                map: map,
+                disableAnimation: true,
+                minWidth: 300,
+                disableAutoPan: false, 
+                hideCloseButton: false, 
+                arrowPosition: 30, 
+                padding: 12
+             }); 
+             
+             // Height hack which fixes horribly slow load on ipad (unknown js issue inside of infobubble.js - getElementSize_
+             PNWMOTHS.Map.openIB.addTab('Site', "<br /><br /><br /><br /><br /><br /><br />"); 
+             PNWMOTHS.Map.openIB.addTab('Collections', ""); 
+             PNWMOTHS.Map.openIB.addTab('Notes', "");
+             PNWMOTHS.Map.openIB.calcOnce = false;             
+
             return map;
         },
         addBoundary: function(map) {
@@ -77,21 +92,43 @@ PNWMOTHS.Map = function () {
         },
         addControls: function(map) {
             var controlDiv = document.createElement('DIV');
+            controlDiv.index = 1;
+            controlDiv.style.marginLeft = '-5px';
+            jQuery(controlDiv).addClass('gmnoprint');
             
             var fullscreenControl = PNWMOTHS.Map.control(controlDiv, "Click to go fullscreen", "Fullscreen");
             google.maps.event.addDomListener(fullscreenControl, 'click', function() {
                   var c = map.getCenter();
+                  var b = map.getBounds();
+                  window.scrollTo(0,0);
+                  jQuery("html").toggleClass("fullscreen");
                   jQuery("#googlemap").toggleClass("fullscreen");
                   google.maps.event.trigger(map, 'resize');
+                    var fullscreen = jQuery("#googlemap").hasClass("fullscreen")
+                  if(fullscreen)
+                      this.children[0].innerHTML = '<b>Exit Fullscreen</b>';
+                  else
+                      this.children[0].innerHTML = '<b>Fullscreen</b>';
                   map.setCenter(c);
             });
             
             var toggleBoundariesControl = PNWMOTHS.Map.control(controlDiv, "Click to toggle county lines", "Counties");
                 jQuery(toggleBoundariesControl).toggle(function() { PNWMOTHS.Map.counties.setMap(map); }, function() { PNWMOTHS.Map.counties.setMap(null); });
             
-            controlDiv.index = 1;
-            controlDiv.style.marginLeft = '-5px';
             map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(controlDiv);
+
+            var controlDiv = document.createElement('DIV');
+            controlDiv.style.marginLeft = '5px';
+            controlDiv.index = 1;
+            jQuery(controlDiv).addClass('gmnoprint');
+            
+            var homeControl = PNWMOTHS.Map.control(controlDiv, "Reset the Viewport", "Reset View");
+            google.maps.event.addDomListener(homeControl, 'click', function() {
+                  map.setZoom(4);
+                  map.setCenter(PNWMOTHS.Map.centerPoint);
+                  google.maps.event.trigger(map, 'resize');
+            });
+            map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(controlDiv);
         },
         getCounties: function() {      
             return new google.maps.FusionTablesLayer({
@@ -117,6 +154,10 @@ PNWMOTHS.Map = function () {
               }]
             });
         },
+        htmlData: null,
+        openMarker: function(i){
+            PNWMOTHS.Map.handleMarkerClick(PNWMOTHS.Map.htmlData[i])();
+        },
         /**
          * setPoints(locations)
          * 
@@ -136,8 +177,11 @@ PNWMOTHS.Map = function () {
              * array of all of the markers that are on the map
              */
             var markersArray = [];
-            var data = PNWMOTHS.Map.groupMarkerData(raw, map);
 
+            // Caches our rendered html on first run
+            if(PNWMOTHS.Map.htmlData == null)
+                PNWMOTHS.Map.htmlData = PNWMOTHS.Map.groupMarkerData(raw, map);
+            var data = raw;
                     // Build a list of markers for the given data. Data is indexed by a
                     // latitude/longitude tuple so i[0] is latitude and i[1] is
                     // longitude.
@@ -151,31 +195,11 @@ PNWMOTHS.Map = function () {
                              * 
                              * @type {google}
                              */
-                            var marker = new google.maps.Marker({
-                                position: point,
-                                map: map,
-                                icon: new google.maps.MarkerImage("http://fish.freeshell.org/style/small_red.png")
-                            });
-                            
+                            var marker = new com.redfin.FastMarker(/*id*/i, point, ["<div class='marker' onclick='PNWMOTHS.Map.openMarker(\""+data[i].latitude+","+data[i].longitude+"\")'>&nbsp;</div>"], null);
                             markersArray.push(marker);
-                            
-                             /**
-                             * add the listeners for the markerClicks and the sideBarClicks 
-                             * 
-                             * @type {google}
-                             * @todo eventDomListener does not work yet, this is the click listener of the sidebar item's
-                             */
-							 
-							 /**
-							 * infoBubble Variable
-							 * This variable is globally defined for defaults that are loaded.
-							 */
-							 infoBubbles = [];
-                            google.maps.event.addListener(marker, 'click', PNWMOTHS.Map.handleMarkerClick(map, marker, i, data[i])); 
                         }
                     }
-
-                    return markersArray;
+                    return (new com.redfin.FastMarkerOverlay(map, markersArray));
         },
         renderMarkerRecord: function(record) {
             // Render one marker data record to an array of HTML for the marker
@@ -186,11 +210,9 @@ PNWMOTHS.Map = function () {
                               "elevation": "Elevation (ft.)",
                               "latitude": "Latitude",
                               "longitude": "Longitude"},
-                pointHtml = "<div class='infowindow'>",
-                collectionHtml = "",
-                notesHtml = "",
+                attHtml = new Array(), colHtml = new Array(), notesHtml,
                 attribute, attribute_name, attribute_value, i, j;
-
+            attHtml.push('<div id="IB_att" class="infowindow">');
             for (attribute in attributes) {
                 if (attributes.hasOwnProperty(attribute)) {
                     attribute_name = attributes[attribute];
@@ -200,68 +222,56 @@ PNWMOTHS.Map = function () {
                     else {
                         attribute_value = "";
                     }
-                    pointHtml += "<p>" + attribute_name + ": " + attribute_value + "</p>";
+                    attHtml.push("<p>" + attribute_name + ": " + attribute_value + "</p>");
                 }
             }
 
-            pointHtml += "</div>";
+            attHtml.push("</div>");
 
             if (record.hasOwnProperty("collections") && record.collections.length > 0) {
-                collectionHtml = "<div class='infowindow collections'>";
-                collectionHtml += "<table>";
-                collectionHtml += "<tr><th>Date</th><th>Collector</th>";
-                collectionHtml += "<th><a href='/dokuwiki/factsheets/collection_glossary' target='_new'>Collection</a></th>";
+                colHtml.push('<div id="IB_col"  class="infowindow collections">');
+                colHtml.push("<table>");
+                colHtml.push("<tr><th>Date</th><th>Collector</th>");
+                colHtml.push("<th><a href='/dokuwiki/factsheets/collection_glossary' target='_new'>Collection</a></th>");
                 for (i in record.collections) {
                     if (record.collections.hasOwnProperty(i)) {
-                        collectionHtml += "<tr>";
+                        colHtml.push("<tr>");
                         for (j in record.collections[i]) {
-                            collectionHtml += "<td>" + record.collections[i][j] + "</td>";
+                            colHtml.push("<td>" + record.collections[i][j] + "</td>");
                         }
-                        collectionHtml += "</tr>";
+                        colHtml.push("</tr>");
                     }
                 }
-                collectionHtml += "</table>";
-                collectionHtml += "</div>";
+                colHtml.push("</table>");
+                colHtml.push("</div>");
             }
 
             // regex replace to display multiline notes properly in HTML
-            notesHtml = "<p>" + record["notes"].replace(/\r\n/g, "<br />").replace(/\n/g, "<br />") + "</p>";
+            notesHtml = '<div id="IB_notes" class="infowindow collections"><p>' + record["notes"].replace(/\r\n/g, "<br />").replace(/\n/g, "<br />") + "</p></div>";
 
-            return [pointHtml, collectionHtml, notesHtml];
+            return [attHtml.join(''), colHtml.join(''), notesHtml];
         },
         openIB: null,
-        openMarker: null,
-        handleMarkerClick: function(map, marker, i, data) { 
+        handleMarkerClick: function(data) { 
             return function() { 
-				if (infoBubbles[i] == undefined) {
-					var html = PNWMOTHS.Map.renderMarkerRecord(data);
-					infoBubbles[i] = new InfoBubble({ 
-                                map: map,
-                                disableAnimation: true,
-                                minWidth: 340,
-                                disableAutoPan: false, 
-                                hideCloseButton: false, 
-                                arrowPosition: 30, 
-                                padding: 12
-                     }); 
-					 
-                     infoBubbles[i].addTab('Site', html[0]);
-                     infoBubbles[i].addTab('Collections', html[1]);
-                     infoBubbles[i].addTab('Notes', html[2]);
-				}
-				var IB = infoBubbles[i];
-                if (!IB.isOpen()) { 
-                    if (PNWMOTHS.Map.openIB != null){
-                        PNWMOTHS.Map.openIB.close(map, PNWMOTHS.Map.openMarker);
-                    }
-                    IB.open(map, marker);
-                    PNWMOTHS.Map.openIB = IB;
-                    PNWMOTHS.Map.openMarker = marker;
-                }else{
-                    IB.close(map, marker);
-                    PNWMOTHS.Map.openIB = null;
-                    PNWMOTHS.Map.openMarker = null;
-                }
+                var html = PNWMOTHS.Map.renderMarkerRecord(data);
+
+                var IB = PNWMOTHS.Map.openIB;
+                var update = function() {
+                    IB.removeTab(0); IB.removeTab(0); IB.removeTab(0);
+                    IB.addTab('Site', html[0]);
+                    IB.addTab('Collections', html[1]);
+                    IB.addTab('Notes', html[2]);
+                };
+                if (IB.isOpen()) 
+                    IB.close();
+                update();
+
+                // FastMarkers uses overlays and InfoBubbles use markers
+                // Creates a marker on the fly to "hack" the position
+                var point = new google.maps.LatLng(data.latitude, data.longitude);
+                IB.open(PNWMOTHS.Map.map, new google.maps.Marker({position: point, clickable: false, flat: true, visible: false}));
+                IB.calcOnce = false;
             } 
         },
         groupMarkerData: function (data) {
@@ -365,24 +375,24 @@ PNWMOTHS.Filters = function () {
         },
         "getFilterFunction": function (name, values) {
             return function (record) {
-				if (name == "elevation" || name == "date") {
-					if (name == "date")
-						var t = new Date(record[name]);
-					else
-						var t = record[name];
-					
-					if (record[name] != null && t >= values[0] && t <= values[1]) {
-						return record;
-					}
-				} else {
-					for (var j = 0; j < values.length; j++) {
+                if (name == "elevation" || name == "date") {
+                    if (name == "date")
+                            var t = new Date(record[name]);
+                    else
+                            var t = record[name];
+                    
+                    if (record[name] != null && t >= values[0] && t <= values[1]) {
+                            return record;
+                    }
+                } else {
+                    for (var j = 0; j < values.length; j++) {
                         if (values[j] == "None (CANADA)")
                             values[j] = null;
-						if (record[name] == values[j])
-							return record;
-					}
-				}
-				return null;
+                        if (record[name] == values[j])
+                                return record;
+                    }
+                }
+                return null;
             };
         },
         "filterData": function (data, filters) {
@@ -398,9 +408,6 @@ PNWMOTHS.Filters = function () {
             }
             return filtered_data;
         },
-        
-        
-        
         "MultiSelectFilter": function(filterConfig) {
 			   // Handles processing of option filters. Expects the following ids
 				// in the DOM:
@@ -542,23 +549,17 @@ jQuery(document).ready(function () {
         jQuery(data_id).bind(
             "dataIsReady",
             function (event, data) {
-                var add = function() {
-                    PNWMOTHS.Map.markers = PNWMOTHS.Map.makeMarkers(data, PNWMOTHS.Map.map);
-                    PNWMOTHS.Map.mgr.addMarkers(PNWMOTHS.Map.markers, 1);
-                    PNWMOTHS.Map.mgr.refresh();
-                };
-                
                 if (typeof PNWMOTHS.Map.map === "undefined") {
                     PNWMOTHS.Map.map = PNWMOTHS.Map.initialize();
-                    // Always clear the current marker set before adding new markers.
-                    google.maps.event.addListener(PNWMOTHS.Map.mgr, 'loaded', add);
+                    google.maps.event.addListenerOnce(PNWMOTHS.Map.map, 'idle', function() {
+                          google.maps.event.trigger(PNWMOTHS.Map.map, 'resize');
+                            PNWMOTHS.Map.markers = PNWMOTHS.Map.makeMarkers(data, PNWMOTHS.Map.map);
+                    });
                 } else {
-					if (PNWMOTHS.Map.openIB != null){
-						PNWMOTHS.Map.openIB.close(PNWMOTHS.Map.map, PNWMOTHS.Map.openMarker);
-						PNWMOTHS.Map.openIB = null;
-					}
-                    PNWMOTHS.Map.mgr.clearMarkers();
-                    add();
+                    PNWMOTHS.Map.openIB.close();
+                    PNWMOTHS.Map.markers.setMap(null);
+                    delete PNWMOTHS.Map.markers;
+                    PNWMOTHS.Map.markers = PNWMOTHS.Map.makeMarkers(data, PNWMOTHS.Map.map);
                 }
             });
 			
@@ -587,20 +588,20 @@ jQuery(document).ready(function () {
 				// field with the options available in the data.
 				jQuery("#" + filterConfig.name + "-data").bind("dataIsReady", filter.populate);
 			}
-			// TODO: rename event to filterData?
-			// Setup custom events "requestData" and "dataIsReady". The latter initiates
-			// a request to the data service passing any filters that have been
-			// set. When the data is ready, the "dataIsReady" event is triggered.
-			jQuery(document).bind("requestData", function (event) {
-				// Filter data locally and let all listeners know the data is ready.
-				jQuery(data_id).trigger(
-					"dataIsReady",
-					[PNWMOTHS.Filters.filterData(
-						PNWMOTHS.Data.data[data_name],
-						PNWMOTHS.Filters.filters
-					)]
-				);
-			});
 		});
+                // TODO: rename event to filterData?
+                // Setup custom events "requestData" and "dataIsReady". The latter initiates
+                // a request to the data service passing any filters that have been
+                // set. When the data is ready, the "dataIsReady" event is triggered.
+                jQuery(document).bind("requestData", function (event) {
+                        // Filter data locally and let all listeners know the data is ready.
+                        jQuery(data_id).trigger(
+                                "dataIsReady",
+                                [PNWMOTHS.Filters.filterData(
+                                        PNWMOTHS.Data.data[data_name],
+                                        PNWMOTHS.Filters.filters
+                                )]
+                        );
+                });
     }
 });
