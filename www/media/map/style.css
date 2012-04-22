@@ -5,6 +5,9 @@ html {
     filter: expression(document.execCommand("BackgroundImageCache", false, true));
 } 
 .marker {
+    /* Shifting left to move marker to center of gps coord */
+    margin-left: -4.5px;
+    margin-top: -4.5px;
     height: 9px;
     width: 9px; 
     background-image: url('small-yellow.png');
