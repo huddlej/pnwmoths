@@ -49,10 +49,10 @@ PNWMOTHS.Map = function () {
                 new google.maps.LatLng(-87, -87),
                 new google.maps.LatLng(-87, 0)];
             var pnw = [
-              new google.maps.LatLng(40, -126),
+              new google.maps.LatLng(39, -126),
               new google.maps.LatLng(52.3, -130),
-              new google.maps.LatLng(52.3, -105.0),
-              new google.maps.LatLng(40, -105.0)];
+              new google.maps.LatLng(52.3, -109.0),
+              new google.maps.LatLng(39, -109.0)];
             var polygon = new google.maps.Polygon({
               paths: [everythingElse, pnw],
               strokeColor: "#003F87",
