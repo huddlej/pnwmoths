@@ -8,8 +8,7 @@
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	background:#4db2c6;
-    padding: 5px;
+        padding: 5px;
 }
 .es-carousel ul{
 	display:none;
@@ -21,7 +20,7 @@
 }
 .es-carousel ul li a{
 	display:block;
-    color: white;
+        color: black;
 }
 .es-carousel ul li a img{
 	display:block;

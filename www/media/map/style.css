@@ -216,3 +216,8 @@ input.ui-editRangeSlider-inputValue{
 #date-filter-1{
     padding-top: 30px !important;
 }
+
+.button, button, [input="button"] {
+    padding: 3px 4px !important;
+    margin-bottom: 8px !important;
+}
