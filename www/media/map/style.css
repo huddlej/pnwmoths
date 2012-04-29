@@ -221,3 +221,27 @@ input.ui-editRangeSlider-inputValue{
     padding: 3px 4px !important;
     margin-bottom: 8px !important;
 }
+
+
+
+/* TEMPORARY MASONRY */
+#fs_content {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+    padding-left: 15px;
+    padding-right: 15px;
+    column-gap: 40px;
+    -moz-column-gap: 40px;
+    -webkit-column-gap: 40px;
+    clear: both;
+}
+
+#fs_images {
+    float: left;
+    width: 48%;
+}
+#map_phen_filter_col {
+    float: right;
+    width: 48%;
+}
