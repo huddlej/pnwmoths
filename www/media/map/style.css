@@ -26,7 +26,7 @@ html.fullscreen {
     overflow-y: hidden;
 }
 #googlemap {
-    height: 400px;
+    height: 320px;
     display: none;
     width: 98%;
     margin-bottom: 10px;
@@ -135,18 +135,17 @@ div.collections table td {
 }
 
 .ui-rangeSlider .ui-rangeSlider-handle{
-    width:6px;
+    width: 14px;
     height:22px;
-    background:#AAA;
-    background:rgba(100,100,100, 0.3);
+    background-color: ;
+    background: #0082d6 center url('http://cameleoncms.googlecode.com/svn-history/r1540/admin/trunk/images/drag-handle.png') no-repeat;
     cursor:col-resize;
 }
 
 .ui-rangeSlider .ui-rangeSlider-bar{
     margin: 1px 0;
-    background:#CCC;
-    background:rgba(100,100,150, 0.2);
     height:20px;
+    background-color: #79B7E7;
     cursor:move;
     cursor:grab;
     cursor: -moz-grab;
@@ -188,7 +187,7 @@ div.collections table td {
 }
 
 .ui-rangeSlider-label{
-    padding:2px 5px 6px;
+    padding:2px 5px 12px;
     margin:0 2px 2px;
     background-image:url('icons/label.png');
     background-position:bottom center;
@@ -207,6 +206,8 @@ input.ui-editRangeSlider-inputValue{
     width:3em;
     vertical-align: middle;
     text-align:center;
+    padding: 2px;
+    margin-bottom: 5px;
 }
 
 /*
