@@ -236,6 +236,16 @@ input.ui-editRangeSlider-inputValue{
     -webkit-column-gap: 40px;
     clear: both;
 }
+#fs_content p {
+    -webkit-column-break-before: avoid;
+    -moz-column-break-before: avoid;
+    column-break-before: avoid;
+}
+#fs_content h1, #fs_content h2, #fs_content h3, #fs_content h4, #fs_content h5, #fs_content h6 {
+    -webkit-column-break-after : avoid;
+    -moz-column-break-after : avoid;
+    column-break-after : avoid;
+}
 
 #fs_images {
     float: left;

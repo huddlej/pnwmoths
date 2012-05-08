@@ -237,7 +237,8 @@ PNWMOTHS.Map = function () {
                     if (record.collections.hasOwnProperty(i)) {
                         colHtml.push("<tr>");
                         for (j in record.collections[i]) {
-                            colHtml.push("<td>" + record.collections[i][j] + "</td>");
+                            if (record.collections[i].hasOwnProperty(j))
+                                colHtml.push("<td>" + record.collections[i][j] + "</td>");
                         }
                         colHtml.push("</tr>");
                     }
@@ -487,7 +488,8 @@ PNWMOTHS.Filters = function () {
                     // Change handler
                     jQuery("#f-" + name).bind("valuesChanged", function(event, ui) {
 						PNWMOTHS.Filters.filters[name] = [ui.values.min, ui.values.max];
-						if (ui.values.min < new Date().setDate(bounds.min.getDate()+1) && ui.values.max > new Date().setDate(bounds.max.getDate()-1)){
+                                                if (ui.values.min < new Date(bounds.min + (1 * 1000 * 60 * 60 * 24)) &&
+                                                    ui.values.max > new Date(bounds.max - (1 * 1000 * 60 * 60 * 24))) {
 							delete PNWMOTHS.Filters.filters[name];
 						}
 						jQuery(document).trigger("requestData");
