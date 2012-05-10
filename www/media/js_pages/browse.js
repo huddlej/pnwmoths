@@ -40,7 +40,7 @@
                 var url = jQuery(this).parent().find('h3 a').attr('href');
                 jQuery(this).html('&nbsp;');
                 jQuery(this).addClass('loading_toggle');
-                jQuery(this).parent().siblings('.ajax').load(url + ' .browse_item', function() {
+                jQuery(this).parent().siblings('.ajax').load(url + ' .browse_item_wrapper', function() {
                     jQuery(this).parent().find('.toggle_item').removeClass('loading_toggle').html("-");
                     jQuery(this).append('<div style="height: 0px; clear: both;">&nbsp;</div>');
                     jQuery(this).find('.browse_item:not(.species)').implement_browse();

@@ -9,30 +9,28 @@
     {% endblock %}
 {% else %}
     {% block scripts %}
-    {{ block.super }}
-    <!--
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
-            type="text/javascript"></script>
-    -->
-    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}browse/script.js"></script>
-    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}browse/jquery.waitforimages.js"></script>
+        {{ block.super }}
+        <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_pages/browse.js"></script>
+        <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.waitforimages.js"></script>
     {% endblock %}
 
     {% block stylesheets %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{{ MEDIA_URL }}browse/style.css" type="text/css">
+        {{ block.super }}
+        <link rel="stylesheet" href="{{ MEDIA_URL }}css_pages/browse.css" type="text/css">
     {% endblock %}
 
     {% block content %}
-    <div class="row top bottom">
-        <div class="twelvecol last">
-            <div style="margin-left: 10px; clear: both;">
-                <a id="browse_images_toggle" class="button" title="Advanced Browse">Turn off Images?</a>
+        <div class="row top bottom">
+            <div class="twelvecol last">
+                <div style="margin-left: 10px; clear: both;">
+                    <a id="browse_images_toggle" class="button" title="Advanced Browse">Turn off Images?</a>
+                </div>
+                <div style="margin-left: 10px">
+                    {% cache 0 browse_submenu request.current_page.id %}
+                    {% show_sub_menu 1 "menu/browse_submenu.html" %}
+                    {% endcache %}
+                </div>
             </div>
-            {% cache 0 browse_submenu request.current_page.id %}
-            {% show_sub_menu 1 "menu/browse_submenu.html" %}
-            {% endcache %}
         </div>
-    </div>
     {% endblock %}
 {% endif %}

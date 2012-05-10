@@ -1,4 +1,5 @@
 import datetime
+import os
 from Levenshtein import distance
 from sorl.thumbnail import ImageField
 from tastypie.models import create_api_key
@@ -260,6 +261,7 @@ class SpeciesImage(models.Model):
     """
     SPECIES_RE = r"(\w+ [-\w]+)-\w-\w.jpg"
     IMAGE_PATH = "moths/"
+    ZOOM_PATH = "moths_z/"
     SIZES = {
         "thumbnail": "140x93",
         "medium": "375x249"
@@ -290,6 +292,16 @@ class SpeciesImage(models.Model):
 
     def specimen_details(self):
         return self.record.details_tostr()
+
+    def zoomify_folder(self):
+        # returns the name of the zoomify folder if it exists
+        # otherwise it returns "404" which is interpreted by slideshow/script.js
+        z_folder = self.image.path.replace("/" + self.IMAGE_PATH, "/" + self.ZOOM_PATH)
+        z_folder = z_folder[:z_folder.rfind(".")]
+        if os.path.isdir(z_folder):
+            return z_folder[z_folder.rfind(self.ZOOM_PATH):]
+        else:
+            return "404"
 
     def license_details(self):
         r = self.record

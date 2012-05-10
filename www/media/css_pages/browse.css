@@ -5,7 +5,6 @@
 }
 .browse_item {
     margin-bottom: 10px;
-    margin-left: 10px;
     border-left: 1px solid grey;
     background-color: none;
     clear: both;
@@ -22,6 +21,7 @@ h3.browse_genus_species {
     float: left;
     display: inline;
     clear: none;
+    margin-left: 10px;
 }
 
 .species h3 {
@@ -77,4 +77,9 @@ h3.browse_genus_species {
 
 .browse_checked{
     background: #AAAAAA;
+}
+
+.browse_item_wrapper {
+    padding-left: 10px;
+    background: no-repeat url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAABCAYAAADn9T9+AAAAD0lEQVR42mNgYGD4TwwGAL1rCfcOx8NtAAAAAElFTkSuQmCC) top left;
 }

@@ -40,6 +40,9 @@
 	-webkit-box-shadow: 0 0 3px #555;
 	-moz-box-shadow: 0 0 3px #555;
 }
+#tiptip_content strong {
+    color: white;
+}
 
 #tiptip_arrow, #tiptip_arrow_inner {
 	position: absolute;

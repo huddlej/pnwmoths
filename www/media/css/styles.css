@@ -67,6 +67,10 @@
 	#mainnav select { display: none; }
 	
 	/* BODY */
+    #body {
+        clear: both;
+    }
+    
 	#body>div {
 		background-color: #FFFFFF;
 	}

@@ -19,9 +19,11 @@ PNWMOTHS.Chart = function () {
                 padding_value = padding_value || " ";
 
             for (label in labels) {
-                data_labels.push(labels[label]);
-                for (i = 0; i < padding_amount; i++) {
-                    data_labels.push(padding_value);
+                if (labels.hasOwnProperty(label)) {
+                    data_labels.push(labels[label]);
+                    for (i = 0; i < padding_amount; i++) {
+                        data_labels.push(padding_value);
+                    }
                 }
             }
 

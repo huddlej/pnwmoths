@@ -1,5 +1,11 @@
 {% load menu_tags thumbnail species_tags browse_filters %}
 {% for child in children %}
+
+{# Added on an ajax request for the tree's horizontal depth lines #}
+{% if request.is_ajax %}
+    <div class="browse_item_wrapper">
+{% endif %}
+
 <div class="browse_item{% if child.is_leaf_node %} species{% endif%}">
   <div class="browse_heading">
     <h3 {% if child|navnode_is_species_or_genus %}class="browse_genus_species"{% endif %}>
@@ -13,14 +19,19 @@
     {% for species_image in subtree_images %}
         {% if child.is_leaf_node %}
             {% thumbnail species_image.image species_image.SIZES.medium as im %}
-                <img src="{{ im.url }}" />
+                <img src="{{ im.url }}" width="{{ im.x }}" height="{{ im.y }}" />
             {% endthumbnail %}
         {% else %}
             {% thumbnail species_image.image species_image.SIZES.thumbnail as im %}
-                <img src="{{ im.url }}" />
+            <img src="{{ im.url }}" width="{{ im.x }}" height="{{ im.y }}" />
             {% endthumbnail %}
         {% endif %}        
     {% endfor %} 
   </div>
 </div>
+
+{% if request.is_ajax %}
+    </div>
+{% endif %}
+
 {% endfor %}

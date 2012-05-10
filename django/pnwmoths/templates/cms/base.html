@@ -1,22 +1,32 @@
 {% load cache cms_tags menu_tags %}
 <!DOCTYPE html>
 <html lang="en" style=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta charset="utf-8">
-	<title>{% block title %}{% page_attribute page_title %}{% endblock %} | PNW Moths</title>
+    <meta charset="utf-8">
+    <title>{% block title %}{% page_attribute page_title %}{% endblock %} | PNW Moths</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	
-	{% block stylesheets %}
-	<!-- 1140px Grid styles for IE -->
-	<!--[if lte IE 9]><link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/ie.css" type="text/css" media="screen" /><![endif]-->
 
-	<!-- The 1140px Grid - http://cssgrid.net/ -->
-	<link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/1140.css" type="text/css" media="screen">
-	
-	<!-- Your styles -->
-    <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/base.css" type="text/css">
-    <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/styles.css" type="text/css">
-    <link rel="stylesheet" href="{{ MEDIA_URL }}breadcrumbs/style.css" type="text/css">
+    {% block stylesheets %}
+        <!-- 1140px Grid styles for IE -->
+        <!--[if lte IE 9]><link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/ie.css" type="text/css" media="screen" /><![endif]-->
+        <!-- The 1140px Grid - http://cssgrid.net/ -->
+        <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/1140.css" type="text/css" media="screen">
+        
+        <!-- Your styles -->
+        <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/base.css" type="text/css">
+        <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/styles.css" type="text/css">
+    {% endblock %}
+
+    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}admin/js/jquery.min.js"></script>
+    {% block breadcrumbs_css %}
+        <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}breadcrumbs/script.js"></script>
+        <link rel="stylesheet" href="{{ MEDIA_URL }}breadcrumbs/style.css" type="text/css">
+    {% endblock %}
+
+
+    {% block scripts %}
+        <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/responsive.navigation.js"></script>
     {% endblock %}
 
     {{ meta_headers }}
@@ -50,7 +60,6 @@
         <div class="twelvecol last" style="padding-bottom: 10px">
             {% block breadcrumbs %}
                 <ul id="breadcrumbs">{% show_breadcrumb 1 %}</ul>
-                <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}breadcrumbs/script.js"></script>
             {% endblock %}
         </div>
     </div>
@@ -110,9 +119,5 @@
         </div>
     </div>
 </div>
-
-{% block scripts %}
-    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/responsive.navigation.js"></script>
-{% endblock %}
 </body>
 </html>
