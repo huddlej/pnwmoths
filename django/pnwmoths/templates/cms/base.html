@@ -25,10 +25,6 @@
     {% endblock %}
 
 
-    {% block scripts %}
-        <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/responsive.navigation.js"></script>
-    {% endblock %}
-
     {{ meta_headers }}
 </head>
 
@@ -119,5 +115,10 @@
         </div>
     </div>
 </div>
+
+{% block scripts %}
+    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/responsive.navigation.js"></script>
+{% endblock %}
+
 </body>
 </html>
