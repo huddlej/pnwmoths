@@ -104,7 +104,7 @@ PNWMOTHS.Map = function () {
                   jQuery("html").toggleClass("fullscreen");
                   jQuery("#googlemap").toggleClass("fullscreen");
                   google.maps.event.trigger(map, 'resize');
-                    var fullscreen = jQuery("#googlemap").hasClass("fullscreen")
+                    var fullscreen = jQuery("#googlemap").hasClass("fullscreen");
                   if(fullscreen)
                       this.children[0].innerHTML = '<b>Exit Fullscreen</b>';
                   else
