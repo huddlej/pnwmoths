@@ -101,6 +101,38 @@ class SpeciesManager(models.Manager):
             species = Species.objects.create(genus=i[0], species=i[1])
             species_by_fullname[complete_name] = species
 
+class PlateImage(models.Model):
+    """
+    An image plate (image with many moths).
+    Maintains an ImageField, for thumbnails, and non-zoomify support
+    as well as a FilePath for the zoomify folder.
+    """
+
+    # Admin Help Docs
+    z_image_docs = "Select the ImageProperties.xml file in the corresponding image folder."
+
+    IMAGE_PATH = "plates/"
+    ZOOM_PATH = "plates_z/"
+    ZOOM_ABS_PATH = "%s%s" % (settings.MEDIA_ROOT, ZOOM_PATH)
+    SIZES = {
+        "thumbnail": "240x300",
+        "medium": "480x600"
+    }
+
+    plate_title = models.CharField(max_length=200)
+    image = ImageField(upload_to=IMAGE_PATH)
+    z_image = models.FilePathField(path=ZOOM_ABS_PATH, recursive=True, match="ImageProperties.xml", max_length=200, help_text=z_image_docs, blank=True, null=True)
+
+    @property
+    def zoomify_folder(self):
+        """
+        Returns the corresponding zoomify directory with ImageProperties.xml removed.
+        """
+        return "%s%s" % (ZOOM_PATH, os.path.split(os.path.dirname(self.z_image))[1])
+
+    def __unicode__(self):
+        return u"%s" % self.image.name
+
 
 class Species(models.Model):
     """
