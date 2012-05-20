@@ -6,7 +6,7 @@ register = template.Library()
 
 @register.filter
 def get_records(value):
-    results = list(value.speciesrecord_set.all().select_related('collector__name', 'collection__name', 'county_name', 'state__code').values('collection__name', 'collector__name', 'county__name', 'day', 'elevation', 'females', 'latitude', 'longitude', 'locality', 'males', 'month', 'notes', 'record_type', 'state__code', 'year'))
+    results = list(value.speciesrecord_set.all().select_related('collector__name', 'collection__url', 'collection__name', 'county_name', 'state__code').values('collection__name', 'collection__url', 'collector__name', 'county__name', 'day', 'elevation', 'females', 'latitude', 'longitude', 'locality', 'males', 'month', 'notes', 'record_type', 'state__code', 'year'))
 
     renames = ['collection', 'collector', 'county']
     for d in results:

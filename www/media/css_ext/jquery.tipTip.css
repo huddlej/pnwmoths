@@ -40,6 +40,12 @@
 	-webkit-box-shadow: 0 0 3px #555;
 	-moz-box-shadow: 0 0 3px #555;
 }
+
+/* CUSTOM */
+#tiptip_content a {
+    color: white;
+}
+
 #tiptip_content strong {
     color: white;
 }

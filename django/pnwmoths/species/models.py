@@ -55,6 +55,7 @@ class Collection(models.Model):
     Represents a location where a species record may be kept in storage.
     """
     name = models.CharField(max_length=100, unique=True)
+    url = models.URLField(blank=True, null=True)
 
     class Meta:
         ordering = ["name"]
@@ -308,8 +309,11 @@ class SpeciesImage(models.Model):
         s = ""
 
         s += "%s, %s." % (r.date.strftime("%B %d, %Y"), r.collector)
-        s += "<br />Specimen courtesy of %s" % r.collection
-        s += "<br />Photograph copyright of ..."
+        if r.collection.url:
+            s += '<br />Specimen courtesy of <a href="%s" target="_blank">%s</a>' % (r.collection.url, r.collection)
+        else:
+            s += "<br />Specimen courtesy of %s" % r.collection
+        s += "<br />Photograph copyright of %s" % self.photographer
 
         return s
 

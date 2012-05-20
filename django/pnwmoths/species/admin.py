@@ -130,8 +130,20 @@ admin.site.register(SpeciesRecord, SpeciesRecordAdmin)
 
 
 class CollectionAdmin(VersionAdmin, admin.ModelAdmin):
-    pass
+    list_display = ("name", "url",)
+    list_editable = ("url",)
+    search_fields = ("name", "url",)
+
 admin.site.register(Collection, CollectionAdmin)
+
+
+class PlateImageAdmin(VersionAdmin, admin.ModelAdmin):
+    pass
+admin.site.register(PlateImage, PlateImageAdmin)
+
+class PhotographerAdmin(VersionAdmin, admin.ModelAdmin):
+    pass
+admin.site.register(Photographer, PhotographerAdmin)
 
 class CollectorAdmin(VersionAdmin, admin.ModelAdmin):
     pass

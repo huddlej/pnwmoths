@@ -339,7 +339,11 @@ PNWMOTHS.Map = function () {
 
             // Only render collections that aren't protected.
             if (!record.is_protected) {
-                return [date, record.collector, record.collection];
+                // Add link to collection if the field exists
+                var collection = record.collection;
+                if (record.collection && record.collection__url)
+                    collection = '<a href="'+record.collection__url+'" target="_blank">' + record.collection + '</a>';
+                return [date, record.collector, collection];
             }
 
             return null;
