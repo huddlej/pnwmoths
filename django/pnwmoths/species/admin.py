@@ -12,7 +12,7 @@ from django.core import urlresolvers
 
 from actions import export_records_as_csv_action, export_labels_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage,
-                    SpeciesRecord, State, Author)
+                    SpeciesRecord, State, Author, PlateImage, Photographer)
 
 
 admin.site.register(ApiKey)
@@ -128,6 +128,13 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
 
 admin.site.register(SpeciesRecord, SpeciesRecordAdmin)
 
+class PlateImageAdmin(VersionAdmin, admin.ModelAdmin):
+    pass
+admin.site.register(PlateImage, PlateImageAdmin)
+
+class PhotographerAdmin(VersionAdmin, admin.ModelAdmin):
+    pass
+admin.site.register(Photographer, PhotographerAdmin)
 
 class CollectionAdmin(VersionAdmin, admin.ModelAdmin):
     list_display = ("name", "url",)

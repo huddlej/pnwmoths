@@ -115,7 +115,6 @@ class PlateImageManager(models.Manager):
         return sorted(qs, key=lambda x: self._human_key(x.image.name))
 
 
-
 class PlateImage(models.Model):
     """
     An image plate (image with many moths).
@@ -158,13 +157,14 @@ class Species(models.Model):
     TODO: handle general key/value attributes including discoverer/year,
     synonyms, location on plates, etc.
     """
-    genus = models.CharField(max_length=255)
-    species = models.CharField(max_length=255)
+    genus = models.CharField(max_length=255, db_index=True)
+    species = models.CharField(max_length=255, db_index=True)
     common_name = models.CharField(max_length=255, blank=True, null=True)
     noc_id = models.CharField("NOC #", max_length=24, blank=True, null=True)
     authority = models.ForeignKey(Author, null=True, blank=True)
     similar = models.ManyToManyField("self", blank=True)
     factsheet = PageField(unique=True, blank=True, null=True)
+    image_plate = models.ForeignKey(PlateImage, blank=True, null=True)
 
     class Meta:
         ordering = ["genus", "species"]
@@ -173,7 +173,6 @@ class Species(models.Model):
 
     def __unicode__(self):
         name = u"%s %s" % (self.genus, self.species)
-
         return name
 
     @property
@@ -188,9 +187,32 @@ class Species(models.Model):
         TODO: turn this into a m2m manager method for SpeciesImage
         """
         try:
-            return self.speciesimage_set.all()[0]
+            return self.speciesimage_set.all()[:1].get()
         except (Exception):
             return None
+
+class Photographer(models.Model):
+    """
+    A photographer, used for image copyright information
+    """
+    photographer = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ['photographer']
+
+    def __unicode__(self):
+        return self.photographer
+
+class FeaturedMothImage(CMSPlugin):
+    species =  models.ManyToManyField(Species)
+
+    def __unicode__(self):
+        return "FeaturedMothImagePlugin"
+
+    def copy_relations(self, oldinstance):
+        self.species = oldinstance.species.all()
+
+
 
 class RecordManager(models.Manager):
     def get_query_set(self):
@@ -200,30 +222,24 @@ class LabelManager(models.Manager):
     def get_query_set(self):
         return super(LabelManager, self).get_query_set().filter(speciesimage__isnull=False)
 
-
 class SpeciesRecord(models.Model):
     """
     Represents a single record of a species based on a combination of where and
     when the specimen was found and by whom. If a record is missing latitude and
     longitude coordinates, it is assumed to be a label.
-
-    The following fields define a unique record despite the fact that most of
-    these fields can be empty:
-
-    species,
-    latitude,
-    longitude,
-    year,
-    month,
-    day,
-    collector,
-    collection,
-    notes
     """
+
     # Set the number of decimal points to include in longitude and latitude
     # values returned to the user.
     GPS_PRECISION = 2
+    RECORD_TYPE_CHOICES = (
+            ('specimen', 'Specimen'),
+            ('photograph', 'Photograph'),
+            ('literature', 'Literature'),
+            ('sight_field_notes', 'Sight/Field Notes'),
+    )
 
+    record_type = models.CharField(max_length=20, choices=RECORD_TYPE_CHOICES, default='specimen')
     species = models.ForeignKey(Species)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
@@ -316,17 +332,25 @@ class SpeciesImage(models.Model):
         "thumbnail": "140x93",
         "medium": "375x249"
     }
-
-    species = models.ForeignKey(Species)
-    # Image field manages the creation and deletion of thumbnails
-    # automatically. When an instance of this class is deleted, thumbnails
-    # created for this field are automatically deleted too.
-    image = ImageField(upload_to=IMAGE_PATH)
     
+    # Help Docs
+    photographer_docs = "Used as the copyright holder."
+
     weight_docs = "Images with the smallest weight are shown first. If images share the same weight, they are then sorted alphabetically as a group."
     weight_docs += "<br /><br />In the following examples, each number represents an image's weight. The bracketed groupings are sorted alphabetically."
     weight_docs += "<br />Example 1: [-1,-1],[0,0,0],2,3"
     weight_docs += "<br />Example 2 (DEFAULT): [0,0,0,0,0]"
+
+    species = models.ForeignKey(Species)
+    # defaults to first photographer defined.
+    photographer = models.ForeignKey(Photographer, default=1, help_text=photographer_docs)
+
+    # Image field manages the creation and deletion of thumbnails
+    # automatically. When an instance of this class is deleted, thumbnails
+    # created for this field are automatically deleted too.
+    # !!! Django never orphans the original image on the file system !!!
+    image = ImageField(upload_to=IMAGE_PATH)
+    
     weight = models.IntegerField(blank=True, null=False, default=0, help_text=weight_docs)
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True, verbose_name="Label")
 
@@ -365,17 +389,6 @@ class SpeciesImage(models.Model):
         s += "<br />Photograph copyright of %s" % self.photographer
 
         return s
-
-class FeaturedMothImage(CMSPlugin):
-    species =  models.ManyToManyField(Species)
-
-    def __unicode__(self):
-        return "FeaturedMothImagePlugin"
-
-    def copy_relations(self, oldinstance):
-        self.species = oldinstance.species.all()
-
-# TODO: write unit tests for this class before adding it.
 # class SpeciesImageMetadata(models.Model):
 #     """
 #     Represents key/value metadata associated with a specific species image.
