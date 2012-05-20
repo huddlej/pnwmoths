@@ -52,7 +52,10 @@
 		<div id="featuredmoth" class="sixcol">
 			<div>
 				<h3>Featured Moth</h3>
+                                {# Slow, but will be removed from new design #}
+                                {% cache 0 featured_image %}
 				{% placeholder "featured_image" %}
+                                {% endcache %}
 			</div>
 		</div>
 		<div id="fullmap" class="sixcol last">
@@ -63,9 +66,12 @@
             <div>
                 <h3>Stats</h3>
                 <ul id="stats_list">
-                    <li><strong>{{ "Browse"|navnode_species_count }}</strong> Specimen Profiles</li>
-                    <li><strong>{{ "SpeciesRecord"|species_stat_count }}</strong> Specimen Records</li>
-                    <li><strong>{{ "SpeciesImage"|species_stat_count }}</strong> Specimen Images</li>
+                    {% cache 0 homepage_stats %}
+                        <li><strong>{{ "Browse"|navnode_species_count }}</strong> Specimen Profiles</li>
+                        {# SpeciesRecord is a slow query as we join it against images to filter out labels #}
+                        <li><strong>{{ "SpeciesRecord"|species_stat_count }}</strong> Specimen Records</li>
+                        <li><strong>{{ "SpeciesImage"|species_stat_count }}</strong> Specimen Images</li>
+                    {% endcache %}
                 </ul>
             </div>
 		</div>
