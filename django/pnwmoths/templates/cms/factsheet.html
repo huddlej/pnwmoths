@@ -5,7 +5,6 @@
 {{ block.super }}
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/excanvas.min.js"></script><![endif]-->
 <script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js"></script>
-<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.ui.touchpunch.js"></script>
 
 <script type="text/javascript" src="{{ MEDIA_URL }}zoomify/ZoomifyImageViewer.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}zoomify/sizeViewerToPage.js"></script>
@@ -84,6 +83,7 @@
                         <ul class="other-images">
                     {% endif %}
                     <li>
+                    {% cache 0 species_thumb forloop.counter species.name %}
                         {% thumbnail species_image.image species_image.SIZES.medium as medium %}
                         {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
                             <a href="{{ species_image.image.url }}" title="{{ species_image.specimen_details|safe }}{{ species_image.license_details|safe }}&nbsp;" class="thumbnail">
@@ -98,6 +98,7 @@
                             {% endwith %}
                         {% endthumbnail %}
                         {% endthumbnail %}
+                    {% endcache %}
                     </li>
                     {% if forloop.last %}
                         </ul></div></div>
@@ -118,6 +119,7 @@
             <ul class="other-images">
             {% for similar_species in species.similar.all %}
                 <li>
+                {% cache 0 sim_link similar_species.name %}
                     <a href="{% page_url similar_species.factsheet %}" target="_blank">
                     {% with similar_species.get_first_image as similar_image %}
                         {% thumbnail similar_image.image similar_image.SIZES.thumbnail as im %}
@@ -126,6 +128,7 @@
                     {% endwith %}
                     {{ similar_species }}
                     </a>
+                {% endcache %}
                 </li>
             {% endfor %}
             </ul>
@@ -178,7 +181,7 @@
 {% if species %}
     {% cache 0 js_data species.name %}
     <span class="dokuwiki-data" id="species-data">
-    {% resource /data/api/speciesrecord/ format=json species__genus=species.genus species__species=species.species limit=0 %}
+    {{ species|get_records|safe }}
     </span>
     <span class="dokuwiki-data" id="state-data">
     {{ species|filters_json:"state__code"|safe }}
