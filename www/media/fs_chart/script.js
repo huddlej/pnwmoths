@@ -34,8 +34,11 @@ PNWMOTHS.Chart = function () {
             var flat_data = [];
 
             for (i in data) {
-                for (j in data[i]) {
-                    flat_data.push(data[i][j]);
+                if (data.hasOwnProperty(i)) {
+                    for (j in data[i]) {
+                        if (data[i].hasOwnProperty(j))
+                            flat_data.push(data[i][j]);
+                    }
                 }
             }
 

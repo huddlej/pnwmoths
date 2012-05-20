@@ -237,8 +237,12 @@ PNWMOTHS.Map = function () {
                     if (record.collections.hasOwnProperty(i)) {
                         colHtml.push("<tr>");
                         for (j in record.collections[i]) {
-                            if (record.collections[i].hasOwnProperty(j))
-                                colHtml.push("<td>" + record.collections[i][j] + "</td>");
+                            if (record.collections[i].hasOwnProperty(j)) {
+                                var col_val = record.collections[i][j];
+                                if (!col_val)
+                                    col_val = "";
+                                colHtml.push("<td>" + col_val + "</td>");
+                            }
                         }
                         colHtml.push("</tr>");
                     }
