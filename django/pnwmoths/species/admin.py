@@ -107,6 +107,7 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         "month",
         "year",
         "notes",
+        "date_added"
     )
     list_filter = (
         "state",
@@ -115,6 +116,7 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         "year",
         "collector",
         "locality",
+        "date_added"
     )
     list_select_related = True
     search_fields = ("species__genus", "species__species", "year", "collector__name", "collection__name", "locality", "notes", "latitude", "longitude")

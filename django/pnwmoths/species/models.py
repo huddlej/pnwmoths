@@ -368,12 +368,18 @@ class SpeciesImage(models.Model):
         return self.record.details_tostr()
 
     def zoomify_folder(self):
-        # returns the name of the zoomify folder if it exists
+        # returns the name of the zoomify folder if it exists (trys with spaces in filename and with spaces replaced by underscores)
         # otherwise it returns "404" which is interpreted by slideshow/script.js
         z_folder = self.image.path.replace("/" + self.IMAGE_PATH, "/" + self.ZOOM_PATH)
         z_folder = z_folder[:z_folder.rfind(".")]
+
+        # replace filename underscores with spaces (happens when uploaded via django-admin)
+        z_folder_alt = z_folder[:z_folder.rfind("/")] + z_folder[z_folder.rfind("/"):].replace("_", " ")
+
         if os.path.isdir(z_folder):
             return z_folder[z_folder.rfind(self.ZOOM_PATH):]
+        elif os.path.isdir(z_folder_alt):
+            return z_folder_alt[z_folder_alt.rfind(self.ZOOM_PATH):]
         else:
             return "404"
 

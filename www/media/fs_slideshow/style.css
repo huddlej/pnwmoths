@@ -49,6 +49,10 @@
     list-style-type: none;
 }
 
+#old-image-factsheet img {
+    min-width: 100%;
+}
+
 .no-js {
     clear: both;
     margin-left: 1em;
