@@ -3,6 +3,7 @@ import os
 from Levenshtein import distance
 from sorl.thumbnail import ImageField
 from tastypie.models import create_api_key
+import re
 
 from django.conf import settings
 from cms.models.fields import  PageField
@@ -101,12 +102,28 @@ class SpeciesManager(models.Manager):
             species = Species.objects.create(genus=i[0], species=i[1])
             species_by_fullname[complete_name] = species
 
+class PlateImageManager(models.Manager):
+    """
+    Manager used to get image plates in human sorted order for display.
+    """
+    def _human_key(self, key):
+        parts = re.split('(\d*\.\d+|\d+)', key)
+        return tuple((e.swapcase() if i % 2 == 0 else float(e)) for i, e in enumerate(parts))
+
+    def in_human_sorted_order(self, *args, **kwargs):
+        qs = self.get_query_set().filter(*args, **kwargs)
+        return sorted(qs, key=lambda x: self._human_key(x.image.name))
+
+
+
 class PlateImage(models.Model):
     """
     An image plate (image with many moths).
     Maintains an ImageField, for thumbnails, and non-zoomify support
     as well as a FilePath for the zoomify folder.
     """
+
+    objects = PlateImageManager()
 
     # Admin Help Docs
     z_image_docs = "Select the ImageProperties.xml file in the corresponding image folder."
