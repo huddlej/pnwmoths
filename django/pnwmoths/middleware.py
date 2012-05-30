@@ -1,7 +1,6 @@
 """
 Middleware for the pnwmoths project.
 """
-from tastypie.models import ApiKey
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from re import compile
@@ -32,19 +31,6 @@ class LoginRequiredMiddleware:
  work, ensure your TEMPLATE_CONTEXT_PROCESSORS setting includes\
  'django.core.context_processors.auth'."
         if not request.user.is_authenticated():
-            # Try to verify API key for user if username and API key are
-            # given. Allowed unauthenticated users to access data with a
-            # username and API key.
-            if request.GET.get("username") and request.GET.get("api_key"):
-                try:
-                    ApiKey.objects.get(
-                        user__username=request.GET.get("username"),
-                        key=request.GET.get("api_key")
-                    )
-                    return None
-                except ApiKey.DoesNotExist:
-                    pass
-
             path = request.path_info.lstrip('/')
             if not any(m.match(path) for m in EXEMPT_URLS):
                 return HttpResponseRedirect(settings.LOGIN_URL)

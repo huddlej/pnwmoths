@@ -2,7 +2,6 @@ import datetime
 import os
 from Levenshtein import distance
 from sorl.thumbnail import ImageField
-from tastypie.models import create_api_key
 import re
 
 from django.conf import settings
@@ -13,9 +12,6 @@ from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from cms.models.pluginmodel import CMSPlugin
-
-models.signals.post_save.connect(create_api_key, sender=User)
-
 
 class State(models.Model):
     choices = STATE_CHOICES + PROVINCE_CHOICES
