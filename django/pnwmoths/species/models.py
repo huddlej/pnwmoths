@@ -223,6 +223,9 @@ class SpeciesRecord(models.Model):
     Represents a single record of a species based on a combination of where and
     when the specimen was found and by whom. If a record is missing latitude and
     longitude coordinates, it is assumed to be a label.
+
+    Stores the csv filename it was uploaded with for ease of replacement and
+    updating in the event that changes were made to a file without ids.
     """
 
     # Set the number of decimal points to include in longitude and latitude
@@ -235,7 +238,7 @@ class SpeciesRecord(models.Model):
             ('sight_field_notes', 'Sight/Field Notes'),
     )
 
-    record_type = models.CharField(max_length=20, choices=RECORD_TYPE_CHOICES, default='specimen')
+    record_type = models.CharField(max_length=20, choices=RECORD_TYPE_CHOICES, default='specimen', verbose_name='Voucher Type')
     species = models.ForeignKey(Species)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
@@ -254,6 +257,8 @@ class SpeciesRecord(models.Model):
     males = models.IntegerField(null=True, blank=True)
     females = models.IntegerField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
+
+    csv_file = models.CharField(null=True, blank=True, max_length=255)
 
     date_added = models.DateTimeField(editable=False)
     date_modified = models.DateTimeField(editable=False)
@@ -302,11 +307,11 @@ class SpeciesRecord(models.Model):
 
     @property
     def date(self):
+        date = None
         try:
             date = datetime.date(self.year, self.month, self.day)
-        except ValueError:
-            date = None
-
+        except Exception:
+            pass
         return date
 
     def save(self, *args, **kwargs):
@@ -344,7 +349,7 @@ class SpeciesImage(models.Model):
     # Image field manages the creation and deletion of thumbnails
     # automatically. When an instance of this class is deleted, thumbnails
     # created for this field are automatically deleted too.
-    # !!! Django never orphans the original image on the file system !!!
+    # !!! Django orphans the original image on the file system !!!
     image = ImageField(upload_to=IMAGE_PATH)
     
     weight = models.IntegerField(blank=True, null=False, default=0, help_text=weight_docs)
@@ -375,14 +380,36 @@ class SpeciesImage(models.Model):
 
     def license_details(self):
         r = self.record
+        # reared terms are used to determine whether the date is suspect
+        # if they are, we include our notes field
+        reared_terms = ["reared","larva","em.","pupa","Rubus","immature","broadleaf","Taraxacum","ovum","emerged","emgd","em in","em ex","eggs"]
+        notes = r.notes.lower()
+        if notes:
+            for term in reared_terms:
+                if term.lower() in notes:
+                    notes = r.notes
+                    break
+            else:
+                notes = ""
+
         s = ""
 
-        s += "%s, %s." % (r.date.strftime("%B %d, %Y"), r.collector)
+        if r.date:
+            s += str(r.date.strftime("%B %d, %Y"))
+
+        if r.collector:
+            if r.date:
+                s += ", "
+            s += str(r.collector) + "."
+
+        if notes:
+            s += "<br />" + str(notes)
+
         if r.collection.url:
             s += '<br />Specimen courtesy of <a href="%s" target="_blank">%s</a>' % (r.collection.url, r.collection)
         else:
             s += "<br />Specimen courtesy of %s" % r.collection
-        s += "<br />Photograph copyright of %s" % self.photographer
+        s += "<br />Photograph copyright: %s" % self.photographer
 
         return s
 # class SpeciesImageMetadata(models.Model):

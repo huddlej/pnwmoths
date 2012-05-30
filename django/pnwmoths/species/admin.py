@@ -86,8 +86,10 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         else:
             return "Record"
 
+    readonly_fields = ("csv_file",)
+
     list_display = (
-        rec_type,
+        "record_type",
         thumb,
         noc_id,
         "species",
@@ -103,7 +105,9 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         "year",
         "notes",
     )
+
     list_filter = (
+        "record_type",
         "state",
         "county",
         "collection",
