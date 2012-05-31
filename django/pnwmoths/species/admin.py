@@ -80,13 +80,20 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
     thumb.short_description = 'Photo'
     thumb.allow_tags = True 
 
+    def get_readonly_fields(self, request, obj=None):
+        """
+        Dynamic readonly list so that new objects can get their csv_file changed.
+        """
+        if obj:
+            return ['csv_file']
+        else:
+            return []
+
     def rec_type(self):
         if self.speciesimage_set.exists():
             return "Label"
         else:
             return "Record"
-
-    readonly_fields = ("csv_file",)
 
     list_display = (
         "record_type",

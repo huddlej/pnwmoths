@@ -3,7 +3,7 @@ import re
 
 from django import forms
 
-from models import Collection, Collector, County, Species, SpeciesRecord, State
+from models import Collection, Collector, County, Species, SpeciesRecord, State, SpeciesImage
 
 registered_models = {"SpeciesRecord": SpeciesRecord}
 
@@ -26,23 +26,57 @@ class LazyIntegerField(forms.IntegerField):
             value = value.strip() or None
             if value is not None:
                 # First wildcard match is greedy to allow integer group to get
-                # all integer-like values.
-                match = re.match(r".*?(\d+).*", value)
+                # all integer-like values (takes negatives)
+                match = re.match(r".*?(-?\d+).*", value)
                 if match:
-                    value = match.groups()[0]
+                    # handles [3]
+                    if "[" in value:
+                        value = "-" + match.groups()[0]
+                    else:
+                        value = match.groups()[0]
                 else:
-                    value = None
+                    # we see if its coercible to an integer (like a month)
+                    if value.lower() == "[x]":
+                        value = "-99999"
+                    else:
+                        value = value.replace(".", "")
+                        month_dict = {'sep': 9, 'september': 9, 'december': 12, 'november': 11, 'feb': 2, 'aug': 8, 'jan': 1, 'apr': 4, 'oct': 10, 'mar': 3, 'march': 3, 'august': 8, 'may': 5, 'jun': 6, 'june': 6, 'jul': 7, 'july': 7, 'february': 2, 'october': 10, 'nov': 11, 'january': 1, 'april': 4, 'dec': 12}
+                        value = month_dict.get(value.lower())
 
         return super(LazyIntegerField, self).clean(value)
 
 
+class LazyFloatField(forms.FloatField):
+    def __init__(self, *args, **kwargs):
+        super(LazyFloatField, self).__init__(*args, **kwargs)
+
+    def clean(self, value):
+        """
+        Grabs the first float, ignoring stuff like N, W etc.
+        """
+        if isinstance(value, basestring):
+            value = value.strip() or None
+            if value is not None:
+                # grab first float/integer
+                match = re.findall(r"[-+]?\d*\.\d+|\d+", value)
+                if match:
+                    if "N" in value or "S" in value:
+                        value = "-" + match[0]
+                else:
+                    # we see if its coercible to an integer (like a month)
+                    value = None
+
+        return super(LazyFloatField, self).clean(value)
+
+
 class SpeciesRecordForm(forms.Form):
     attrs = {"size": "4"}
+    filename = forms.CharField(required=False)
     id = forms.IntegerField(required=False, widget=forms.TextInput(attrs=attrs))
     genus = forms.CharField(required=False)
     species = forms.CharField()
-    latitude = forms.FloatField(required=False, widget=forms.TextInput(attrs=attrs))
-    longitude = forms.FloatField(required=False, widget=forms.TextInput(attrs=attrs))
+    latitude = LazyFloatField(required=False, widget=forms.TextInput(attrs=attrs))
+    longitude = LazyFloatField(required=False, widget=forms.TextInput(attrs=attrs))
     locality = forms.CharField(required=False)
     county = forms.CharField(required=False)
     state = forms.CharField(required=False, widget=forms.TextInput(attrs=attrs))
@@ -58,6 +92,7 @@ class SpeciesRecordForm(forms.Form):
         required=False,
         widget=forms.Textarea(attrs={"rows": "5"})
     )
+    csv_file = forms.CharField(required=True)
 
     def __init__(self, *args, **kwargs):
         super(SpeciesRecordForm, self).__init__(*args, **kwargs)
@@ -68,7 +103,7 @@ class SpeciesRecordForm(forms.Form):
         Checks for the existence of filename data and if its found,
         attempts to parse and replace species, genus data.
         """
-        if 'filename' in self.data:
+        if 'filename' in self.data and 'species' not in self.data:
             SPECIES_RE = r"(\w+ [-\w]+)-\w-\w"
             filename_regex = re.compile(SPECIES_RE)
             match = filename_regex.findall(self.data['filename'])
@@ -117,7 +152,32 @@ class SpeciesRecordForm(forms.Form):
         return self._get_instance_by_name("state", State, "code")
 
     def clean(self):
-        cleaned_data = self.cleaned_data
+        cleaned_data = super(SpeciesRecordForm, self).clean()
+
+        # Convert meters to feet if we have elevation units
+        if cleaned_data.get("elevation_units"):
+            if "m" in cleaned_data["elevation_units"]:
+                cleaned_data["elevation_units"] *= 3.2808399
+                cleaned_data["elevation_units"] = int(cleaned_data["elevation_units"])
+        
+        if cleaned_data.get("filename"):
+            fn = cleaned_data.get("filename")
+            fn_D = fn.replace("label", "D")
+            fn_V = fn.replace("label", "V")
+            try:
+                # Check if the files exist that we're trying to link to
+                SpeciesImage.objects.get(image__contains=fn_D)
+                SpeciesImage.objects.get(image__contains=fn_V)
+            except SpeciesImage.DoesNotExist:
+                # If they don't, or the names are too generic we throw a form error.
+                del cleaned_data['filename']
+                raise forms.ValidationError("Filename doesn't exist.")
+            except SpeciesImage.MultipleObjectsReturned:
+                del cleaned_data['filename']
+                raise forms.ValidationError("Filename is too generic [identifies more than 2 images]")
+            except:
+                del cleaned_data['filename']
+                raise forms.ValidationError("Filename problem...")
 
         # Species are created if they don't exist.
         if cleaned_data.get("species"):
@@ -181,11 +241,25 @@ class SpeciesRecordForm(forms.Form):
                 del self.cleaned_data["DELETE"]
             if "genus" in self.cleaned_data:
                 del self.cleaned_data["genus"]
+            fn = self.cleaned_data.get("filename")
+            if "filename" in self.cleaned_data:
+                del self.cleaned_data["filename"]
 
             cls = self._get_model()
             self.instance = cls(**self.cleaned_data)
             if commit:
                 self.instance.save()
+                # changing image label fields is an additive process 
+                if fn:
+                    fn_D = fn.replace("label", "D")
+                    fn_V = fn.replace("label", "V")
+                    f_D = SpeciesImage.objects.get(image__contains=fn_D)
+                    f_D.record = self.instance
+                    f_V = SpeciesImage.objects.get(image__contains=fn_V)
+                    f_V.record = self.instance
+                    f_D.save()
+                    f_V.save()
+
             else:
                 return self.instance
         else:

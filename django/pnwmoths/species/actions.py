@@ -11,7 +11,7 @@ def export_labels_as_csv_action(description="Export Labels as CSV"):
     def export_labels_as_csv(modeladmin, request, queryset):
         opts = modeladmin.model._meta
         field_names = set([field.name for field in opts.fields])
-        field_names = field_names - set(["species", "genus"])
+        field_names = field_names - set(["csv_file"])
         field_names = list(field_names)
 
         response = HttpResponse(mimetype='text/csv')
@@ -55,7 +55,7 @@ def export_records_as_csv_action(description="Export Records as CSV"):
     def export_records_as_csv(modeladmin, request, queryset):
         opts = modeladmin.model._meta
         field_names = set([field.name for field in opts.fields])
-
+        field_names = field_names - set(["csv_file"])
         field_names = list(field_names)
 
         # order columns according to model
