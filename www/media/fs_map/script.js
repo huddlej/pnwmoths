@@ -252,6 +252,8 @@ PNWMOTHS.Map = function () {
             }
 
             // regex replace to display multiline notes properly in HTML
+            if(!record["notes"])
+                record["notes"] = "";
             notesHtml = '<div id="IB_notes" class="infowindow collections"><p>' + record["notes"].replace(/\r\n/g, "<br />").replace(/\n/g, "<br />") + "</p></div>";
 
             return [attHtml.join(''), colHtml.join(''), notesHtml];
