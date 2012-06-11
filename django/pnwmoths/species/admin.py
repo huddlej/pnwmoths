@@ -121,6 +121,7 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         "year",
         "collector",
         "locality",
+        "csv_file",
     )
     list_select_related = True
     search_fields = ("species__genus", "species__species", "year", "collector__name", "collection__name", "locality", "notes", "latitude", "longitude")

@@ -12,6 +12,7 @@ from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from cms.models.pluginmodel import CMSPlugin
+from storage import OverwriteStorage
 
 class State(models.Model):
     choices = STATE_CHOICES + PROVINCE_CHOICES
@@ -212,11 +213,11 @@ class FeaturedMothImage(CMSPlugin):
 
 class RecordManager(models.Manager):
     def get_query_set(self):
-        return super(RecordManager, self).get_query_set().filter(speciesimage__isnull=True)
+        return super(RecordManager, self).get_query_set().filter(speciesimage__isnull=True).distinct()
 
 class LabelManager(models.Manager):
     def get_query_set(self):
-        return super(LabelManager, self).get_query_set().filter(speciesimage__isnull=False)
+        return super(LabelManager, self).get_query_set().filter(speciesimage__isnull=False).distinct()
 
 class SpeciesRecord(models.Model):
     """
@@ -287,7 +288,7 @@ class SpeciesRecord(models.Model):
         if r.state:
             s += str(r.state)
         if r.county:
-            s += " : " + str(r.county)
+            s += " : " + str(r.county.name) + " Co."
         s += "</strong>"
         if r.locality or r.elevation:
             s += "<br />"
@@ -329,6 +330,7 @@ class SpeciesImage(models.Model):
     SPECIES_RE = r"(\w+ [-\w]+)-\w-\w.jpg"
     IMAGE_PATH = "moths/"
     ZOOM_PATH = "moths_z/"
+    REARED_TERMS = ["reared","larva","em.","pupa","Rubus","immature","broadleaf","Taraxacum","ovum","emerged","emgd","em in","em ex","eggs"]
     SIZES = {
         "thumbnail": "140x93",
         "medium": "375x249"
@@ -343,14 +345,13 @@ class SpeciesImage(models.Model):
     weight_docs += "<br />Example 2 (DEFAULT): [0,0,0,0,0]"
 
     species = models.ForeignKey(Species)
-    # defaults to first photographer defined.
+    # defaults to first photographer defined. (Merrill A Peterson)
     photographer = models.ForeignKey(Photographer, default=1, help_text=photographer_docs)
 
     # Image field manages the creation and deletion of thumbnails
     # automatically. When an instance of this class is deleted, thumbnails
     # created for this field are automatically deleted too.
-    # !!! Django orphans the original image on the file system !!!
-    image = ImageField(upload_to=IMAGE_PATH)
+    image = ImageField(storage=OverwriteStorage(), upload_to=IMAGE_PATH)
     
     weight = models.IntegerField(blank=True, null=False, default=0, help_text=weight_docs)
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True, verbose_name="Label")
@@ -380,9 +381,9 @@ class SpeciesImage(models.Model):
 
     def license_details(self):
         r = self.record
+        reared_terms = self.REARED_TERMS
         # reared terms are used to determine whether the date is suspect
         # if they are, we include our notes field
-        reared_terms = ["reared","larva","em.","pupa","Rubus","immature","broadleaf","Taraxacum","ovum","emerged","emgd","em in","em ex","eggs"]
         notes = r.notes.lower()
         if notes:
             for term in reared_terms:
