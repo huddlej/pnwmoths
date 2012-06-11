@@ -2,7 +2,6 @@ import csv
 import re
 
 from django import forms
-
 from models import Collection, Collector, County, Species, SpeciesRecord, State, SpeciesImage
 
 registered_models = {"SpeciesRecord": SpeciesRecord}
@@ -12,6 +11,10 @@ class LazyIntegerField(forms.IntegerField):
     widget = forms.TextInput(attrs={"size": "3"})
 
     def __init__(self, *args, **kwargs):
+        self.clean_type = kwargs.get("field_type", None)
+        if kwargs.get("field_type"):
+            del kwargs["field_type"]
+
         super(LazyIntegerField, self).__init__(*args, **kwargs)
         self.required = False
 
@@ -24,24 +27,56 @@ class LazyIntegerField(forms.IntegerField):
         """
         if isinstance(value, basestring):
             value = value.strip() or None
+            clean_type = self.clean_type
+
             if value is not None:
                 # First wildcard match is greedy to allow integer group to get
                 # all integer-like values (takes negatives)
                 match = re.match(r".*?(-?\d+).*", value)
-                if match:
-                    # handles [3]
-                    if "[" in value:
-                        value = "-" + match.groups()[0]
+
+                if clean_type == "male" or clean_type == "female":
+                    if match:
+                        # For males/females counts we check for indeterminate sexing
+                        # and counts. A negative is assigned to unsexed counts.
+                        if "[" in value:
+                            value = "-" + match.groups()[0]
+                        else:
+                            value = match.groups()[0]
+                    elif value.lower() == "[x]":
+                        # No integer match, so we'll check for the unsexed/uncounted type
+                        value = "-999999"
                     else:
+                        value = None
+                
+                elif clean_type == "elevation":
+                    elev = match.groups()[0]
+                    if "-" in value:
+                        e_avg = int(elev)
+                        e_avg += int(re.match(r".*?(-?\d+).*", value[value.find("-")+1:]).groups()[0])
+                        e_avg /= 2
+                        elev = int(e_avg)
+
+                    if "m" in value.lower() and match:
+                        value = str(int(int(elev) * 3.2808399))
+                    elif match:
+                        value = elev
+                    else:
+                        value = None
+
+                elif clean_type == "month":
+                    if match:
                         value = match.groups()[0]
-                else:
-                    # we see if its coercible to an integer (like a month)
-                    if value.lower() == "[x]":
-                        value = "-99999"
                     else:
+                        # Try coercing months to an integer
                         value = value.replace(".", "")
                         month_dict = {'sep': 9, 'september': 9, 'december': 12, 'november': 11, 'feb': 2, 'aug': 8, 'jan': 1, 'apr': 4, 'oct': 10, 'mar': 3, 'march': 3, 'august': 8, 'may': 5, 'jun': 6, 'june': 6, 'jul': 7, 'july': 7, 'february': 2, 'october': 10, 'nov': 11, 'january': 1, 'april': 4, 'dec': 12}
-                        value = month_dict.get(value.lower())
+                        value = month_dict.get(value.lower(), None)
+
+                else:
+                    if match:
+                        value = match.groups()[0]
+                    else:
+                        value = None
 
         return super(LazyIntegerField, self).clean(value)
 
@@ -56,14 +91,43 @@ class LazyFloatField(forms.FloatField):
         """
         if isinstance(value, basestring):
             value = value.strip() or None
+
             if value is not None:
+                if value.count(".") == 2 and "-" not in value[1:]:
+                    # We have a 113.32.60 format (minutes format)
+                    m = re.findall(r"[-+]?\d*.\d*.\d*", value)
+                    val = m[0].split('.', 1)
+                    dec = float(val[1]) / 60.0
+                    if "s" in value.lower() or "w" in value.lower():
+                        value = "-"
+                    else:
+                        value = ""
+                    # [1:] removes the decimal from our converted minutes
+                    value += str(val[0]) + str(dec)[1:]
+                    
                 # grab first float/integer
                 match = re.findall(r"[-+]?\d*\.\d+|\d+", value)
                 if match:
-                    if "N" in value or "S" in value:
+                    # Compute the average if in 37.342-358 format
+                    if len(match) > 1:
+                        f_avg = float(match[0])
+                        # construct our new upper bound
+                        inferred_num = match[0]
+                        # doing some creative stripping here due to the variety
+                        # of formats that have appeared for lat/lon ranges...
+                        # e.g 45.234-256, 45.234-.266
+                        inferred_num = inferred_num[:inferred_num.find(".")+1] + str(match[1].replace(".", "").replace("-", ""))
+                        f_avg += float(inferred_num)
+                        f_avg /= 2
+                        # set to match for the next operations
+                        match[0] = str(f_avg)
+
+                    # S/W GPS values get a negative added
+                    if "s" in value.lower() or "w" in value.lower():
                         value = "-" + match[0]
+                    else:
+                        value = match[0]
                 else:
-                    # we see if its coercible to an integer (like a month)
                     value = None
 
         return super(LazyFloatField, self).clean(value)
@@ -80,14 +144,14 @@ class SpeciesRecordForm(forms.Form):
     locality = forms.CharField(required=False)
     county = forms.CharField(required=False)
     state = forms.CharField(required=False, widget=forms.TextInput(attrs=attrs))
-    elevation = LazyIntegerField()
-    month = LazyIntegerField()
+    elevation = LazyIntegerField(field_type="elevation")
+    month = LazyIntegerField(field_type="month")
     day = LazyIntegerField()
     year = LazyIntegerField()
     collector = forms.CharField(required=False)
     collection = forms.CharField(required=False)
-    males = LazyIntegerField()
-    females = LazyIntegerField()
+    males = LazyIntegerField(field_type="male")
+    females = LazyIntegerField(field_type="female")
     notes = forms.CharField(
         required=False,
         widget=forms.Textarea(attrs={"rows": "5"})
@@ -110,8 +174,14 @@ class SpeciesRecordForm(forms.Form):
             try:
                 self.data['genus'], self.data['species'] = match[0].split(" ", 1)
             except IndexError:
-                self.data['genus'] = self.data['filename'] 
-    
+                self.data['genus'] = self.data['filename']
+
+    def _regex_filename(self, fn):
+        # replace the first division between genus/species with a regex
+        for illegal in " _-":
+            if illegal in fn:
+                return fn.replace(illegal, "(_| |-)", 1)
+
     def _get_instance_by_name(self, field_name, field_class, field_key,
                               create_missing=False):
         """
@@ -156,18 +226,24 @@ class SpeciesRecordForm(forms.Form):
 
         # Convert meters to feet if we have elevation units
         if cleaned_data.get("elevation_units"):
-            if "m" in cleaned_data["elevation_units"]:
-                cleaned_data["elevation_units"] *= 3.2808399
-                cleaned_data["elevation_units"] = int(cleaned_data["elevation_units"])
-        
+            if "m" in cleaned_data["elevation_units"].lower():
+                cleaned_data["elevation"] *= 3.2808399
+                cleaned_data["elevation"] = int(cleaned_data["elevation"])
+
+        # Check to see if the filename points to valid images
         if cleaned_data.get("filename"):
             fn = cleaned_data.get("filename")
+            # generate our dorsal/ventral images
             fn_D = fn.replace("label", "D")
             fn_V = fn.replace("label", "V")
+
+            fn_D = self._regex_filename(fn_D)
+            fn_V = self._regex_filename(fn_V)
+
             try:
                 # Check if the files exist that we're trying to link to
-                SpeciesImage.objects.get(image__contains=fn_D)
-                SpeciesImage.objects.get(image__contains=fn_V)
+                SpeciesImage.objects.get(image__iregex=fn_D)
+                SpeciesImage.objects.get(image__iregex=fn_V)
             except SpeciesImage.DoesNotExist:
                 # If they don't, or the names are too generic we throw a form error.
                 del cleaned_data['filename']
@@ -178,6 +254,44 @@ class SpeciesRecordForm(forms.Form):
             except:
                 del cleaned_data['filename']
                 raise forms.ValidationError("Filename problem...")
+
+        # Check for reared terms in notes and move the day/year/month accordingly
+        if cleaned_data.get("notes"):
+            for term in SpeciesImage.REARED_TERMS:
+                if term.lower() in cleaned_data['notes'].lower():
+                    # If a reared term is present, we move our d/m/y into notes
+                    months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May",6: "June",7: "July",8: "August",9: "September",10: "October",11: "November",12:"December"}
+
+                    month = cleaned_data.get("month")
+                    day = cleaned_data.get("day")
+                    year = cleaned_data.get("year")
+
+                    # Create our string to append to our notes
+                    if month or day or year:
+                        append_str = ";\n"
+                    if month:
+                        append_str += months[month]
+                        if day:
+                            append_str += " "
+                    if day:
+                        append_str += str(day)
+                    if (day or month) and year:
+                        append_str += ", "
+                    if year:
+                        append_str += str(year)
+
+                    if month or day or year:
+                        cleaned_data['notes'] += append_str
+
+                    # Clear our dates
+                    if cleaned_data.get("day"):
+                        cleaned_data["day"] = None
+                    if cleaned_data.get("month"):
+                        cleaned_data["month"] = None
+                    if cleaned_data.get("year"):
+                        cleaned_data["year"] = None
+
+                    break
 
         # Species are created if they don't exist.
         if cleaned_data.get("species"):
@@ -253,10 +367,37 @@ class SpeciesRecordForm(forms.Form):
                 if fn:
                     fn_D = fn.replace("label", "D")
                     fn_V = fn.replace("label", "V")
-                    f_D = SpeciesImage.objects.get(image__contains=fn_D)
+                    fn_D = self._regex_filename(fn_D)
+                    fn_V = self._regex_filename(fn_V)
+
+                    f_D = SpeciesImage.objects.get(image__iregex=fn_D)
+                    f_V = SpeciesImage.objects.get(image__iregex=fn_V)
+
+                    # delete the old label(s) because it would turn into a
+                    # record on update
+                    # Almost always we should be going into this first if statement
+                    if f_D.record == f_V.record and f_D.record:
+                        old = f_D.record.pk
+                        f_D.record = None
+                        f_V.record = None
+                        f_D.save()
+                        f_V.save()
+                        SpeciesRecord.objects.get(pk=old).delete()
+                    else:
+                        if f_D.record:
+                            old = f_D.record.pk
+                            f_D.record = None
+                            f_D.save()
+                            SpeciesRecord.objects.get(pk=old).delete()
+                        if f_V.record:
+                            old = f_V.record.pk
+                            f_V.record = None
+                            f_V.save()
+                            SpeciesRecord.objects.get(pk=old).delete()
+
                     f_D.record = self.instance
-                    f_V = SpeciesImage.objects.get(image__contains=fn_V)
                     f_V.record = self.instance
+
                     f_D.save()
                     f_V.save()
 
