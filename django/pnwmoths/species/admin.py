@@ -105,11 +105,14 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         "locality",
         "county",
         "state",
+        "elevation",
         "collection",
         "collector",
         "day",
         "month",
         "year",
+        "males",
+        "females",
         "notes",
     )
 
