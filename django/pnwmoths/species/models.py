@@ -229,6 +229,9 @@ class SpeciesRecord(models.Model):
     updating in the event that changes were made to a file without ids.
     """
 
+    # Admin Docs
+    gender_docs = "Negative values represent the count of unsexed specimens. -999999 means unsexed, uncounted."
+
     # Set the number of decimal points to include in longitude and latitude
     # values returned to the user.
     GPS_PRECISION = 2
@@ -255,8 +258,8 @@ class SpeciesRecord(models.Model):
 
     collector = models.ForeignKey(Collector, null=True, blank=True)
     collection = models.ForeignKey(Collection, null=True, blank=True)
-    males = models.IntegerField(null=True, blank=True)
-    females = models.IntegerField(null=True, blank=True)
+    males = models.IntegerField(null=True, blank=True, help_text=gender_docs)
+    females = models.IntegerField(null=True, blank=True, help_text=gender_docs)
     notes = models.TextField(null=True, blank=True)
 
     csv_file = models.CharField(null=True, blank=True, max_length=255)
@@ -413,12 +416,3 @@ class SpeciesImage(models.Model):
         s += "<br />Photograph copyright: %s" % self.photographer
 
         return s
-# class SpeciesImageMetadata(models.Model):
-#     """
-#     Represents key/value metadata associated with a specific species image.
-
-#     Examples include order, orientation (ventral, dorsal, etc.), photographer,
-#     developmental stage of the individual, etc.
-#     """
-#     key = models.CharField(max_value=255)
-#     value = models.CharField(max_value=255)
