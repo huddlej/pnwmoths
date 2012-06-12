@@ -375,11 +375,15 @@ class SpeciesImage(models.Model):
 
         # replace filename underscores with spaces (happens when uploaded via django-admin)
         z_folder_alt = z_folder[:z_folder.rfind("/")] + z_folder[z_folder.rfind("/"):].replace("_", " ")
+        # replace first space with a - due to inconsistent naming conventions.
+        z_folder_alt2 = z_folder[:z_folder.rfind("/")] + z_folder[z_folder.rfind("/"):].replace("-", " ", 1)
 
         if os.path.isdir(z_folder):
             return z_folder[z_folder.rfind(self.ZOOM_PATH):]
         elif os.path.isdir(z_folder_alt):
             return z_folder_alt[z_folder_alt.rfind(self.ZOOM_PATH):]
+        elif os.path.isdir(z_folder_alt2):
+            return z_folder_alt2[z_folder_alt2.rfind(self.ZOOM_PATH):]
         else:
             return "404"
 
