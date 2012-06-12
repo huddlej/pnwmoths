@@ -3,6 +3,19 @@
 
 {% block scripts %}
 {{ block.super }}
+<script type="text/javascript">
+// Hack to redraw the wymeditor iframe on Safari
+if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+  setInterval(function(){
+    var i = document.getElementById('nyroModalIframe');
+    if(i != null) {
+      i.style.display = 'block'; 
+      i.offsetHeight;
+      i.style.display = 'inline-block';
+   }
+  }, 100);
+}
+</script>
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/excanvas.min.js"></script><![endif]-->
 <script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js"></script>
 

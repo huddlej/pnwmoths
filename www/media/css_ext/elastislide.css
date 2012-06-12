@@ -4,6 +4,7 @@
 	position:relative;
 }
 .es-carousel{
+        border: 1px solid #346F97;
 	overflow:hidden;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;

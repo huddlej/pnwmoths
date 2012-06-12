@@ -46,12 +46,12 @@ jQuery(document).ready(function() {
                 Z.showImage("zoomify-factsheet", initZ.text(), "zToolbarVisible=1&zNavigatorVisible=0&zKeys=0&zSkinPath=/media/zoomify/Skins/Default");
             else
                 Z.showImage("zoomify-factsheet", initZ.text(), "zToolbarVisible=1&zNavigatorVisible=2&zKeys=0&zSkinPath=/media/zoomify/Skins/Default");
+        }
 
-            if (jQuery(".inline-species-image").first().hasClass("missing_zoomify")) {
-                jQuery("#zoomify-factsheet").addClass("hidden");
-                jQuery("#old-image-factsheet").removeClass("hidden");
-                jQuery("#old-image-factsheet a").colorbox();
-            }
+        if (jQuery(".inline-species-image").first().hasClass("missing_zoomify")) {
+            jQuery("#zoomify-factsheet").addClass("hidden");
+            jQuery("#old-image-factsheet").removeClass("hidden");
+            jQuery("#old-image-factsheet a").colorbox();
         }
 
         // Copyright for zoomify is hacked into to the zoomify script

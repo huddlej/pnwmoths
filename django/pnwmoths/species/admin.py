@@ -114,6 +114,7 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         "males",
         "females",
         "notes",
+        "date_added"
     )
 
     list_filter = (
@@ -125,6 +126,7 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         "collector",
         "locality",
         "csv_file",
+        "date_added",
     )
     list_select_related = True
     search_fields = ("species__genus", "species__species", "year", "collector__name", "collection__name", "locality", "notes", "latitude", "longitude")
