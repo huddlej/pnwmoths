@@ -387,8 +387,9 @@ class SpeciesImage(models.Model):
         reared_terms = self.REARED_TERMS
         # reared terms are used to determine whether the date is suspect
         # if they are, we include our notes field
-        notes = r.notes.lower()
+        notes = r.notes
         if notes:
+            notes = notes.lower()
             for term in reared_terms:
                 if term.lower() in notes:
                     notes = r.notes
