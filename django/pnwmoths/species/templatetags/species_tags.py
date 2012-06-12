@@ -6,7 +6,6 @@ from django.db.models import F
 import re
 
 from pnwmoths.species.models import Species
-from pnwmoths.species.resources import get_resource_by_url
 from cms.models.pagemodel import Page
 
 import random
@@ -119,51 +118,5 @@ def imageset_by_navnode(parser, token):
 
     return ImagesetByNavNode(navnode, leaf_count, context_var)
 
-class ResourceNode(Node):
-    def __init__(self, url, kwargs):
-        self.url = url
-        self.kwargs = kwargs
-
-    def render(self, context):
-        kwargs = dict([(smart_str(k, "ascii"), v.resolve(context))
-                       for k, v in self.kwargs.items()])
-        return get_resource_by_url(self.url, kwargs)
-
-
-def resource(parser, token):
-    """
-    Returns the content associated with a Django URL and optional parameters.
-
-    The first argument is a Django URL relative to the server. Keyword arguments
-    are specified after the URL.
-
-    For example, use the following code to embed the content of a Django view in
-    a template:
-
-        {% resource /poll/1/results/ limit=10 %}
-    """
-    bits = token.split_contents()
-    if len(bits) < 2:
-        raise TemplateSyntaxError("'%s' takes at least one argument"
-                                  " (URL relative to Django HTTP server)" % bits[0])
-    url = bits[1]
-    kwargs = {}
-    bits = bits[2:]
-
-    # Now all the bits are parsed into new format,
-    # process them as template vars
-    if len(bits):
-        for bit in bits:
-            match = kwarg_re.match(bit)
-            if not match:
-                raise TemplateSyntaxError("Malformed arguments to resource tag")
-            name, value = match.groups()
-            if name:
-                kwargs[name] = parser.compile_filter(value)
-
-    return ResourceNode(url, kwargs)
-
-
 register.tag("species_by_name", species_by_name)
 register.tag("imageset_by_navnode", imageset_by_navnode)
-register.tag("resource", resource)

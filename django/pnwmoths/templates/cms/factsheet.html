@@ -99,7 +99,7 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                     {% cache 0 species_thumb forloop.counter species.name %}
                         {% thumbnail species_image.image species_image.SIZES.medium as medium %}
                         {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
-                            <a href="{{ species_image.image.url }}" title='{{ species_image.specimen_details|safe }}{{ species_image.license_details|safe }}&nbsp;' class="thumbnail">
+                            <a href="{{ species_image.image.url }}" title='{{ species_image.specimen_details }}{{ species_image.license_details }}&nbsp;' class="thumbnail">
                                 <img src="{{ small.url }}" />
                             </a>
                             {% with species_image.zoomify_folder|safe as inline_species_image %}

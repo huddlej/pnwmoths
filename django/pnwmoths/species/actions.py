@@ -11,7 +11,7 @@ def export_labels_as_csv_action(description="Export Labels as CSV"):
     def export_labels_as_csv(modeladmin, request, queryset):
         opts = modeladmin.model._meta
         field_names = set([field.name for field in opts.fields])
-        field_names = field_names - set(["species", "genus"])
+        field_names = field_names - set(["csv_file"])
         field_names = list(field_names)
 
         response = HttpResponse(mimetype='text/csv')
@@ -29,6 +29,7 @@ def export_labels_as_csv_action(description="Export Labels as CSV"):
 
         for obj in queryset:
             # for each label's image:
+            already_added = set()
             for im in obj.speciesimage_set.all():
                 d = [unicode(getattr(obj, field, "")
                                          if getattr(obj, field) is not None
@@ -36,8 +37,14 @@ def export_labels_as_csv_action(description="Export Labels as CSV"):
                                  for field in field_names]
                 # adds filename value                
                 # basename grabs the filename, splitext seperates the extension
-                d.insert(0, splitext(basename(im.image.name))[0])
-                writer.writerow(d)
+                # [:-1] pulls off the V/D distinction and then adds label
+                # We then export one row for each id, with multiple image pairs
+                # in the format Genus species-A-label
+                merged = splitext(basename(im.image.name))[0][:-1] + "label"
+                if merged not in already_added:
+                    already_added.add(merged)
+                    d.insert(0, merged)
+                    writer.writerow(d)
 
         return response
 
@@ -48,7 +55,7 @@ def export_records_as_csv_action(description="Export Records as CSV"):
     def export_records_as_csv(modeladmin, request, queryset):
         opts = modeladmin.model._meta
         field_names = set([field.name for field in opts.fields])
-
+        field_names = field_names - set(["csv_file"])
         field_names = list(field_names)
 
         # order columns according to model

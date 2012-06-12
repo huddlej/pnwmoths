@@ -2,7 +2,6 @@ import datetime
 import os
 from Levenshtein import distance
 from sorl.thumbnail import ImageField
-from tastypie.models import create_api_key
 import re
 
 from django.conf import settings
@@ -13,9 +12,7 @@ from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from cms.models.pluginmodel import CMSPlugin
-
-models.signals.post_save.connect(create_api_key, sender=User)
-
+from storage import OverwriteStorage
 
 class State(models.Model):
     choices = STATE_CHOICES + PROVINCE_CHOICES
@@ -216,18 +213,24 @@ class FeaturedMothImage(CMSPlugin):
 
 class RecordManager(models.Manager):
     def get_query_set(self):
-        return super(RecordManager, self).get_query_set().filter(speciesimage__isnull=True)
+        return super(RecordManager, self).get_query_set().filter(speciesimage__isnull=True).distinct()
 
 class LabelManager(models.Manager):
     def get_query_set(self):
-        return super(LabelManager, self).get_query_set().filter(speciesimage__isnull=False)
+        return super(LabelManager, self).get_query_set().filter(speciesimage__isnull=False).distinct()
 
 class SpeciesRecord(models.Model):
     """
     Represents a single record of a species based on a combination of where and
     when the specimen was found and by whom. If a record is missing latitude and
     longitude coordinates, it is assumed to be a label.
+
+    Stores the csv filename it was uploaded with for ease of replacement and
+    updating in the event that changes were made to a file without ids.
     """
+
+    # Admin Docs
+    gender_docs = "Negative values represent the count of unsexed specimens. -999999 means unsexed, uncounted."
 
     # Set the number of decimal points to include in longitude and latitude
     # values returned to the user.
@@ -239,7 +242,7 @@ class SpeciesRecord(models.Model):
             ('sight_field_notes', 'Sight/Field Notes'),
     )
 
-    record_type = models.CharField(max_length=20, choices=RECORD_TYPE_CHOICES, default='specimen')
+    record_type = models.CharField(max_length=20, choices=RECORD_TYPE_CHOICES, default='specimen', verbose_name='Voucher Type')
     species = models.ForeignKey(Species)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
@@ -255,9 +258,11 @@ class SpeciesRecord(models.Model):
 
     collector = models.ForeignKey(Collector, null=True, blank=True)
     collection = models.ForeignKey(Collection, null=True, blank=True)
-    males = models.IntegerField(null=True, blank=True)
-    females = models.IntegerField(null=True, blank=True)
+    males = models.IntegerField(null=True, blank=True, help_text=gender_docs)
+    females = models.IntegerField(null=True, blank=True, help_text=gender_docs)
     notes = models.TextField(null=True, blank=True)
+
+    csv_file = models.CharField(null=True, blank=True, max_length=255)
 
     date_added = models.DateTimeField(editable=False)
     date_modified = models.DateTimeField(editable=False)
@@ -286,7 +291,7 @@ class SpeciesRecord(models.Model):
         if r.state:
             s += str(r.state)
         if r.county:
-            s += " : " + str(r.county)
+            s += " : " + str(r.county.name) + " Co."
         s += "</strong>"
         if r.locality or r.elevation:
             s += "<br />"
@@ -306,11 +311,11 @@ class SpeciesRecord(models.Model):
 
     @property
     def date(self):
+        date = None
         try:
             date = datetime.date(self.year, self.month, self.day)
-        except ValueError:
-            date = None
-
+        except Exception:
+            pass
         return date
 
     def save(self, *args, **kwargs):
@@ -328,6 +333,7 @@ class SpeciesImage(models.Model):
     SPECIES_RE = r"(\w+ [-\w]+)-\w-\w.jpg"
     IMAGE_PATH = "moths/"
     ZOOM_PATH = "moths_z/"
+    REARED_TERMS = ["reared","larva","em.","pupa","Rubus","immature","broadleaf","Taraxacum","ovum","emerged","emgd","em in","em ex","eggs"]
     SIZES = {
         "thumbnail": "140x93",
         "medium": "375x249"
@@ -342,14 +348,13 @@ class SpeciesImage(models.Model):
     weight_docs += "<br />Example 2 (DEFAULT): [0,0,0,0,0]"
 
     species = models.ForeignKey(Species)
-    # defaults to first photographer defined.
+    # defaults to first photographer defined. (Merrill A Peterson)
     photographer = models.ForeignKey(Photographer, default=1, help_text=photographer_docs)
 
     # Image field manages the creation and deletion of thumbnails
     # automatically. When an instance of this class is deleted, thumbnails
     # created for this field are automatically deleted too.
-    # !!! Django never orphans the original image on the file system !!!
-    image = ImageField(upload_to=IMAGE_PATH)
+    image = ImageField(storage=OverwriteStorage(), upload_to=IMAGE_PATH)
     
     weight = models.IntegerField(blank=True, null=False, default=0, help_text=weight_docs)
     record = models.ForeignKey(SpeciesRecord, blank=True, null=True, verbose_name="Label")
@@ -389,22 +394,35 @@ class SpeciesImage(models.Model):
 
     def license_details(self):
         r = self.record
+        reared_terms = self.REARED_TERMS
+        # reared terms are used to determine whether the date is suspect
+        # if they are, we include our notes field
+        notes = r.notes.lower()
+        if notes:
+            for term in reared_terms:
+                if term.lower() in notes:
+                    notes = r.notes
+                    break
+            else:
+                notes = ""
+
         s = ""
 
-        s += "%s, %s." % (r.date.strftime("%B %d, %Y"), r.collector)
+        if r.date:
+            s += str(r.date.strftime("%B %d, %Y"))
+
+        if r.collector:
+            if r.date:
+                s += ", "
+            s += str(r.collector) + "."
+
+        if notes:
+            s += "<br />" + str(notes)
+
         if r.collection.url:
             s += '<br />Specimen courtesy of <a href="%s" target="_blank">%s</a>' % (r.collection.url, r.collection)
         else:
             s += "<br />Specimen courtesy of %s" % r.collection
-        s += "<br />Photograph copyright of %s" % self.photographer
+        s += "<br />Photograph copyright: %s" % self.photographer
 
         return s
-# class SpeciesImageMetadata(models.Model):
-#     """
-#     Represents key/value metadata associated with a specific species image.
-
-#     Examples include order, orientation (ventral, dorsal, etc.), photographer,
-#     developmental stage of the individual, etc.
-#     """
-#     key = models.CharField(max_value=255)
-#     value = models.CharField(max_value=255)

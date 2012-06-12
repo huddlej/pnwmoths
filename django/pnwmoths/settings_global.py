@@ -124,7 +124,6 @@ INSTALLED_APPS = (
     'cms.plugins.googlemap',
     'csv_admin',
     'csvimporter',
-    'tastypie',
     'haystack',
     'menus',
     'mptt',

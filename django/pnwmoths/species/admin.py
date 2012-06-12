@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 from reversion.admin import VersionAdmin
 from sorl.thumbnail.admin import AdminImageMixin
 from sorl.thumbnail import get_thumbnail
-from tastypie.admin import ApiKeyInline
-from tastypie.models import ApiAccess, ApiKey
 from ajax_select import make_ajax_form
 from ajax_select.admin import AjaxSelectAdmin
 from django.core import urlresolvers
@@ -15,11 +13,8 @@ from models import (Collection, Collector, County, Species, SpeciesImage,
                     SpeciesRecord, State, Author, PlateImage, Photographer)
 
 
-admin.site.register(ApiKey)
-admin.site.register(ApiAccess)
-
 class UserModelAdmin(UserAdmin):
-        inlines = [ApiKeyInline]
+  pass
 
 admin.site.unregister(User)
 admin.site.register(User, UserModelAdmin)
@@ -85,6 +80,15 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
     thumb.short_description = 'Photo'
     thumb.allow_tags = True 
 
+    def get_readonly_fields(self, request, obj=None):
+        """
+        Dynamic readonly list so that new objects can get their csv_file changed.
+        """
+        if obj:
+            return ['csv_file']
+        else:
+            return []
+
     def rec_type(self):
         if self.speciesimage_set.exists():
             return "Label"
@@ -92,7 +96,7 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
             return "Record"
 
     list_display = (
-        rec_type,
+        "record_type",
         thumb,
         noc_id,
         "species",
@@ -101,22 +105,28 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         "locality",
         "county",
         "state",
+        "elevation",
         "collection",
         "collector",
         "day",
         "month",
         "year",
+        "males",
+        "females",
         "notes",
         "date_added"
     )
+
     list_filter = (
+        "record_type",
         "state",
         "county",
         "collection",
         "year",
         "collector",
         "locality",
-        "date_added"
+        "csv_file",
+        "date_added",
     )
     list_select_related = True
     search_fields = ("species__genus", "species__species", "year", "collector__name", "collection__name", "locality", "notes", "latitude", "longitude")
@@ -144,15 +154,6 @@ class CollectionAdmin(VersionAdmin, admin.ModelAdmin):
     search_fields = ("name", "url",)
 
 admin.site.register(Collection, CollectionAdmin)
-
-
-class PlateImageAdmin(VersionAdmin, admin.ModelAdmin):
-    pass
-admin.site.register(PlateImage, PlateImageAdmin)
-
-class PhotographerAdmin(VersionAdmin, admin.ModelAdmin):
-    pass
-admin.site.register(Photographer, PhotographerAdmin)
 
 class CollectorAdmin(VersionAdmin, admin.ModelAdmin):
     pass

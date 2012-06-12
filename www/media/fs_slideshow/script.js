@@ -3,7 +3,6 @@ jQuery(document).ready(function() {
 
     // Remove styles for users without javascript.
     jQuery(".all-images").removeClass("all-images-no-js");
-    jQuery(".no-js").hide();
 
     if (jQuery("#images .other-images").length > 0) {
         jQuery("#carousel-other-images").elastislide({
@@ -44,9 +43,9 @@ jQuery(document).ready(function() {
 
             // Temporary fix until navigator is fixed in IE
             if (jQuery.browser.msie)
-                Z.showImage("zoomify-factsheet", initZ.text(), "zToolbarVisible=1&zNavigatorVisible=0&zSkinPath=/media/zoomify/Skins/Default");
+                Z.showImage("zoomify-factsheet", initZ.text(), "zToolbarVisible=1&zNavigatorVisible=0&zKeys=0&zSkinPath=/media/zoomify/Skins/Default");
             else
-                Z.showImage("zoomify-factsheet", initZ.text(), "zToolbarVisible=1&zNavigatorVisible=1&zSkinPath=/media/zoomify/Skins/Default");
+                Z.showImage("zoomify-factsheet", initZ.text(), "zToolbarVisible=1&zNavigatorVisible=2&zKeys=0&zSkinPath=/media/zoomify/Skins/Default");
         }
 
         if (jQuery(".inline-species-image").first().hasClass("missing_zoomify")) {
