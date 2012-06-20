@@ -4,7 +4,7 @@
 	position:relative;
 }
 .es-carousel{
-        border: 1px solid #346F97;
+        border: 1px solid black;
 	overflow:hidden;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -21,7 +21,7 @@
 }
 .es-carousel ul li a{
 	display:block;
-        color: black;
+        text-align: center;
 }
 .es-carousel ul li a img{
 	display:block;

@@ -152,6 +152,7 @@ PNWMOTHS.Chart = function () {
                     rendererOptions: {shadowAlpha: 0, barWidth: 5}
                 },
                 grid: {drawGridlines: false},
+                series:[{color:'#333'}],
                 axes: {
                     xaxis: {
                         label: 'Month',
@@ -225,4 +226,32 @@ jQuery(document).ready(function () {
             );
         }
     });
+     var $ = jQuery;
+     $('#plot').bind('jqplotDataHighlight', 
+        function (ev, seriesIndex, pointIndex, data ) {
+            var mouseX = ev.pageX; //these are going to be how jquery knows where to put the div that will be our tooltip
+            var mouseY = ev.pageY;
+            $('#chartpseudotooltip').html(data[1]);
+            var cssObj = {
+                  'position' : 'absolute',
+                  'font-weight' : 'bold',
+		  'background' : 'rgba(255,255,255,0.7)',
+		  'border' : '1px solid black',
+		  'padding' : '0px 2px 0px 2px',
+		  'font-size' : '.8em',
+                  'left' : (mouseX+15) + 'px', //usually needs more offset here
+                  'top' : (mouseY-10) + 'px'
+                };
+            $('#chartpseudotooltip').css(cssObj);
+	    $('#chartpseudotooltip').show();
+            }
+    );    
+
+    $('#plot').bind('jqplotDataUnhighlight', 
+        function (ev) {
+	    $('#chartpseudotooltip').hide();
+            $('#chartpseudotooltip').html('');
+        }
+    );
+    
 });

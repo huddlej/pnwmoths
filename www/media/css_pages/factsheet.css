@@ -4,8 +4,6 @@
 
 .all-images {
     margin-left: 10px;
-    background-color: #F0F6F9;
-    border: 1px solid #346F97;
 }
 
 /* Styles for users without javascript. */
@@ -62,6 +60,23 @@
     display: none;
 }
 
+#images, #similar {
+    border: 2px solid black;
+}
+#similar {
+    margin-top: 1.5em;
+}
+#similar h3 {
+    margin: 0 0 0 0;
+    padding-left: 0.5em;
+    padding-top: 0.25em;
+}
+#slideshow-copyright {
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding-left: 1em;
+}
+
 .fullscreen_copyright {
     position: absolute;
     bottom: 35px;
@@ -72,12 +87,16 @@
     box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, .2);
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    background: rgb(255, 255, 0);
-    background: rgba(255, 255, 0, .85);
+    background: rgb(243, 232, 186);
+    background: rgba(243, 232, 186, .85);
 }
 .fs_title {
     margin-top: 10px;
     margin-left: 10px;
+}
+.fs_subtitle {
+    margin: 0px 0px 0px 0px;
+    float: right; margin-right: 10px; color: grey;
 }
 .padded {
     margin: 10px;
@@ -105,4 +124,35 @@
 #zoomify-factsheet {
   position: relative;
   padding-bottom: 20px;
+}
+
+.es-carousel-wrapper img {
+    margin-bottom: 0px;
+}
+
+#map_phen_filter_col {
+    border: 2px solid black;
+}
+
+#map_phen_filter_col #googlemap {
+    margin: 0.25em auto;
+}
+
+#fs_content {
+    max-width: 50em;
+    margin: 0 auto;
+}
+
+#fs_content p {
+    margin-bottom: 2em;
+}
+#fs_content h2 {
+    color: #e65d24;
+    margin: 0 0 0 0 !important;
+}
+
+#fs_content h3, #fs_content h4, #fs_content h5 {
+    color: black;
+    font-style: italic;
+    margin: 0 0 0 0 !important;
 }

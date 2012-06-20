@@ -16,7 +16,7 @@ h3.browse_genus_species {
 
 .species {
     cursor: pointer;
-    border: 1px dotted blue;
+    border: 1px dotted #FA2;
     width: 46%;
     float: left;
     display: inline;
@@ -29,9 +29,9 @@ h3.browse_genus_species {
 }
 
 .browse_item_hover {
-    background-color: #F0F6F9 !important;
+    background-color: #FFF6AF !important;
     margin-bottom: 10px !important;
-    border-bottom: 1px solid blue !important;
+    border-bottom: 1px solid #FA2 !important;
 }
 
 .browse_heading h3 {
@@ -45,6 +45,12 @@ h3.browse_genus_species {
     font-weight: bold;
     text-decoration: underline;
 }
+.browse_thumbs {
+    display: inline-block;
+}
+.species .browse_thumbs {
+    width: 100%;
+}
 
 .browse_thumbs img {
     margin-left: 10px;
@@ -55,15 +61,49 @@ h3.browse_genus_species {
     float: left;
     padding: 0;
     margin: 0;
+    margin-top: 5px;
     margin-left: 10px;
-    margin-top: 12px;
-    padding: 5px 8px 5px 8px;
+    padding: 2px 8px 2px 8px;
     text-align: center;
     width: 10px;
 }
 
+#browse_images_toggle {
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.expand_button {
+        -moz-box-shadow:inset 0px 1px 0px 0px #fff6af;
+        -webkit-box-shadow:inset 0px 1px 0px 0px #fff6af;
+        box-shadow:inset 0px 1px 0px 0px #fff6af;
+        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #faf6e5), color-stop(1, #f3e8ba) );
+        background:-moz-linear-gradient( center top, #faf6e5 5%, #f3e8ba 100% );
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#faf6e5', endColorstr='#f3e8ba');
+        background-color:#ffec64;
+        -moz-border-radius:6px;
+        -webkit-border-radius:6px;
+        border-radius:6px;
+        border:1px solid #333;
+        display:inline-block;
+        color:#333333;
+        font-family:arial;
+        font-size:15px;
+        font-weight:bold;
+        text-decoration:none;
+        text-shadow:1px 1px 0px #ffee66;
+}.expand_button:hover {
+        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f3e8ba), color-stop(1, #faf6e5) );
+        background:-moz-linear-gradient( center top, #f3e8ba 5%, #faf6e5 100% );
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f3e8ba', endColorstr='#faf6e5');
+        background-color:#f3e8ba;
+}.expand_button:active {
+        position:relative;
+        top:1px;
+}
+
 .loading_toggle {
-    background: #EEEEEE center no-repeat url('ajax-loader.gif') !important;
+    background: #FFEC64 center no-repeat url('ajax-loader.gif') !important;
 }
 
 .species img{    

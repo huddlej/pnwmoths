@@ -3,8 +3,7 @@
 }
 
 .chart {
-    background-color: #F0F6F9;
-    border: 1px solid #346F97;
+    margin: 0 auto;
     display: none;
     width: 98%;
     height: 260px;

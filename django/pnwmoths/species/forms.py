@@ -6,6 +6,10 @@ from models import Collection, Collector, County, Species, SpeciesRecord, State,
 
 registered_models = {"SpeciesRecord": SpeciesRecord}
 
+"""
+TODO: This needs refactoring.
+"""
+
 
 class LazyIntegerField(forms.IntegerField):
     widget = forms.TextInput(attrs={"size": "3"})
@@ -234,16 +238,27 @@ class SpeciesRecordForm(forms.Form):
         if cleaned_data.get("filename"):
             fn = cleaned_data.get("filename")
             # generate our dorsal/ventral images
-            fn_D = fn.replace("label", "D")
-            fn_V = fn.replace("label", "V")
+            pair_images = False
 
-            fn_D = self._regex_filename(fn_D)
-            fn_V = self._regex_filename(fn_V)
+            # -label indicates a Dorsal/Ventral combo
+            # otherwise we only look for a single image
+            if "-label" in fn:
+                fn_D = fn.replace("label", "D")
+                fn_V = fn.replace("label", "V")
+
+                fn_D = self._regex_filename(fn_D)
+                fn_V = self._regex_filename(fn_V)
+                pair_images = True
+            else:
+                fn = self._regex_filename(fn)
 
             try:
                 # Check if the files exist that we're trying to link to
-                SpeciesImage.objects.get(image__iregex=fn_D)
-                SpeciesImage.objects.get(image__iregex=fn_V)
+                if pair_images:
+                    SpeciesImage.objects.get(image__iregex=fn_D)
+                    SpeciesImage.objects.get(image__iregex=fn_V)
+                else:
+                    SpeciesImage.objects.get(image__iregex=fn)
             except SpeciesImage.DoesNotExist:
                 # If they don't, or the names are too generic we throw a form error.
                 del cleaned_data['filename']
@@ -365,41 +380,53 @@ class SpeciesRecordForm(forms.Form):
                 self.instance.save()
                 # changing image label fields is an additive process 
                 if fn:
-                    fn_D = fn.replace("label", "D")
-                    fn_V = fn.replace("label", "V")
-                    fn_D = self._regex_filename(fn_D)
-                    fn_V = self._regex_filename(fn_V)
+                    if "-label" in fn:
+                        fn_D = fn.replace("label", "D")
+                        fn_V = fn.replace("label", "V")
+                        fn_D = self._regex_filename(fn_D)
+                        fn_V = self._regex_filename(fn_V)
 
-                    f_D = SpeciesImage.objects.get(image__iregex=fn_D)
-                    f_V = SpeciesImage.objects.get(image__iregex=fn_V)
+                        f_D = SpeciesImage.objects.get(image__iregex=fn_D)
+                        f_V = SpeciesImage.objects.get(image__iregex=fn_V)
 
-                    # delete the old label(s) because it would turn into a
-                    # record on update
-                    # Almost always we should be going into this first if statement
-                    if f_D.record == f_V.record and f_D.record:
-                        old = f_D.record.pk
-                        f_D.record = None
-                        f_V.record = None
-                        f_D.save()
-                        f_V.save()
-                        SpeciesRecord.objects.get(pk=old).delete()
-                    else:
-                        if f_D.record:
+                        # delete the old label(s) because it would turn into a
+                        # record on update
+                        # Almost always we should be going into this first if statement
+                        if f_D.record == f_V.record and f_D.record:
                             old = f_D.record.pk
                             f_D.record = None
-                            f_D.save()
-                            SpeciesRecord.objects.get(pk=old).delete()
-                        if f_V.record:
-                            old = f_V.record.pk
                             f_V.record = None
+                            f_D.save()
                             f_V.save()
                             SpeciesRecord.objects.get(pk=old).delete()
+                        else:
+                            if f_D.record:
+                                old = f_D.record.pk
+                                f_D.record = None
+                                f_D.save()
+                                SpeciesRecord.objects.get(pk=old).delete()
+                            if f_V.record:
+                                old = f_V.record.pk
+                                f_V.record = None
+                                f_V.save()
+                                SpeciesRecord.objects.get(pk=old).delete()
 
-                    f_D.record = self.instance
-                    f_V.record = self.instance
+                        f_D.record = self.instance
+                        f_V.record = self.instance
 
-                    f_D.save()
-                    f_V.save()
+                        f_D.save()
+                        f_V.save()
+                    else:
+                        # Save a single image
+                        fn = self._regex_filename(fn)
+                        f = SpeciesImage.objects.get(image__iregex=fn)
+                        if f.record:
+                            old = f.record.pk
+                            f.record = None
+                            f.save()
+                            SpeciesRecord.objects.get(pk=old).delete()
+                        f.record = self.instance
+                        f.save()
 
             else:
                 return self.instance

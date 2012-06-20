@@ -187,3 +187,15 @@ AJAX_LOOKUP_CHANNELS = {
 # magically include jqueryUI/js/css
 AJAX_SELECT_BOOTSTRAP = True
 AJAX_SELECT_INLINES = 'inline'
+
+WYM_CLASSES = ",\n".join([
+    "{'name': 'date', 'title': 'PARA: Date', 'expr': 'p'}",
+    "{'name': 'hidden-note', 'title': 'PARA: Hidden note', 'expr': 'p[@class!=\"important\"]'}",
+    "{'name': 'home_linespacing', 'title': 'PARA: Home LineSpacing', expr: 'p'}"
+])
+
+WYM_STYLES = ",\n".join([
+    "{'name': '.hidden-note', 'css': 'color: #999; border: 2px solid #ccc;'}",
+    "{'name': '.date', 'css': 'background-color: #ff9; border: 2px solid #ee9;'}",
+    "{'name': '.home_linespacing', 'css': 'line-spacing: 2em;'}" 
+])

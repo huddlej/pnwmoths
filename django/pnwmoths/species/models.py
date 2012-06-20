@@ -5,7 +5,7 @@ from sorl.thumbnail import ImageField
 import re
 
 from django.conf import settings
-from cms.models.fields import  PageField
+from cms.models.fields import  PageField, PlaceholderField
 from django.contrib.auth.models import User
 from django.contrib.localflavor.ca.ca_provinces import PROVINCE_CHOICES
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
@@ -132,7 +132,7 @@ class PlateImage(models.Model):
         "medium": "480x600"
     }
 
-    plate_title = models.CharField(max_length=200)
+    description = PlaceholderField('Description')
     image = ImageField(upload_to=IMAGE_PATH)
     z_image = models.FilePathField(path=ZOOM_ABS_PATH, recursive=True, match="ImageProperties.xml", max_length=200, help_text=z_image_docs, blank=True, null=True)
 

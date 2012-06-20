@@ -1,0 +1,305 @@
+/*
+New PNW Moths Design
+Uses columnal column which is based on 1140 grid.
+Guide: http://www.columnal.com/#markupcode
+*/
+
+body {
+  background-color: #f3e8ba;
+  font-family: 'Open Sans', Verdana, sans-serif;
+}
+
+p	{
+	color: #000000;	
+}
+
+li {
+    margin-left: 0px !important;
+}
+
+.shadow_container {
+  max-width: 1140px;
+  margin: 0 auto;
+  -webkit-box-shadow:  0px 0px 15px 5px rgba(50, 50, 50, .25);
+  box-shadow:  0px 0px 15px 5px rgba(50, 50, 50, .25);
+}
+
+/* defines the black background of the header */
+#header { background-color: #000000; }
+
+/* defines the padding inside the header
+   keeps everything from butting up against the edges
+   This div might seem superfluous, but it is necessary to properly
+   pad inside the grid. */
+.header_padded {
+  padding: 0 2% 0px 2%;
+}
+
+/* the actual header-moths image */
+#header-moths {
+  margin: 10px 0 0 0;
+}
+
+/* the h1 for our Pacific Northwest Moths title */
+#header-text {
+  color: white;
+  margin: 0 0 0 0;
+  font-family: 'Spinnaker', 'Open Sans', sans-serif;
+  text-shadow: 0 0 1px rgba(255, 255, 255);
+  
+}
+/* a span inside our title to color Moths green */
+#header-green {
+  color: #a4ab78;
+  text-shadow: 0 0 1px rgba(164, 171, 120);
+  
+}
+
+#search_box {
+  width: 65%;
+}
+#search_button {
+  width: 25%;
+}
+
+/* this row in the grid contains our horizontal green header line */
+#header_bottom {
+  height: 25px;
+}
+
+/* the horizontal header line */
+#header_bottom hr {
+  color: #a2aa77;
+  background-color: #a2aa77;
+  height: 1px;
+  margin: 10px auto 0 auto;
+  width: 97%;
+}
+
+.inputBox	{
+	width: 200px;
+	height: 22px;
+	margin-top:30px;
+	margin-left:10px;
+}
+
+.submitButton	{	
+	 border-width:1px;
+	 border-style:solid;
+	 font-size:large;
+	 -moz-border-radius: 7px;
+	 -webkit-border-radius: 7px;
+	 vertical-align:middle;
+}
+
+
+/* the navigation ul that contains our menu items */
+#navigation {
+  text-align: center;
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 0 auto;
+}
+
+/* each menu item in an li with text/image centered
+   % width for each li is currently defined inline - I couldn't figure out a way
+   to lay out the menu like the mockup without defining widths individually */
+#navigation li {
+  display: inline-block;
+  text-align: center;
+  padding: 0;
+  margin: 8px 0 8px 0;
+  
+}
+
+/* centers the navigation image underneath the text link */
+#navigation li a img{
+  margin: 0 auto 0 auto;
+}
+
+/* set the content div's background */
+#content-wrapper { background-color: #ffffff; }
+
+/* the inner div that contains the content
+   (we need the inner div for proper padding) */
+#content {
+  padding: 10px;
+  display:block;
+  content:"";
+  clear:both;
+}
+
+#faqContent{
+	padding: 10px 70px 30px 30px;
+}
+
+.faqHeader	{
+	color:#D15E25;
+	font-size: large;
+}
+
+#plateContent img	{
+	padding: 10px;	
+}
+
+#plateContent	{
+	padding-left: 20px;	
+}
+
+div.plateImage	{
+	float:left;	
+}
+
+div.plateImage p {
+   text-align: center;
+   margin-top:0px;
+   }
+
+#faqLinks	{
+	list-style-type:none;
+	
+}
+
+#stats	{
+	border-style: solid;
+	border-width: 2px;
+	text-align: center;
+}
+
+.quickStats	{
+	font-family: Verdana, Geneva, 'Open Sans', sans-serif;
+	color: #000000;
+	font-size:xx-large;
+	padding-top:25px;;
+}
+
+.home_linespacing {
+    line-height: 2em;
+}
+
+.bold	{
+	font-weight: bold;	
+}
+
+/* defines the black headings for our navigation menus */
+.footer-heading {
+  background-color: #000000;
+  color: white;
+  font-weight: bold;
+  padding-left: 3%;
+}
+
+/* the lists underneath our footer headings */
+.combine_footer ul {
+  list-style: none;
+}
+/* the list elements under our footer headings */
+.combine_footer ul li {
+  margin: 2px 0 0 0;
+  padding-left: 5%;
+}
+/* style applied to each of our 3 combined footer headings:
+   Explore Data, About Moths, About Us
+   !important because we're overriding the grid styles
+   we override these again in the mobile section (to 100%) */
+.combine_footer {
+  margin: 0 !important;
+  width: 33% !important;
+}
+.combine_footer.last { padding-right: 0%; }
+
+/* funders div */
+#funders {
+  text-align: center;
+}
+/* funder images
+   we define images with % widths so that they
+   resize when our grid resizes - this requires marginally higher
+   resolution images (cater to an 1280px width screen). 
+   These get cached though after the first visit, so it doesn't really matter. */
+#funding-footer img {
+  display: inline-block;
+  width: 45%;
+  margin: 0 auto 0 auto;
+}
+
+/* the 1px border surrounding collaborators */
+.head-foot-borders {
+  border-top: 1px solid #a2aa77;
+  border-bottom: 1px solid #a2aa77;
+}
+
+/* the collaborators heading */
+#collaborators-heading h2 {
+  color: #a2aa77;
+  margin: 10px 0 0 0;
+  font-family: 'Open Sans', 'Open Sans', sans-serif;
+}
+
+/* collaborator images */
+#collaborators img {
+  display: inline-block;
+  margin-right: 28px;
+}
+
+/* Mobile Version Styles
+   All the above styles (desktop) are applied to the mobile version.
+   1140grid/columnal handles shrinking the grid to the correct resolution.
+   However, sometimes we want to override certain css styles - 
+   most of these involved reducing padding so as not to waste space
+   on mobile.
+   
+   To see the mobile style, shrink your browser below 767px in width.
+   
+   You'll notice that the main navigation dissapears - this is achieved using
+   the .mobile-hide class. This is expected - I replace the navigation menu with
+   a dropdown on mobile using javascript.
+*/
+@media handheld, only screen and (max-width: 767px) {
+	.header_padded{ padding: 0 0 0 0 !important; }
+	#header_bottom div { padding: 0; }
+	#header_container { margin-top: 0 !important; }
+	#internal_footer, #funding-footer, #collaborators-footer {
+	  padding: 0 0 0 0;
+	}
+        .shadow_container {
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+        }
+        #fs_content {
+            -webkit-column-count: 1 !important;
+            column-count: 1 !important;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .col_1, .col_2, .col_3, .col_4, .col_5, .col_6, .col_7, .col_8, .col_9, .col_10, .col_11, .col_12 {
+            padding-left: 5px !important;
+            padding-right: 5px !important;
+        }
+	#funding-footer img {
+	  width: auto !important;
+	}
+	/* need to override our 33% width above
+	   so these fill the mobile screen */
+	.combine_footer {
+	  width: 100% !important;
+	}
+	/* changing the footer navigation to be horizontally divided
+	   on the mobile. It saves a lot of vertical space */
+	.combine_footer ul li {
+	  margin: 5px 0 0 0;
+	  display: inline-block;
+	  padding: 0 2% 0 2%;
+	  border-left: 1px solid #a2aa77;
+	}
+	.combine_footer ul li:first-child {
+	  border-left: none;
+	}
+	#collaborators-footer {
+	  padding: 0 3% 0 3%;
+	}
+        .no-js {
+            margin-left: 0px !important;
+        }
+}

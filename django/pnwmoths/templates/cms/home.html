@@ -21,64 +21,23 @@
 
 {% block content %}
 
-	<div class="row top">
-		<div class="twelvecol last">
-                    <span>&nbsp;</span>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="fourcol">
-			<a href="/browse/"><div class="leftButton"><div class="lightButton">
-				<h4>Browse Taxonomic List</h4>
-				<span>Explore the levels of our taxonomic tree of over 1000 moth species!</span>
-			</div></div></a>
-		</div>
-		<div class="fourcol">
-			<a href="/image-plates/"><div style="padding: 0 0 0 0;"><div class="darkButton">
-				<h4>Explore Image Plates</h4>
-				<span>Browse our super-sized images comparing moth features and size!</span>
-			</div></div></a>
-		</div>
-		<div class="fourcol last">
-			<a href="/identify/"><div class="rightButton"><div class="lightButton">
-				<h4>Identify a Moth</h4>
-				<span>Try identifying a Pacific NorthWest moth with our interactive key!</span>
-			</div></div></a>
-		</div>
-	</div>
-
-	<div class="row bottom">
-		<div id="featuredmoth" class="sixcol">
-			<div>
-				<h3>Featured Moth</h3>
-                                {# Slow, but will be removed from new design #}
-                                {% cache 0 featured_image %}
-				{% placeholder "featured_image" %}
-                                {% endcache %}
-			</div>
-		</div>
-		<div id="fullmap" class="sixcol last">
-			<div>
-				<h3>Our Data Points</h3>
-				<div id="googlemap"></div>
-			</div>
-            <div>
-                <h3>Stats</h3>
-                <ul id="stats_list">
-                    {% cache 0 homepage_stats %}
-                        <li><strong>{{ "Browse"|navnode_species_count }}</strong> Specimen Profiles</li>
-                        {# SpeciesRecord is a slow query as we join it against images to filter out labels #}
-                        <li><strong>{{ "SpeciesRecord"|species_stat_count }}</strong> Specimen Records</li>
-                        <li><strong>{{ "SpeciesImage"|species_stat_count }}</strong> Specimen Images</li>
-                    {% endcache %}
-                </ul>
+        <div class="col_6">
+            {% placeholder "home_content" %}
+        </div>
+        <div class="col_6 last">
+            <div id="stats_map">
+            <h3>Quick Stats</h3>
+            <p>Map of all locations for which we have moth data</p>
+            <div id="googlemap"></div>
+            <ul id="stats_list">
+                {% cache 0 homepage_stats %}
+                    <li><strong>{{ "Browse"|navnode_species_count }}</strong> Specimen Profiles</li>
+                    {# SpeciesRecord is a slow query as we join it against images to filter out labels #}
+                    <li><strong>{{ "SpeciesRecord"|species_stat_count }}</strong> Specimen Records</li>
+                    <li><strong>{{ "SpeciesImage"|species_stat_count }}</strong> Specimen Images</li>
+                {% endcache %}
+            </ul>
             </div>
-		</div>
-	</div>
+        </div>
 
-{% endblock %}
-
-{% block related_sites_footer %}
-    {% placeholder "related_sites" %}
 {% endblock %}

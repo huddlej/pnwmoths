@@ -1,10 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from forms import ImportSpeciesRecordsForm
-from models import Species, SpeciesRecord
+from models import Species, SpeciesRecord, PlateImage
 
 
 IMPORT_ERROR_MESSAGE = """There was a problem with one or more rows in your
@@ -58,3 +58,16 @@ def transform_species_record(request, data):
     }
 
     return new_data
+
+def photographic_plate_zoomify(request, plate_pk):
+    """
+    Renders a zoomified version of the photographic plate if it exists.
+    Meant to be viewed in a popup window.
+    """
+    plate = get_object_or_404(PlateImage, pk=plate_pk)
+    z_path = None
+    if plate.z_image:
+        z_path = plate.z_image[plate.z_image.index("media/"):plate.z_image.rindex("/")]
+    return render_to_response("zoomify_plate.html",
+                                {"plate": plate, "z_path": z_path},
+                                context_instance=RequestContext(request))

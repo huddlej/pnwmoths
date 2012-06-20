@@ -2,9 +2,9 @@ jQuery(window).load(function() {
     // Initialize our map
     var mapDiv = jQuery("#googlemap");
     mapDiv.show();
-    var centerPoint = new google.maps.LatLng(46.9, -118.0);
+    var centerPoint = new google.maps.LatLng(48.4, -119.2);
     var options = {
-                zoom: 4,
+                zoom: 5,
                 streetViewControl: false,
                 center: centerPoint,
                 mapTypeId: 'terrain'
@@ -23,11 +23,12 @@ jQuery(window).load(function() {
               new google.maps.LatLng(39, -109.0)];
     var polygon = new google.maps.Polygon({
               paths: [everythingElse, pnw],
-              strokeColor: "#003F87",
+              strokeColor: "#333",
               strokeOpacity: 0.9,
               strokeWeight: 2,
               fillColor: "#000000",
-              fillOpacity: .1
+              fillOpacity: .1,
+              clickable: false
             });
     polygon.setMap(map);
 

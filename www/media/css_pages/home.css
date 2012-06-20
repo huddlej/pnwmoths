@@ -1,8 +1,28 @@
+#stats_map {
+   border: 2px solid black; 
+}
+#stats_map h3 {
+    margin: 0 0 0 0;
+    text-align: center;
+}
+#stats_map p {
+    margin: 0 0 0 0;
+    text-align: center;
+}
+#stats_map ul {
+    margin: 0 0 0 0;
+    text-align: center;
+    list-style: none;
+}
+#stats_map ul li {
+    display: inline-block;
+    padding: 0.25em;
+}
 #googlemap {
-  height: 363px;
+  height: 660px;
   display: none;
   width: 98%;
-  margin-bottom: 10px;
+  margin: 0 auto;
 }
 
 #googlemap img {

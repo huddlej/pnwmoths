@@ -36,7 +36,7 @@ PNWMOTHS.Map = function () {
              }); 
              
              // Height hack which fixes horribly slow load on ipad (unknown js issue inside of infobubble.js - getElementSize_
-             PNWMOTHS.Map.openIB.addTab('Site', "<br /><br /><br /><br /><br /><br /><br />"); 
+             PNWMOTHS.Map.openIB.addTab('Site', "<br /><br /><br /><br /><br />"); 
              PNWMOTHS.Map.openIB.addTab('Collections', ""); 
              PNWMOTHS.Map.openIB.addTab('Notes', "");
              PNWMOTHS.Map.openIB.calcOnce = false;             
@@ -55,7 +55,8 @@ PNWMOTHS.Map = function () {
               new google.maps.LatLng(39, -109.0)];
             var polygon = new google.maps.Polygon({
               paths: [everythingElse, pnw],
-              strokeColor: "#003F87",
+              strokeColor: "#333",
+              clickable: false,
               strokeOpacity: 0.9,
               strokeWeight: 2,
               fillColor: "#000000",

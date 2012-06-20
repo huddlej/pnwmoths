@@ -7,6 +7,7 @@ from sorl.thumbnail import get_thumbnail
 from ajax_select import make_ajax_form
 from ajax_select.admin import AjaxSelectAdmin
 from django.core import urlresolvers
+from cms.admin.placeholderadmin import PlaceholderAdmin
 
 from actions import export_records_as_csv_action, export_labels_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage,
@@ -140,7 +141,7 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
 
 admin.site.register(SpeciesRecord, SpeciesRecordAdmin)
 
-class PlateImageAdmin(VersionAdmin, admin.ModelAdmin):
+class PlateImageAdmin(VersionAdmin, PlaceholderAdmin):
     pass
 admin.site.register(PlateImage, PlateImageAdmin)
 

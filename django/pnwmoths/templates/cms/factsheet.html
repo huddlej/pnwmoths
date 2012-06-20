@@ -20,7 +20,6 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 <script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js"></script>
 
 <script type="text/javascript" src="{{ MEDIA_URL }}zoomify/ZoomifyImageViewer.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}zoomify/sizeViewerToPage.js"></script>
 
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.jqplot.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jqplot.barRenderer.min.js"></script>
@@ -32,9 +31,7 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.multiselect.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.multiselect.filter.js"></script>
-<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.rangeslider.js"></script>
-<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.daterangeslider.js"></script>
-<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.editrangeslider.js"></script>
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.rangesliders.js"></script>
 
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.tipTip.minified.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.elastislide.js"></script>
@@ -60,22 +57,24 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 <link rel="stylesheet" href="{{ MEDIA_URL }}fs_map/style.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}fs_chart/style.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}data/style.css" type="text/css">
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/redmond/jquery-ui.css" type="text/css">
+<link rel="stylesheet" href="{{ MEDIA_URL }}css/pnwmoths/jquery-ui-1.8.21.custom.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css_pages/factsheet.css" type="text/css">
 {% endblock %}
 
 {% block content %}
 <!-- wikipage start -->
 {% species_by_name current_page.get_title as species %}
-<div class="row top">
-    <div class="twelvecol last">
+<div class="row">
+    <div class="col_8">
         <h2 style="display: inline" class="fs_title"><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h2>
-        {% if species.noc_id %}<h3 style="float: right; margin-right: 10px; color: grey">{{ species.noc_id }}</h3>{% endif %}
-        {% if species.common_name %}<h3 style="clear: both" class="fs_title">{{ species.common_name }}</h3>{% endif %}
+        {% if species.common_name %}<h3 class="fs_title">{{ species.common_name }}</h3>{% endif %}
+    </div>
+    <div class="col_4 last">
+        {% if species.noc_id %}<h3 class="fs_subtitle">{{ species.noc_id }}</h3>{% endif %}
     </div>
 </div>
-<div id="fs_yui-g" class="row bottom">
-<div class="twelvecol last">
+<div id="fs_yui-g" class="row">
+<div style="position: static" class="col_6">
     <div id="fs_images">
         <div class="all-images all-images-no-js">
             <div id="images">
@@ -85,10 +84,10 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                         {% thumbnail species_image.image species_image.SIZES.medium as im %}
                             <div id="old-image-factsheet" class="hidden"><a href="{{ species_image.image.url }}"><img src="{{ im.url }}" /></a></div>
                             <div id="zoomify-factsheet" class="hidden"></div>
-                            <div id="slideshow-copyright">
+                            <p id="slideshow-copyright">
                                     {{ species_image.specimen_details|safe }}
                                     {{ species_image.license_details|safe }}
-                            </div>
+                            </p>
                         {% endthumbnail %}
                         </div>
                         <div id="carousel-other-images" class="es-carousel-wrapper">
@@ -121,12 +120,12 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 
         {% if species.similar.all or request.user.is_staff %}
             <div id="similar">
-            <h2>
+            <h3>
                 Similar Species
                 {% if request.user.is_staff and species %}
                     <span class="edit"><a href="{% url admin:species_species_change species.id %}" target="_new">edit</a></span>
                 {% endif %}
-            </h2>
+            </h3>
             <div id="carousel-similarspecies-images" class="es-carousel-wrapper">
             <div class="es-carousel">
             <ul class="other-images">
@@ -136,10 +135,10 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                     <a href="{% page_url similar_species.factsheet %}" target="_blank">
                     {% with similar_species.get_first_image as similar_image %}
                         {% thumbnail similar_image.image similar_image.SIZES.thumbnail as im %}
-                            <img src="{{ im.url }}" title="{{ similar_image.title }}" /><br />
+                        <img src="{{ im.url }}" title="{{ similar_image.title }}" />
                         {% endthumbnail %}
                     {% endwith %}
-                    {{ similar_species }}
+                    <em>{{ similar_species }}</em>
                     </a>
                 {% endcache %}
                 </li>
@@ -151,6 +150,8 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
       {% endif %}
       </div>
     </div>
+</div>
+<div style="position: static" class="col_6 last">
     <div id="map_phen_filter_col"> 
         <div id="googlemap" class="googlemap">
             <span class="data">"species-data"</span>
@@ -159,6 +160,7 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
             <span class="data">species-data</span>
             <span class="options"></span>
         </div>
+        <div id="chartpseudotooltip"></div>
         <div id="factsheet-filters">
             <h4>Data Filters</h4>
             <select class="third" id="f-county" multiple="multiple">        
@@ -173,20 +175,26 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
             <div id="date-filter-1" class="whole" style="padding-top: 50px">
                     <div id="f-date"></div>
             </div>
-            <h6 style="color: grey; margin-left: 30px">Date Range</h6>
+            <h6 style="color: grey; margin-top: 0; margin-left: 30px">Date Range</h6>
             <div id="datefilterdialog">
             </div>
             <div class="whole" style="margin-top: 60px">
                 <div id="f-elevation"></div>
             </div>
-            <h6 style="color: grey; margin-left: 30px">Elevation (ft)</h6>
-            <div class="third" style="margin-top: 15px; float: right;">
+            <h6 style="color: grey; margin-top: 0; margin-left: 30px">Elevation (ft)</h6>
+            <div class="third">
                 <input id="f-reset" type="submit" value="Reset Filters" >
             </div>
+            <div style="clear: both"></div>
         </div>
     </div>
-    <div id="fs_content">
-        {% placeholder "factsheet" %}
+</div>
+</div>
+<div class="row">
+    <div class="col_12 last">
+        <div id="fs_content">
+            {% placeholder "factsheet" %}
+        </div>
     </div>
 </div>
 

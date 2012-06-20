@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 from django.db.models import F
 import re
 
-from pnwmoths.species.models import Species
+from pnwmoths.species.models import Species, PlateImage
 from cms.models.pagemodel import Page
 
 import random
@@ -118,5 +118,34 @@ def imageset_by_navnode(parser, token):
 
     return ImagesetByNavNode(navnode, leaf_count, context_var)
 
+
+
+def load_plateimages(parser, token):
+    """
+    Retrieves a list of Plate Images.
+    {% load_plateimages as plates %}
+    """
+    class PlateImages(Node):
+        def __init__(self, context_var):
+            self.context_var = context_var
+
+        def render(self, context):
+            try:
+                # Try to set our context_var to our PlateImages
+                context[self.context_var] = PlateImage.objects.all()
+            except:
+                pass
+
+            return ""
+
+
+    try:
+        _, context_var = token.split_contents()[1:]
+    except ValueError:
+        raise TemplateSyntaxError(_('tag requires 2 arguments'))
+
+    return PlateImages(context_var)
+
 register.tag("species_by_name", species_by_name)
 register.tag("imageset_by_navnode", imageset_by_navnode)
+register.tag("load_plateimages", load_plateimages)

@@ -18,7 +18,7 @@
         }
 
         // Add collapsing button to div
-        jQuery(this).find('.browse_heading').prepend('<a class="toggle_item button">+</a>');
+        jQuery(this).find('.browse_heading').prepend('<a class="toggle_item expand_button">+</a>');
         // Give the button toggle states
         jQuery(this).find('.toggle_item').toggle(
             function(){ jQuery(this).html("-"); },
