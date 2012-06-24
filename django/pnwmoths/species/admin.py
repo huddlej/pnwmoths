@@ -52,6 +52,7 @@ class SpeciesImageAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         noc_id,
         "species",
         "image",
+	"photographer",
         "weight"
     )
     list_editable = ("weight",)
