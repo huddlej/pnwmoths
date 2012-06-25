@@ -1,8 +1,8 @@
 {% extends "cms/base.html" %}
+{% block stylesheets %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css_pages/stub.css" type="text/css" media="screen" />
+{% endblock %}
 {% block content %}
-<div class="row">
-  <div class="twelvecol last">
       {{ block.super }}
-  </div>
-</div>
 {% endblock %}
