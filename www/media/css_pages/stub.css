@@ -2,6 +2,7 @@
   padding-left: 40px;
   max-width: 50em;
   color: black;
+  min-height: 300px;
 }
 #content ol { list-style: decimal; }
 
