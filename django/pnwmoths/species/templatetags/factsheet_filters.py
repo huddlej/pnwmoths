@@ -1,6 +1,6 @@
 from django import template
 from pnwmoths.species.models import State, SpeciesRecord
-import json
+import json, re
 
 register = template.Library()
 
@@ -30,6 +30,10 @@ def filters_json(value, arg):
     """
         Returns Array with extra values removed based on species
     """
+    def _human_key(key):
+        parts = re.split('(\d*\.\d+|\d+)', key)
+        return tuple((e.swapcase() if i % 2 == 0 else float(e)) for i, e in enumerate(parts))
+
     if arg == "county":
         states = list(State.objects.all().values_list())
         state_lookup = dict()
@@ -38,4 +42,5 @@ def filters_json(value, arg):
             state_lookup[s_id] = code
 
         return str(sorted([str("%s (%s)" % (item[0], state_lookup.get(item[1], "CANADA"))) for item in set(value.speciesrecord_set.all().values_list('county__name', 'county__state'))])).replace("'", '"')
-    return str(sorted([str(item) for item in set(value.speciesrecord_set.all().values_list(arg, flat=True))])).replace("'", '"')
+    # filter removes None elements, human sort sorts in expected order
+    return str(sorted([str(str(item)[0].capitalize() + str(item)[1:]) for item in set(filter(None, value.speciesrecord_set.all().values_list(arg, flat=True)))], key=_human_key)).replace("'", '"')

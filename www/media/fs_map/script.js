@@ -434,6 +434,7 @@ PNWMOTHS.Filters = function () {
                 var finishInit = function() {
                     jQuery("#f-" + name).multiselect({
                             noneSelectedText: noneSelectedText,
+                            classes: name + "-ms",
                             selectedText: selectedText,
                             selectedList: 10,
                             minWidth: "auto"
@@ -477,8 +478,9 @@ PNWMOTHS.Filters = function () {
                     
                     return select;
                 },
-                reset: function() {
-                    jQuery("#f-" + name).multiselect("uncheckAll");
+                reset: function(filter_delete) {
+                    if (jQuery("#f-" + name).multiselect("getChecked").length)
+                        jQuery("#f-" + name).multiselect("uncheckAll");
                }
             };            
         },
@@ -509,11 +511,13 @@ PNWMOTHS.Filters = function () {
                     return jQuery("#f-" + name);
                 },
                 ajaxPopulate: false,
-                reset: function() {
+                reset: function(filter_delete) {
                     var m = jQuery("#f-" + name);
                     var b = m.dateRangeSlider("bounds");
                     m.dateRangeSlider("values", b.min, b.max); 
-                    delete PNWMOTHS.Filters.filters[name];
+                    if (filter_delete) {
+                        delete PNWMOTHS.Filters.filters[name];
+                    }
                 }
             };            
         },
@@ -543,11 +547,13 @@ PNWMOTHS.Filters = function () {
                     return jQuery("#f-" + name);
                 },
                 ajaxPopulate: false,
-                reset: function() {
+                reset: function(filter_delete) {
                     var m = jQuery("#f-" + name);
                     var b = m.editRangeSlider("bounds");
                     m.editRangeSlider("values", b.min, b.max); 
-                    delete PNWMOTHS.Filters.filters[name];
+                    if (filter_delete) {
+                        delete PNWMOTHS.Filters.filters[name];
+                    }
                 }
             };            
         }
@@ -599,10 +605,11 @@ jQuery(document).ready(function () {
 			{"name": "county", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Counties", "selectedText": "Filtering on # counties", "ajax": true},
 			{"name": "state", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "States", "selectedText": "Filtering on # states", "ajax": true},
 			{"name": "collection", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Collections", "selectedText": "Filtering on # collections", "ajax": true},
+			{"name": "record_type", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Voucher Types", "selectedText": "Filtering on # types", "ajax": true},
 			{"name": "date", "type": PNWMOTHS.Filters.DateRangeFilter, "bounds": {min:new Date(1900,0,1), max:new Date()}},
-			{"name": "year", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Years", "selectedText": "Filtering on # years", "ajax": false},
-			{"name": "month", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Months", "selectedText": "Filtering on # months", "ajax": false},
-			{"name": "day", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Days", "selectedText": "Filtering on # days", "ajax": false},
+			{"name": "year", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Years", "selectedText": "Filtering on # years", "ajax": true},
+			{"name": "month", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Months", "selectedText": "Filtering on # months", "ajax": true},
+			{"name": "day", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Days", "selectedText": "Filtering on # days", "ajax": true},
 			{"name": "elevation", "type": PNWMOTHS.Filters.EditRangeFilter, "bounds": {min: 0, max: 10000}}
 		];
 
@@ -622,8 +629,9 @@ jQuery(document).ready(function () {
 
                 jQuery("#f-reset").click(function() {
                     jQuery.each(init_filters, function(index, f) {
-                        f.reset();
+                        f.reset(false);
                     });
+                    PNWMOTHS.Filters.filters = []; 
                     jQuery(document).trigger("requestData");
                 });
 

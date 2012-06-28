@@ -1,5 +1,5 @@
 {% extends "cms/base.html" %}
-{% load cache cms_tags menu_tags species_tags browse_filters stats_filters %}
+{% load cache cms_tags menu_tags humanize species_tags browse_filters stats_filters %}
 
 {% block scripts %}
     {{ block.super }}
@@ -31,10 +31,10 @@
             <div id="googlemap"></div>
             <ul id="stats_list">
                 {% cache 0 homepage_stats %}
-                    <li><strong>{{ "Browse"|navnode_species_count }}</strong> Specimen Profiles</li>
+                    <li><strong>{{ "Browse"|navnode_species_count|intcomma }}</strong> Species Profiles</li>
                     {# SpeciesRecord is a slow query as we join it against images to filter out labels #}
-                    <li><strong>{{ "SpeciesRecord"|species_stat_count }}</strong> Specimen Records</li>
-                    <li><strong>{{ "SpeciesImage"|species_stat_count }}</strong> Specimen Images</li>
+                    <li><strong>{{ "SpeciesRecord"|species_stat_count|intcomma }}</strong> Specimen Records</li>
+                    <li><strong>{{ "SpeciesImage"|species_stat_count|intcomma }}</strong> Specimen Images</li>
                 {% endcache %}
             </ul>
             </div>

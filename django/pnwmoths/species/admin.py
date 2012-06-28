@@ -33,7 +33,7 @@ admin.site.register(Author, AuthorAdmin)
 
 class SpeciesAdmin(VersionAdmin, admin.ModelAdmin):
     filter_horizontal = ("similar",)
-    list_display = ("__unicode__", "noc_id", "factsheet", "common_name")
+    list_display = ("__unicode__", "noc_id", "factsheet", "authority", "common_name")
     list_editable = ("common_name",)
     search_fields = ("genus", "species")
 admin.site.register(Species, SpeciesAdmin)
@@ -48,10 +48,16 @@ class SpeciesImageAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
         return self.species.noc_id
     noc_id.admin_order_field  = 'species__noc_id'
 
+    def collection(self):
+        return self.record.collection
+    collection.admin_order_field = 'record__collection'
+
     list_display = (
         noc_id,
         "species",
         "image",
+        collection,
+        "photographer",
         "weight"
     )
     list_editable = ("weight",)
@@ -71,13 +77,14 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
     noc_id.admin_order_field  = 'species__noc_id'
     
     def thumb(self):
-        t = self.speciesimage_set.all()
+        t = self.speciesimage_set.all()[:1].get()
         if t:
-            pk = t[0].pk
-            t = get_thumbnail(t[0].image,"70x46")
+            pk = t.pk
+            t = get_thumbnail(t.image,"70x46")
             return u'<a href="%s" target="_blank"><img src="%s" /></a>' % (urlresolvers.reverse('admin:species_speciesimage_change', args=(pk,)), t.url)
         else:
             return u"None"
+    thumb.admin_order_field = 'speciesimage'
     thumb.short_description = 'Photo'
     thumb.allow_tags = True 
 

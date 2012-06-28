@@ -115,6 +115,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
+    'django.contrib.humanize',
     'cms',
     'cms.plugins.text',
     'cms.plugins.picture',
@@ -134,6 +135,8 @@ INSTALLED_APPS = (
     'south',
     'reversion',
     'ajax_select',
+    'paging',
+    'admin_sentry',
 )
 
 CMS_TEMPLATES = (
@@ -142,6 +145,7 @@ CMS_TEMPLATES = (
     ('cms/home.html', gettext('home')),
     ('cms/browse.html', gettext('browse')),
     ('cms/factsheet.html', gettext('factsheet')),
+    ('cms/plateimages.html', gettext('imageplates')),
 )
 CMS_SHOW_END_DATE = True
 CMS_SHOW_START_DATE = True

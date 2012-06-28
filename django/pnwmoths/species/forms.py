@@ -327,19 +327,24 @@ class SpeciesRecordForm(forms.Form):
                     genus = None
 
             if genus and species:
-                species_instance, created = Species.objects.get_or_create(
-                    genus=genus,
-                    species=species
-                )
-                cleaned_data["species"] = species_instance
-
-        # If a Species instance doesn't exist for the given data, alert the
-        # user.
-        if not isinstance(cleaned_data.get("species"), Species):
-            # Delete the species entry from cleaned data if it is defined.
-            if cleaned_data.get("species"):
-                del cleaned_data["species"]
-            raise forms.ValidationError("Species isn't defined.")
+                try:
+                    species_instance = Species.objects.get(
+                        genus=genus,
+                        species=species
+                    )
+                    cleaned_data["species"] = species_instance
+                except Exception:
+                    if cleaned_data.get("genus"):
+                        del self.cleaned_data["genus"]
+                    if cleaned_data.get("species"):
+                        del self.cleaned_data["species"]
+                    raise forms.ValidationError("Species does not exist.")
+            else:
+                if cleaned_data.get("genus"):
+                    del self.cleaned_data["genus"]
+                if cleaned_data.get("species"):
+                    del self.cleaned_data["species"]
+                raise forms.ValidationError("Need a genus and species")
 
         if cleaned_data.get("county") is not None:
             county = cleaned_data.get("county").strip()

@@ -40,7 +40,7 @@
                 var url = jQuery(this).parent().find('h3 a').attr('href');
                 jQuery(this).html('&nbsp;');
                 jQuery(this).addClass('loading_toggle');
-                jQuery(this).parent().siblings('.ajax').load(url + ' .browse_item_wrapper', function() {
+                jQuery(this).parent().siblings('.ajax').load(url + ' .browse_items', function() {
                     jQuery(this).parent().find('.toggle_item').removeClass('loading_toggle').html("-");
                     jQuery(this).append('<div style="height: 0px; clear: both;">&nbsp;</div>');
                     jQuery(this).find('.browse_item:not(.species)').implement_browse();
@@ -108,13 +108,13 @@ jQuery(document).ready(function() {
     );
 
     //Make species div clickable using first link in the container
-    jQuery(".ajax").delegate(".species" ,"click", function(){
+    jQuery("#content").delegate(".species" ,"click", function(){
         window.location=jQuery(this).find("h3 a").attr("href");
         return false;
     });
 
     // Set species div's hover effect
-    jQuery(".ajax").delegate(".species", "hover", function() {
+    jQuery("#content").delegate(".species", "hover", function() {
         jQuery(this).toggleClass('browse_item_hover');
     });
 });

@@ -1,5 +1,12 @@
 {% load menu_tags thumbnail species_tags browse_filters %}
+<div class="browse_items">
 {% for child in children %}
+
+{% if forloop.counter0|divisibleby:"2" %}
+{% if child.is_leaf_node %}
+<div class="browse_item_row">
+{% endif %}
+{% endif %}
 
 {# Added on an ajax request for the tree's horizontal depth lines #}
 {% if request.is_ajax %}
@@ -34,4 +41,12 @@
     </div>
 {% endif %}
 
+{% if forloop.counter|divisibleby:"2" or forloop.last %}
+{% if child.is_leaf_node %}
+<div style="clear: both; height: 0px"></div>
+</div>
+{% endif %}
+{% endif %}
+
 {% endfor %}
+</div>

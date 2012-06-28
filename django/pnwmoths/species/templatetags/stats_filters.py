@@ -2,6 +2,7 @@ from django import template
 from django.db.models import F
 from cms.models.pagemodel import Page
 from django.db.models.loading import get_model
+from django.contrib.humanize.templatetags.humanize import intcomma
 register = template.Library()
 
 @register.filter
@@ -13,7 +14,10 @@ def species_stat_count(value):
     """
     try:
         if value == 'SpeciesRecord':
-            return get_model('species', value).records.count()
-        return get_model('species', value).objects.count()
+            r_count = get_model('species', value).records.count()
+        else:
+            r_count = get_model('species', value).objects.count()
+        # return formatted count
+        return intcomma(r_count)
     except (Exception):
         return ""

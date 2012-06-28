@@ -82,9 +82,20 @@ div.collections table td {
 	margin-left: auto;
 	margin-right: auto;
 }
+#factsheet-filters .half {
+    width: 30%;
+    display: inline;
+}
 #factsheet-filters .third {
     width: 20%;
     display: inline;
+}
+
+.ui-multiselect.county-ms, .ui-multiselect.state-ms, .ui-multiselect.collection-ms, .ui-multiselect.record_type-ms {
+  width: 49% !important;
+}
+.ui-multiselect.year-ms, .ui-multiselect.month-ms, .ui-multiselect.day-ms {
+  width: 33% !important;
 }
 
 
@@ -92,7 +103,7 @@ div.collections table td {
 .ui-multiselect:hover {
 	font-weight: bold !important;
 }
-.ui-multiselect { padding:2px 0 2px 4px; text-align:left; width: 33% !important; }
+.ui-multiselect { padding:2px 0 2px 4px; text-align:left; }
 .ui-multiselect span.ui-icon { float:right }
 .ui-multiselect-single .ui-multiselect-checkboxes input { position:absolute !important; top: auto !important; left:-9999px; }
 .ui-multiselect-single .ui-multiselect-checkboxes label { padding:5px !important }
