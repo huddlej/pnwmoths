@@ -186,7 +186,7 @@ CSV_ADMIN_TEMPLATE="admin/csv_admin/validate_form.html"
 # define the lookup channels in use on the site
 AJAX_LOOKUP_CHANNELS = {
     #   pass a dict with the model and the field to search against
-    'SpeciesRecord'  : ('species.ajaxselect_lookups', 'SpeciesRecordLookup')
+    'SpeciesRecord'  : ('pnwmoths.species.ajaxselect_lookups', 'SpeciesRecordLookup')
 }
 # magically include jqueryUI/js/css
 AJAX_SELECT_BOOTSTRAP = True

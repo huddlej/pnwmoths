@@ -1,0 +1,25 @@
+#content {
+  padding-left: 40px;
+  max-width: 50em;
+  color: black;
+}
+#content ol { list-style: decimal; }
+
+
+#site_credits h1 {
+  color: #A4AB78;
+  font-weight: bold;
+}
+#site_credits ul {
+  list-style: disc inside;
+}
+
+
+#faqLinks { list-style: none; }
+#site_faqs h4 {
+  color: #D15E25;
+}
+#site_faqs h4 a {
+  font-size: 0.8em;
+  font-weight: normal;
+}

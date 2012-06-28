@@ -311,12 +311,10 @@ class SpeciesRecord(models.Model):
 
     @property
     def date(self):
-        date = None
         try:
-            date = datetime.date(self.year, self.month, self.day)
+            return datetime.date(self.year, self.month, self.day)
         except Exception:
-            pass
-        return date
+            return None
 
     def save(self, *args, **kwargs):
         if not self.date_added:
@@ -420,9 +418,9 @@ class SpeciesImage(models.Model):
         if notes:
             s += "<br />" + str(notes)
 
-        if r.collection.url:
+        if r.collection and r.collection.url:
             s += '<br />Specimen courtesy of <a href="%s" target="_blank">%s</a>' % (r.collection.url, r.collection)
-        else:
+        elif r.collection:
             s += "<br />Specimen courtesy of %s" % r.collection
         s += "<br />Photograph copyright: %s" % self.photographer
 
