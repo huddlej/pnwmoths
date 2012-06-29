@@ -141,6 +141,7 @@ class SpeciesRecordForm(forms.Form):
     attrs = {"size": "4"}
     filename = forms.CharField(required=False)
     id = forms.IntegerField(required=False, widget=forms.TextInput(attrs=attrs))
+    record_type = forms.CharField(required=False)
     genus = forms.CharField(required=False)
     species = forms.CharField()
     latitude = LazyFloatField(required=False, widget=forms.TextInput(attrs=attrs))
