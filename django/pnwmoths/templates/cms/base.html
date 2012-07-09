@@ -47,6 +47,20 @@
     {% endblock %}
 
     {{ meta_headers }}
+
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-33231112-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
 </head>
 <body>
 
@@ -79,7 +93,7 @@
           </div>
   </div>
   <div class="row margin_top_25">
-    <div class="col_12 last">
+    <div id="mainnav" class="col_12 last">
                 <ul id="navigation" class="head-foot-borders mobile-hide">
                   <li style="width: 9%"><a href="/">Home<img src="{{ MEDIA_URL }}images/home.png" /></a></li>
                   <li style="width: 15%"><a href="/browse/">Species Fact Sheets<img src="{{ MEDIA_URL }}images/species.png" /></a></li>
