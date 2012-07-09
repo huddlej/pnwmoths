@@ -263,6 +263,9 @@ div.plateImage p {
 	#internal_footer, #funding-footer, #collaborators-footer {
 	  padding: 0 0 0 0;
 	}
+        #mobile-nav {
+            width: 100%;
+        }
         .shadow_container {
             -webkit-box-shadow: none !important;
             box-shadow: none !important;

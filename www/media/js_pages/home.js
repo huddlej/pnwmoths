@@ -1,12 +1,24 @@
+jQuery(document).ready(function($) {
+    $("#featured").tabs({fx:{opacity: "toggle"}}).tabs("rotate", 5000, true).tabs("select", 0);
+});
+
 jQuery(window).load(function() {
     // Initialize our map
     var mapDiv = jQuery("#googlemap");
     mapDiv.show();
-    var centerPoint = new google.maps.LatLng(48.4, -119.2);
+    var centerPoint = new google.maps.LatLng(46.2, -119.4);
     var options = {
                 zoom: 5,
+                scrollwheel: false,
+                zoomControl: false,
+                scaleControl: false,
                 streetViewControl: false,
+                maxZoom: 5,
+                minZoom: 5,
                 center: centerPoint,
+                panControlOptions: {
+                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                },
                 mapTypeId: 'terrain'
     };  
     var map = new google.maps.Map(mapDiv[0], options);

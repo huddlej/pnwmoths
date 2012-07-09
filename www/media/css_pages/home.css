@@ -19,7 +19,7 @@
     padding: 0.25em;
 }
 #googlemap {
-  height: 660px;
+  height: 540px;
   display: none;
   width: 98%;
   margin: 0 auto;
@@ -27,4 +27,83 @@
 
 #googlemap img {
   max-width: none !important;
+}
+
+
+#featured{
+    height: 120px;
+    border:3px solid #224b49;
+    margin-bottom: 15px;
+    background: #b5a79f;
+}
+#featured ul.ui-tabs-nav{
+    float: left;
+    list-style:none;
+    padding:0; margin:0;
+    width:250px;
+}
+#featured ul.ui-tabs-nav li {
+    font-size:16px;
+    color: black;
+    border-right: 3px solid #224b49;
+    margin-bottom: 0px;
+}
+
+/* border trickery */
+#nav-fragment-1 {
+    border-bottom: 3px solid #224b49;
+}
+#nav-fragment-3 {
+    border-top: 3px solid #224b49;
+}
+
+#featured .ui-tabs-panel{
+    height: 120px;
+    margin-left: 250px;
+    overflow: hidden;
+    position: relative;
+    background: -moz-linear-gradient(left,  #b5a79f 1%, #382a23 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(1%,#b5a79f), color-stop(100%,#382a23));
+    background: -webkit-linear-gradient(left,  #b5a79f 1%,#382a23 100%);
+    background: -o-linear-gradient(left,  #b5a79f 1%,#382a23 100%);
+    background: -ms-linear-gradient(left,  #b5a79f 1%,#382a23 100%);
+    background: linear-gradient(to right,  #b5a79f 1%,#382a23 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5a79f', endColorstr='#382a23',GradientType=1 );
+}
+#featured .ui-tabs-panel img {
+    position: absolute;
+    height: 120px;
+    max-width: 864px;
+    width: 864px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+#featured .ui-tabs-hide{
+    display:none;
+}
+
+#featured li.ui-tabs-nav-item a{/*On Hover Style*/
+    display:block;
+    height:38px;
+    padding-left: 10px;
+    color:black;  background:#a2ab77;
+    line-height: 38px;
+    outline:none;
+}
+#featured li.ui-tabs-nav-item a:hover{
+    background:#7f8956;
+}
+#featured li.ui-tabs-selected{ /*Selected tab style*/
+    border-right: 3px solid #b5a79f !important;
+}
+#featured ul.ui-tabs-nav li.ui-tabs-selected a{
+    background: #ffffff;
+    background: -moz-linear-gradient(left,  #ffffff 0%, #b5a79f 99%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ffffff), color-stop(99%,#b5a79f));
+    background: -webkit-linear-gradient(left,  #ffffff 0%,#b5a79f 99%);
+    background: -o-linear-gradient(left,  #ffffff 0%,#b5a79f 99%);
+    background: -ms-linear-gradient(left,  #ffffff 0%,#b5a79f 99%);
+    background: linear-gradient(to right,  #ffffff 0%,#b5a79f 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#b5a79f',GradientType=1 );
 }

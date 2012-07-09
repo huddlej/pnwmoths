@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
     // for iPhone/mobile usability.
 	
     // Create the dropdown base
-	jQuery("<select />").appendTo("#mainnav");
+	jQuery("<select />").appendTo("#mainnav").addClass("mobile-only").attr('id', 'mobile-nav');
 
 	// Create default option "Go to..."
 	jQuery("<option />", {
@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
 	}).appendTo("#mainnav select");
 
 	// Populate dropdown with menu items
-	jQuery("#mainnav a").each(function() {
+	jQuery("#navigation a").each(function() {
 	 var el = jQuery(this);
 	 jQuery("<option />", {
 		 "value"   : el.attr("href"),
