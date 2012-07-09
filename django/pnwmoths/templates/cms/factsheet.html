@@ -71,7 +71,7 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
     </div>
     <div class="col_4 last">
         {% if species.noc_id %}<h3 class="fs_subtitle">{{ species.noc_id }}</h3>{% endif %}
-        {% if species.image_plate %}<h3 class="fs_subtitle"><a href="/photographic-plates/{{ species.image_plate.pk }}/" target="_blank">View Photographic Plate</a></h3>{% endif %}
+        {% if species.get_first_plate %}<h3 class="fs_subtitle"><a href="/photographic-plates/#plate{{ species.get_first_plate }}">View Photographic Plate</a></h3>{% endif %}
     </div>
 </div>
 <div id="fs_yui-g" class="row">

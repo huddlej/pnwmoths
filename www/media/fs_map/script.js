@@ -16,6 +16,7 @@ PNWMOTHS.Map = function () {
             mapDiv.show();
             PNWMOTHS.Map.centerPoint = new google.maps.LatLng(46.9, -118.0);
             var options = {
+                scrollwheel: false,
                 zoom: 4,
                 streetViewControl: false,
                 center: PNWMOTHS.Map.centerPoint,
