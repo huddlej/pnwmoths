@@ -9,3 +9,7 @@
     padding: 1em;
     text-align: center;
 }
+
+#plate_images li:target {
+    background-color: #F3E8BA;
+}

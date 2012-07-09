@@ -3,6 +3,13 @@
         <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
               {% if z_path %}
+                <script type="text/javascript">
+                    var fixHeight = function() {
+                        var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0],x=w.innerWidth||e.clientWidth||g.clientWidth,y=w.innerHeight||e.clientHeight||g.clientHeight;
+                        document.getElementById("height_hack").style.height = (y-20) + "px";
+                        document.getElementById("myContainer").style.height = (y-20) + "px";
+                    };
+                </script>
                 <script type="text/javascript" src="{{ MEDIA_URL }}zoomify/ZoomifyImageViewer.js"></script>
                 <script type="text/javascript">
 
@@ -71,16 +78,25 @@
                 function resetSize(percent) {
                         getWindowSize();
                         viewerWidth = Math.round(screenWidth * percent / 100);
-                        viewerHeight = Math.round(screenHeight * percent / 100);
+                        viewerHeight = Math.round(screenHeight * percent / 100) - 20;
                 }
                 </script>
-                <style type="text/css"> body {margin: 0px 0px 0px 0px; } #myContainer { width:100%; height: 600px; margin: 0px 0px 0px 0px;} </style>
-                <script type="text/javascript"> Z.showImage("myContainer", "/{{ z_path }}", "zToolbarVisible=1&zFullPageVisible=0&zNavigatorVisible=0&zKeys=0&zSkinPath=/media/zoomify/Skins/Default"); </script>
+                <style type="text/css">body {margin: 0px 0px 0px 0px;} #myContainer { width:100%; padding-bottom: 20px; position: absolute; top: 0; bottom: 0; margin: 0px 0px 0px 0px;}
+                #ToolbarDisplay { bottom: 0 !important; top: auto !important; }
+                #ViewerDisplay { position: absolute !important; bottom: 0 !important; height: auto !important; }
+                
+                </style>
               {% endif %}
         </head>
         <body {% if z_path %}onload="resizeTest()" onresize="resizeTest()"{% endif %}>
               {% if z_path %}
-                    <div id="myContainer"></div>
+                    <div id="height_hack">
+                        <div id="myContainer"></div>
+                    </div>
+                    <script type="text/javascript">
+                        fixHeight();
+                        Z.showImage("myContainer", "/{{ z_path }}", "zToolbarVisible=1&zFullPageVisible=0&zNavigatorVisible=0&zKeys=0&zSkinPath=/media/zoomify/Skins/Default"); 
+                    </script>
               {% else %}
                   <img src="{{ plate.image.url }}" width="100%" />
               {% endif %}

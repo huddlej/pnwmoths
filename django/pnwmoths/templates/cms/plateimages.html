@@ -15,12 +15,22 @@
 
 {% block content %}
 
+<script type="text/javascript">
+function($) {
+$(document).ready(function() {
+    $("li").removeClass("customTarget");
+    var myLocation = document.location.hash.replace("#","");
+    if (myLocation) {
+            document.getElementById(myLocation).className = "customTarget";
+    }
+})}(jQuery);
+</script>
 {% load_plateimages as plates %}
 <div class="col_12 last">
 <div id="content">
     <ul id="plate_images">
     {% for plate in plates %}
-        <li>
+        <li id="plate{{plate.pk}}">
             {% cache 0 plate_image plate.pk %}
             <a href="/photographic-plates/{{ plate.pk }}/" target="_blank">
                 {% thumbnail plate.image plate.SIZES.thumbnail as im %}
