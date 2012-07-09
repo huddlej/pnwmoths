@@ -13,7 +13,15 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from cms.models.pluginmodel import CMSPlugin
 from storage import OverwriteStorage
+from django.db.models.signals import post_save
 
+from cms.plugin_pool import plugin_pool
+from cms.models.placeholdermodel import Placeholder
+
+
+"""
+MODEL DEFINITIONS
+"""
 class State(models.Model):
     choices = STATE_CHOICES + PROVINCE_CHOICES
     code = models.CharField(unique=True, choices=choices, max_length=2)
@@ -99,6 +107,57 @@ class SpeciesManager(models.Manager):
             species = Species.objects.create(genus=i[0], species=i[1])
             species_by_fullname[complete_name] = species
 
+
+class Species(models.Model):
+    """
+    Represents a species with a near-constant genus and species name.
+
+    TODO: handle general key/value attributes including discoverer/year,
+    synonyms, location on plates, etc.
+    """
+    genus = models.CharField(max_length=255, db_index=True)
+    species = models.CharField(max_length=255, db_index=True)
+    common_name = models.CharField(max_length=255, blank=True, null=True)
+    noc_id = models.CharField("NOC #", max_length=24, blank=True, null=True)
+    authority = models.ForeignKey(Author, null=True, blank=True)
+    similar = models.ManyToManyField("self", blank=True)
+    factsheet = PageField(unique=True, blank=True, null=True)
+
+    class Meta:
+        ordering = ["noc_id"]
+        unique_together = ("genus", "species")
+        verbose_name_plural = u"species"
+
+    def __unicode__(self):
+        name = u"%s %s" % (self.genus, self.species)
+        return name
+
+    @property
+    def name(self):
+        return unicode(self)
+
+    def get_first_plate(self):
+        """
+        Returns the first imageplate's PK
+        """
+        try:
+            return self.plateimage_set.all()[:1].get().pk
+        except:
+            return None
+
+    def get_first_image(self):
+        """
+        Return the first image of this species' images if one exists and None
+        otherwise.
+
+        TODO: turn this into a m2m manager method for SpeciesImage
+        """
+        try:
+            return self.speciesimage_set.all()[:1].get()
+        except (Exception):
+            return None
+
+
 class PlateImageManager(models.Manager):
     """
     Manager used to get image plates in human sorted order for display.
@@ -135,6 +194,7 @@ class PlateImage(models.Model):
     description = PlaceholderField('Description')
     image = ImageField(upload_to=IMAGE_PATH)
     z_image = models.FilePathField(path=ZOOM_ABS_PATH, recursive=True, match="ImageProperties.xml", max_length=200, help_text=z_image_docs, blank=True, null=True)
+    member_species = models.ManyToManyField(Species)
 
     @property
     def zoomify_folder(self):
@@ -146,47 +206,6 @@ class PlateImage(models.Model):
     def __unicode__(self):
         return u"%s" % self.image.name
 
-
-class Species(models.Model):
-    """
-    Represents a species with a near-constant genus and species name.
-
-    TODO: handle general key/value attributes including discoverer/year,
-    synonyms, location on plates, etc.
-    """
-    genus = models.CharField(max_length=255, db_index=True)
-    species = models.CharField(max_length=255, db_index=True)
-    common_name = models.CharField(max_length=255, blank=True, null=True)
-    noc_id = models.CharField("NOC #", max_length=24, blank=True, null=True)
-    authority = models.ForeignKey(Author, null=True, blank=True)
-    similar = models.ManyToManyField("self", blank=True)
-    factsheet = PageField(unique=True, blank=True, null=True)
-    image_plate = models.ForeignKey(PlateImage, blank=True, null=True)
-
-    class Meta:
-        ordering = ["genus", "species"]
-        unique_together = ("genus", "species")
-        verbose_name_plural = u"species"
-
-    def __unicode__(self):
-        name = u"%s %s" % (self.genus, self.species)
-        return name
-
-    @property
-    def name(self):
-        return unicode(self)
-
-    def get_first_image(self):
-        """
-        Return the first image of this species' images if one exists and None
-        otherwise.
-
-        TODO: turn this into a m2m manager method for SpeciesImage
-        """
-        try:
-            return self.speciesimage_set.all()[:1].get()
-        except (Exception):
-            return None
 
 class Photographer(models.Model):
     """
@@ -242,8 +261,9 @@ class SpeciesRecord(models.Model):
             ('sight_field_notes', 'Sight/Field Notes'),
     )
 
-    record_type = models.CharField(max_length=20, choices=RECORD_TYPE_CHOICES, default='specimen', verbose_name='Voucher Type')
+    record_type = models.CharField(max_length=20, choices=RECORD_TYPE_CHOICES, verbose_name='Voucher Type')
     species = models.ForeignKey(Species)
+    type_status = models.CharField(null=True, blank=True, max_length=255)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
 
@@ -417,6 +437,8 @@ class SpeciesImage(models.Model):
 
         if notes:
             s += "<br />" + str(notes)
+        if r.type_status:
+            s += "<br />" + str(r.type_status)
 
         if r.collection and r.collection.url:
             s += '<br />Specimen courtesy of <a href="%s" target="_blank">%s</a>' % (r.collection.url, r.collection)
@@ -425,3 +447,34 @@ class SpeciesImage(models.Model):
         s += "<br />Photograph copyright: %s" % self.photographer
 
         return s
+
+
+"""
+SIGNAL HANDLING
+"""
+def add_plugin(placeholder, plugin_type, language, position='last-child', **data):
+    """
+    Taken from django-cms api (in newer versions)
+    https://github.com/divio/django-cms/blob/b8633b42efcd137d96e1e3f42e004cb7595768fe/cms/api.py
+    """
+    assert isinstance(placeholder, Placeholder)
+    plugin_model = plugin_type.model
+    plugin_type = plugin_type.__name__
+    plugin_base = CMSPlugin(
+        plugin_type=plugin_type,
+        placeholder=placeholder, 
+        position=1,
+        language=language
+    )
+    plugin_base.insert_at(None, position='last-child', commit=False)
+    plugin = plugin_model(**data)
+    plugin_base.set_base_attr(plugin)
+    plugin.save()
+    return plugin
+
+def add_text_plugin(sender, **kwargs):
+    instance = kwargs["instance"]
+    if len(instance.description.get_plugins()) is 0:
+        add_plugin(instance.description, plugin_pool.get_plugin("TextPlugin"), "en", body="<p>Default Text</p>")
+
+post_save.connect(add_text_plugin, sender=PlateImage)

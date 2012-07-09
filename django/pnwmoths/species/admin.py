@@ -12,7 +12,7 @@ from cms.admin.placeholderadmin import PlaceholderAdmin
 from actions import export_records_as_csv_action, export_labels_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage,
                     SpeciesRecord, State, Author, PlateImage, Photographer)
-
+from forms import PlateImageAdminForm
 
 class UserModelAdmin(UserAdmin):
   pass
@@ -149,7 +149,8 @@ class SpeciesRecordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
 admin.site.register(SpeciesRecord, SpeciesRecordAdmin)
 
 class PlateImageAdmin(VersionAdmin, PlaceholderAdmin):
-    pass
+    form = PlateImageAdminForm
+
 admin.site.register(PlateImage, PlateImageAdmin)
 
 class PhotographerAdmin(VersionAdmin, admin.ModelAdmin):

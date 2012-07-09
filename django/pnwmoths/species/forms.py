@@ -1,15 +1,27 @@
 import csv
 import re
+import logging
 
 from django import forms
-from models import Collection, Collector, County, Species, SpeciesRecord, State, SpeciesImage
+from models import Collection, Collector, County, Species, SpeciesRecord, State, SpeciesImage, PlateImage
+from django.forms import ModelMultipleChoiceField, ModelForm
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 registered_models = {"SpeciesRecord": SpeciesRecord}
+
+class PlateSpeciesChoiceField(ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        # return noc id | genus species for plateimage display
+        return "%s | %s" % (obj.noc_id, obj)
+
+class PlateImageAdminForm(ModelForm):
+    class Meta:
+        model = PlateImage
+    member_species = PlateSpeciesChoiceField(queryset=Species.objects.all().order_by('noc_id'), required=False, widget=FilteredSelectMultiple("Member Species", is_stacked=False))
 
 """
 TODO: This needs refactoring.
 """
-
 
 class LazyIntegerField(forms.IntegerField):
     widget = forms.TextInput(attrs={"size": "3"})
@@ -141,7 +153,9 @@ class SpeciesRecordForm(forms.Form):
     attrs = {"size": "4"}
     filename = forms.CharField(required=False)
     id = forms.IntegerField(required=False, widget=forms.TextInput(attrs=attrs))
-    record_type = forms.CharField(required=False)
+    # prepending the blank tuple keeps the form from validating with a bad csv record type
+    record_type = forms.ChoiceField(required=True, choices=(('', '------'),)+SpeciesRecord.RECORD_TYPE_CHOICES)
+    type_status = forms.CharField(required=False)
     genus = forms.CharField(required=False)
     species = forms.CharField()
     latitude = LazyFloatField(required=False, widget=forms.TextInput(attrs=attrs))
@@ -228,12 +242,6 @@ class SpeciesRecordForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(SpeciesRecordForm, self).clean()
-
-        # Convert meters to feet if we have elevation units
-        if cleaned_data.get("elevation_units"):
-            if "m" in cleaned_data["elevation_units"].lower():
-                cleaned_data["elevation"] *= 3.2808399
-                cleaned_data["elevation"] = int(cleaned_data["elevation"])
 
         # Check to see if the filename points to valid images
         if cleaned_data.get("filename"):
