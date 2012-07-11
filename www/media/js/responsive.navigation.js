@@ -4,6 +4,7 @@ jQuery(document).ready(function() {
 	
     // Create the dropdown base
 	jQuery("<select />").appendTo("#mainnav").addClass("mobile-only").attr('id', 'mobile-nav');
+        jQuery("#mainnav select").addClass("mobile-only");
 
 	// Create default option "Go to..."
 	jQuery("<option />", {
