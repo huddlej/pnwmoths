@@ -80,18 +80,25 @@ class ImagesetByNavNode(Node):
         try:
             navnode = self.obj.resolve(context)
             page = Page.objects.get(pk=navnode.id)
-            leaves = list(page.get_descendants(include_self=True).filter(lft=F('rght')-1)[:6])
-            imageset = []
-            for p in leaves:
-                genus, species = p.get_title().split(" ", 1)
-                try:
-                    im = Species.objects.get(genus=genus, species=species).get_first_image()
-                except (Exception):
-                    im = None
-                if im:
-                    imageset.append(im)
-                if len(imageset) == self.leaf_count:
-                    break 
+            try:
+                extended = page.extended_fields.get()
+            except:
+                extended = None
+            if extended and extended.navigation_images.count() > 3:
+                imageset = list(extended.navigation_images.all()[:4])
+            else:
+                leaves = list(page.get_descendants(include_self=True).filter(lft=F('rght')-1)[:6])
+                imageset = []
+                for p in leaves:
+                    genus, species = p.get_title().split(" ", 1)
+                    try:
+                        im = Species.objects.get(genus=genus, species=species).get_first_image()
+                    except (Exception):
+                        im = None
+                    if im:
+                        imageset.append(im)
+                    if len(imageset) == self.leaf_count:
+                        break 
         except (Exception):
             imageset = None
 

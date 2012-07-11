@@ -5,6 +5,7 @@ from sorl.thumbnail import ImageField
 import re
 
 from django.conf import settings
+from cms.models.pagemodel import Page
 from cms.models.fields import  PageField, PlaceholderField
 from django.contrib.auth.models import User
 from django.contrib.localflavor.ca.ca_provinces import PROVINCE_CHOICES
@@ -14,6 +15,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator, RegexVa
 from cms.models.pluginmodel import CMSPlugin
 from storage import OverwriteStorage
 from django.db.models.signals import post_save
+from django.utils.translation import ugettext_lazy as _
 
 from cms.plugin_pool import plugin_pool
 from cms.models.placeholdermodel import Placeholder
@@ -447,6 +449,10 @@ class SpeciesImage(models.Model):
         s += "<br />Photograph copyright: %s" % self.photographer
 
         return s
+
+class ExtendedPage(models.Model):
+    page = models.ForeignKey(Page, unique=True, verbose_name=_("Page"), editable=False, related_name="extended_fields")
+    navigation_images = models.ManyToManyField(SpeciesImage)
 
 
 """

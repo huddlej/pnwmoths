@@ -8,9 +8,11 @@ from ajax_select import make_ajax_form
 from ajax_select.admin import AjaxSelectAdmin
 from django.core import urlresolvers
 from cms.admin.placeholderadmin import PlaceholderAdmin
+from cms.admin.pageadmin import PageAdmin
+from cms.models.pagemodel import Page
 
 from actions import export_records_as_csv_action, export_labels_as_csv_action
-from models import (Collection, Collector, County, Species, SpeciesImage,
+from models import (Collection, Collector, County, Species, SpeciesImage, ExtendedPage,
                     SpeciesRecord, State, Author, PlateImage, Photographer)
 from forms import PlateImageAdminForm
 
@@ -19,6 +21,20 @@ class UserModelAdmin(UserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserModelAdmin)
+
+class ExtendedPageAdmin(admin.StackedInline):
+    class Media:
+        css = {'all': ('/media/custom_admin/wide_select.css',)}
+    filter_horizontal = ("navigation_images",)
+    model = ExtendedPage
+    can_delete = False
+
+PageAdmin.inlines.append(ExtendedPageAdmin)
+try:
+    admin.site.unregister(Page)
+except:
+    pass
+admin.site.register(Page, PageAdmin)
 
 
 class CountyAdmin(VersionAdmin, admin.ModelAdmin):
