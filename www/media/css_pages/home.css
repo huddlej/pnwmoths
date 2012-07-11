@@ -59,7 +59,6 @@
 
 #featured .ui-tabs-panel{
     height: 120px;
-    margin-left: 250px;
     overflow: hidden;
     position: relative;
     background: -moz-linear-gradient(left,  #b5a79f 1%, #382a23 100%);
