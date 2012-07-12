@@ -5,6 +5,33 @@
  * - Filters: methods and classes for filtering data used by Map methods
  */
 
+/**
+ * Copyright (c) Mozilla Foundation http://www.mozilla.org/
+ * This code is available under the terms of the MIT License
+ */
+if (!Array.prototype.filter) {
+    Array.prototype.filter = function(fun /*, thisp*/) {
+        var len = this.length >>> 0;
+        if (typeof fun != "function") {
+            throw new TypeError();
+        }
+
+        var res = [];
+        var thisp = arguments[1];
+        for (var i = 0; i < len; i++) {
+            if (i in this) {
+                var val = this[i]; // in case fun mutates this
+                if (fun.call(thisp, val, i, this)) {
+                    res.push(val);
+                }
+            }
+        }
+
+        return res;
+    };
+}
+
+
 var PNWMOTHS = PNWMOTHS || {};
 PNWMOTHS.Map = function () {
     return {
@@ -386,39 +413,50 @@ PNWMOTHS.Filters = function () {
             filter_element = jQuery(element);
             return filter_element;
         },
-        "getFilterFunction": function (name, values) {
-            return function (record) {
-                if (name == "elevation" || name == "date") {
-                    if (name == "date")
-                            var t = new Date(record[name]);
-                    else
-                            var t = record[name];
-                    
-                    if (record[name] != null && t >= values[0] && t <= values[1]) {
-                            return record;
-                    }
-                } else {
-                    for (var j = 0; j < values.length; j++) {
-                        if (values[j] == "None (CANADA)")
-                            values[j] = null;
-                        if (record[name] == values[j])
-                                return record;
-                    }
-                }
-                return null;
-            };
-        },
         "filterData": function (data, filters) {
             var filtered_data = data,
                 filter;
-            for (filter in filters) {
-                if (filters.hasOwnProperty(filter)) {
-                    filtered_data = jQuery.map(
-                        filtered_data,
-                        PNWMOTHS.Filters.getFilterFunction(filter, filters[filter])
-                    );
+
+            filtered_data = filtered_data.filter(function(record) {
+                for (filter in filters) {
+                    if (filters.hasOwnProperty(filter)) {
+                        var d = record[filter];
+                        var f = filters[filter];
+                        if (filter == "elevation") {
+                                if (d != null && d <= f[0] && d >= f[1])
+                                        return false;
+                        }
+                        else if (filter == "date") {
+                          if (record["year"] == null)
+                              return false;
+
+                          if (record["year"] != null && (record["year"] < f[0].getFullYear() || record["year"] > f[1].getFullYear())) {
+                             return false;
+                          } else if (record["year"] != null && (record["year"] == f[0].getFullYear() || record["year"] == f[1].getFullYear())) {
+                            if (record["month"] != null && (record["month"] < f[0].getMonth()+1 || record["month"] > f[1].getMonth()+1)) {
+                                return false;
+                            } else if (record["month"] != null && (record["month"] == f[0].getMonth()+1 || record["month"] == f[1].getMonth()+1)) {
+                              if (record["day"] != null && (record["day"] < f[0].getDate() || record["day"] > f[1].getDate()))
+                                  return false;
+                            }
+                          }
+                        }
+                        else {
+                            var hit = false;
+                            for (var j = 0; j < f.length; j++) {
+                                if (f[j] == "None (CANADA)")
+                                    f[j] = null;
+                                if (d == f[j])
+                                    hit = true; 
+                            }
+                            if (!hit)
+                                return false;
+                        } 
+                    }
                 }
-            }
+                return true;
+            });
+
             return filtered_data;
         },
         "MultiSelectFilter": function(filterConfig) {
@@ -502,10 +540,14 @@ PNWMOTHS.Filters = function () {
                     // Change handler
                     jQuery("#f-" + name).bind("valuesChanged", function(event, ui) {
 						PNWMOTHS.Filters.filters[name] = [ui.values.min, ui.values.max];
-                                                if (ui.values.min < new Date(bounds.min + (1 * 1000 * 60 * 60 * 24)) &&
-                                                    ui.values.max > new Date(bounds.max - (1 * 1000 * 60 * 60 * 24))) {
-							delete PNWMOTHS.Filters.filters[name];
-						}
+
+                                                var minDate = new Date(bounds.min);
+                                                minDate.setDate(minDate.getDate()+1);
+                                                var maxDate = new Date(bounds.max);
+                                                maxDate.setDate(maxDate.getDate()-1);
+                                                if (ui.values.min < minDate && ui.values.max > maxDate) {
+                                                      delete PNWMOTHS.Filters.filters[name];
+                                                }
 						jQuery(document).trigger("requestData");
 					});
                     
@@ -607,11 +649,11 @@ jQuery(document).ready(function () {
 			{"name": "state", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "States", "selectedText": "Filtering on # states", "ajax": true},
 			{"name": "collection", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Collections", "selectedText": "Filtering on # collections", "ajax": true},
 			{"name": "record_type", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Voucher Types", "selectedText": "Filtering on # types", "ajax": true},
-			{"name": "date", "type": PNWMOTHS.Filters.DateRangeFilter, "bounds": {min:new Date(1900,0,1), max:new Date()}},
+			{"name": "date", "type": PNWMOTHS.Filters.DateRangeFilter, "bounds": {min:new Date(1870,0,1), max:new Date()}},
 			{"name": "year", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Years", "selectedText": "Filtering on # years", "ajax": true},
 			{"name": "month", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Months", "selectedText": "Filtering on # months", "ajax": true},
 			{"name": "day", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Days", "selectedText": "Filtering on # days", "ajax": true},
-			{"name": "elevation", "type": PNWMOTHS.Filters.EditRangeFilter, "bounds": {min: 0, max: 10000}}
+			{"name": "elevation", "type": PNWMOTHS.Filters.EditRangeFilter, "bounds": {min: 0, max: 24000}}
 		];
 
                 var init_filters = [];
