@@ -46,6 +46,21 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}fs_similar_species/script.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}fs_slideshow/script.js"></script>
 <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}data/script.js"></script>
+
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.highlight.js"></script>
+<script language="javascript" type="text/javascript">
+    (function($){
+         var glossaryWords = {{ ""|glossary_words_json|safe }};
+         for (var i = 0; i < glossaryWords.length; i++) {
+             var classN = "glossary-" + glossaryWords[i]["id"]
+             $('#fs_content p').highlight(glossaryWords[i]["word"], { element: "a", className: classN, wordsOnly: true });
+             $("."+classN).attr({ href: '/about-moths/glossary/#'+glossaryWords[i]["id"], title: glossaryWords[i]["definition"]});
+             $("."+classN).tipTip();
+         }
+         $("a a").contents().unwrap();
+     })(jQuery);
+</script>
+
 {% endblock %}
 
 {% block stylesheets %}

@@ -146,6 +146,7 @@ CMS_TEMPLATES = (
     ('cms/browse.html', gettext('browse')),
     ('cms/factsheet.html', gettext('factsheet')),
     ('cms/plateimages.html', gettext('imageplates')),
+    ('cms/glossary.html', gettext('glossary')),
 )
 CMS_SHOW_END_DATE = True
 CMS_SHOW_START_DATE = True

@@ -1,5 +1,5 @@
 from django import template
-from pnwmoths.species.models import State, SpeciesRecord
+from pnwmoths.species.models import State, SpeciesRecord, GlossaryWord
 import json, re
 
 register = template.Library()
@@ -44,3 +44,12 @@ def filters_json(value, arg):
         return str(sorted([str("%s (%s)" % (item[0], state_lookup.get(item[1], "CANADA"))) for item in set(value.speciesrecord_set.all().values_list('county__name', 'county__state'))])).replace("'", '"')
     # filter removes None elements, human sort sorts in expected order
     return str(sorted([str(str(item)[0].capitalize() + str(item)[1:]) for item in set(filter(None, value.speciesrecord_set.all().values_list(arg, flat=True)))], key=_human_key)).replace("'", '"')
+
+@register.filter
+def glossary_words_json(value):
+    """
+    Returns a JSON object of glossary information
+    """
+    gw = list(GlossaryWord.objects.values())
+    gw.sort(key=lambda s: len(str(s['word'])), reverse=True)
+    return json.dumps(gw)

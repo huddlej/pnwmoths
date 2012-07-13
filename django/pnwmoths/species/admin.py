@@ -13,7 +13,7 @@ from cms.models.pagemodel import Page
 
 from actions import export_records_as_csv_action, export_labels_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage, ExtendedPage,
-                    SpeciesRecord, State, Author, PlateImage, Photographer)
+                    SpeciesRecord, State, Author, PlateImage, Photographer, GlossaryWord)
 from forms import PlateImageAdminForm
 
 class UserModelAdmin(UserAdmin):
@@ -36,6 +36,9 @@ except:
     pass
 admin.site.register(Page, PageAdmin)
 
+class GlossaryWordAdmin(VersionAdmin, admin.ModelAdmin):
+    search_fields = ("word", "definition",)
+admin.site.register(GlossaryWord, GlossaryWordAdmin)
 
 class CountyAdmin(VersionAdmin, admin.ModelAdmin):
     list_display = ("name", "state")

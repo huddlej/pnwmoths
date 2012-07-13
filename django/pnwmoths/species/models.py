@@ -24,6 +24,17 @@ from cms.models.placeholdermodel import Placeholder
 """
 MODEL DEFINITIONS
 """
+class GlossaryWord(models.Model):
+    word = models.CharField(unique=True, max_length=255)
+    definition = models.TextField()
+
+    class Meta:
+        ordering = ["word"]
+
+    def __unicode__(self):
+        return self.word
+
+
 class State(models.Model):
     choices = STATE_CHOICES + PROVINCE_CHOICES
     code = models.CharField(unique=True, choices=choices, max_length=2)
