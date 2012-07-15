@@ -94,7 +94,7 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
     <div id="fs_images">
         <div class="all-images all-images-no-js">
             <div id="images">
-                {% for species_image in species.speciesimage_set.all %}
+                {% for species_image in species.get_ordered_images %}
                     {% if forloop.first %}
                         <div class="current-image">
                         {% thumbnail species_image.image species_image.SIZES.medium as im %}
