@@ -1,4 +1,7 @@
 {% extends "cms/base.html" %}
+{% block breadcrumbs %}
+&nbsp;
+{% endblock %}
 {% block stylesheets %}
 	{{ block.super }}
 	<link rel="stylesheet" href="{{ MEDIA_URL }}css_pages/stub.css" type="text/css" media="screen" />

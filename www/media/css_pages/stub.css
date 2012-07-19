@@ -29,3 +29,10 @@
     margin-left: 2em;
     text-indent: -2em;
 }
+
+dt {
+    float: left;
+}
+dd {
+    margin-left: 2em;
+}

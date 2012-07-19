@@ -28,6 +28,7 @@ $(document).ready(function() {
 {% load_plateimages as plates %}
 <div class="col_12 last">
 <div id="content">
+    {% placeholder "plate_copyright" %}
     <ul id="plate_images">
     {% for plate in plates %}
         <li id="plate{{plate.pk}}">

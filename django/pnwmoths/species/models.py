@@ -149,6 +149,16 @@ class Species(models.Model):
     def name(self):
         return unicode(self)
 
+    def get_ordered_images(self):
+        """
+        Returns a set of images order alphabetically,
+        ignoring spaces, underscores, and numbers.
+        These characters are added by the django admin and mess up the ordering
+        on factsheets.
+        """
+        qs = list(self.speciesimage_set.all())
+        return sorted(qs, key=lambda s: re.sub(r'[_ -0123456789]', '', s.image.name))
+
     def get_first_plate(self):
         """
         Returns the first imageplate's PK
@@ -162,8 +172,6 @@ class Species(models.Model):
         """
         Return the first image of this species' images if one exists and None
         otherwise.
-
-        TODO: turn this into a m2m manager method for SpeciesImage
         """
         try:
             return self.speciesimage_set.all()[:1].get()

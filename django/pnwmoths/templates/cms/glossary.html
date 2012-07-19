@@ -11,8 +11,8 @@
     <div id="glossary">
         <dl>
         {% for word in glossary %}
-            <dt><a name="{{word.pk}}"></a>{{ word.word }}</dt>
-            <dd>{{ word.definition }}</dd>
+            <dt><a name="{{word.pk}}"></a>{{ word.word }}  &#151;</dt>
+            <dd>&nbsp;{{ word.definition }}</dd>
         {% endfor %}
         </dl>
 	{{ block.super }}
