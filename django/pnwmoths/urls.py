@@ -23,7 +23,7 @@ urlpatterns = patterns('',
     (r'^admin/lookups/', include(ajax_select_urls)),
     (r'^admin/', include(admin.site.urls)),
     url(r'^search/', FancyRedirectSearchView(), name="search"),
-    (r'^photographic-plates/(?P<plate_pk>\d+)/$', 'species.views.photographic_plate_zoomify'),
+    (r'^photographic-plates/(?P<plate_pk>\d+)/$', photographic_plate_zoomify),
     (r'^admin_sentry/', include('admin_sentry.urls')),
     url(r'^', include('cms.urls')),
 )

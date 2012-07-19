@@ -423,7 +423,7 @@ PNWMOTHS.Filters = function () {
                         var d = record[filter];
                         var f = filters[filter];
                         if (filter == "elevation") {
-                                if (d != null && d <= f[0] && d >= f[1])
+                                if (d == null || (d != null && (d < f[0] || d > f[1])))
                                         return false;
                         }
                         else if (filter == "date") {
@@ -446,7 +446,7 @@ PNWMOTHS.Filters = function () {
                             for (var j = 0; j < f.length; j++) {
                                 if (f[j] == "None (CANADA)")
                                     f[j] = null;
-                                if (d == f[j])
+                                if ((d == f[j]) || (d != null && f[j] != null && d.toLowerCase() == f[j].toLowerCase()))
                                     hit = true; 
                             }
                             if (!hit)
