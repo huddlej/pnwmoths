@@ -373,9 +373,13 @@ class SpeciesImage(models.Model):
     IMAGE_PATH = "moths/"
     ZOOM_PATH = "moths_z/"
     REARED_TERMS = ["reared","larva","em.","pupa","Rubus","immature","broadleaf","Taraxacum","ovum","emerged","emgd","em in","em ex","eggs"]
+
+    # TODO: REPLACE SORL WITH SOMETHING THAT DOESN"T PERMANENT CACHE!
+    # Changing these dimensions will force sorl to recache thumbs
+    # Used: 141x93, 376x249, 140x93, 375x249
     SIZES = {
-        "thumbnail": "140x93",
-        "medium": "375x249"
+        "thumbnail": "141x93",
+        "medium": "376x249"
     }
     
     # Help Docs
