@@ -44,6 +44,8 @@ jQuery(document).ready(function() {
             // Temporary fix until navigator is fixed in IE
             if (jQuery.browser.msie)
                 Z.showImage("zoomify-factsheet", initZ.text(), "zToolbarVisible=1&zNavigatorVisible=0&zKeys=0&zSkinPath=/media/zoomify/Skins/Default");
+	    else if (jQuery(window).width() < 500)
+                Z.showImage("zoomify-factsheet", initZ.text(), "zToolbarVisible=1&zNavigatorVisible=0&zFullPageVisible=0&zKeys=0&zSkinPath=/media/zoomify/Skins/Default");
             else
                 Z.showImage("zoomify-factsheet", initZ.text(), "zToolbarVisible=1&zNavigatorVisible=2&zKeys=0&zSkinPath=/media/zoomify/Skins/Default");
         }
