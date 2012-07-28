@@ -348,4 +348,11 @@ div.plateImage p {
 	}
 	#zoomify-factsheet { padding-bottom: 50px !important; }
 	div#ToolbarDisplay { margin-top: 50px !important; }
+	.marker {
+	  margin-left: -5.5px !important;
+	  margin-top: -5.5px !important;
+	  height: 11px !important;
+	  width: 11px !important;
+	  background-size: 100% !important;	
+	}
 }
