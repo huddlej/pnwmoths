@@ -81,10 +81,17 @@
                         <h1 id="header-text">Pacific Northwest <span id="header-green">Moths</span></h1>
               </div>
               <div class="col_4 last">  
+		{% if user.username == "static-site-generator" %}
+                    <form method="get" action="/gsearch/">
+                        <input type="text" name="q" id="search_box" class="inputBox" />          
+                        <input type="submit" value="search" id="search_button" class="submitButton" />
+                    </form>
+		{% else %}
                     <form method="get" action="/search/">
                         <input type="text" name="q" id="search_box" class="inputBox" />          
                         <input type="submit" value="search" id="search_button" class="submitButton" />
                     </form>
+		{% endif %}
               </div>
             </div>
           </div>
@@ -98,7 +105,7 @@
                   <li style="width: 9%"><a href="/">Home<img src="{{ MEDIA_URL }}images/home.png" /></a></li>
                   <li style="width: 15%"><a href="/browse/">Species Fact Sheets<img src="{{ MEDIA_URL }}images/species.png" /></a></li>
                   <li style="width: 15%"><a href="/photographic-plates/">Photographic Plates<img src="{{ MEDIA_URL }}images/plates.png" /></a></li>
-                  <li style="width: 14%"><a href="/identify/">Identification Key<img src="{{ MEDIA_URL }}images/identification.png" /></a></li>
+                  <li style="width: 14%"><a onclick="return confirm('Notice: The identification key will take several minutes to load. Wait until the progress box disappears on its own.');" href="/identify/">Identification Key<img src="{{ MEDIA_URL }}images/identification.png" /></a></li>
                   <li style="width: 10%"><a href="/about-moths/moth-facts/">Moth Facts<img src="{{ MEDIA_URL }}images/facts.png" /></a></li>
                   <li style="width: 23%"><a href="/about-moths/moth-collecting-photography/">Moth Collecting & Photography<img src="{{ MEDIA_URL }}images/photography.png" /></a></li>
                   <li style="width: 10%"><a href="/about-moths/faqs/">FAQs<img src="{{ MEDIA_URL }}images/faqs.png" /></a></li>
@@ -108,7 +115,7 @@
 
 
     {% block breadcrumbs %}
-    <div class="row margin_bottom_45" style="overflow: visible">
+    <div class="row margin_bottom_45 mobile-hide" style="overflow: visible">
         <div class="twelvecol last" style="padding-bottom: 10px">
                 <ul id="breadcrumbs">{% show_breadcrumb 1 %}</ul>
         </div>
@@ -149,7 +156,7 @@
                 <ul>
                     <li><a href="/browse/">Species Fact Sheets</a></li>
                     <li><a href="/photographic-plates/">Photographic Plates</a></li>
-                    <li><a href="/identify/">Identification Key</a></li>
+                    <li><a onclick="return confirm('Notice: The identification key will take several minutes to load. Wait until the progress box disappears on its own.');" href="/identify/">Identification Key</a></li>
                     {% show_menu_below_id "explore-data" 0 %}
                 </ul>
           </div>
