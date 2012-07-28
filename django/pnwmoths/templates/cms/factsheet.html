@@ -80,13 +80,15 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 <!-- wikipage start -->
 {% species_by_name current_page.get_title as species %}
 <div class="row">
-    <div class="col_8">
-        <h2 style="display: inline" class="fs_title"><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h2>
-        {% if species.common_name %}<h3 class="fs_title">{{ species.common_name }}</h3>{% endif %}
+    <div class="col_12 last">
+        <h2 style="display: inline; float: left;" class="fs_title"><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h2>
+        {% if species.noc_id %}<h3 class="fs_subtitle" style="float: right">{{ species.noc_id }}</h3>{% endif %}
     </div>
-    <div class="col_4 last">
-        {% if species.noc_id %}<h3 class="fs_subtitle">{{ species.noc_id }}</h3>{% endif %}
-        {% if species.get_first_plate %}<h3 class="fs_subtitle"><a href="/photographic-plates/#plate{{ species.get_first_plate }}">View Photographic Plate</a></h3>{% endif %}
+</div>
+<div class="row">
+    <div class="col_12 last">
+        {% if species.common_name %}<h3 class="fs_title" style="float: left">{{ species.common_name }}</h3>{% endif %}
+        {% if species.get_first_plate %}<h3 class="fs_subtitle" style="float: right"><a href="/photographic-plates/#plate{{ species.get_first_plate }}">View Photographic Plate</a></h3>{% endif %}
     </div>
 </div>
 <div id="fs_yui-g" class="row">
@@ -121,7 +123,7 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                                 {% ifequal inline_species_image "404" %}
                                     <span class="hidden inline-species-image missing_zoomify">{{ medium.url }}</span>
                                 {% else %}
-                                    <span class="hidden inline-species-image">{{ MEDIA_URL }}{{ inline_species_image }}</span>
+                                    <span class="hidden inline-species-image">/media/{{ inline_species_image }}</span>
                                 {% endifequal %}
                             {% endwith %}
                         {% endthumbnail %}
