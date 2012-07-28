@@ -7,14 +7,17 @@ jQuery(window).load(function() {
     var mapDiv = jQuery("#googlemap");
     mapDiv.show();
     var centerPoint = new google.maps.LatLng(46.2, -119.4);
+    var zoomLevel = 5;
+    if (jQuery(window).width() < 500)
+        zoomLevel = 4;
     var options = {
                 zoom: 5,
                 scrollwheel: false,
                 zoomControl: false,
                 scaleControl: false,
                 streetViewControl: false,
-                maxZoom: 5,
-                minZoom: 5,
+                maxZoom: zoomLevel,
+                minZoom: zoomLevel,
                 center: centerPoint,
                 panControlOptions: {
                     position: google.maps.ControlPosition.LEFT_BOTTOM
