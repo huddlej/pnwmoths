@@ -1,0 +1,52 @@
+{% load menu_tags thumbnail species_tags browse_filters %}
+<div class="browse_items">
+{% for child in children %}
+
+{% if forloop.counter0|divisibleby:"2" %}
+{% if child.is_leaf_node %}
+<div class="browse_item_row">
+{% endif %}
+{% endif %}
+
+{# Added on an ajax request for the tree's horizontal depth lines #}
+{% if request.is_ajax %}
+    <div class="browse_item_wrapper">
+{% endif %}
+
+<div class="browse_item{% if child.is_leaf_node %} species{% endif%}">
+  <div class="browse_heading">
+    <h3 {% if child|navnode_is_species_or_genus %}class="browse_genus_species"{% endif %}>
+        <a href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a> {% if child|navnode_species_count %}({{ child|navnode_species_count }}){% endif %}
+    </h3>
+  </div>
+  <div style="clear: both; height: 0px;">&nbsp;</div>
+  <div class="ajax"></div>
+  <span class="browse_thumbs">
+    {% imageset_by_navnode child as 4 subtree_images %}
+    {% for species_image in subtree_images %}
+        {% if child.is_leaf_node %}
+            {% thumbnail species_image.image species_image.SIZES.medium as im %}
+                <img src="{{ im.url }}" />
+            {% endthumbnail %}
+        {% else %}
+            {% thumbnail species_image.image species_image.SIZES.thumbnail as im %}
+            <img src="{{ im.url }}" width="{{ im.x }}" height="{{ im.y }}" />
+            {% endthumbnail %}
+        {% endif %}        
+    {% endfor %} 
+  </span>
+</div>
+
+{% if request.is_ajax %}
+    </div>
+{% endif %}
+
+{% if forloop.counter|divisibleby:"2" or forloop.last %}
+{% if child.is_leaf_node %}
+<div style="clear: both; height: 0px"></div>
+</div>
+{% endif %}
+{% endif %}
+
+{% endfor %}
+</div>

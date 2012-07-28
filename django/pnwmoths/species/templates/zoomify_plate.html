@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+              {% if z_path %}
+                <script type="text/javascript">
+                    var fixHeight = function() {
+                        var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0],x=w.innerWidth||e.clientWidth||g.clientWidth,y=w.innerHeight||e.clientHeight||g.clientHeight;
+                        document.getElementById("height_hack").style.height = (y-20) + "px";
+                        document.getElementById("myContainer").style.height = (y-20) + "px";
+                    };
+                </script>
+                <script type="text/javascript" src="{{ MEDIA_URL }}zoomify/ZoomifyImageViewer.js"></script>
+                <script type="text/javascript">
+
+                function windowOpen(filename,windowname,properties) {
+                    mywindow = window.open(filename,windowname,properties);
+                }
+
+
+                //-----------------reset size----------------------
+
+                var screenWidth = 0;
+                var screenHeight = 0;
+                var viewerWidth = 0;
+                var viewerHeight = 0;
+                var BorderType = '';
+                var resizeSkipTimer = null;
+                var textHeaderH = 70;
+
+                function getWindowSize() {
+                        if (typeof(window.innerWidth ) == 'number') {
+                                screenWidth = window.innerWidth;
+                                screenHeight = window.innerHeight;
+                        } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+                                screenWidth = document.documentElement.clientWidth;
+                                screenHeight = document.documentElement.clientHeight;
+                        } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+                                screenWidth = document.body.clientWidth;
+                                screenHeight = document.body.clientHeight;
+                        } else {
+                                getScreenSize();
+                        }
+                }
+
+                function getScreenSize() {
+                        if (self.screen) {
+                                screenWidth = screen.width;
+                                screenHeight = screen.height;
+                        } else if (self.java) {
+                                dtk = java.awt.Toolkit.getDefaultToolkit();
+                                ss = dtk.getScreenSize();
+                                screenWidth = ss.width;
+                                screenHeight = ss.height;
+                        } else if (self.theBody) {
+                                screenWidth = theBody.offsetWidth;
+                                screenHeight = theBody.offsetHeight;
+                        } else {
+                                screenWidth = 800;
+                                screenHeight = 600;
+                        }
+                }
+
+                function resizeTest() {
+                        window.clearTimeout(resizeSkipTimer);
+                        resizeSkipTimer = window.setTimeout(resizeViewer, 500);
+                }
+
+                function resizeViewer () {
+                        resetSize(100);
+                        Z.Viewer.setSizeAndPosition(viewerWidth, viewerHeight, 0, 0, true);
+                        var zMyContainer = document.getElementById("myContainer"); 
+                        var zMyContainerS = zMyContainer.style;
+                        zMyContainerS.width = viewerWidth + "px";
+                        zMyContainerS.height = viewerHeight + "px";
+                }
+
+                function resetSize(percent) {
+                        getWindowSize();
+                        viewerWidth = Math.round(screenWidth * percent / 100);
+                        viewerHeight = Math.round(screenHeight * percent / 100) - 20;
+                }
+                </script>
+                <style type="text/css">body {margin: 0px 0px 0px 0px;} #myContainer { width:100%; padding-bottom: 20px; position: absolute; top: 0; bottom: 0; margin: 0px 0px 0px 0px;}
+                #ToolbarDisplay { bottom: 0 !important; top: auto !important; }
+                #ViewerDisplay { position: absolute !important; bottom: 0 !important; height: auto !important; }
+		a { color: black; }
+               	.np {position: absolute; padding: 0 5px 0 5px; height: 100%; z-index: 1000000; display: block; background-color: rgba(0,0,0,0.3); } 
+		#nextlink { right: 0px; }
+                </style>
+              {% endif %}
+        </head>
+        <body {% if z_path %}onload="resizeTest()" onresize="resizeTest()"{% endif %}>
+	{% if prev_pk %}<a class="np" href="/photographic-plates/{{prev_pk}}/">Back</a>{% endif %}
+	{% if next_pk %}<a class="np" id="nextlink" href="/photographic-plates/{{next_pk}}/">Next</a>{% endif %}
+	<script type="text/javascript">$(".np").css("line-height", parseInt($(window).height()*0.9)+"px")</script>
+              {% if z_path %}
+                    <div id="height_hack">
+                        <div id="myContainer"></div>
+                    </div>
+                    <script type="text/javascript">
+                        fixHeight();
+                        Z.showImage("myContainer", "/{{ z_path }}", "zToolbarVisible=1&zFullPageVisible=0&zNavigatorVisible=1&zKeys=0&zSkinPath=/media/zoomify/Skins/Default"); 
+                    </script>
+              {% else %}
+                  <img src="{{ plate.image.url }}" width="100%" />
+              {% endif %}
+        </body>
+</html>

@@ -1,0 +1,9 @@
+{% load cms_tags thumbnail %}
+<a href="{% page_url fm.factsheet %}">
+    <h4>{{ fm }}</h4>
+    {% thumbnail fm_img.image fm_img.SIZES.medium as im %}
+        <img src="{{ fm_img.image.url }}" />
+    {% empty %}
+        <p>Coming Soon :)...</p>
+    {% endthumbnail %}
+</a>

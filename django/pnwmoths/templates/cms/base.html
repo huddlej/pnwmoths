@@ -1,102 +1,211 @@
-{% load cms_tags menu_tags %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang=""
- lang="" dir="">
+{% load cache cms_tags menu_tags %}
+<!doctype html>  
+<!--[if lt IE 7 ]> <html lang="en-us" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en-us" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en-us" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en-us" class="no-js ie9"> <![endif]-->   
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en-us" class="no-js"> <!--<![endif]-->
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>{% block title %}{% page_attribute page_title %}{% endblock %} | PNW Moths</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" >
+  <meta charset="utf-8">
 
-  {% block stylesheets %}
-  <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/reset-fonts-grids.css" type="text/css">
-  <link rel="stylesheet" href="{% if MEDIA_URL %}{{ MEDIA_URL }}{% else %}http://pnwmoths.biol.wwu.edu/media/{% endif %}css/base.css" type="text/css">
-  {% endblock %}
+  <title>PNW Moths | {% block title %}{% page_attribute page_title %}{% endblock %}</title>
 
-  {{ meta_headers }}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> 
+
+    {% block stylesheets %}
+        <!-- The Columnal Grid (1140px wide base, load first), Type and image presets, and mobile stylesheet -->
+        <link rel="stylesheet" href="{{ MEDIA_URL }}css/columnal.css" type="text/css" media="screen" />
+
+        <!-- Fixes for IE -->
+                <!--[if lt IE 9]>
+                        <link rel="stylesheet" href="{{ MEDIA_URL }}css/ie.css" type="text/css" media="screen" />
+                <![endif]-->
+
+        <!-- use "fixed-984px-ie.css" or "fixed-960px-ie.css for a 984px or 960px fixed width for IE6 and 7 -->
+                <!--[if lte IE 7]>
+                        <link rel="stylesheet" href="{{ MEDIA_URL }}css/fixed-984px-ie.css" type="text/css" media="screen" />
+                <![endif]-->
+
+        <!-- Fixes for IE6, only needed if IE 6 will be supported - width must match 984px or 960px of css file used above -->
+        <!-- Use .imagescale to fix IE6 issues with full-column width images (class must be added to any image wider than the column it is placed into) -->
+                <!--[if lte IE 6]>
+                        <link rel="stylesheet" href="{{ MEDIA_URL }}css/ie6-984px.css" type="text/css" media="screen" />
+                <![endif]-->
+        <!-- End fixes for IE -->
+
+        <!-- Customizations here --> 
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Spinnaker' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{{ MEDIA_URL }}css/custom.css" type="text/css" media="screen" />
+    {% endblock %}
+
+    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}admin/js/jquery.min.js"></script>
+    {% block breadcrumbs_css %}
+        <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}breadcrumbs/script.js"></script>
+        <link rel="stylesheet" href="{{ MEDIA_URL }}breadcrumbs/style.css" type="text/css">
+    {% endblock %}
+
+    {{ meta_headers }}
+
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-33231112-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
 </head>
+<body>
+
 
 <body>
-<div id="doc" class="yui-t7 dokuwiki">
-  <div class="stylehead">
-
-    <div id="hd" class="header" role="banner">
-      <!-- start site nav -->
-      <h1 id="site-id">PNW Moths</h1>
-      <ol id="navigation">
-          <li><a href="{% page_id_url "index" %}">Home</a></li>
-          <li><a href="{% page_id_url "identify" %}">Identify</a></li>
-          <li><a href="{% page_id_url "browse" %}">Browse</a></li>
-          <li><a href="{% page_id_url "about-project" %}">About the Project</a></li>
-          <li><a href="">Contact Us</a></li>
-          <li id="search">
-              <form method="get" action="/search/">
-                  <input type="text" name="q" size="20" />
-                  <input type="submit" value="Search" />
-              </form>
-          </li>
-      </ol>
-      <!-- end site nav -->
-
-      <div class="pagename">
-      </div>
-      <div class="logo">
-      </div>
-
-      <div class="clearer"></div>
+<div id="header_container" class="container margin_top_15">
+  <div id="header" class="shadow_container">
+          <div class="row">
+                <div class="header_padded">
+                        <div class="col_12 last">
+                                <img id="header-moths" src="{{ MEDIA_URL }}images/header.png" />
+                        </div>
+                </div>
+          </div>
+          <div class="row">
+            <div class="header_padded">
+              <div class="col_8">
+                        <h1 id="header-text">Pacific Northwest <span id="header-green">Moths</span></h1>
+              </div>
+              <div class="col_4 last">  
+		{% if user.username == "static-site-generator" %}
+                    <form method="get" action="/gsearch/">
+                        <input type="text" name="q" id="search_box" class="inputBox" />          
+                        <input type="submit" value="search" id="search_button" class="submitButton" />
+                    </form>
+		{% else %}
+                    <form method="get" action="/search/">
+                        <input type="text" name="q" id="search_box" class="inputBox" />          
+                        <input type="submit" value="search" id="search_button" class="submitButton" />
+                    </form>
+		{% endif %}
+              </div>
+            </div>
+          </div>
+          <div id="header_bottom" class="row">
+            <div class="col_12 last"><hr></div>
+          </div>
+  </div>
+  <div class="row margin_top_25">
+    <div id="mainnav" class="col_12 last">
+                <ul id="navigation" class="head-foot-borders mobile-hide">
+                  <li style="width: 9%"><a href="/">Home<img src="{{ MEDIA_URL }}images/home.png" /></a></li>
+                  <li style="width: 15%"><a href="/browse/">Species Fact Sheets<img src="{{ MEDIA_URL }}images/species.png" /></a></li>
+                  <li style="width: 15%"><a href="/photographic-plates/">Photographic Plates<img src="{{ MEDIA_URL }}images/plates.png" /></a></li>
+                  <li style="width: 14%"><a onclick="return confirm('Notice: The identification key will take several minutes to load. Wait until the progress box disappears on its own.');" href="/identify/">Identification Key<img src="{{ MEDIA_URL }}images/identification.png" /></a></li>
+                  <li style="width: 10%"><a href="/about-moths/moth-facts/">Moth Facts<img src="{{ MEDIA_URL }}images/facts.png" /></a></li>
+                  <li style="width: 23%"><a href="/about-moths/moth-collecting-photography/">Moth Collecting & Photography<img src="{{ MEDIA_URL }}images/photography.png" /></a></li>
+                  <li style="width: 10%"><a href="/about-moths/faqs/">FAQs<img src="{{ MEDIA_URL }}images/faqs.png" /></a></li>
+                </ul>
     </div>
+  </div>
 
-    <div class="bar" id="bar__top">
-      <div class="bar-left" id="bar__topleft">
-      </div>
 
-      <div class="bar-right" id="bar__topright">
-      </div>
-
-      <div class="clearer"></div>
+    {% block breadcrumbs %}
+    <div class="row margin_bottom_45 mobile-hide" style="overflow: visible">
+        <div class="twelvecol last" style="padding-bottom: 10px">
+                <ul id="breadcrumbs">{% show_breadcrumb 1 %}</ul>
+        </div>
     </div>
+    {% endblock %}
 
-    <ol id="breadcrumbs">
-    {% show_breadcrumb %}
-    </ol>
+</div>
+<div id="body" style="clear: both" class="container">
+  <div id="content-wrapper" class="shadow_container">
+    <div class="row">
+      <div class="col_12 last">
+        <div id="content">
+          {% block messages %}
+              {% if messages %}
+                  <ul class="messages">
+                  {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+                  </ul>
+              {% endif %}
+          {% endblock %}
+
+          {% block content %}
+              {% placeholder "content" %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div id="bd" class="page" role="main">
-      {% block messages %}
-      {% if messages %}
-          <ul class="messages">
-          {% for message in messages %}
-              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-          {% endfor %}
-          </ul>
-      {% endif %}
-      {% endblock %}
 
-      {% block content %}
-      <!-- wikipage start -->
-      {% placeholder "content" %}
-      <!-- wikipage stop -->
-      {% endblock %}
+<div class="container margin_top_45 margin_bottom_30">
+  <div id="footer" class="row">
+    <div id="internal_footer" class="col_9">
+      <div class="col_3 combine_footer">
+                <div class="footer-heading">Explore Data</div>
+                <ul>
+                    <li><a href="/browse/">Species Fact Sheets</a></li>
+                    <li><a href="/photographic-plates/">Photographic Plates</a></li>
+                    <li><a onclick="return confirm('Notice: The identification key will take several minutes to load. Wait until the progress box disappears on its own.');" href="/identify/">Identification Key</a></li>
+                    {% show_menu_below_id "explore-data" 0 %}
+                </ul>
+          </div>
+      <div class="col_3 combine_footer">
+            <div class="footer-heading">About Moths</div>
+                <ul>
+                    {% show_menu_below_id "about-moths" 0 %}
+                </ul>
+          </div>
+      <div class="col_3 last combine_footer">
+            <div class="footer-heading">About Us</div>
+                <ul>
+                    {% show_menu_below_id "about-us" 0 %}
+                </ul>
+          </div>
+    </div>
+    <div id="funding-footer" class="col_3 last">
+    <div class="footer-heading">Funding</div>
+                <div id="funders">
+                        <a href="http://www.nsf.gov/"><img src="{{ MEDIA_URL }}images/nsf.png" /></a>
+                        <a href="http://www.recovery.gov/Pages/default.aspx"><img src="{{ MEDIA_URL }}images/recovery.png" /></a>
+                </div>
+    </div>
+    <div id="collaborators-footer" class="head-foot-borders col_12 last margin_top_25">
+      <div id="collaborators-heading"><h2>An Institutional Partnership Between</h2></div>
+          <div id="collaborators">
+                <a href="http://www.biol.wwu.edu/biology/"><img src="{{ MEDIA_URL }}images/western.png" /></a>
+                <a href="http://entomology.wsu.edu/outreach/m-t-james-museum/"><img src="{{ MEDIA_URL }}images/wsu.png" /></a>
+                <a href="http://osac.science.oregonstate.edu/"><img src="{{ MEDIA_URL }}images/osu.png" /></a>
+                <a href="http://www.ag.uidaho.edu/pses/Divisions/Entomology/d_ent.htm"><img src="{{ MEDIA_URL }}images/vandals.png" /></a>
+                <a href="http://www.canacoll.org/"><img src="{{ MEDIA_URL }}images/canacoll.png" /></a>
+                <a href="http://www.oregon.gov/ODA/PLANT/IPPM/oda_museum_home.shtml"><img src="{{ MEDIA_URL }}images/orAg.png" /></a>
+                <a href="http://agr.wa.gov/PlantsInsects/PestProgram/"><img src="{{ MEDIA_URL }}images/wsda.png" /></a>
+                <a href="http://www.lucidcentral.com/"><img src="{{ MEDIA_URL }}images/lucid.png" /></a>
+          </div>
+    </div>
   </div>
-
-  <div id="ft" class="stylefoot" role="contentinfo">
-    <ol id="ft-navigation">
-      {% if request.user.is_authenticated %}
-          {% if request.user.is_staff %}
-              <li><a href="http://github.com/huddlej/pnwmoths/issues">Issues</a></li>
-              <li><a href="{% url admin:index %}">Site Admin</a></li>
-          {% endif %}
-
-          <li><a href="{% url logout %}">Logout</a></li>
-      {% else %}
-          <li><a href="{% url login %}">Login</a></li>
-      {% endif %}
-    </ol>
-    <p id="copyright">Copyright {% now "Y" %}</p>
-  </div>
-
 </div>
 
 {% block scripts %}
+    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/responsive.navigation.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.fittext.js">
+    </script>
+    <script type="text/javascript">
+        jQuery(window).load(function() {
+            jQuery("#header-text").fitText(1.2);
+        });
+    </script>
 {% endblock %}
+
 </body>
 </html>

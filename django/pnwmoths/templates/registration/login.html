@@ -2,7 +2,12 @@
 
 {% block title %}Login{% endblock %}
 
+{% block breadcrumbs %}
+&nbsp;
+{% endblock %}
 {% block content %}
+<div class="row top bottom">
+<div class="twelvecol last">
 <h1>PNW Moths Login</h1>
 
 {% if form.errors %}
@@ -14,4 +19,6 @@
     <input type="hidden" name="next" value="{{ next }}" />
     <input type="submit" value="Login" />
 </form>
+</div>
+</div>
 {% endblock %}

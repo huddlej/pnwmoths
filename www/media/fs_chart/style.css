@@ -1,0 +1,10 @@
+.chart .data {
+    display: none;
+}
+
+.chart {
+    margin: 0 auto;
+    display: none;
+    width: 98%;
+    height: 260px;
+}

@@ -1,0 +1,51 @@
+{% extends "cms/base.html" %}
+{% load cache cms_tags placeholder_tags thumbnail species_tags %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css_pages/plateimages.css" type="text/css">
+{% endblock %}
+
+{% block breadcrumbs_css %}
+{% endblock %}
+
+{% block breadcrumbs %}
+&nbsp;
+{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">
+function($) {
+$(document).ready(function() {
+    $("li").removeClass("customTarget");
+    var myLocation = document.location.hash.replace("#","");
+    if (myLocation) {
+            document.getElementById(myLocation).className = "customTarget";
+    }
+})}(jQuery);
+</script>
+{% load_plateimages as plates %}
+<div class="col_12 last">
+<div id="content">
+    {% placeholder "plate_copyright" %}
+    <ul id="plate_images">
+    {% for plate in plates %}
+        <li id="plate{{plate.pk}}">
+            {% cache 0 plate_image plate.pk %}
+            <a href="/photographic-plates/{{ plate.pk }}/" target="_blank">
+                {% thumbnail plate.image plate.SIZES.thumbnail as im %}
+                    <img src="{{ im.url }}" title="{{ plate.title }}" />
+                {% endthumbnail %}
+            </a>
+            {% endcache %}
+            <div style="width: 240px">
+            {% render_placeholder plate.description %}
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+</div>
+
+{% endblock %}

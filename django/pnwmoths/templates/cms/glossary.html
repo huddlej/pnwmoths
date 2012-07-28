@@ -1,0 +1,23 @@
+{% extends "cms/base.html" %}
+{% load species_tags %}
+{% block breadcrumbs %}
+{% endblock %}
+{% block stylesheets %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css_pages/stub.css" type="text/css" media="screen" />
+{% endblock %}
+{% block content %}
+{% load_glossary_words as glossary %}
+<div id="content">
+    <h1>Glossary</h1>
+    <div id="glossary">
+        <dl>
+        {% for word in glossary %}
+            <dt><a name="{{word.pk}}"></a>{{ word.word }}  &#151;</dt>
+            <dd>&nbsp;{{ word.definition }}</dd>
+        {% endfor %}
+        </dl>
+	{{ block.super }}
+    </div>
+</div>
+{% endblock %}

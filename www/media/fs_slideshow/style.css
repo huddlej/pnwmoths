@@ -1,0 +1,59 @@
+/**
+ * Styles for the group of species images and similar species images.
+ */
+
+.all-images {
+    margin-left: 10px;
+    background-color: #F0F6F9;
+    border: 1px solid #346F97;
+}
+
+/* Styles for users without javascript. */
+
+.all-images-no-js {
+    width: 100%!important;
+}
+
+.all-images-no-js #images {
+    width: 100%;
+}
+
+.all-images-no-js #images .current-image {
+    float: left;
+}
+
+.all-images-no-js #images .other-images {
+    float: left;
+    height: 250px;
+    margin-left: 2em;
+    margin-top: 2em;
+    overflow: auto;
+    text-align: left;
+    width: 300px!important;
+}
+
+.all-images-no-js #similar {
+    clear: both;
+}
+.all-images-no-js #similar .other-images li {
+    display: block;
+    float: left;
+    margin-bottom: 2em;
+    margin-left: 2em;
+    margin-top: 1em;
+    width: 140px;
+}
+
+.all-images-no-js li {
+    display: inline;
+    list-style-type: none;
+}
+
+#old-image-factsheet img {
+    min-width: 100%;
+}
+
+.no-js {
+    clear: both;
+    margin-left: 1em;
+}

@@ -2,10 +2,13 @@ from django.template import Library, Node, TemplateSyntaxError
 from django.template import Variable
 from django.utils.encoding import smart_str
 from django.utils.translation import ugettext as _
+from django.db.models import F
 import re
 
-from pnwmoths.species.models import Species
-from pnwmoths.species.resources import get_resource_by_url
+from pnwmoths.species.models import Species, PlateImage, GlossaryWord
+from cms.models.pagemodel import Page
+
+import random
 
 register = Library()
 
@@ -63,51 +66,119 @@ def species_by_name(parser, token):
 
     return SpeciesByNameNode(bits[1], bits[3])
 
-
-class ResourceNode(Node):
-    def __init__(self, url, kwargs):
-        self.url = url
-        self.kwargs = kwargs
+class ImagesetByNavNode(Node):
+    """
+    Adds an imageset for the current tree level's species.
+    """
+    def __init__(self, navnode, leaf_count, context_var):
+        self.obj = Variable(navnode)
+        self.leaf_count = int(leaf_count)
+        self.context_var = context_var
 
     def render(self, context):
-        kwargs = dict([(smart_str(k, "ascii"), v.resolve(context))
-                       for k, v in self.kwargs.items()])
-        return get_resource_by_url(self.url, kwargs)
+        # Create the template var by adding to context.
+        try:
+            navnode = self.obj.resolve(context)
+            page = Page.objects.get(pk=navnode.id)
+            try:
+                extended = page.extended_fields.get()
+            except:
+                extended = None
+            if extended and extended.navigation_images.count() > 3:
+                imageset = list(extended.navigation_images.all()[:4])
+            else:
+                leaves = list(page.get_descendants(include_self=True).filter(lft=F('rght')-1)[:6])
+                imageset = []
+                for p in leaves:
+                    genus, species = p.get_title().split(" ", 1)
+                    try:
+                        im = Species.objects.get(genus=genus, species=species).get_first_image()
+                    except (Exception):
+                        im = None
+                    if im:
+                        imageset.append(im)
+                    if len(imageset) == self.leaf_count:
+                        break 
+        except (Exception):
+            imageset = None
+
+        context[self.context_var] = imageset
+
+        return ""
 
 
-def resource(parser, token):
+def imageset_by_navnode(parser, token):
     """
-    Returns the content associated with a Django URL and optional parameters.
+    Retrieves a random set of n images, 1 from each n species beneath this level
+    in the tree. If navnode is a leaf, tries to return images from this species.
+    If their are less than 4 species leaf nodes, however
+    many species are found get 1 image put in.
 
-    The first argument is a Django URL relative to the server. Keyword arguments
-    are specified after the URL.
-
-    For example, use the following code to embed the content of a Django view in
-    a template:
-
-        {% resource /poll/1/results/ limit=10 %}
+    {% imageset_by_navnode navnode as 4 species %}
     """
-    bits = token.split_contents()
-    if len(bits) < 2:
-        raise TemplateSyntaxError("'%s' takes at least one argument"
-                                  " (URL relative to Django HTTP server)" % bits[0])
-    url = bits[1]
-    kwargs = {}
-    bits = bits[2:]
+    try:
+        navnode, _, leaf_count, context_var = token.split_contents()[1:]
+    except ValueError:
+        raise TemplateSyntaxError(
+            _('tag requires exactly 4 arguments')
+        )
 
-    # Now all the bits are parsed into new format,
-    # process them as template vars
-    if len(bits):
-        for bit in bits:
-            match = kwarg_re.match(bit)
-            if not match:
-                raise TemplateSyntaxError("Malformed arguments to resource tag")
-            name, value = match.groups()
-            if name:
-                kwargs[name] = parser.compile_filter(value)
+    return ImagesetByNavNode(navnode, leaf_count, context_var)
 
-    return ResourceNode(url, kwargs)
 
+def load_glossary_words(parser, token):
+    """
+    Retrieves a list of Glossary Words.
+    {% load_glossary_words as words %}
+    """
+    class GlossaryWords(Node):
+        def __init__(self, context_var):
+            self.context_var = context_var
+
+        def render(self, context):
+            try:
+                context[self.context_var] = GlossaryWord.objects.all()
+            except:
+                pass
+
+            return ""
+
+
+    try:
+        _, context_var = token.split_contents()[1:]
+    except ValueError:
+        raise TemplateSyntaxError(_('tag requires 2 arguments'))
+
+    return GlossaryWords(context_var)
+
+
+def load_plateimages(parser, token):
+    """
+    Retrieves a list of Plate Images.
+    {% load_plateimages as plates %}
+    """
+    class PlateImages(Node):
+        def __init__(self, context_var):
+            self.context_var = context_var
+
+        def render(self, context):
+            try:
+                # Try to set our context_var to our PlateImages
+                context[self.context_var] = PlateImage.objects.all()
+            except:
+                pass
+
+            return ""
+
+
+    try:
+        _, context_var = token.split_contents()[1:]
+    except ValueError:
+        raise TemplateSyntaxError(_('tag requires 2 arguments'))
+
+    return PlateImages(context_var)
 
 register.tag("species_by_name", species_by_name)
-register.tag("resource", resource)
+register.tag("imageset_by_navnode", imageset_by_navnode)
+register.tag("load_plateimages", load_plateimages)
+register.tag("load_glossary_words", load_glossary_words)

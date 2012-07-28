@@ -1,12 +1,36 @@
-{% extends "cms/base.html" %}
-{% load cms_tags menu_tags %}
+{% extends request.is_ajax|yesno:"base_ajax.html,cms/base.html" %}
+{% load cache cms_tags menu_tags %}
 
-{% block content %}
-{% placeholder "before menu" %}
+{% if request.is_ajax %}
+    {% block content_ajax %}
+        {% cache 0 browse_submenu_ajax request.current_page.id %}
+            {% show_sub_menu 1 "menu/browse_submenu.html" %}
+        {% endcache %}
+    {% endblock %}
+{% else %}
+    {% block scripts %}
+        {{ block.super }}
+        <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_pages/browse.js"></script>
+        <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js_ext/jquery.waitforimages.js"></script>
+    {% endblock %}
 
-<ol>
-{% show_sub_menu %}
-</ol>
+    {% block stylesheets %}
+        {{ block.super }}
+        <link rel="stylesheet" href="{{ MEDIA_URL }}css_pages/browse.css" type="text/css">
+    {% endblock %}
 
-{% placeholder "after menu" %}
-{% endblock %}
+    {% block content %}
+        <div class="row top bottom">
+            <div id="browse-species-container" class="twelvecol last">
+                <div style="margin-left: 10px; clear: both;">
+                    <a id="browse_images_toggle" class="expand_button" title="Advanced Browse">Turn off Images?</a>
+                </div>
+                <div style="margin-left: 10px">
+                    {% cache 0 browse_submenu request.current_page.id %}
+                    {% show_sub_menu 1 "menu/browse_submenu.html" %}
+                    {% endcache %}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+{% endif %}
