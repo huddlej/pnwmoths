@@ -113,7 +113,6 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                         <ul class="other-images">
                     {% endif %}
                     <li>
-                    {% cache 0 species_thumb forloop.counter species.name %}
                         {% thumbnail species_image.image species_image.SIZES.medium as medium %}
                         {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
                             <a href="{{ species_image.image.url }}" title='{{ species_image.specimen_details }}{{ species_image.license_details }}&nbsp;' class="thumbnail">
@@ -128,7 +127,6 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                             {% endwith %}
                         {% endthumbnail %}
                         {% endthumbnail %}
-                    {% endcache %}
                     </li>
                     {% if forloop.last %}
                         </ul></div></div>
@@ -149,7 +147,6 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
             <ul class="other-images">
             {% for similar_species in species.similar.all %}
                 <li>
-                {% cache 0 sim_link similar_species.name %}
                     <a href="{% page_url similar_species.factsheet %}" target="_blank">
                     {% with similar_species.get_first_image as similar_image %}
                         {% thumbnail similar_image.image similar_image.SIZES.thumbnail as im %}
@@ -158,7 +155,6 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                     {% endwith %}
                     <em>{{ similar_species }}</em>
                     </a>
-                {% endcache %}
                 </li>
             {% endfor %}
             </ul>

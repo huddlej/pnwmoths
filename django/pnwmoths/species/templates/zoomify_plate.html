@@ -85,7 +85,7 @@
                 #ToolbarDisplay { bottom: 0 !important; top: auto !important; }
                 #ViewerDisplay { position: absolute !important; bottom: 0 !important; height: auto !important; }
 		a { color: black; }
-               	.np {position: absolute; padding: 0 5px 0 5px; height: 100%; z-index: 1000000; display: block; background-color: rgba(0,0,0,0.3); } 
+               	.np {position: absolute; font-size: 1.4em; font-family: Arial, Verdana; padding: 0 5px 0 5px; height: 100%; z-index: 1000000; display: block; background-color: rgba(0,0,0,0.3); } 
 		#nextlink { right: 0px; }
                 </style>
               {% endif %}
@@ -93,7 +93,6 @@
         <body {% if z_path %}onload="resizeTest()" onresize="resizeTest()"{% endif %}>
 	{% if prev_pk %}<a class="np" href="/photographic-plates/{{prev_pk}}/">Back</a>{% endif %}
 	{% if next_pk %}<a class="np" id="nextlink" href="/photographic-plates/{{next_pk}}/">Next</a>{% endif %}
-	<script type="text/javascript">$(".np").css("line-height", parseInt($(window).height()*0.9)+"px")</script>
               {% if z_path %}
                     <div id="height_hack">
                         <div id="myContainer"></div>
@@ -105,5 +104,7 @@
               {% else %}
                   <img src="{{ plate.image.url }}" width="100%" />
               {% endif %}
+	<script src='http://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>
+	<script type="text/javascript">$(".np").css("line-height", parseInt($(window).height()*0.9)+"px")</script>
         </body>
 </html>
