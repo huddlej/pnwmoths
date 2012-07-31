@@ -41,9 +41,9 @@ def filters_json(value, arg):
             s_id,code = p
             state_lookup[s_id] = code
 
-        return str(sorted([str("%s (%s)" % (item[0], state_lookup.get(item[1], "CANADA"))) for item in set(value.speciesrecord_set.all().values_list('county__name', 'county__state'))])).replace("'", '"')
+        return str(sorted([str("%s (%s)" % (item[0], state_lookup.get(item[1], "CANADA"))).replace("'", "`") for item in set(value.speciesrecord_set.all().values_list('county__name', 'county__state'))])).replace("'", '"').replace("`", "'")
     # filter removes None elements, human sort sorts in expected order
-    return str(sorted([str(str(item)[0].capitalize() + str(item)[1:]) for item in set(filter(None, value.speciesrecord_set.all().values_list(arg, flat=True)))], key=_human_key)).replace("'", '"')
+    return str(sorted([str(str(item)[0].capitalize() + str(item)[1:]).replace("'", "`") for item in set(filter(None, value.speciesrecord_set.all().values_list(arg, flat=True)))], key=_human_key)).replace("'", '"').replace("`", "'")
 
 @register.filter
 def glossary_words_json(value):
