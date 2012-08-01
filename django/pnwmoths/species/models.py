@@ -156,8 +156,11 @@ class Species(models.Model):
         These characters are added by the django admin and mess up the ordering
         on factsheets.
         """
+        # Creates a list with the weight in front as it has a higher priority
+        # over the name.
         qs = list(self.speciesimage_set.all())
-        return sorted(qs, key=lambda s: re.sub(r'[_ -0123456789]', '', s.image.name))
+        alphanum_key = lambda s: [s.weight, re.sub(r'[_ -0123456789]', '', s.image.name)]
+        return sorted(qs, key=alphanum_key)
 
     def get_first_plate(self):
         """
