@@ -119,3 +119,7 @@
     background: linear-gradient(to right,  #ffffff 0%,#b5a79f 99%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#b5a79f',GradientType=1 );
 }
+
+.ie7 #home-text, .ie8 #home-text {
+  width: 470px;
+}

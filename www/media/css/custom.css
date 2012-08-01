@@ -108,12 +108,15 @@ li {
 /* each menu item in an li with text/image centered
    % width for each li is currently defined inline - I couldn't figure out a way
    to lay out the menu like the mockup without defining widths individually */
+/* IE7 display inline hack needed */
 #navigation li {
   display: inline-block;
   text-align: center;
   padding: 0;
   margin: 8px 0 8px 0;
-  
+
+*display: inline;
+zoom: 1;
 }
 
 /* centers the navigation image underneath the text link */
