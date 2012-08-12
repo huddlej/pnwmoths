@@ -15,6 +15,9 @@ def species_stat_count(value):
     try:
         if value == 'SpeciesRecord':
             r_count = get_model('species', value).records.count()
+        elif value == 'Species':
+            # Shows only the published species accounts count
+            r_count = Page.objects.published().filter(species__isnull=False).count()
         else:
             r_count = get_model('species', value).objects.count()
         # return formatted count
