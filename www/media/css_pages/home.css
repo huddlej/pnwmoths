@@ -29,6 +29,19 @@
   max-width: none !important;
 }
 
+#home-text p {
+  font-size: 1.2em;
+  line-height: 1.7em;
+}
+
+#home-announcement {
+  border: 2px solid black;
+  padding: 5px;
+  margin-bottom: 1em;
+}
+#home-announcement p {
+  margin-bottom: 0px;
+}
 
 #featured{
     height: 120px;
@@ -105,4 +118,8 @@
     background: -ms-linear-gradient(left,  #ffffff 0%,#b5a79f 99%);
     background: linear-gradient(to right,  #ffffff 0%,#b5a79f 99%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#b5a79f',GradientType=1 );
+}
+
+.ie7 #home-text, .ie8 #home-text {
+  width: 470px;
 }

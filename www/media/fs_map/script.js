@@ -122,7 +122,6 @@ PNWMOTHS.Map = function () {
         addControls: function(map) {
             var controlDiv = document.createElement('DIV');
             controlDiv.index = 1;
-            controlDiv.style.marginLeft = '-5px';
             jQuery(controlDiv).addClass('gmnoprint');
             
             var fullscreenControl = PNWMOTHS.Map.control(controlDiv, "Click to go fullscreen", "Fullscreen");
@@ -144,7 +143,7 @@ PNWMOTHS.Map = function () {
             var toggleBoundariesControl = PNWMOTHS.Map.control(controlDiv, "Click to toggle county lines", "Counties");
                 jQuery(toggleBoundariesControl).toggle(function() { PNWMOTHS.Map.counties.setMap(map); }, function() { PNWMOTHS.Map.counties.setMap(null); });
             
-            map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(controlDiv);
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
 
             var controlDiv = document.createElement('DIV');
             controlDiv.style.marginLeft = '5px';
@@ -423,7 +422,7 @@ PNWMOTHS.Filters = function () {
                         var d = record[filter];
                         var f = filters[filter];
                         if (filter == "elevation") {
-                                if (d != null && d <= f[0] && d >= f[1])
+                                if (d == null || (d != null && (d < f[0] || d > f[1])))
                                         return false;
                         }
                         else if (filter == "date") {
@@ -446,7 +445,7 @@ PNWMOTHS.Filters = function () {
                             for (var j = 0; j < f.length; j++) {
                                 if (f[j] == "None (CANADA)")
                                     f[j] = null;
-                                if (d == f[j])
+                                if ((d == f[j]) || (d != null && f[j] != null && (""+d).toLowerCase() == (""+f[j]).toLowerCase()))
                                     hit = true; 
                             }
                             if (!hit)

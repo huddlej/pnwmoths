@@ -54,6 +54,9 @@ li {
   text-shadow: 0 0 1px rgba(164, 171, 120);
   
 }
+#zoomify-factsheet img {
+  border-radius: 0px;
+}
 
 #search_box {
   width: 65%;
@@ -105,12 +108,15 @@ li {
 /* each menu item in an li with text/image centered
    % width for each li is currently defined inline - I couldn't figure out a way
    to lay out the menu like the mockup without defining widths individually */
+/* IE7 display inline hack needed */
 #navigation li {
   display: inline-block;
   text-align: center;
   padding: 0;
   margin: 8px 0 8px 0;
-  
+
+*display: inline;
+zoom: 1;
 }
 
 /* centers the navigation image underneath the text link */
@@ -126,7 +132,6 @@ li {
 #content {
   padding: 10px;
   display:block;
-  content:"";
   clear:both;
 }
 
@@ -270,6 +275,19 @@ div.plateImage p {
             -webkit-box-shadow: none !important;
             box-shadow: none !important;
         }
+	#content {
+	  padding: 3px !important;
+	}
+	#browse-species-container {
+	  margin-left: -10px !important;
+	}
+	#browse-species-container div:last-child {
+	  margin-left: 0px !important;
+	}
+	.browse_item.species { width: 95% !important; }
+	#internal_footer, #funding-footer {
+		margin-left: -10px !important;
+ 	}
         #fs_content {
             -webkit-column-count: 1 !important;
             column-count: 1 !important;
@@ -305,4 +323,39 @@ div.plateImage p {
         .no-js {
             margin-left: 0px !important;
         }
+        .fs_subtitle { float: left !important; }
+	#stats_map #googlemap {
+	  height: 300px;
+	}
+	#collaborators img {
+	  width: 72px;
+	}
+	#funders img {
+	  width: 96px;
+	}
+	#fs_yui-g {
+	  width: 100%;
+	}
+	#fs_yui-g > div {
+	  padding: 0px 0px 0px 0px !important;
+	}
+	.all-images {margin-left: 0px !important; }
+	#fs_yui-g > div:last-child {
+	  margin-top: 1em !important;
+	}
+	#factsheet-filters .whole { width: 80% !important; }
+	#factsheet-filters .ui-multiselect.year-ms, #factsheet-filters .ui-multiselect.month-ms, #factsheet-filters .ui-multiselect.day-ms { width: 48% !important; }
+	#buttonContainer {
+	  left: -63px !important;
+          -webkit-transform: scale(0.75);
+	}
+	#zoomify-factsheet { padding-bottom: 50px !important; }
+	div#ToolbarDisplay { margin-top: 50px !important; }
+	.marker {
+	  margin-left: -5.5px !important;
+	  margin-top: -5.5px !important;
+	  height: 11px !important;
+	  width: 11px !important;
+	  background-size: 100% !important;	
+	}
 }

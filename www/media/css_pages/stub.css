@@ -25,6 +25,10 @@
   font-weight: normal;
 }
 
+#site_faqs ol li img {
+  margin-bottom: 0px;
+}
+
 #references p {
     margin-left: 2em;
     text-indent: -2em;

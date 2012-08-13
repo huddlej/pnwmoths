@@ -156,8 +156,11 @@ class Species(models.Model):
         These characters are added by the django admin and mess up the ordering
         on factsheets.
         """
+        # Creates a list with the weight in front as it has a higher priority
+        # over the name.
         qs = list(self.speciesimage_set.all())
-        return sorted(qs, key=lambda s: re.sub(r'[_ -0123456789]', '', s.image.name))
+        alphanum_key = lambda s: [s.weight, re.sub(r'[_ -0123456789]', '', s.image.name)]
+        return sorted(qs, key=alphanum_key)
 
     def get_first_plate(self):
         """
@@ -373,9 +376,13 @@ class SpeciesImage(models.Model):
     IMAGE_PATH = "moths/"
     ZOOM_PATH = "moths_z/"
     REARED_TERMS = ["reared","larva","em.","pupa","Rubus","immature","broadleaf","Taraxacum","ovum","emerged","emgd","em in","em ex","eggs"]
+
+    # TODO: REPLACE SORL WITH SOMETHING THAT DOESN"T PERMANENT CACHE!
+    # Changing these dimensions will force sorl to recache thumbs
+    # Used: 141x93, 376x249, 140x93, 375x249
     SIZES = {
-        "thumbnail": "140x93",
-        "medium": "375x249"
+        "thumbnail": "141x93",
+        "medium": "376x249"
     }
     
     # Help Docs

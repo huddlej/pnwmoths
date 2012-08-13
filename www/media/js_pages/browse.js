@@ -99,7 +99,12 @@
 
 
 jQuery(document).ready(function() {
-    jQuery('#body').find('.browse_item:not(.species)').implement_browse();
+    if (jQuery(window).width() > 500) {
+	    jQuery('#body').find('.browse_item:not(.species)').implement_browse();
+    }
+    else {
+	    jQuery('.browse_item').click(function () {window.location=jQuery(this).find("h3 a").attr("href"); });
+    }
 
     // Toggle functions for advanced, image-free browsing
     jQuery('#browse_images_toggle').toggle(

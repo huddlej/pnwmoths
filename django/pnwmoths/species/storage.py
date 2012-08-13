@@ -1,6 +1,4 @@
 from django.core.files.storage import FileSystemStorage 
-import os, settings
-
 import tempfile
 import os
 import errno                                     

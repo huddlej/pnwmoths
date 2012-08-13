@@ -57,7 +57,7 @@ MEDIA_ROOT = '/home/huddlej/pnwmoths/www/media/'
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://localhost/media/'
+MEDIA_URL = 'http://dev.pnwmoths.biol.wwu.edu/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -147,6 +147,8 @@ CMS_TEMPLATES = (
     ('cms/factsheet.html', gettext('factsheet')),
     ('cms/plateimages.html', gettext('imageplates')),
     ('cms/glossary.html', gettext('glossary')),
+    ('cms/lucidkey.html', gettext('lucidkey')),
+    ('cms/search.html', gettext('gsearch')),
 )
 CMS_SHOW_END_DATE = True
 CMS_SHOW_START_DATE = True
@@ -202,5 +204,5 @@ WYM_CLASSES = ",\n".join([
 WYM_STYLES = ",\n".join([
     "{'name': '.hidden-note', 'css': 'color: #999; border: 2px solid #ccc;'}",
     "{'name': '.date', 'css': 'background-color: #ff9; border: 2px solid #ee9;'}",
-    "{'name': '.home_linespacing', 'css': 'line-spacing: 2em;'}" 
+    "{'name': '.home_linespacing', 'css': 'line-spacing: 2em !important;'}" 
 ])

@@ -80,13 +80,15 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 <!-- wikipage start -->
 {% species_by_name current_page.get_title as species %}
 <div class="row">
-    <div class="col_8">
-        <h2 style="display: inline" class="fs_title"><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h2>
-        {% if species.common_name %}<h3 class="fs_title">{{ species.common_name }}</h3>{% endif %}
+    <div class="col_12 last">
+        <h2 style="display: inline; float: left;" class="fs_title"><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h2>
+        {% if species.noc_id %}<h3 class="fs_subtitle" style="float: right">{{ species.noc_id }}</h3>{% endif %}
     </div>
-    <div class="col_4 last">
-        {% if species.noc_id %}<h3 class="fs_subtitle">{{ species.noc_id }}</h3>{% endif %}
-        {% if species.get_first_plate %}<h3 class="fs_subtitle"><a href="/photographic-plates/#plate{{ species.get_first_plate }}">View Photographic Plate</a></h3>{% endif %}
+</div>
+<div class="row">
+    <div class="col_12 last">
+        {% if species.common_name %}<h3 class="fs_title" style="float: left">{{ species.common_name }}</h3>{% endif %}
+        {% if species.get_first_plate %}<h3 class="fs_subtitle" style="float: right"><a href="/photographic-plates/#plate{{ species.get_first_plate }}">View Photographic Plate</a></h3>{% endif %}
     </div>
 </div>
 <div id="fs_yui-g" class="row">
@@ -111,7 +113,6 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                         <ul class="other-images">
                     {% endif %}
                     <li>
-                    {% cache 0 species_thumb forloop.counter species.name %}
                         {% thumbnail species_image.image species_image.SIZES.medium as medium %}
                         {% thumbnail species_image.image species_image.SIZES.thumbnail as small %}
                             <a href="{{ species_image.image.url }}" title='{{ species_image.specimen_details }}{{ species_image.license_details }}&nbsp;' class="thumbnail">
@@ -121,12 +122,11 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                                 {% ifequal inline_species_image "404" %}
                                     <span class="hidden inline-species-image missing_zoomify">{{ medium.url }}</span>
                                 {% else %}
-                                    <span class="hidden inline-species-image">{{ MEDIA_URL }}{{ inline_species_image }}</span>
+                                    <span class="hidden inline-species-image">/media/{{ inline_species_image }}</span>
                                 {% endifequal %}
                             {% endwith %}
                         {% endthumbnail %}
                         {% endthumbnail %}
-                    {% endcache %}
                     </li>
                     {% if forloop.last %}
                         </ul></div></div>
@@ -147,7 +147,6 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
             <ul class="other-images">
             {% for similar_species in species.similar.all %}
                 <li>
-                {% cache 0 sim_link similar_species.name %}
                     <a href="{% page_url similar_species.factsheet %}" target="_blank">
                     {% with similar_species.get_first_image as similar_image %}
                         {% thumbnail similar_image.image similar_image.SIZES.thumbnail as im %}
@@ -156,7 +155,6 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
                     {% endwith %}
                     <em>{{ similar_species }}</em>
                     </a>
-                {% endcache %}
                 </li>
             {% endfor %}
             </ul>
