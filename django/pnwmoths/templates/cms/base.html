@@ -61,6 +61,17 @@
       })();
 
     </script>
+
+<script>
+  (function() {
+    var cx = '017156112814786239348:qfcdc7npqre';
+    var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
 </head>
 <body>
 
@@ -82,10 +93,7 @@
               </div>
               <div class="col_4 last">  
 		{% if user.username == "static-site-generator" %}
-                    <form method="get" action="/gsearch/">
-                        <input type="text" name="q" id="search_box" class="inputBox" />          
-                        <input type="submit" value="search" id="search_button" class="submitButton" />
-                    </form>
+			<gcse:searchbox-only></gcse:searchbox-only>
 		{% else %}
                     <form method="get" action="/search/">
                         <input type="text" name="q" id="search_box" class="inputBox" />          
