@@ -9,6 +9,9 @@
 <div id="content">
     <h1>Glossary</h1>
     <div id="glossary">
+        {% if request.user.is_staff %}
+            <h2><a href="/admin/species/glossaryword/">Edit Glossary</a></h2>
+        {% endif %}
         <dl>
         {% for word in glossary %}
             <dt><a name="{{word.pk}}"></a>{{ word.word }}  &#151;</dt>
