@@ -65,6 +65,7 @@ jQuery(document).ready(function() {
              jQuery("#slideshow-copyright").toggleClass("fullscreen_copyright");
         });
 
-        jQuery(window).resize();
+        //jQuery(window).resize();
+	jQuery(window).trigger("resize.elastislide")
     }
 });

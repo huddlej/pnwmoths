@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'ajax_select',
     'paging',
     'admin_sentry',
+    'django-lucid-key-report-generator',
 )
 
 CMS_TEMPLATES = (
@@ -149,6 +150,7 @@ CMS_TEMPLATES = (
     ('cms/glossary.html', gettext('glossary')),
     ('cms/lucidkey.html', gettext('lucidkey')),
     ('cms/search.html', gettext('gsearch')),
+    ('cms/full_browse.html', gettext('fullBrowse')),
 )
 CMS_SHOW_END_DATE = True
 CMS_SHOW_START_DATE = True

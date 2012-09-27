@@ -30,6 +30,10 @@
     width: 300px!important;
 }
 
+.ie7 #zoomify-factsheet-full img, .ie8 #zoomify-factsheet-full img {
+  max-width: none;
+}
+
 .all-images-no-js #similar {
     clear: both;
 }
@@ -156,3 +160,4 @@
     font-style: italic;
     margin: 0 0 0 0 !important;
 }
+#fs_yui-g .last { margin-left: -10px\9; }

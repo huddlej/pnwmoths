@@ -48,6 +48,7 @@
 
     {{ meta_headers }}
 
+
     <script type="text/javascript">
 
       var _gaq = _gaq || [];
@@ -61,12 +62,13 @@
       })();
 
     </script>
+
 </head>
 <body>
 
 
 <body>
-<div id="header_container" class="container margin_top_15">
+<div id="header_container" class="container margin_top_15 nocontent">
   <div id="header" class="shadow_container">
           <div class="row">
                 <div class="header_padded">
@@ -82,6 +84,21 @@
               </div>
               <div class="col_4 last">  
 		{% if user.username == "static-site-generator" %}
+			<!--
+			<div id="cse-search-form" style="width: 100%;">Loading</div>
+			<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+			<script type="text/javascript"> 
+			  google.load('search', '1', {language : 'en', style : google.loader.themes.MINIMALIST});
+			  google.setOnLoadCallback(function() {
+			    var customSearchOptions = {};  var customSearchControl = new google.search.CustomSearchControl(
+			      '017156112814786239348:qfcdc7npqre', customSearchOptions);
+			    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+			    var options = new google.search.DrawOptions();
+			    options.enableSearchboxOnly("http://pnwmoths.biol.wwu.edu/gsearch/");
+			    customSearchControl.draw('cse-search-form', options);
+			  }, true);
+			</script>
+			-->
                     <form method="get" action="/gsearch/">
                         <input type="text" name="q" id="search_box" class="inputBox" />          
                         <input type="submit" value="search" id="search_button" class="submitButton" />
@@ -148,7 +165,7 @@
 </div>
 
 
-<div class="container margin_top_45 margin_bottom_30">
+<div class="container margin_top_45 margin_bottom_30 nocontent">
   <div id="footer" class="row">
     <div id="internal_footer" class="col_9">
       <div class="col_3 combine_footer">
@@ -159,6 +176,7 @@
                     <li><a onclick="return confirm('Notice: The identification key will take several minutes to load. Wait until the progress box disappears on its own.');" href="/identify/">Identification Key</a></li>
                     {% show_menu_below_id "explore-data" 0 %}
                 </ul>
+		<a href="http://dev.pnwmoths.biol.wwu.edu/browse-all/" style="display: none">Browse All</a>
           </div>
       <div class="col_3 combine_footer">
             <div class="footer-heading">About Moths</div>
@@ -195,6 +213,11 @@
     </div>
   </div>
 </div>
+
+    {% if user.is_superuser %}
+	<a href="http://pnwmoths.biol.wwu.edu/lastupdated.txt">Static Site Last Regenerated</a><br />
+	<a href="http://dev.pnwmoths.biol.wwu.edu/admin/">Admin</a>
+    {% endif %}
 
 {% block scripts %}
     <script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/responsive.navigation.js"></script>

@@ -3,3 +3,4 @@ settings.py
 pnwmoths.db
 site_index
 db.py
+*.min

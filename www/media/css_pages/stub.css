@@ -34,9 +34,16 @@
     text-indent: -2em;
 }
 
+#glossary img {
+    float: right;
+    clear: left;
+    margin-left: 0.5em;
+}
 dt {
     float: left;
+    clear: right;
 }
 dd {
     margin-left: 2em;
+    clear: left;
 }

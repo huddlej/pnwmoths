@@ -24,9 +24,34 @@ from cms.models.placeholdermodel import Placeholder
 """
 MODEL DEFINITIONS
 """
+class GlossaryImage(models.Model):
+    """
+    Represents an image that is attached to glossary words.
+    """
+    IMAGE_PATH = "glossary-images/"
+
+    # TODO: REPLACE SORL WITH SOMETHING THAT DOESN"T PERMANENT CACHE!
+    # Changing these dimensions will force sorl to recache thumbs
+    # Used: 141x93, 376x249, 140x93, 375x249
+    SIZES = {
+        "thumbnail": "188x225",
+        "medium": "750x900"
+    }
+
+    title = models.CharField(unique=True, max_length=255, blank=False)
+    # Image field manages the creation and deletion of thumbnails
+    # automatically. When an instance of this class is deleted, thumbnails
+    # created for this field are automatically deleted too.
+    image = ImageField(storage=OverwriteStorage(), upload_to=IMAGE_PATH, blank=False)
+    
+    def __unicode__(self):
+        return self.title
+
+
 class GlossaryWord(models.Model):
-    word = models.CharField(unique=True, max_length=255)
-    definition = models.TextField()
+    word = models.CharField(unique=True, max_length=255, blank=False)
+    definition = models.TextField(blank=False)
+    image = models.ForeignKey(GlossaryImage, blank=True, null=True)
 
     class Meta:
         ordering = ["word"]
@@ -156,8 +181,11 @@ class Species(models.Model):
         These characters are added by the django admin and mess up the ordering
         on factsheets.
         """
+        # Creates a list with the weight in front as it has a higher priority
+        # over the name.
         qs = list(self.speciesimage_set.all())
-        return sorted(qs, key=lambda s: re.sub(r'[_ -0123456789]', '', s.image.name))
+        alphanum_key = lambda s: [s.weight, re.sub(r'[_ -0123456789]', '', s.image.name)]
+        return sorted(qs, key=alphanum_key)
 
     def get_first_plate(self):
         """
@@ -354,6 +382,16 @@ class SpeciesRecord(models.Model):
     def date(self):
         try:
             return datetime.date(self.year, self.month, self.day)
+        except Exception:
+            return None
+
+    @property
+    def fuzzy_date(self):
+        """ Assumes a year, otherwise defaults to jan 1st """
+        try:
+            m = self.month or 1
+            d = self.day or 1
+            return datetime.date(self.year, m, d)
         except Exception:
             return None
 

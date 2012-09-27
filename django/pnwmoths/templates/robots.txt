@@ -1,0 +1,5 @@
+# robots.txt generated at http://www.mcanerin.com
+User-agent: *
+Disallow: /cgi-bin/
+Disallow: /media/
+Sitemap: http://pnwmoths.biol.wwu.edu/sitemap.gz

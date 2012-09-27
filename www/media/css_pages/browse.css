@@ -54,6 +54,7 @@ h3.browse_genus_species {
 
 .browse_thumbs img {
     margin-left: 10px;
+    max-width: none\9;
 }
 
 .toggle_item {

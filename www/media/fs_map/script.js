@@ -5,6 +5,11 @@
  * - Filters: methods and classes for filtering data used by Map methods
  */
 
+
+// autolink
+// urlize - https://github.com/ljosa/urlize.js
+var urlize=function(){function t(e,t){return e.substr(0,t.length)==t}function n(e,t){return e.substr(e.length-t.length,t.length)==t}function r(e,t){var n=0,r=0;for(;;){r=e.indexOf(t,r);if(r==-1)break;n++,r+=t.length}return n}function s(e){return e.indexOf("%")==-1||e.match(i)?encodeURI(e):e}function v(e){return e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function m(e){var t;return e.length==2&&typeof e[1]=="object"?t=e[1]:t={nofollow:e[1],autoescape:e[2],trim_url_limit:e[3],target:e[4]},"django_compatible"in t||(t.django_compatible=!0),t}function g(i,g){function y(e,t){return t===undefined&&(t=g.trim_url_limit),t&&e.length>t?e.substr(0,t-3)+"...":e}g=m(arguments);var b=!1,w=g.django_compatible?l:c,E=g.django_compatible?o:u,S=g.django_compatible?a:f,x=e(i,w);for(var T=0;T<x.length;T++){var N=x[T],C=undefined;if(N.indexOf(".")!=-1||N.indexOf("@")!=-1||N.indexOf(":")!=-1){var k="",L=N,A="";for(var O=0;O<E.length;O++){var M=E[O];n(L,M)&&(L=L.substr(0,L.length-M.length),A=M+A)}for(var O=0;O<S.length;O++){var _=S[O][0],D=S[O][1];t(L,_)&&(L=L.substr(_.length),k+=_),n(L,D)&&r(L,D)==r(L,_)+1&&(L=L.substr(0,L.length-D.length),A=D+A)}var P=undefined,H=g.nofollow?' rel="nofollow"':"",B=g.target?' target="'+g.target+'"':"";L.match(h)?P=s(L):L.match(p)?P=s("http://"+L):L.indexOf(":")==-1&&L.match(d)&&(P="mailto:"+L,H="");if(P){var j=y(L);g.autoescape&&(k=v(k),A=v(A),P=v(P),j=v(j)),L='<a href="'+P+'"'+H+B+">"+j+"</a>",x[T]=k+L+A}else b||g.autoescape&&(x[T]=v(N))}else b||g.autoescape&&(x[T]=v(N))}return x.join("")}var e;e=e||function(e){var t=String.prototype.split,n=/()??/.exec("")[1]===e,r;return r=function(r,i,s){if(Object.prototype.toString.call(i)!=="[object RegExp]")return t.call(r,i,s);var o=[],u=(i.ignoreCase?"i":"")+(i.multiline?"m":"")+(i.extended?"x":"")+(i.sticky?"y":""),a=0,i=new RegExp(i.source,u+"g"),f,l,c,h;r+="",n||(f=new RegExp("^"+i.source+"$(?!\\s)",u)),s=s===e?-1>>>0:s>>>0;while(l=i.exec(r)){c=l.index+l[0].length;if(c>a){o.push(r.slice(a,l.index)),!n&&l.length>1&&l[0].replace(f,function(){for(var t=1;t<arguments.length-2;t++)arguments[t]===e&&(l[t]=e)}),l.length>1&&l.index<r.length&&Array.prototype.push.apply(o,l.slice(1)),h=l[0].length,a=c;if(o.length>=s)break}i.lastIndex===l.index&&i.lastIndex++}return a===r.length?(h||!i.test(""))&&o.push(""):o.push(r.slice(a)),o.length>s?o.slice(0,s):o},r}();var i=/%(?![0-9A-Fa-f]{2})/,o=[".",",",":",";"],u=[".",",",":",";",".)"],a=[["(",")"],["<",">"],["&lt;","&gt;"]],f=[["(",")"],["<",">"],["&lt;","&gt;"],["\u201c","\u201d"],["\u2018","\u2019"]],l=/(\s+)/,c=/([\s<>"]+)/,h=/^https?:\/\/\w/,p=/^www\.|^(?!http)\w[^@]+\.(com|edu|gov|int|mil|net|org)$/,d=/^\S+@\S+\.\S+$/;return g.test={},g.test.split=e,g.test.convert_arguments=m,g}()
+
 /**
  * Copyright (c) Mozilla Foundation http://www.mozilla.org/
  * This code is available under the terms of the MIT License
@@ -98,7 +103,6 @@ PNWMOTHS.Map = function () {
             controlDiv.style.marginBottom = '5px';
             // Set CSS for the control border
             var controlUI = document.createElement('DIV');
-            controlUI.style.float = 'left';
             controlUI.style.padding = '2px';
             controlUI.style.backgroundColor = 'white';
             controlUI.style.borderStyle = 'solid';
@@ -128,16 +132,21 @@ PNWMOTHS.Map = function () {
             google.maps.event.addDomListener(fullscreenControl, 'click', function() {
                   var c = map.getCenter();
                   var b = map.getBounds();
-                  window.scrollTo(0,0);
-                  jQuery("html").toggleClass("fullscreen");
-                  jQuery("#googlemap").toggleClass("fullscreen");
-                  google.maps.event.trigger(map, 'resize');
-                    var fullscreen = jQuery("#googlemap").hasClass("fullscreen");
-                  if(fullscreen)
-                      this.children[0].innerHTML = '<b>Exit Fullscreen</b>';
-                  else
-                      this.children[0].innerHTML = '<b>Fullscreen</b>';
-                  map.setCenter(c);
+
+			window.scrollTo(0,0);
+			// hack until I come up with a callback for ScrollTo
+			// for safari
+			setTimeout(function() {
+			  jQuery("html").toggleClass("fullscreen");
+			  jQuery("#googlemap").toggleClass("fullscreen");
+			  google.maps.event.trigger(map, 'resize');
+			    var fullscreen = jQuery("#googlemap").hasClass("fullscreen");
+			  map.setCenter(c);
+			  if(fullscreen)
+			      this.children[0].innerHTML = '<b>Exit Fullscreen</b>';
+			  else
+			      this.children[0].innerHTML = '<b>Fullscreen</b>';
+			}, 100);
             });
             
             var toggleBoundariesControl = PNWMOTHS.Map.control(controlDiv, "Click to toggle county lines", "Counties");
@@ -282,7 +291,7 @@ PNWMOTHS.Map = function () {
             // regex replace to display multiline notes properly in HTML
             if(!record["notes"])
                 record["notes"] = "";
-            notesHtml = '<div id="IB_notes" class="infowindow collections"><p>' + record["notes"].replace(/\r\n/g, "<br />").replace(/\n/g, "<br />") + "</p></div>";
+            notesHtml = '<div id="IB_notes" class="infowindow collections"><p>' + urlize(record["notes"],undefined,undefined,undefined,"_blank",true).replace(/\r\n/g, "<br />").replace(/\n/g, "<br />") + "</p></div>";
 
             return [attHtml.join(''), colHtml.join(''), notesHtml];
         },
@@ -323,7 +332,6 @@ PNWMOTHS.Map = function () {
                     "state",
                     "elevation",
                     "precision",
-                    "notes"
                 ];
 
             for (i in data) {
@@ -344,11 +352,18 @@ PNWMOTHS.Map = function () {
                         attribute = attributes[j];
                         if (groupedData[key].hasOwnProperty(attribute) === false &&
                             typeof(data[i][attribute]) !== 'undefined') {
-                            groupedData[key][attribute] = data[i][attribute];
+                                groupedData[key][attribute] = data[i][attribute];
                         }
                     }
 
-                    // Add any collection data available for this record.
+		    // add multiple notes
+		   if(typeof(groupedData[key]["notes"]) === "undefined"){
+			groupedData[key]["notes"] = "";
+		   }
+		   if(data[i]["notes"]){
+			groupedData[key]["notes"] += data[i]["notes"] + "\n";
+		   }
+
                     if (typeof(groupedData[key]["collections"]) === "undefined") {
                         groupedData[key]["collections"] = [];
                     }
@@ -384,18 +399,17 @@ PNWMOTHS.Map = function () {
                                  "May", "Jun", "Jul", "Aug",
                                  "Sep", "Oct", "Nov", "Dec"];
 
-            if (record.year && record.month && record.day) {
-                return month_choices[record.month - 1] + " " + record.day + " " + record.year;
-            }
-            else if(record.year && record.month)  {
-                return month_choices[record.month - 1] + " " + record.year;
-            }
-            else if(record.year) {
-                return record.year;
-            }
-            else {
-                return "None";
-            }
+	    var r = [];
+	    if (record.month)
+		r.push(month_choices[record.month - 1]);
+	    if (record.day)
+		r.push(record.day);
+	    if (record.year)
+		r.push(record.year);
+	    r = r.join(" ");
+	    if (r == "")
+		r = "None";
+	    return r;
         }
     };
 }();
@@ -530,10 +544,10 @@ PNWMOTHS.Filters = function () {
             //  * #clear-filter-{name} - the element that is used to clear the filter.
             //  * #{name} - the element that has the value of the filter.
             var name = filterConfig.name;
+            name = "date";
             var bounds = filterConfig.bounds;
-
-            return {
-                initialize: function () {
+            var ajaxPopulate = filterConfig.ajax;
+            var finishInit = function(bounds) {
                     jQuery("#f-" + name).dateRangeSlider({defaultValues:bounds,
                                                           bounds: bounds, arrows: false});   
                     // Change handler
@@ -550,9 +564,21 @@ PNWMOTHS.Filters = function () {
 						jQuery(document).trigger("requestData");
 					});
                     
+            };
+
+            return {
+                initialize: function () {
+		    if (!ajaxPopulate) {
+			finishInit(bounds);
+		    }
                     return jQuery("#f-" + name);
                 },
-                ajaxPopulate: false,
+                ajaxPopulate: ajaxPopulate,
+                populate: function (event, data) {
+					jQuery(this).unbind(event);
+                    
+                    finishInit({min: new Date(Date.parse(data["dates__min"])), max: new Date(Date.parse(data["dates__max"]))});
+                },
                 reset: function(filter_delete) {
                     var m = jQuery("#f-" + name);
                     var b = m.dateRangeSlider("bounds");
@@ -571,10 +597,10 @@ PNWMOTHS.Filters = function () {
             //  * #clear-filter-{name} - the element that is used to clear the filter.
             //  * #{name} - the element that has the value of the filter.
             var name = filterConfig.name;
+	    name = "elevation";
             var bounds = filterConfig.bounds ;
-
-            return {
-                initialize: function () {
+	    var ajaxPopulate = filterConfig.ajax;
+	    var finishInit = function(bounds) {
                     jQuery("#f-" + name).editRangeSlider({defaultValues: bounds,
                                                           bounds: bounds,arrows: false}); 
                     // Change handler
@@ -585,10 +611,21 @@ PNWMOTHS.Filters = function () {
 						}
 						jQuery(document).trigger("requestData");
 					});
+	    };
+
+            return {
+                initialize: function () {
+		    if (!ajaxPopulate) {
+			finishInit();
+		    }
                     
                     return jQuery("#f-" + name);
                 },
-                ajaxPopulate: false,
+                ajaxPopulate: ajaxPopulate,
+		populate: function(event, data) {
+					jQuery(this).unbind(event);
+                    finishInit({min: data["elevation__min"], max: data["elevation__max"]});
+		},
                 reset: function(filter_delete) {
                     var m = jQuery("#f-" + name);
                     var b = m.editRangeSlider("bounds");
@@ -648,11 +685,11 @@ jQuery(document).ready(function () {
 			{"name": "state", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "States", "selectedText": "Filtering on # states", "ajax": true},
 			{"name": "collection", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Collections", "selectedText": "Filtering on # collections", "ajax": true},
 			{"name": "record_type", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Voucher Types", "selectedText": "Filtering on # types", "ajax": true},
-			{"name": "date", "type": PNWMOTHS.Filters.DateRangeFilter, "bounds": {min:new Date(1870,0,1), max:new Date()}},
+			{"name": "range", "type": PNWMOTHS.Filters.DateRangeFilter, "ajax": true},
 			{"name": "year", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Years", "selectedText": "Filtering on # years", "ajax": true},
 			{"name": "month", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Months", "selectedText": "Filtering on # months", "ajax": true},
 			{"name": "day", "type": PNWMOTHS.Filters.MultiSelectFilter, "noneSelectedText": "Days", "selectedText": "Filtering on # days", "ajax": true},
-			{"name": "elevation", "type": PNWMOTHS.Filters.EditRangeFilter, "bounds": {min: 0, max: 24000}}
+			{"name": "range", "type": PNWMOTHS.Filters.EditRangeFilter, "ajax": true}
 		];
 
                 var init_filters = [];

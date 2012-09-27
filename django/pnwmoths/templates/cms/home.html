@@ -50,6 +50,7 @@
 	  <div id="home-announcement">
             {% placeholder "home_announcement" %}
 	  </div>
+	  <a href="http://www.facebook.com/pages/Pacific-Northwest-Moths/394648410589468"><img style="width: 200px; display: inline" src="{{ MEDIA_URL }}/images/facebook.png" alt="Find us on facebook!" /></a>
         </div>
         <div class="col_6 last">
             <div id="stats_map">
@@ -58,7 +59,7 @@
             <div id="googlemap"></div>
             <ul id="stats_list">
                 {% cache 0 homepage_stats %}
-                    <li><strong>{{ "Browse"|navnode_species_count|intcomma }}</strong> Species Profiles</li>
+                    <li><strong>{{ "Species"|species_stat_count|intcomma }}</strong> Species Profiles</li>
                     {# SpeciesRecord is a slow query as we join it against images to filter out labels #}
                     <li><strong>{{ "SpeciesRecord"|species_stat_count|intcomma }}</strong> Specimen Records</li>
                     <li><strong>{{ "SpeciesImage"|species_stat_count|intcomma }}</strong> Specimen Images</li>

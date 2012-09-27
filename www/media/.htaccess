@@ -1,0 +1,14 @@
+Options -Indexes
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?pnwmoths.biol.wwu.edu [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?dev.pnwmoths.biol.wwu.edu [NC]
+RewriteRule \.(jpg|jpeg|png|gif|tif|tiff)$ - [NC,F,L]
+
+RewriteCond %{REQUEST_URI} \.js$
+RewriteCond %{REQUEST_FILENAME}.min -f
+RewriteRule ^(.*)$ %{REQUEST_URI}.min [T=text/javascript]
+
+RewriteCond %{REQUEST_URI} \.css$
+RewriteCond %{REQUEST_FILENAME}.min -f
+RewriteRule ^(.*)$ %{REQUEST_URI}.min [T=text/css]
