@@ -1,0 +1,25 @@
+{% extends "cms/base.html" %}
+{% load cms_tags menu_tags %}
+
+{% block stylesheets %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css_pages/browse.css" type="text/css">
+{% endblock %}
+{% block breadcrumbs_css %}
+  <style type="text/css">
+    #browse-all li {
+      margin-left: 20px !important;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+
+<div style="margin-bottom: 5px; margin-left: 10px; clear: both;">
+	<a href="/browse/" class="expand_button" style="padding: 5px">Browse with Images</a>
+</div>
+
+<ol id="browse-all">
+{% show_menu_below_id "browse" 0 100 100 100 %}
+</ol>
+
+{% endblock %}

@@ -6,6 +6,8 @@
                 <script type="text/javascript">
                     var fixHeight = function() {
                         var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0],x=w.innerWidth||e.clientWidth||g.clientWidth,y=w.innerHeight||e.clientHeight||g.clientHeight;
+                        document.getElementById("height_hack").style.width = (x-20) + "px";
+                        document.getElementById("myContainer").style.width = (x-20) + "px";
                         document.getElementById("height_hack").style.height = (y-20) + "px";
                         document.getElementById("myContainer").style.height = (y-20) + "px";
                     };

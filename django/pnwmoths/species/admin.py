@@ -13,7 +13,7 @@ from cms.models.pagemodel import Page
 
 from actions import export_records_as_csv_action, export_labels_as_csv_action
 from models import (Collection, Collector, County, Species, SpeciesImage, ExtendedPage,
-                    SpeciesRecord, State, Author, PlateImage, Photographer, GlossaryWord)
+                    SpeciesRecord, State, Author, PlateImage, Photographer, GlossaryWord, GlossaryImage)
 from forms import PlateImageAdminForm
 
 class UserModelAdmin(UserAdmin):
@@ -36,7 +36,19 @@ except:
     pass
 admin.site.register(Page, PageAdmin)
 
-class GlossaryWordAdmin(VersionAdmin, admin.ModelAdmin):
+class GlossaryWordAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
+    def thumb(self):
+        t = self.image
+        if t:
+            pk = t.pk
+            t = get_thumbnail(t.image,"70x46")
+            return u'<a href="%s" target="_blank"><img src="%s" /></a>' % (urlresolvers.reverse('admin:species_glossaryimage_change', args=(pk,)), t.url)
+        else:
+            return u"None"
+    thumb.short_description = 'Photo'
+    thumb.allow_tags = True 
+
+    list_display = ("word", thumb,)
     search_fields = ("word", "definition",)
 admin.site.register(GlossaryWord, GlossaryWordAdmin)
 
@@ -58,7 +70,7 @@ class SpeciesAdmin(VersionAdmin, admin.ModelAdmin):
 admin.site.register(Species, SpeciesAdmin)
 
 
-class SpeciesImageAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
+class SpeciesImageAdmin(VersionAdmin, AjaxSelectAdmin, AdminImageMixin, admin.ModelAdmin):
     class Media:
         css = {'all': ("/media/custom_admin/ajax_select.css",)}
     ordering = ["species", "weight", "image"]
@@ -190,3 +202,7 @@ admin.site.register(Collector, CollectorAdmin)
 class StateAdmin(VersionAdmin, admin.ModelAdmin):
     pass
 admin.site.register(State, StateAdmin)
+
+class GlossaryImageAdmin(VersionAdmin, AdminImageMixin, admin.ModelAdmin):
+    pass
+admin.site.register(GlossaryImage, GlossaryImageAdmin)

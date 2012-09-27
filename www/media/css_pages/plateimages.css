@@ -16,6 +16,9 @@ zoom: 1;
 #plate_images li:target {
     background-color: #F3E8BA;
 }
+.customTarget {
+  background-color: #F3E8BA;
+}
 
 #plates-copyright {
   text-align: center;

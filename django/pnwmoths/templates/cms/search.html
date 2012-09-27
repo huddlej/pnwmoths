@@ -1,21 +1,89 @@
 {% extends "cms/base.html" %}
 {% block breadcrumbs %}
+<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js' type='text/javascript'></script>
+<script src='https://raw.github.com/flaptor/indextank-jquery/master/jquery.indextank.ize.js' type='text/javascript'></script>
+<script src='https://raw.github.com/flaptor/indextank-jquery/master/jquery.indextank.autocomplete.js' type='text/javascript'></script>
+<script src='https://raw.github.com/flaptor/indextank-jquery/master/querybuilder.js' type='text/javascript'></script>
+<script src='https://raw.github.com/flaptor/indextank-jquery/master/jquery.indextank.ajaxsearch.js' type='text/javascript'></script>
+<script src='https://raw.github.com/flaptor/indextank-jquery/master/jquery.indextank.renderer.js' type='text/javascript'></script>
+<script src='https://raw.github.com/flaptor/indextank-jquery/master/jquery.indextank.instantsearch.js' type='text/javascript'></script>
+<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/flick/jquery-ui.css' rel='stylesheet'>
 &nbsp;
 {% endblock %}
 {% block scripts %}
 
-<script>
-  (function() {
-    var cx = '017156112814786239348:qfcdc7npqre';
-    var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
-    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-        '//www.google.com/cse/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
-  })();
-</script>
-
 {% endblock %}
 {% block content %}
 <h1 style="margin-top: 5px;">Search</h1>
-<gcse:searchresults-only></gcse:searchresults-only> 
+
+<form id="myform" action="/gsearch/" method="get">
+  <input id="query" type="text" name="q">
+</form>
+<div id="results"></div>
+<script type='text/javascript'>
+        function qs(unique) {
+            var query = window.location.search.substring(1);
+            var parms = query.split('&');
+            for (var i = 0; i < parms.length; i++) {
+                var pos = parms[i].indexOf('=');
+                if (pos > 0 && unique == parms[i].substring(0, pos)) {
+                    return parms[i].substring(pos + 1); ;
+                }
+            }
+            return "";
+        }
+var publicApiUrl = "http://tevavy.api.indexden.com";
+var indexName = "pnwmoths";
+jQuery(document).ready(function(){
+    // let the form be 'indextank-aware'
+var userFormat = function(item) {
+    var r = $("<div></div>").addClass("result")
+            .append( $("<a></a>").attr("href", "/"+eval(item.docid)).html("<h4>"+eval(item.title)+"</h4>"))
+            .append( $("<span></span>").html(item.snippet_text.replace("\\n", "")));
+    return r;
+};
+
+    jQuery("#myform").indextank_Ize(publicApiUrl, indexName);
+var renderer =  jQuery("#results").indextank_Renderer({format: userFormat});
+jQuery("#query").indextank_Autocomplete().indextank_AjaxSearch( {listeners: renderer}).indextank_InstantSearch();
+    $("#query").val(qs("q")).submit();
+});
+
+</script>
+
+<!--
+<div id="cse" style="width: 100%;">Loading</div>
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript"> 
+  google.load('search', '1', {language : 'en', style : google.loader.themes.MINIMALIST});
+  google.setOnLoadCallback(function() {
+    var customSearchOptions = {};
+    var googleAnalyticsOptions = {};
+    googleAnalyticsOptions['queryParameter'] = 'q';
+    googleAnalyticsOptions['categoryParameter'] = '';
+    customSearchOptions['googleAnalyticsOptions'] = googleAnalyticsOptions;  var customSearchControl = new google.search.CustomSearchControl(
+      '017156112814786239348:qfcdc7npqre', customSearchOptions);
+    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+    customSearchControl.draw('cse');
+    function parseParamsFromUrl() {
+      var params = {};
+      var parts = window.location.search.substr(1).split('\x26');
+      for (var i = 0; i < parts.length; i++) {
+        var keyValuePair = parts[i].split('=');
+        var key = decodeURIComponent(keyValuePair[0]);
+        params[key] = keyValuePair[1] ?
+            decodeURIComponent(keyValuePair[1].replace(/\+/g, ' ')) :
+            keyValuePair[1];
+      }
+      return params;
+    }
+
+    var urlParams = parseParamsFromUrl();
+    var queryParamName = "q";
+    if (urlParams[queryParamName]) {
+      customSearchControl.execute(urlParams[queryParamName]);
+    }
+  }, true);
+</script>
+-->
 {% endblock %}

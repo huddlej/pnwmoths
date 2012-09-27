@@ -1,10 +1,15 @@
 {% extends "cms/base.html" %}
-{% load species_tags %}
+{% load species_tags thumbnail %}
 {% block breadcrumbs %}
 {% endblock %}
 {% block stylesheets %}
 	{{ block.super }}
 	<link rel="stylesheet" href="{{ MEDIA_URL }}css_pages/stub.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="{{ MEDIA_URL }}glossary/orangebox.css" type="text/css" />
+{% endblock %}
+{% block scripts %}
+	{{ block.super }}
+	<script type="text/javascript" src="{{ MEDIA_URL }}glossary/orangebox.min.js"></script>
 {% endblock %}
 {% block content %}
 {% load_glossary_words as glossary %}
@@ -17,6 +22,14 @@
         <dl>
         {% for word in glossary %}
             <dt><a name="{{word.pk}}"></a>{{ word.word }}  &#151;</dt>
+	    {% if word.image %}
+		    {% thumbnail word.image.image word.image.SIZES.medium as im %}
+		    <a href="{{im.url}}" data-ob="lightbox" data-ob_share="false">
+		    {% endthumbnail %}
+		    {% thumbnail word.image.image word.image.SIZES.thumbnail as im %}
+			<img src="{{ im.url }}" width="{{ im.x }}" height="{{ im.y }}" /></a>
+		    {% endthumbnail %}
+	    {% endif %}
             <dd>&nbsp;{{ word.definition }}</dd>
         {% endfor %}
         </dl>

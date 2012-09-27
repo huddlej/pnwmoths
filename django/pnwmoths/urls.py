@@ -7,6 +7,7 @@ from django.conf.urls.defaults import (
 )
 from django.http import HttpResponseRedirect
 from django.contrib import admin
+from django.views.generic.simple import direct_to_template
 
 from species.views import import_species_records, photographic_plate_zoomify
 from cms_search.views import FancyRedirectSearchView
@@ -20,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name="login"),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name="logout"),
     url(r'^admin/species/speciesrecord/import/', import_species_records, name="speciesrecord_import"),
+    (r'^robots\.txt$', direct_to_template, {'template': 'robots.txt', 'mimetype': 'text/plain'}),
     (r'^admin/import/', include('csvimporter.urls')),
     (r'^admin/lookups/', include(ajax_select_urls)),
     (r'^admin/', include(admin.site.urls)),

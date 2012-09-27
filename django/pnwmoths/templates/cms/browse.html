@@ -22,8 +22,8 @@
     {% block content %}
         <div class="row top bottom">
             <div id="browse-species-container" class="twelvecol last">
-                <div style="margin-left: 10px; clear: both;">
-                    <a id="browse_images_toggle" class="expand_button" title="Advanced Browse">Turn off Images?</a>
+                <div style="margin-bottom: 5px; margin-left: 10px; clear: both;">
+		    <a href="/browse-all/" class="expand_button" style="padding: 5px">Browse Full List</a>
                 </div>
                 <div style="margin-left: 10px">
                     {% cache 0 browse_submenu request.current_page.id %}

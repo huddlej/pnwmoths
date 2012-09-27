@@ -30,6 +30,10 @@
     width: 300px!important;
 }
 
+.ie7 #zoomify-factsheet-full img, .ie8 #zoomify-factsheet-full img {
+  max-width: none;
+}
+
 .all-images-no-js #similar {
     clear: both;
 }

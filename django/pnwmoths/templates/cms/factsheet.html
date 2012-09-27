@@ -1,6 +1,7 @@
 {% extends "cms/base.html" %}
 {% load factsheet_filters cache cms_tags species_tags thumbnail %}
 
+
 {% block scripts %}
 {{ block.super }}
 <script type="text/javascript">
@@ -65,6 +66,20 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 
 {% block stylesheets %}
 {{ block.super }}
+{% species_by_name current_page.get_title as species %}
+  <!--
+  <PageMap>
+     <DataObject type="thumbnail">
+	    {% with species.get_first_image as img %}
+		{% thumbnail img.image img.SIZES.thumbnail as im %}
+			<Attribute name="src" value="{{ im.url }}" />
+			<Attribute name="width" value="{{ im.x }}" />
+			<Attribute name="height" value="{{ im.y }}" />
+		{% endthumbnail %}
+	    {% endwith %}
+     </DataObject>
+  </PageMap>
+  -->
 <link rel="stylesheet" href="{{ MEDIA_URL }}css_ext/elastislide.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css_ext/jquery.jqplot.css" type="text/css">
 <link rel="stylesheet" href="{{ MEDIA_URL }}css_ext/jquery.tipTip.css" type="text/css">
@@ -77,8 +92,8 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 {% endblock %}
 
 {% block content %}
-<!-- wikipage start -->
 {% species_by_name current_page.get_title as species %}
+<!-- wikipage start -->
 <div class="row">
     <div class="col_12 last">
         <h2 style="display: inline; float: left;" class="fs_title"><em>{{ species.name }}</em> {% if species.authority %}{{ species.authority }}{% endif %}</h2>
@@ -88,10 +103,10 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 <div class="row">
     <div class="col_12 last">
         {% if species.common_name %}<h3 class="fs_title" style="float: left">{{ species.common_name }}</h3>{% endif %}
-        {% if species.get_first_plate %}<h3 class="fs_subtitle" style="float: right"><a href="/photographic-plates/#plate{{ species.get_first_plate }}">View Photographic Plate</a></h3>{% endif %}
+        {% if species.get_first_plate %}<h3 class="nocontent fs_subtitle" style="float: right"><a href="/photographic-plates/#plate{{ species.get_first_plate }}">View Photographic Plate</a></h3>{% endif %}
     </div>
 </div>
-<div id="fs_yui-g" class="row">
+<div id="fs_yui-g" class="row nocontent">
 <div style="position: static" class="col_6">
     <div id="fs_images">
         <div class="all-images all-images-no-js">
@@ -217,29 +232,32 @@ if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('
 <!-- data start -->
 {% if species %}
     {% cache 0 js_data species.name %}
-    <span class="dokuwiki-data" id="species-data">
+    <span class="dokuwiki-data nocontent" id="species-data">
     {{ species|get_records|safe }}
     </span>
-    <span class="dokuwiki-data" id="state-data">
+    <span class="dokuwiki-data nocontent" id="state-data">
     {{ species|filters_json:"state__code"|safe }}
     </span>
-    <span class="dokuwiki-data" id="county-data">
+    <span class="dokuwiki-data nocontent" id="county-data">
     {{ species|filters_json:"county"|safe }}
     </span>
-    <span class="dokuwiki-data" id="collection-data">
+    <span class="dokuwiki-data nocontent" id="collection-data">
     {{ species|filters_json:"collection__name"|safe }}
     </span>
-    <span class="dokuwiki-data" id="record_type-data">
+    <span class="dokuwiki-data nocontent" id="record_type-data">
     {{ species|filters_json:"record_type"|safe }}
     </span>
-    <span class="dokuwiki-data" id="year-data">
+    <span class="dokuwiki-data nocontent" id="year-data">
     {{ species|filters_json:"year"|safe }}
     </span>
-    <span class="dokuwiki-data" id="month-data">
+    <span class="dokuwiki-data nocontent" id="month-data">
     {{ species|filters_json:"month"|safe }}
     </span>
-    <span class="dokuwiki-data" id="day-data">
+    <span class="dokuwiki-data nocontent" id="day-data">
     {{ species|filters_json:"day"|safe }}
+    </span>
+    <span class="dokuwiki-data nocontent" id="range-data">
+    {{ species|range_values|safe }}
     </span>
     {% endcache %}
 {% endif %}

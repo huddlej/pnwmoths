@@ -16,14 +16,14 @@
 {% block content %}
 
 <script type="text/javascript">
-function($) {
+(function($) {
 $(document).ready(function() {
     $("li").removeClass("customTarget");
     var myLocation = document.location.hash.replace("#","");
     if (myLocation) {
             document.getElementById(myLocation).className = "customTarget";
     }
-})}(jQuery);
+})})(jQuery);
 </script>
 {% load_plateimages as plates %}
 <div class="col_12 last">
