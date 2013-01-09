@@ -51,7 +51,7 @@ jQuery(window).load(function() {
     var allcoords = new google.maps.FusionTablesLayer({
       query: {
         select: 'location',
-        from: '3454735'
+        from: '1jYnlxb74q0gOMuAU6ZCFLlAIAfgPy4GCYT2qiBo'
       },
       clickable: false
     });

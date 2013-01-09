@@ -162,7 +162,7 @@
         // fetch all categories,
         fetchCategories: 'true',
         // the default query re-writer is identity
-        rewriteQuery: function(q) {return q}
+        rewriteQuery: function(q) {return "text:" + q + "^1 title:" + q + "^10"; }
     };
     
     $.fn.indextank_AjaxSearch = function(options){
