@@ -1,4 +1,6 @@
 *.pyc
+*.swp
+*.swo
 settings.py
 pnwmoths.db
 site_index
