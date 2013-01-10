@@ -1,0 +1,3 @@
+[submodule "django/pnwbutterflies"]
+	path = django/pnwbutterflies
+	url = https://github.com/philipbjorge/pnwbutterflies.git
