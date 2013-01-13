@@ -69,7 +69,8 @@ PNWMOTHS.Chart = function () {
                 // If a record is missing a day and/or month ignore the record. It is
                 // better to omit an incomplete record than mislead users by defaulting the
                 // record.
-                if (data.hasOwnProperty(i) && data[i].month && data[i].day) {
+		// Also, phenology data is only used from 5 PNW states/provinces
+                if (data.hasOwnProperty(i) && $.inArray(data[i].state, ["WA", "OR", "BC", "MT", "ID"]) != -1 && data[i].month && data[i].day) {
                     // Records are indexed starting with 0 so all months are
                     // shifted by 1.
                     month = parseInt(data[i].month) - 1;
@@ -205,13 +206,13 @@ jQuery(document).ready(function () {
 
             // If no options were specified, just use an empty object.
             options = jQuery.parseJSON(jQuery(chart).children(".options").text());
-            if (options == "") {
+            if (options === null) {
                 options = {};
             }
+	    options.title = 'Seasonality within the PNW';
 
             jQuery(data_id).bind(
                 "dataIsReady",
-                // TODO: move this function into Charts class for testing.
                 function (event, data) {
                     if (data.length == 0)
                         data = [[null]];    // Empty data plot fix
