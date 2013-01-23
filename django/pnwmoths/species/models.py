@@ -236,8 +236,8 @@ class PlateImage(models.Model):
     ZOOM_PATH = "plates_z/"
     ZOOM_ABS_PATH = "%s%s" % (settings.MEDIA_ROOT, ZOOM_PATH)
     SIZES = {
-        "thumbnail": "240x300",
-        "medium": "480x600"
+        "thumbnail": "241x300",
+        "medium": "481x600"
     }
 
     description = PlaceholderField('Description')
@@ -416,7 +416,7 @@ class SpeciesImage(models.Model):
     # Changing these dimensions will force sorl to recache thumbs
     # Used: 141x93, 376x249, 140x93, 375x249
     SIZES = {
-        "thumbnail": "141x93",
+        "thumbnail": "141x92",
         "medium": "376x249"
     }
     
